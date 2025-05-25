@@ -4,6 +4,7 @@ import { tv } from 'tailwind-variants';
 import { Box, Icon } from '../components';
 
 interface DevToolActionProps {
+  children?: React.ReactNode;
   handleToggleStorybook: () => void;
 }
 
@@ -17,7 +18,7 @@ const variants = tv({
   },
 });
 
-export default function DevToolAction({ handleToggleStorybook }: DevToolActionProps) {
+export default function DevToolAction({ children, handleToggleStorybook }: DevToolActionProps) {
   const [position, setPosition] = useState<'top' | 'bottom'>('bottom');
 
   const handleTogglePosition = () => {
@@ -25,15 +26,18 @@ export default function DevToolAction({ handleToggleStorybook }: DevToolActionPr
   };
 
   return (
-    <Box className={variants({ position })}>
-      <Icon name="open-book-solid" size="sm" wrapper onPress={handleToggleStorybook} color="#fff" />
-      <Icon
-        name={position === 'bottom' ? 'angle-up-solid' : 'angle-down-solid'}
-        size="sm"
-        wrapper
-        onPress={handleTogglePosition}
-        color="#fff"
-      />
-    </Box>
+    <>
+      <Box className={variants({ position })}>
+        <Icon name="open-book-solid" size="sm" wrapper onPress={handleToggleStorybook} color="#fff" />
+        <Icon
+          name={position === 'bottom' ? 'angle-up-solid' : 'angle-down-solid'}
+          size="sm"
+          wrapper
+          onPress={handleTogglePosition}
+          color="#fff"
+        />
+      </Box>
+      {children}
+    </>
   );
 }

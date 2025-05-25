@@ -13,7 +13,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@expo/metro-runtime": "^5.0.4",
+    "@expo/metro-runtime": "~5.0.4",
     "@react-native-async-storage/async-storage": "2.1.2",
     "@storybook/addon-actions": "^8.6.14",
     "@storybook/react-native": "^8.6.4",
@@ -23,11 +23,13 @@
     "install": "^0.13.0",
     "nativewind": "latest",
     "react": "19.0.0",
+    "react-dom": "19.0.0",
     "react-native": "0.79.2",
     "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "5.4.0",
     "react-native-svg": "^15.12.0",
     "react-native-web": "^0.20.0",
+    "react-native-webview": "^13.13.5",
     "tailwind-merge": "^3.3.0",
     "tailwind-variants": "^1.0.0"
   },

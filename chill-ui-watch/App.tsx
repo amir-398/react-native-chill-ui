@@ -1,15 +1,18 @@
-import { Text, View } from 'react-native';
-
-import DevToolProvider from '@/utils/DevToolProvider';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import './global.css';
+import { view } from './.storybook/storybook.requires';
 
 export default function App() {
-  return (
-    <DevToolProvider>
-      <View className="flex-1">
-        <Text>Hello</Text>
-      </View>
-    </DevToolProvider>
-  );
+  const StorybookUIRoot = view.getStorybookUI({
+    storage: {
+      getItem(key: string) {
+        return AsyncStorage.getItem(key);
+      },
+      setItem(key: string, value: string) {
+        return AsyncStorage.setItem(key, value);
+      },
+    },
+  });
+  return <StorybookUIRoot />;
 }

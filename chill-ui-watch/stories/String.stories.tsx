@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { action } from '@storybook/addon-actions';
 
-import String from './String';
-import UiPresentation from '../storybook/UiPresentation';
+import String from '../src/components/string/String';
+import UiPresentation from './storybook/UiPresentation';
 
 const meta: Meta<typeof String> = {
   argTypes: {
