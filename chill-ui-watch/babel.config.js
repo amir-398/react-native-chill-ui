@@ -1,6 +1,6 @@
 module.exports = function babelConfig(api) {
   api.cache(true);
-  const plugins = [];
+  const plugins = ['@babel/plugin-transform-class-static-block'];
 
   return {
     plugins,

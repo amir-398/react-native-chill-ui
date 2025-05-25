@@ -38,5 +38,5 @@
   },
   "extends": "expo/tsconfig.base",
   "include": ["**/*.ts", "**/*.tsx", "nativewind-env.d.ts", "global.d.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", ".storybook"]
 }
