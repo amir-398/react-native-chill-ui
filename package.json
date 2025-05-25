@@ -34,20 +34,18 @@
     "clean": "del-cli lib",
     "example": "yarn workspace react-native-awesome-library-example",
     "lint": "eslint .",
-    "prepare": "bob build",
     "release": "release-it",
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc --noEmit",
     "typecheck": "tsc --noEmit",
-    "storybook": "storybook start -p 6006",
-    "storybook:android": "storybook start -p 6006 --android",
-    "storybook:ios": "storybook start -p 6006 --ios"
+    "generate:icons": "node tools/svg-2-obj/index.js && prettier --write src/constants/ICONS.ts"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.3",
     "@babel/runtime": "^7.25.0",
     "@commitlint/config-conventional": "^17.0.0",
+    "@react-native-async-storage/async-storage": "^2.1.2",
     "@react-native-community/cli": "18.0.0",
     "@react-native-community/cli-platform-android": "18.0.0",
     "@react-native-community/cli-platform-ios": "18.0.0",
@@ -97,7 +95,14 @@
     "react-native-svg": "*",
     "tailwind-merge": "*",
     "tailwind-variants": "*",
-    "tailwindcss": "*"
+    "tailwindcss": "*",
+    "@react-native-async-storage/async-storage": "*",
+    "@storybook/addon-actions": "*",
+    "@storybook/addon-ondevice-backgrounds": "*",
+    "@storybook/addon-ondevice-controls": "*",
+    "@storybook/addon-ondevice-notes": "*",
+    "@storybook/react-native": "*",
+    "@storybook/react-native-server": "*"
   },
   "engines": {
     "node": ">=18"
@@ -136,8 +141,5 @@
         "preset": "angular"
       }
     }
-  },
-  "dependencies": {
-    "expo": "^53.0.9"
   }
 }

@@ -1,22 +1,25 @@
-import { Text } from 'react-native';
+import type { StringProps } from '../../types';
 
-export type StringProps = {
-  text: string;
-  size?: 'sm' | 'md' | 'lg';
-  color?: string;
-  className?: string;
-};
+import cn from '../cn';
+import { Text as NativeText } from './Text';
+import { textColorVr, textFontVr, textPositionVr, textSizeVr, textVariantVr } from './styleVatiants';
 
-export default function String({ className, color = '#000000', size = 'md', text }: StringProps) {
-  const fontSize = {
-    lg: 18,
-    md: 16,
-    sm: 14,
-  }[size];
+export default function String(props: StringProps) {
+  const { children, className, color, font, position, size, variant, weight } = props;
+
+  const dynamicClasses = cn(
+    'flex-shrink',
+    textSizeVr({ size }),
+    textFontVr({ font, weight }),
+    textColorVr({ color }),
+    textPositionVr({ position }),
+    textVariantVr({ variant }),
+    className,
+  );
 
   return (
-    <Text style={{ color, fontSize }} className={className}>
-      {text}
-    </Text>
+    <NativeText {...props} className={dynamicClasses}>
+      {children}
+    </NativeText>
   );
 }

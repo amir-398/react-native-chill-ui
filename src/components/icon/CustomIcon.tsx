@@ -8,7 +8,6 @@ import { ICONS, type TIcons } from '../../constants/ICONS';
 export type IconProps = {
   name: keyof TIcons;
   color?: string;
-  className?: string;
 } & SvgProps;
 
 cssInterop(Svg, {
@@ -17,11 +16,11 @@ cssInterop(Svg, {
   },
 });
 
-export default function CustomIcon({ color = '#fff', name, ...props }: IconProps) {
+export default function CustomIcon({ className, color = '#fff', name }: IconProps) {
   const viewBox = ICONS[name]?.viewBox;
 
   return (
-    <Svg focusable={false} viewBox={viewBox} color={color} {...props}>
+    <Svg className={className || ''} focusable={false} viewBox={viewBox} color={color}>
       {ICONS[name]?.path.map((d: string, index: number) => <Path key={index} d={d} fill={color} />)}
     </Svg>
   );
