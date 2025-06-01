@@ -3,31 +3,16 @@ import { Pressable } from 'react-native';
 
 import { Box } from '../box';
 import String from '../string';
-import { StringProps } from '../../types';
+import { TooltipProps } from '../../types';
 import TooltipRoot from './core/TooltipRoot';
-
-type TooltipProps = {
-  children: React.ReactNode;
-  title: string;
-  side?: 'top' | 'bottom' | 'left' | 'right';
-  sideOffset?: number;
-  className?: string;
-  useReactNativeModal?: boolean;
-  arrowColor?: string;
-  arrowSize?: { width: number; height: number };
-  backgroundColor?: string;
-  disableShadow?: boolean;
-  onClose?: () => void;
-  textColor?: string;
-  textSize?: StringProps['size'];
-};
 
 export default function Tooltip({
   children,
+  className,
   side = 'top',
   sideOffset = 0,
-  textColor,
-  textSize,
+  textColor = '#000',
+  textSize = 'md',
   title,
   useReactNativeModal = true,
   ...rest
@@ -36,6 +21,8 @@ export default function Tooltip({
 
   return (
     <TooltipRoot
+      closeOnChildInteraction={false}
+      closeOnContentInteraction={false}
       isVisible={isVisible}
       content={
         <String color={textColor} size={textSize}>
@@ -43,6 +30,7 @@ export default function Tooltip({
         </String>
       }
       side={side}
+      className={className}
       {...rest}
     >
       <Box>

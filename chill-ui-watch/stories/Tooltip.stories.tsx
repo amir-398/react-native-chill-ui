@@ -44,7 +44,7 @@ const meta: Meta<typeof Tooltip> = {
               width: '100%',
             }}
           >
-            <Tooltip title="Amir">
+            <Tooltip title="Amir" textSize="sm">
               <Avatar
                 data={{
                   firstname: 'Meb',

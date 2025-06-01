@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
-import { Dimensions, InteractionManager, Modal, TouchableWithoutFeedback, View, ViewStyle } from 'react-native';
+import { Dimensions, InteractionManager, Modal, TouchableWithoutFeedback, View } from 'react-native';
+
+import { DisplayInsets, TooltipRootProps } from '@/types';
 
 import cn from '../../cn';
 import { Box } from '../../box';
@@ -17,45 +19,6 @@ import {
 } from './utils/tooltipGeometry';
 
 export { TooltipChildrenContext };
-
-interface DisplayInsets {
-  top: number;
-  left: number;
-  right: number;
-  bottom: number;
-}
-
-type Orientation = 'portrait' | 'landscape' | 'portrait-upside-down' | 'landscape-left' | 'landscape-right';
-
-/* eslint-disable react/no-unused-prop-types */
-interface TooltipProps {
-  arrowSize?: Size;
-  className?: string;
-  arrowColor?: string;
-  isVisible?: boolean;
-  sideOffset?: number;
-  onClose?: () => void;
-  accessible?: boolean;
-  disableShadow?: boolean;
-  backgroundColor?: string;
-  content?: React.ReactNode;
-  classNameWrapper?: string;
-  children?: React.ReactNode;
-  showChildInTooltip?: boolean;
-  horizontalAdjustment?: number;
-  useReactNativeModal?: boolean;
-  modalComponent?: typeof Modal;
-  parentWrapperStyle?: ViewStyle;
-  allowChildInteraction?: boolean;
-  useInteractionManager?: boolean;
-  closeOnChildInteraction?: boolean;
-  closeOnContentInteraction?: boolean;
-  supportedOrientations?: Orientation[];
-  closeOnBackgroundInteraction?: boolean;
-  displayInsets?: Partial<DisplayInsets>;
-  side?: 'top' | 'left' | 'bottom' | 'right' | 'center';
-}
-/* eslint-enable react/no-unused-prop-types */
 
 interface TooltipState {
   childRect: Rect;
@@ -117,7 +80,7 @@ const isEqual = (obj1: any, obj2: any): boolean => {
   });
 };
 
-const defaultProps: Required<TooltipProps> = {
+const defaultProps: Required<TooltipRootProps> = {
   accessible: true,
   allowChildInteraction: true,
   arrowColor: '',
@@ -139,7 +102,6 @@ const defaultProps: Required<TooltipProps> = {
     // eslint-disable-next-line no-console
     console.warn('[react-native-walkthrough-tooltip] onClose prop not provided');
   },
-  parentWrapperStyle: {},
   showChildInTooltip: true,
   side: 'bottom',
   sideOffset: 0,
@@ -148,7 +110,7 @@ const defaultProps: Required<TooltipProps> = {
   useReactNativeModal: true,
 };
 
-export default function TooltipRoot(props: TooltipProps): React.ReactElement {
+export default function TooltipRoot(props: TooltipRootProps): React.ReactElement {
   const mergedProps = useMemo(() => ({ ...defaultProps, ...props }), [props]);
   const {
     accessible,
@@ -169,7 +131,6 @@ export default function TooltipRoot(props: TooltipProps): React.ReactElement {
     isVisible,
     modalComponent,
     onClose,
-    parentWrapperStyle,
     showChildInTooltip,
     side: sideProp,
     sideOffset,
@@ -249,16 +210,18 @@ export default function TooltipRoot(props: TooltipProps): React.ReactElement {
       }));
       // Force a re-measurement
       if (childWrapper.current) {
-        childWrapper.current.measure((x, y, width, height, pageX, pageY) => {
-          const childRect = new Rect(pageX, pageY, width, height);
-          setState(prevState => {
-            const newState = { ...prevState, childRect };
-            if (prevState.contentSize.width) {
-              computeGeometry(childRect, prevState.contentSize);
-            }
-            return newState;
-          });
-        });
+        childWrapper.current.measure(
+          (_: number, __: number, width: number, height: number, pageX: number, pageY: number) => {
+            const childRect = new Rect(pageX, pageY, width, height);
+            setState(prevState => {
+              const newState = { ...prevState, childRect };
+              if (prevState.contentSize.width) {
+                computeGeometry(childRect, prevState.contentSize);
+              }
+              return newState;
+            });
+          },
+        );
       }
     }
   }, [isVisible, computeGeometry]);
@@ -525,7 +488,7 @@ export default function TooltipRoot(props: TooltipProps): React.ReactElement {
       ) : null}
 
       {hasChildren ? (
-        <View ref={childWrapper} onLayout={measureChildRect} style={parentWrapperStyle}>
+        <View ref={childWrapper} onLayout={measureChildRect} className={classNameWrapper}>
           {children}
         </View>
       ) : null}

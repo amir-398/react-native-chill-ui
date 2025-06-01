@@ -3,6 +3,7 @@ import type { AnimatedProps } from 'react-native-reanimated';
 
 import {
   FlatListProps,
+  Modal,
   type TextInputProps,
   type TextProps,
   type TouchableOpacityProps,
@@ -318,4 +319,63 @@ export type AvatarProps = {
   textColor?: string;
   size?: VariantProps<typeof sizeVariant>['size'];
   variant?: VariantProps<typeof avatarVariants>['variant'];
+};
+
+export type Orientation = 'portrait' | 'landscape' | 'portrait-upside-down' | 'landscape-left' | 'landscape-right';
+
+export type Size = {
+  width: number;
+  height: number;
+};
+
+export interface DisplayInsets {
+  top: number;
+  left: number;
+  right: number;
+  bottom: number;
+}
+
+export type Side = 'top' | 'left' | 'bottom' | 'right' | 'center';
+
+export interface TooltipRootProps {
+  side?: Side;
+  arrowSize?: Size;
+  className?: string;
+  arrowColor?: string;
+  isVisible?: boolean;
+  sideOffset?: number;
+  onClose?: () => void;
+  accessible?: boolean;
+  disableShadow?: boolean;
+  backgroundColor?: string;
+  content?: React.ReactNode;
+  classNameWrapper?: string;
+  children?: React.ReactNode;
+  showChildInTooltip?: boolean;
+  horizontalAdjustment?: number;
+  useReactNativeModal?: boolean;
+  modalComponent?: typeof Modal;
+  allowChildInteraction?: boolean;
+  useInteractionManager?: boolean;
+  closeOnChildInteraction?: boolean;
+  closeOnContentInteraction?: boolean;
+  supportedOrientations?: Orientation[];
+  closeOnBackgroundInteraction?: boolean;
+  displayInsets?: Partial<DisplayInsets>;
+}
+
+export type TooltipProps = {
+  children: React.ReactNode;
+  title: string;
+  side?: Side;
+  sideOffset?: number;
+  className?: string;
+  useReactNativeModal?: boolean;
+  arrowColor?: string;
+  arrowSize?: Size;
+  backgroundColor?: string;
+  disableShadow?: boolean;
+  onClose?: () => void;
+  textColor?: string;
+  textSize?: StringProps['size'];
 };
