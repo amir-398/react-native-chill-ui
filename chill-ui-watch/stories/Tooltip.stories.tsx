@@ -1,12 +1,12 @@
-import type { Meta } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { Avatar, Box, String, Tooltip, TooltipRoot } from '../src/components';
+import { Avatar, Box, String, Tooltip } from '../src/components';
 
 const meta: Meta<typeof Tooltip> = {
   argTypes: {},
   component: Tooltip,
   decorators: [
-    _ => (
+    story => (
       <>
         <Box
           style={{
@@ -17,7 +17,7 @@ const meta: Meta<typeof Tooltip> = {
             width: '100%',
           }}
         >
-          <TooltipRoot content={<String>Amir</String>} side="bottom" sideOffset={0}>
+          {/* <TooltipRoot content={<String>Amir</String>} side="bottom" sideOffset={0}>
             <Avatar
               data={{
                 firstname: 'John',
@@ -25,7 +25,7 @@ const meta: Meta<typeof Tooltip> = {
                 lastname: 'Doe',
               }}
             />
-          </TooltipRoot>
+          </TooltipRoot> */}
         </Box>
         <Box style={{}}>
           {/* <Avatar
@@ -44,7 +44,7 @@ const meta: Meta<typeof Tooltip> = {
               width: '100%',
             }}
           >
-            <Tooltip title="Amir">
+            <Tooltip title="Amir" side="bottom">
               <Avatar
                 data={{
                   firstname: 'Meb',
@@ -62,3 +62,12 @@ const meta: Meta<typeof Tooltip> = {
 };
 
 export default meta;
+type Story = StoryObj<typeof Tooltip>;
+
+export const Default: Story = {
+  args: {
+    content: <String>Amir</String>,
+    side: 'bottom',
+    sideOffset: 0,
+  },
+};

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Pressable } from 'react-native';
-import TooltipComponent from 'react-native-walkthrough-tooltip';
 
 import { Box } from '../box';
 import String from '../string';
@@ -34,47 +33,26 @@ export default function Tooltip({
   ...rest
 }: TooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
-  const [isVisible1, setIsVisible1] = useState(false);
+
   return (
-    <>
-      <TooltipComponent
-        isVisible={isVisible}
-        content={
-          <String color={textColor} size={textSize}>
-            {title}
-          </String>
-        }
-        placement={side}
-        {...rest}
-      >
-        <Box>
-          <Pressable
-            onPressIn={() => setIsVisible(true)}
-            onPressOut={() => setIsVisible(false)}
-            className="absolute z-50 size-full"
-          />
-          {children}
-        </Box>
-      </TooltipComponent>
-      <TooltipRoot
-        isVisible={isVisible1}
-        content={
-          <String color={textColor} size={textSize}>
-            {title}
-          </String>
-        }
-        side={side}
-        {...rest}
-      >
-        <Box>
-          <Pressable
-            onPressIn={() => setIsVisible1(true)}
-            onPressOut={() => setIsVisible1(false)}
-            className="absolute z-50 size-full"
-          />
-          {children}
-        </Box>
-      </TooltipRoot>
-    </>
+    <TooltipRoot
+      isVisible={isVisible}
+      content={
+        <String color={textColor} size={textSize}>
+          {title}
+        </String>
+      }
+      side={side}
+      {...rest}
+    >
+      <Box>
+        <Pressable
+          onPressIn={() => setIsVisible(true)}
+          onPressOut={() => setIsVisible(false)}
+          className="absolute z-50 size-full"
+        />
+        {children}
+      </Box>
+    </TooltipRoot>
   );
 }

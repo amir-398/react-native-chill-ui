@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { Dimensions, InteractionManager, Modal, TouchableWithoutFeedback, View, ViewStyle } from 'react-native';
 
 import cn from '../../cn';
@@ -149,7 +149,7 @@ const defaultProps: Required<TooltipProps> = {
 };
 
 export default function TooltipRoot(props: TooltipProps): React.ReactElement {
-  const mergedProps = { ...defaultProps, ...props };
+  const mergedProps = useMemo(() => ({ ...defaultProps, ...props }), [props]);
   const {
     accessible,
     allowChildInteraction,
@@ -196,46 +196,49 @@ export default function TooltipRoot(props: TooltipProps): React.ReactElement {
   const childWrapper = useRef<View | null>(null);
   const contextValue = { tooltipDuplicate: true };
 
-  const computeGeometry = (childRect: Rect, contentSize: Size): void => {
-    const options = {
-      arrowSize: state.side === 'top' || state.side === 'bottom' ? arrowSize : swapSizeDimmensions(arrowSize),
-      childRect,
-      contentSize,
-      displayInsets: state.displayInsets,
-      sideOffset,
-      windowDims: state.windowDims,
-    };
+  const computeGeometry = useCallback(
+    (childRect: Rect, contentSize: Size): void => {
+      const options = {
+        arrowSize: state.side === 'top' || state.side === 'bottom' ? arrowSize : swapSizeDimmensions(arrowSize),
+        childRect,
+        contentSize,
+        displayInsets: state.displayInsets,
+        sideOffset,
+        windowDims: state.windowDims,
+      };
 
-    let geom = topGeometry(options);
+      let geom = topGeometry(options);
 
-    if (state.side === 'center' && React.Children.count(children) === 0) {
-      geom = centerGeometry(options);
-    } else {
-      switch (state.side) {
-        case 'bottom':
-          geom = bottomGeometry(options);
-          break;
-        case 'left':
-          geom = leftGeometry(options);
-          break;
-        case 'right':
-          geom = rightGeometry(options);
-          break;
-        case 'top':
-        default:
-          break;
+      if (state.side === 'center' && React.Children.count(children) === 0) {
+        geom = centerGeometry(options);
+      } else {
+        switch (state.side) {
+          case 'bottom':
+            geom = bottomGeometry(options);
+            break;
+          case 'left':
+            geom = leftGeometry(options);
+            break;
+          case 'right':
+            geom = rightGeometry(options);
+            break;
+          case 'top':
+          default:
+            break;
+        }
       }
-    }
 
-    const { adjustedContentSize, anchorPoint, tooltipOrigin } = geom;
-    setState(prevState => ({
-      ...prevState,
-      adjustedContentSize,
-      anchorPoint,
-      measurementsFinished: true,
-      tooltipOrigin,
-    }));
-  };
+      const { adjustedContentSize, anchorPoint, tooltipOrigin } = geom;
+      setState(prevState => ({
+        ...prevState,
+        adjustedContentSize,
+        anchorPoint,
+        measurementsFinished: true,
+        tooltipOrigin,
+      }));
+    },
+    [state, arrowSize, sideOffset, children],
+  );
 
   const measureContent = (e: { nativeEvent: { layout: { height: number; width: number } } }): void => {
     const { height, width } = e.nativeEvent.layout;
@@ -249,22 +252,25 @@ export default function TooltipRoot(props: TooltipProps): React.ReactElement {
     });
   };
 
-  const onChildMeasurementComplete = (rect: Rect): void => {
-    setState(prevState => {
-      const newState = {
-        ...prevState,
-        childRect: rect,
-        waitingForInteractions: false,
-      };
-      if (prevState.contentSize.width) {
-        computeGeometry(rect, prevState.contentSize);
-      }
-      return newState;
-    });
-    isMeasuringChild.current = false;
-  };
+  const onChildMeasurementComplete = useCallback(
+    (rect: Rect): void => {
+      setState(prevState => {
+        const newState = {
+          ...prevState,
+          childRect: rect,
+          waitingForInteractions: false,
+        };
+        if (prevState.contentSize.width) {
+          computeGeometry(rect, prevState.contentSize);
+        }
+        return newState;
+      });
+      isMeasuringChild.current = false;
+    },
+    [computeGeometry],
+  );
 
-  const doChildlessPlacement = (): void => {
+  const doChildlessPlacement = useCallback((): void => {
     const { displayInsets, side, windowDims } = state;
     onChildMeasurementComplete(
       makeChildlessRect({
@@ -273,9 +279,9 @@ export default function TooltipRoot(props: TooltipProps): React.ReactElement {
         windowDims,
       }),
     );
-  };
+  }, [state, onChildMeasurementComplete]);
 
-  const measureChildRect = (): void => {
+  const measureChildRect = useCallback((): void => {
     const doMeasurement = (): void => {
       if (!isMeasuringChild.current) {
         isMeasuringChild.current = true;
@@ -306,23 +312,26 @@ export default function TooltipRoot(props: TooltipProps): React.ReactElement {
     } else {
       doMeasurement();
     }
-  };
+  }, [useInteractionManager, doChildlessPlacement, onChildMeasurementComplete]);
 
-  const updateWindowDims = (dims: { window: { width: number; height: number } }): void => {
-    setState(prevState => ({
-      ...prevState,
-      adjustedContentSize: new Size(0, 0),
-      anchorPoint: new Point(0, 0),
-      childRect: new Rect(0, 0, 0, 0),
-      contentSize: new Size(0, 0),
-      measurementsFinished: false,
-      tooltipOrigin: new Point(0, 0),
-      windowDims: dims.window,
-    }));
-    setTimeout(() => {
-      measureChildRect();
-    }, 500);
-  };
+  const updateWindowDims = useCallback(
+    (dims: { window: { width: number; height: number } }): void => {
+      setState(prevState => ({
+        ...prevState,
+        adjustedContentSize: new Size(0, 0),
+        anchorPoint: new Point(0, 0),
+        childRect: new Rect(0, 0, 0, 0),
+        contentSize: new Size(0, 0),
+        measurementsFinished: false,
+        tooltipOrigin: new Point(0, 0),
+        windowDims: dims.window,
+      }));
+      setTimeout(() => {
+        measureChildRect();
+      }, 500);
+    },
+    [measureChildRect],
+  );
 
   const renderChildInTooltip = (): React.ReactNode => {
     const {
@@ -437,8 +446,7 @@ export default function TooltipRoot(props: TooltipProps): React.ReactElement {
         interactionPromise.current.cancel();
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [updateWindowDims]);
 
   useEffect(() => {
     const { content: prevContent, isVisible: prevIsVisible } = mergedProps;
@@ -454,8 +462,7 @@ export default function TooltipRoot(props: TooltipProps): React.ReactElement {
         measureChildRect();
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [content, sideProp, isVisible, displayInsetsProp]);
+  }, [content, sideProp, isVisible, displayInsetsProp, measureChildRect, mergedProps, state]);
 
   useEffect(() => {
     const nextPlacement = React.Children.count(children) === 0 ? invertSide(sideProp) : sideProp;
@@ -475,8 +482,7 @@ export default function TooltipRoot(props: TooltipProps): React.ReactElement {
         measurementsFinished: false,
       }));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [children, sideProp, displayInsetsProp, isVisible]);
+  }, [children, sideProp, displayInsetsProp, isVisible, mergedProps, state]);
 
   const hasChildren = React.Children.count(children) > 0;
   const showTooltip = isVisible && !state.waitingForInteractions;
