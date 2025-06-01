@@ -12,7 +12,6 @@ const AnimatedNativeView = Animated.createAnimatedComponent(NativeView);
 
 export function View(props: NativeViewProps) {
   const { children, ...rest } = props;
-
   return <NativeView {...rest}>{children}</NativeView>;
 }
 

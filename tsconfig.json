@@ -7,7 +7,7 @@
     "skipLibCheck": true,
 
     /* Bundler mode */
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
@@ -34,7 +34,10 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+
+    /* Types */
+    "types": ["nativewind/types"]
   },
   "include": ["**/*.ts", "**/*.tsx", "nativewind-env.d.ts", "global.d.ts"],
   "exclude": ["node_modules"]

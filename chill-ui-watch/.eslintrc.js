@@ -39,6 +39,15 @@ module.exports = {
     'unused-imports/no-unused-imports': 'error',
   },
   settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+      typescript: {
+        alwaysTryTypes: true,
+        project: './tsconfig.json',
+      },
+    },
     perfectionist: {
       partitionByComment: true,
       type: 'line-length',

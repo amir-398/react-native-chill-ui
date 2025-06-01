@@ -39,7 +39,7 @@ export const IconSizeVr = tv({
   },
 });
 
-export default function Icon({ className, color = '#fff', name, onPress, size = 'md', wrapper }: IconProps) {
+export default function Icon({ className, color = '#000', name, onPress, size = 'md', wrapper }: IconProps) {
   const [isPressded, setIsPressded] = useState(false);
 
   if (!onPress) {
@@ -48,7 +48,7 @@ export default function Icon({ className, color = '#fff', name, onPress, size = 
 
   return (
     <Pressable
-      className={cn('rounded-full', wrapper && paddingVr({ size }), isPressded ? 'bg-darkLight' : 'bg-transparent')}
+      className={cn('rounded-full', wrapper && paddingVr({ size }), isPressded ? 'bg-dark/10' : 'bg-transparent')}
       onPressIn={() => setIsPressded(true)}
       onPressOut={() => setIsPressded(false)}
       onPress={onPress}

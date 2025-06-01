@@ -11,19 +11,17 @@ export default function ButtonIcon(props: ButtonIconProps) {
     className,
     iconColor,
     iconColorPressed,
+    iconName,
     isDisabled = false,
     isLoading = false,
-    name,
     onPress,
     size,
-    testID,
   } = props;
 
   return (
     <Pressable
       {...props}
       accessibilityLabel={accessibilityLabel}
-      testID={testID}
       className={cn(className, 'flex-row items-center justify-center', isDisabled && 'opacity-50')}
       onPress={onPress}
       disabled={isLoading || isDisabled}
@@ -32,7 +30,7 @@ export default function ButtonIcon(props: ButtonIconProps) {
         isLoading ? (
           <ActivityIndicator size="small" color={iconColor} />
         ) : (
-          <Icon name={name} size={size} color={pressed ? iconColorPressed : iconColor} />
+          <Icon name={iconName} size={size} color={pressed ? iconColorPressed : iconColor} />
         )
       }
     </Pressable>

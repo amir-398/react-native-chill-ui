@@ -2,8 +2,8 @@ pre-commit:
   parallel: true
   commands:
     lint:
-      glob: '*.{js,ts,jsx,tsx}'
-      run: npx eslint {staged_files}
+      glob: '{chill-ui-watch/src/**/*,chill-ui-watch/stories/**/*}.{js,ts,jsx,tsx}'
+      run: cd chill-ui-watch && bun run lint {staged_files}
     types:
-      glob: '*.{js,ts, jsx, tsx}'
-      run: npx tsc --noEmit
+      glob: '{chill-ui-watch/src/**/*,chill-ui-watch/stories/**/*}.{js,ts,jsx,tsx}'
+      run: cd chill-ui-watch && bun run ts:check

@@ -24,7 +24,7 @@
   "module": "lib/module/index.js",
   "source": "src/index",
   "react-native": "src/index",
-  "types": "lib/typescript/src/index.d.ts",
+  "types": "lib/typescript/index.d.ts",
   "files": [
     "lib",
     "src"
@@ -32,6 +32,8 @@
   "scripts": {
     "build": "bob build",
     "clean": "del-cli lib",
+    "prepack": "cp -r chill-ui-watch/src src",
+    "postpack": "rm -rf src",
     "example": "yarn workspace react-native-awesome-library-example",
     "lint": "eslint .",
     "release": "release-it",
@@ -106,9 +108,17 @@
     "registry": "https://registry.npmjs.org/"
   },
   "react-native-builder-bob": {
-    "source": "./chill-ui-watch/src",
+    "source": "chill-ui-watch/src",
     "output": "lib",
-    "exclude": "example/**",
+    "exclude": [
+      "example/**",
+      ".storybook/**",
+      "stories/**",
+      "node_modules/**",
+      "dist/**",
+      "assets/**",
+      ".expo/**"
+    ],
     "targets": [
       "commonjs",
       "module",
@@ -136,5 +146,8 @@
         "preset": "angular"
       }
     }
+  },
+  "dependencies": {
+    "react-native-gesture-handler": "^2.25.0"
   }
 }

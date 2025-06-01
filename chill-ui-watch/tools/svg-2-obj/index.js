@@ -1,12 +1,12 @@
 const fs = require('fs');
 const path = require('path');
+// eslint-disable-next-line import/no-extraneous-dependencies
 const jsdom = require('jsdom');
 
 const rootPath = process.cwd();
 fs.readdir(path.resolve(rootPath, 'tools/svg-2-obj/svg'), (err, files) => {
   const icons = {};
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i];
+  files.forEach(file => {
     const filePath = path.join(rootPath, 'tools/svg-2-obj/svg', file);
     const fileName = file.split('.')[0];
     const fileExt = file.split('.')[1];
@@ -18,7 +18,7 @@ fs.readdir(path.resolve(rootPath, 'tools/svg-2-obj/svg'), (err, files) => {
       const dom = new jsdom.JSDOM(fileContent);
       const svg = dom.window.document.querySelector('svg');
       const viewBox = svg.getAttribute('viewBox');
-      var paths = [];
+      const paths = [];
       const pathsHTML = dom.window.document.querySelectorAll('path');
 
       pathsHTML.forEach(element => {
@@ -33,7 +33,7 @@ fs.readdir(path.resolve(rootPath, 'tools/svg-2-obj/svg'), (err, files) => {
         viewBox,
       };
     }
-  }
+  });
 
   const iconObj = JSON.stringify(icons);
 

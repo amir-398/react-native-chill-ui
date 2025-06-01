@@ -113,7 +113,7 @@ export const textFontVr = tv({
 });
 
 export const textColorVr = tv({
-  base: 'text-white',
+  base: 'text-primary',
   variants: {
     color: {
       danger: 'text-danger',
