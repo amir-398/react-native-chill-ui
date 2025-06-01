@@ -237,8 +237,31 @@ export default function TooltipRoot(props: TooltipProps): React.ReactElement {
         tooltipOrigin,
       }));
     },
-    [state, arrowSize, sideOffset, children],
+    [state.side, arrowSize, sideOffset, children, state.displayInsets, state.windowDims],
   );
+
+  // Reset measurements when visibility changes
+  useEffect(() => {
+    if (isVisible) {
+      setState(prevState => ({
+        ...prevState,
+        measurementsFinished: false,
+      }));
+      // Force a re-measurement
+      if (childWrapper.current) {
+        childWrapper.current.measure((x, y, width, height, pageX, pageY) => {
+          const childRect = new Rect(pageX, pageY, width, height);
+          setState(prevState => {
+            const newState = { ...prevState, childRect };
+            if (prevState.contentSize.width) {
+              computeGeometry(childRect, prevState.contentSize);
+            }
+            return newState;
+          });
+        });
+      }
+    }
+  }, [isVisible, computeGeometry]);
 
   const measureContent = (e: { nativeEvent: { layout: { height: number; width: number } } }): void => {
     const { height, width } = e.nativeEvent.layout;
