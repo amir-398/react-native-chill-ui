@@ -28,7 +28,7 @@ export default function DevToolAction({ children, handleToggleStorybook }: DevTo
   return (
     <>
       <Box className={variants({ position })}>
-        <Icon name="open-book-solid" size="sm" wrapper onPress={handleToggleStorybook} color="#fff" />
+        <Icon name="open-book-solid" size="sm" hasPressEffect onPress={handleToggleStorybook} color="#fff" />
         <Icon
           name={position === 'bottom' ? 'angle-up-solid' : 'angle-down-solid'}
           size="sm"

@@ -15,6 +15,10 @@ const meta: Meta<typeof Icon> = {
       control: 'color',
       description: 'The color of the icon',
     },
+    hasPressEffect: {
+      control: 'boolean',
+      description: 'Adds padding and press effect to the icon',
+    },
     name: {
       control: 'select',
       description: 'The name of the icon',
@@ -36,14 +40,19 @@ const meta: Meta<typeof Icon> = {
       description: 'The padding of the icon',
       options: ['xs', 'sm', 'md', 'lg', 'xl', '2xl'],
     },
+    pressEffectClassName: {
+      control: 'text',
+      description: 'The class name of the press effect',
+    },
+    pressEffectSize: {
+      control: 'select',
+      description: 'The size of the press effect',
+      options: ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'],
+    },
     size: {
       control: 'select',
       description: 'The size of the icon',
       options: ['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'],
-    },
-    wrapper: {
-      control: 'boolean',
-      description: 'Whether to wrap the icon in a pressable container',
     },
   },
   component: Icon,
@@ -95,10 +104,10 @@ export const ExtraLarge: Story = {
 export const Clickable: Story = {
   args: {
     color: '#000',
+    hasPressEffect: true,
     name: 'bell-solid',
     onPress: action('onPress'),
     size: 'md',
-    wrapper: true,
   },
 };
 

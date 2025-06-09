@@ -3,12 +3,18 @@ import type { AnimatedProps } from 'react-native-reanimated';
 
 import {
   FlatListProps,
+  ImageSourcePropType,
   Modal,
+  TextInput,
   type TextInputProps,
   type TextProps,
   type TouchableOpacityProps,
   type ViewProps,
 } from 'react-native';
+
+import { inputSizeVariants } from '@/components/inputs/Input';
+import { checkboxVariants } from '@/components/checkbox/styleVariants';
+import { dotPositionVariants, dotVariant } from '@/components/imageSlider/ImageSlider';
 
 import type { TIcons } from '../constants/ICONS';
 import type { IconSizeVr, paddingVr } from '../components/icon/Icon';
@@ -22,6 +28,7 @@ import type {
 
 import { badgeVariants } from '../components/badge/Badge';
 import { SIZE_OPTIONS } from '../components/toggle/toggle';
+import WrapperVariants from '../components/wrapper/styleVariants';
 import { avatarVariants, sizeVariant } from '../components/avatar/styleVariants';
 import { btnVariant, heightVr, positionVr } from '../components/button/styleVariants';
 
@@ -44,7 +51,9 @@ export type AnimatedViewProps = AnimatedProps<ViewProps>;
 
 export type IconProps = {
   onPress?: () => void;
-  wrapper?: boolean;
+  hasPressEffect?: boolean;
+  pressEffectClassName?: string;
+  pressEffectSize?: VariantProps<typeof paddingVr>['size'];
   color?: string;
   name: keyof TIcons;
   className?: string;
@@ -362,20 +371,174 @@ export interface TooltipRootProps {
   supportedOrientations?: Orientation[];
   closeOnBackgroundInteraction?: boolean;
   displayInsets?: Partial<DisplayInsets>;
+  overlayColor?: TextProps['selectionColor'];
 }
 
-export type TooltipProps = {
-  children: React.ReactNode;
+export interface TooltipProps
+  extends Omit<
+    TooltipRootProps,
+    'isVisible' | 'onClose' | 'closeOnChildInteraction' | 'closeOnContentInteraction' | 'closeOnBackgroundInteraction'
+  > {
   title: string;
-  side?: Side;
-  sideOffset?: number;
-  className?: string;
-  useReactNativeModal?: boolean;
-  arrowColor?: string;
-  arrowSize?: Size;
-  backgroundColor?: string;
-  disableShadow?: boolean;
-  onClose?: () => void;
   textColor?: string;
   textSize?: StringProps['size'];
+}
+
+export interface CheckboxProps {
+  label?: string;
+  checked?: boolean;
+  disabled?: boolean;
+  iconColor?: string;
+  className?: string;
+  checkedColor?: string;
+  checkboxSize?: number;
+  uncheckedColor?: string;
+  iconName?: keyof TIcons;
+  labelClassName?: string;
+  checkedClassName?: string;
+  customIcon?: React.ReactNode;
+  onChange?: (checked: boolean) => void;
+  size?: VariantProps<typeof IconSizeVr>['size'];
+  variant?: VariantProps<typeof checkboxVariants>['variant'];
+}
+
+export interface WrapperProps {
+  className?: string;
+  scrollView?: boolean;
+  itemsCenter?: boolean;
+  safeAreaView?: boolean;
+  justifyBetween?: boolean;
+  children: React.ReactNode;
+  nestedScrollEnabled?: boolean;
+  keyboardAvoidingView?: boolean;
+  keyboardAwareScrollView?: boolean;
+  px?: VariantProps<typeof WrapperVariants>['px'];
+  py?: VariantProps<typeof WrapperVariants>['py'];
+  my?: VariantProps<typeof WrapperVariants>['my'];
+  pt?: VariantProps<typeof WrapperVariants>['pt'];
+  edges?: ('top' | 'right' | 'bottom' | 'left')[];
+}
+
+export interface DialogProps {
+  children: React.ReactNode;
+}
+
+export interface DialogTriggerProps {
+  asChild?: boolean;
+  className?: string;
+  children: React.ReactElement<{ onPress?: () => void }>;
+  as?: 'pressable' | 'touchable-opacity' | 'ripple-pressable';
+}
+
+export type DialogCloseProps = {
+  asChild?: boolean;
+  as?: 'pressable' | 'touchable-opacity' | 'ripple-pressable';
+  children: React.ReactElement<{ onPress?: () => void }>;
 };
+
+export type DialogBackdropProps = {
+  closeOnBackdropPress: boolean;
+  backdropClassName?: string;
+  backdropColor?: string;
+};
+
+export interface DialogContentProps {
+  className?: string;
+  onShow?: () => void;
+  hasOverlay?: boolean;
+  defaultOpen?: boolean;
+  hasCloseMark?: boolean;
+  backdropColor?: string;
+  closeOnGoBack?: boolean;
+  closeMarkColor?: string;
+  children: React.ReactNode;
+  backdropClassName?: string;
+  onRequestClose?: () => void;
+  closeMarkClassName?: string;
+  useDefaultContainer?: boolean;
+  closeOnBackdropPress?: boolean;
+  closeMarkPosition?: 'right' | 'left';
+  animation?: 'fade' | 'slide' | 'none';
+  onOpenChange?: (open: boolean) => void;
+  closeMarkSize?: VariantProps<typeof IconSizeVr>['size'];
+}
+
+export interface ImageSliderProps {
+  hasDot?: boolean;
+  dotColor?: string;
+  dotOffset?: number;
+  textColor?: string;
+  dotSpacing?: number;
+  textClassName?: string;
+  dotActiveColor?: string;
+  wrapperClassName?: string;
+  children?: React.ReactNode;
+  dotSize?: IconProps['size'];
+  textSize?: StringProps['size'];
+  textWeight?: StringProps['weight'];
+  textVariant?: StringProps['variant'];
+  dotGap?: VariantProps<typeof dotVariant>['gap'];
+  dotPosition?: VariantProps<typeof dotPositionVariants>['position'];
+  items: {
+    id?: string;
+    image?: ImageSourcePropType;
+    uri?: string;
+    order?: number;
+    url?: string;
+    title?: string;
+  }[];
+}
+
+export interface InputProps extends TextInputProps {
+  // Basic props
+  label?: string;
+  className?: string;
+  labelClassName?: string;
+
+  // Error handling
+  hasError?: boolean;
+  errorMessage?: string;
+  errorClassName?: string;
+  errorIconName?: keyof TIcons;
+
+  // Icons
+  hasClearIcon?: boolean;
+
+  // Icon actions
+  inputClassName?: string;
+  leftIconAction?: {
+    iconName?: keyof TIcons;
+    iconColor?: string;
+    iconSize?: IconProps['size'];
+    customIcon?: React.ReactNode;
+    iconPress?: () => void;
+  };
+  rightIconAction?: {
+    iconName?: keyof TIcons;
+    iconColor?: string;
+    iconSize?: IconProps['size'];
+    customIcon?: React.ReactNode;
+    iconPress?: () => void;
+  };
+
+  // Security
+  hasSecureTextEntry?: boolean;
+
+  // Interaction
+  clickableAs?: 'pressable' | 'scale';
+
+  // Features
+  showLength?: boolean;
+  customRegex?: RegExp;
+  allow?: 'all' | 'numbers' | 'letters' | 'lettersWithoutSpecialCharacters';
+
+  // Styling
+  isStretchable?: boolean;
+  inputRef?: React.RefObject<TextInput | null>;
+  size?: VariantProps<typeof inputSizeVariants>['size'];
+}
+
+export type MaskedInputProps = {
+  mask: string;
+  onChangeText: ({ maskedText, unmaskedText }: { maskedText: string; unmaskedText: string }) => void;
+} & Omit<InputProps, 'onChangeText'>;

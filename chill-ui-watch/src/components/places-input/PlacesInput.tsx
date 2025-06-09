@@ -232,7 +232,7 @@ function PlacesInput(props: PlacesInputProps) {
         />
         {clearable && localQuery.length > 0 && (
           <Box className="absolute bottom-0 right-3 top-0 flex justify-center">
-            <Icon name="xmark-solid" size="xs" wrapper onPress={() => setLocalQuery('')} />
+            <Icon name="xmark-solid" size="xs" hasPressEffect onPress={() => setLocalQuery('')} />
           </Box>
         )}
       </Box>

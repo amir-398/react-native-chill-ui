@@ -1,3 +1,2 @@
-import ChillUStorybook from './ChillUStorybook';
-
-export default ChillUStorybook;
+export { default as ChillUStorybook } from './ChillUStorybook';
+export * from './string';

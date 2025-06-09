@@ -10,7 +10,9 @@
     "lint:fix": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix",
     "ts:check": "tsc --noEmit",
     "format": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix && prettier \"**/*.{js,jsx,ts,tsx,json}\" --write",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "generate:icons": "node tools/svg-2-obj/index.js && prettier --write src/constants/ICONS.ts",
+    "generate:flags": "node tools/flags/index.js && prettier --write src/components/inputs/phoneNumberInput/flags/index.ts"
   },
   "dependencies": {
     "@expo/metro-runtime": "~5.0.4",
@@ -26,9 +28,10 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-native": "0.79.2",
+    "react-native-keyboard-controller": "^1.17.3",
     "react-native-popper": "^0.3.2",
     "react-native-reanimated": "~3.17.4",
-    "react-native-safe-area-context": "5.4.0",
+    "react-native-safe-area-context": "^5.4.1",
     "react-native-svg": "^15.12.0",
     "react-native-walkthrough-tooltip": "^1.6.0",
     "react-native-web": "^0.20.0",

@@ -13,7 +13,7 @@ export default function UiPresentation(props: UiPresentationProps) {
 
   return (
     <ScrollView>
-      <Box {...props} className={cn('container flex-1 flex-row items-center justify-center py-6', className)}>
+      <Box {...props} className={cn('container flex-1 items-center justify-center py-6', className)}>
         {children}
       </Box>
     </ScrollView>

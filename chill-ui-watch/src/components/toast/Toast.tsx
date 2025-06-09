@@ -13,7 +13,7 @@ import { ToastVariantType } from '../../types';
 type ToastVariant = 'success' | 'error' | 'info' | 'warning';
 type ToastPosition = 'top' | 'bottom';
 export type ToastRef = {
-  showToast: (msg: string, variant?: ToastVariant, position?: ToastPosition, duration?: number) => void;
+  showToast: (message: string, variant?: ToastVariant, position?: ToastPosition, duration?: number) => void;
 };
 
 const defaultToastVariant = tv({

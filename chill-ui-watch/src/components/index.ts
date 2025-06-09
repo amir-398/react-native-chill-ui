@@ -15,3 +15,4 @@ export { default as SegmentedControl } from './segmented-control';
 export { default as Avatar } from './avatar';
 export { default as Separator } from './separator';
 export * from './tooltip';
+export { default as Checkbox } from './checkbox/Checkbox';

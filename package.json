@@ -39,8 +39,7 @@
     "release": "release-it",
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc --noEmit",
-    "typecheck": "tsc --noEmit",
-    "generate:icons": "node tools/svg-2-obj/index.js && prettier --write src/constants/ICONS.ts"
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

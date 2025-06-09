@@ -14,7 +14,7 @@ module.exports = {
         secondary: '#CBD2D9', // Gris bleuté léger
 
         // Couleurs d'état
-        error: '#FCA5A5', // Rouge saumon léger
+        error: '#FF0000', // Rouge pour les erreurs
         info: '#6EE7B7', // Turquoise clair
         success: '#86EFAC', // Vert menthe doux
         warning: '#FCD34D', // Jaune pâle

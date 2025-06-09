@@ -8,30 +8,25 @@ import TooltipRoot from './core/TooltipRoot';
 
 export default function Tooltip({
   children,
-  className,
-  side = 'top',
-  sideOffset = 0,
+  content,
   textColor = '#000',
   textSize = 'md',
   title,
-  useReactNativeModal = true,
   ...rest
 }: TooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   return (
     <TooltipRoot
-      closeOnChildInteraction={false}
-      closeOnContentInteraction={false}
+      {...rest}
       isVisible={isVisible}
       content={
-        <String color={textColor} size={textSize}>
-          {title}
-        </String>
+        content || (
+          <String color={textColor} size={textSize}>
+            {title}
+          </String>
+        )
       }
-      side={side}
-      className={className}
-      {...rest}
     >
       <Box>
         <Pressable

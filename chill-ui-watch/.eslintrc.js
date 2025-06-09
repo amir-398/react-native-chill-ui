@@ -6,7 +6,9 @@ module.exports = {
   root: true,
 
   rules: {
+    '@typescript-eslint/no-require-imports': 'off',
     camelcase: 'off',
+    'global-require': 'off',
     'import/extensions': [
       'error',
       'ignorePackages',
@@ -18,6 +20,8 @@ module.exports = {
         tsx: 'never',
       },
     ],
+    'import/no-unresolved': 'off',
+    'no-console': 'off',
     'perfectionist/sort-imports': ['error'],
     'perfectionist/sort-interfaces': ['error'],
     'perfectionist/sort-objects': [

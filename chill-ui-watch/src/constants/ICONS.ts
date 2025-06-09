@@ -434,4 +434,4 @@ export const ICONS = {
   },
 } as const;
 export type TIcons = typeof ICONS;
-export const ICONS_OPTIONS = Object.keys(ICONS) as (keyof TIcons)[];
+export const ICONS_OPTIONS = Object.keys(ICONS) as Array<keyof TIcons>;

@@ -102,6 +102,7 @@ const defaultProps: Required<TooltipRootProps> = {
     // eslint-disable-next-line no-console
     console.warn('[react-native-walkthrough-tooltip] onClose prop not provided');
   },
+  overlayColor: '',
   showChildInTooltip: true,
   side: 'bottom',
   sideOffset: 0,
@@ -131,6 +132,7 @@ export default function TooltipRoot(props: TooltipRootProps): React.ReactElement
     isVisible,
     modalComponent,
     onClose,
+    overlayColor,
     showChildInTooltip,
     side: sideProp,
     sideOffset,
@@ -392,7 +394,10 @@ export default function TooltipRoot(props: TooltipRootProps): React.ReactElement
 
     return (
       <TouchableWithoutFeedback onPress={onPressBackground} accessible={accessible}>
-        <Box className="z-50 h-screen w-screen bg-black/50">
+        <Box
+          className={cn('z-50 h-screen w-screen bg-black/50', className)}
+          style={{ ...(overlayColor && { backgroundColor: overlayColor }) }}
+        >
           <Box style={generatedStyles.tooltipStyle}>
             {hasChildren ? (
               <Box

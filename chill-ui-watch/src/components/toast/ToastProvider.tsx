@@ -34,7 +34,6 @@ export function ToastProvider({
   );
 }
 
-// Hook pour accéder au toast
 export const useToast = () => {
   const context = useContext(ToastContext);
   if (!context) {
