@@ -24,6 +24,7 @@
     "expo-modules-core": "^2.3.13",
     "expo-status-bar": "~2.2.3",
     "install": "^0.13.0",
+    "libphonenumber-js": "^1.12.9",
     "nativewind": "latest",
     "react": "19.0.0",
     "react-dom": "19.0.0",

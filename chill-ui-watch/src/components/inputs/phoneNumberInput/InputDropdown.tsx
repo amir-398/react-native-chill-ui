@@ -1,39 +1,31 @@
-import type { FlatListProps, LayoutChangeEvent, ListRenderItem } from 'react-native';
+import type { LayoutChangeEvent } from 'react-native';
 
 import { FlatList } from 'react-native';
-import React, { memo, useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+
+import type { InputDropdownProps } from '../../../types';
 
 import Input from '../Input';
 import { Box } from '../../box';
-import { type CountryCodesProps } from './countryCodes';
-
-export type AutocompleteDropdownItem = CountryCodesProps & { id: string };
-
-type DropdownProps = {
-  dataSet: AutocompleteDropdownItem[];
-  hasItemSeparator?: boolean;
-  renderItem: ListRenderItem<AutocompleteDropdownItem>;
-  suggestionsListMaxHeight?: number;
-  withAnimation?: boolean;
-  footer?: React.ReactNode;
-  onSearch?: (text: string) => void;
-} & Partial<FlatListProps<AutocompleteDropdownItem>>;
 
 function ItemSeparator() {
   return <Box className="h-px w-full bg-neutral-200" />;
 }
 
-function DropdownImpl(props: DropdownProps) {
+function InputDropdown(props: InputDropdownProps) {
   const [footerHeight, setFooterHeight] = useState(0);
   const [searchText, setSearchText] = useState('');
   const {
     dataSet,
     footer,
     hasItemSeparator,
+    hasSearch = false,
     ItemSeparatorComponent,
     onSearch,
     renderItem,
+    searchInputProps,
+    searchRef,
     suggestionsListMaxHeight,
     withAnimation = true,
     ...rest
@@ -67,16 +59,20 @@ function DropdownImpl(props: DropdownProps) {
 
   return (
     <Animated.View
-      className="absolute top-full z-50 mt-1 w-full rounded-sm border border-neutral-200 bg-white p-2 shadow-md"
+      className="absolute top-full z-50 mt-1 w-full rounded-lg border border-neutral-200 bg-white p-2 shadow-md"
       style={[withAnimation ? animatedStyle : {}, { paddingBottom: footerHeight }]}
     >
-      <Input
-        placeholder="Rechercher un pays..."
-        value={searchText}
-        onChangeText={handleSearch}
-        size="xs"
-        className="mb-1"
-      />
+      {hasSearch && (
+        <Input
+          inputRef={searchRef}
+          placeholder="Rechercher un pays..."
+          value={searchText}
+          onChangeText={handleSearch}
+          size="xs"
+          className="mb-1"
+          {...searchInputProps}
+        />
+      )}
 
       <FlatList
         keyboardDismissMode="on-drag"
@@ -100,4 +96,4 @@ function DropdownImpl(props: DropdownProps) {
   );
 }
 
-export const InputDropdown = memo(DropdownImpl);
+export default memo(InputDropdown);

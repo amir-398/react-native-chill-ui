@@ -1,49 +1,40 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { TextInput, Image, ListRenderItem, Pressable } from 'react-native';
 
-import Icon from '@/components/icon';
-
+import Input from '../Input';
+import Icon from '../../icon';
 import { Box } from '../../box';
 import * as flags from './flags';
 import String from '../../string';
-import { InputDropdown } from './InputDropdown';
-import MaskedInput, { removeMask } from '../MaskedInput';
+import InputDropdown from './InputDropdown';
+import { PhoneNumberTextInputProps } from '../../../types';
 import { countryCodes, type CountryCodesProps } from './countryCodes';
+import { applyMaskPhoneNumber, getPhoneNumberWithSuffix, isValidNumber } from './utils';
 
-type PhoneNumberTextInputProps = {
-  allowedCountries?: CountryCodesProps['code'][];
-  defaultCountry?: CountryCodesProps['code'];
-  onCountryChange?: (country: CountryCodesProps) => void;
-  onPhoneNumberChange?: ({
-    phoneNumber,
-    phoneNumberWithSuffix,
-    phoneWithMask,
-  }: {
-    phoneNumber: string;
-    phoneNumberWithSuffix: string;
-    phoneWithMask: string;
-  }) => void;
-  language?: 'fr' | 'en';
-};
-
-export const removeLeadingZero = (text: string): string =>
-  text.startsWith('0') ? removeMask(text.slice(1)) : removeMask(text);
-
-export const addLeadingZero = (text: string): string =>
-  text.startsWith('0') ? removeMask(text) : `0${removeMask(text)}`;
+function getFlag(code?: string) {
+  return code ? (flags as Record<string, any>)[code.toLowerCase()] : undefined;
+}
 
 export default function PhoneNumberTextInput({
   allowedCountries,
   defaultCountry,
+  dropdownProps = { hasSearch: true },
+  errorMessage,
+  hasErrorOnChange = true,
   language = 'fr',
   onCountryChange,
+  onError,
   onPhoneNumberChange,
+  value,
+  ...props
 }: PhoneNumberTextInputProps) {
   const ref = useRef<TextInput>(null);
+  const searchRef = useRef<TextInput>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState<CountryCodesProps | null>();
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState(value ?? '');
   const [searchQuery, setSearchQuery] = useState('');
+  const [isValid, setIsValid] = useState(true);
 
   const filteredCountries = useMemo(() => {
     let countries = countryCodes;
@@ -62,6 +53,9 @@ export default function PhoneNumberTextInput({
     return countries;
   }, [allowedCountries, searchQuery, language]);
 
+  console.log('selectedCountry', selectedCountry);
+  console.log('defaultCountry', defaultCountry);
+
   const handleDefaultCountry = useCallback(() => {
     const defaultCountryCode = filteredCountries.find(country => country.code === (defaultCountry || 'FR'));
     setSelectedCountry(defaultCountryCode);
@@ -70,6 +64,12 @@ export default function PhoneNumberTextInput({
   useEffect(() => {
     handleDefaultCountry();
   }, [handleDefaultCountry]);
+
+  useEffect(() => {
+    if (isDropdownOpen) {
+      searchRef.current?.focus();
+    }
+  }, [isDropdownOpen]);
 
   const renderItem: ListRenderItem<CountryCodesProps> = ({ item }) => (
     <Pressable
@@ -80,10 +80,7 @@ export default function PhoneNumberTextInput({
         onCountryChange?.(item);
       }}
     >
-      <Image
-        source={flags[item.code.toLowerCase() as keyof typeof flags]}
-        className="h-6 w-9 border border-[#D9D9D9]"
-      />
+      <Image source={getFlag(item.code)} className="h-6 w-9 border border-[#D9D9D9]" />
       <String>{language === 'fr' ? item.fr : item.en}</String>
       <String>{item.dial_code}</String>
     </Pressable>
@@ -92,32 +89,68 @@ export default function PhoneNumberTextInput({
   const rightCustomIcon = useMemo(
     () => (
       <Box className="flex-row items-center gap-1">
-        <Image
-          source={flags[selectedCountry?.code.toLowerCase() as keyof typeof flags]}
-          className="h-4 w-6 border border-[#D9D9D9]"
-        />
+        <Image source={getFlag(selectedCountry?.code)} className="h-4 w-6 border border-[#D9D9D9]" />
         <Icon name="angle-down-solid" size="xs" color="black" className="text-black" />
       </Box>
     ),
     [selectedCountry],
   );
 
+  const handleChangeText = useCallback(
+    (text: string) => {
+      if (text === '') {
+        setIsValid(true);
+        onError?.({ errorMessage: null, isValid: true });
+        onPhoneNumberChange?.({
+          countryCode: '',
+          countrySuffix: '',
+          isValid: true,
+          phoneNumber: '',
+          phoneNumberWithSuffix: '',
+          phoneNumberWithSuffixMasked: '',
+          phoneWithMask: '',
+        });
+        setPhoneNumber('');
+        return;
+      }
+
+      const maskedText = applyMaskPhoneNumber(selectedCountry?.code, text);
+      const numberWithSuffix = getPhoneNumberWithSuffix(selectedCountry?.code, text);
+      const phoneIsValid = isValidNumber(numberWithSuffix, selectedCountry?.dial_code ?? '');
+      setIsValid(phoneIsValid);
+      onError?.({ errorMessage: errorMessage || 'the phone number is invalid', isValid: phoneIsValid });
+      onPhoneNumberChange?.({
+        countryCode: selectedCountry?.code ?? '',
+        countrySuffix: selectedCountry?.dial_code ?? '',
+        isValid: phoneIsValid,
+        phoneNumber: maskedText.replace(/\s+/g, ''),
+        phoneNumberWithSuffix: numberWithSuffix?.replace(/\s+/g, ''),
+        phoneNumberWithSuffixMasked: numberWithSuffix,
+        phoneWithMask: maskedText,
+      });
+      setPhoneNumber(maskedText);
+    },
+    [selectedCountry?.code, selectedCountry?.dial_code, onPhoneNumberChange, onError, errorMessage],
+  );
+
+  const handleBlur = useCallback(() => {
+    console.log('handleBlur', dropdownProps?.hasSearch, isDropdownOpen);
+    if (!dropdownProps?.hasSearch) {
+      setIsDropdownOpen(!isDropdownOpen);
+    }
+  }, [dropdownProps?.hasSearch, isDropdownOpen]);
+
   return (
     <Box className="relative">
-      <MaskedInput
+      <Input
         inputRef={ref}
-        mask={selectedCountry?.phoneMask || '99 99 99 99 99'}
-        placeholder="6 12 34 56 78"
         value={phoneNumber}
-        onChangeText={({ maskedText, unmaskedText }) => {
-          setPhoneNumber(maskedText);
-          onPhoneNumberChange?.({
-            phoneNumber: addLeadingZero(maskedText),
-            phoneNumberWithSuffix: (selectedCountry?.dial_code || '') + removeLeadingZero(unmaskedText),
-            phoneWithMask: maskedText,
-          });
-        }}
+        onChangeText={handleChangeText}
+        onFocus={() => setIsValid(true)}
+        onBlur={handleBlur}
         keyboardType="numeric"
+        hasError={!isValid && hasErrorOnChange}
+        errorMessage={hasErrorOnChange ? errorMessage || 'the phone number is invalid' : undefined}
         leftIconAction={{
           customIcon: rightCustomIcon,
           iconPress: () => {
@@ -125,9 +158,21 @@ export default function PhoneNumberTextInput({
             ref.current?.focus();
           },
         }}
+        {...props}
       />
       {isDropdownOpen && (
-        <InputDropdown dataSet={filteredCountries} renderItem={renderItem} onSearch={setSearchQuery} />
+        <InputDropdown
+          searchRef={searchRef}
+          dataSet={filteredCountries}
+          renderItem={renderItem}
+          onSearch={setSearchQuery}
+          searchInputProps={{
+            onBlur: () => {
+              setIsDropdownOpen(false);
+            },
+          }}
+          {...dropdownProps}
+        />
       )}
     </Box>
   );

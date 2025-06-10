@@ -4,6 +4,7 @@ import type { AnimatedProps } from 'react-native-reanimated';
 import {
   FlatListProps,
   ImageSourcePropType,
+  ListRenderItem,
   Modal,
   TextInput,
   type TextInputProps,
@@ -14,6 +15,7 @@ import {
 
 import { inputSizeVariants } from '@/components/inputs/Input';
 import { checkboxVariants } from '@/components/checkbox/styleVariants';
+import { CountryCodesProps } from '@/components/inputs/phoneNumberInput/countryCodes';
 import { dotPositionVariants, dotVariant } from '@/components/imageSlider/ImageSlider';
 
 import type { TIcons } from '../constants/ICONS';
@@ -289,7 +291,6 @@ export type PlacesInputProps = {
   selectedValue?: PlaceInputSelectedValue;
   itemTextVariant?: StringProps['variant'];
   listFooterComponent?: React.ReactNode;
-  emptyListText?: string;
   showListHeaderComponentWhenResults?: boolean;
   showListFooterComponentWhenResults?: boolean;
   renderItem?: ({ item }: { item: Places }) => React.ReactElement;
@@ -542,3 +543,48 @@ export type MaskedInputProps = {
   mask: string;
   onChangeText: ({ maskedText, unmaskedText }: { maskedText: string; unmaskedText: string }) => void;
 } & Omit<InputProps, 'onChangeText'>;
+
+export type AutocompleteDropdownItem = CountryCodesProps & { id: string };
+
+export type InputDropdownProps = {
+  searchRef?: React.RefObject<TextInput | null>;
+  dataSet: AutocompleteDropdownItem[];
+  hasItemSeparator?: boolean;
+  renderItem: ListRenderItem<AutocompleteDropdownItem>;
+  suggestionsListMaxHeight?: number;
+  withAnimation?: boolean;
+  footer?: React.ReactNode;
+  onSearch?: (text: string) => void;
+  hasSearch?: boolean;
+  searchInputProps?: Partial<InputProps>;
+} & Partial<FlatListProps<AutocompleteDropdownItem>>;
+
+// PhoneNumberTextInput ------------------------------------------------------------
+// --------------------------------------------------------------------------------
+export type PhoneNumberTextInputOnPhoneNumberChange = {
+  countryCode: CountryCodesProps['code'];
+  countrySuffix: string;
+  phoneNumber: string;
+  phoneNumberWithSuffix: string;
+  phoneNumberWithSuffixMasked: string;
+  phoneWithMask: string;
+  isValid: boolean;
+};
+
+export type PhoneNumberTextInputOnError = {
+  errorMessage: string | null;
+  isValid: boolean;
+};
+
+export type PhoneNumberTextInputProps = {
+  allowedCountries?: CountryCodesProps['code'][];
+  defaultCountry?: CountryCodesProps['code'];
+  onCountryChange?: (country: CountryCodesProps) => void;
+  onPhoneNumberChange?: (phoneNumber: PhoneNumberTextInputOnPhoneNumberChange) => void;
+  language?: 'fr' | 'en';
+  onError?: (error: PhoneNumberTextInputOnError) => void;
+  hasErrorOnChange?: boolean;
+  dropdownProps?: Partial<InputDropdownProps>;
+} & Omit<MaskedInputProps, 'onChangeText' | 'mask'>;
+
+// --------------------------------------------------------------------------------
