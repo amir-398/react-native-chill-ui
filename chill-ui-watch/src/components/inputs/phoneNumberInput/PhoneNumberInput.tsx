@@ -53,13 +53,12 @@ export default function PhoneNumberTextInput({
     return countries;
   }, [allowedCountries, searchQuery, language]);
 
-  console.log('selectedCountry', selectedCountry);
-  console.log('defaultCountry', defaultCountry);
-
   const handleDefaultCountry = useCallback(() => {
-    const defaultCountryCode = filteredCountries.find(country => country.code === (defaultCountry || 'FR'));
-    setSelectedCountry(defaultCountryCode);
-  }, [defaultCountry, filteredCountries]);
+    if (!selectedCountry) {
+      const defaultCountryCode = filteredCountries.find(country => country.code === (defaultCountry || 'FR'));
+      setSelectedCountry(defaultCountryCode);
+    }
+  }, [defaultCountry, filteredCountries, selectedCountry]);
 
   useEffect(() => {
     handleDefaultCountry();
@@ -68,6 +67,9 @@ export default function PhoneNumberTextInput({
   useEffect(() => {
     if (isDropdownOpen) {
       searchRef.current?.focus();
+    }
+    if (!isDropdownOpen) {
+      setSearchQuery('');
     }
   }, [isDropdownOpen]);
 
@@ -134,7 +136,6 @@ export default function PhoneNumberTextInput({
   );
 
   const handleBlur = useCallback(() => {
-    console.log('handleBlur', dropdownProps?.hasSearch, isDropdownOpen);
     if (!dropdownProps?.hasSearch) {
       setIsDropdownOpen(!isDropdownOpen);
     }
