@@ -4,7 +4,6 @@ export type CountryCodesProps = {
   dial_code: string;
   fr: string;
   en: string;
-  phoneMask: string;
 };
 
 export const countryCodes: CountryCodesProps[] = [
@@ -14,7 +13,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Afghanistan',
     fr: 'Afghanistan',
     id: 'AF',
-    phoneMask: '999 9999 9999',
   },
   {
     code: 'AX',
@@ -22,7 +20,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Aland Islands',
     fr: 'Îles Åland',
     id: 'AX',
-    phoneMask: '99999 999999',
   },
   {
     code: 'AL',
@@ -30,7 +27,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Albania',
     fr: 'Albanie',
     id: 'AL',
-    phoneMask: '99999 999999',
   },
   {
     code: 'DZ',
@@ -38,7 +34,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Algeria',
     fr: 'Algérie',
     id: 'DZ',
-    phoneMask: '999 999 999',
   },
   {
     code: 'AS',
@@ -46,7 +41,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'American Samoa',
     fr: 'Samoa américaines',
     id: 'AS',
-    phoneMask: '99999 999999',
   },
   {
     code: 'AD',
@@ -54,7 +48,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Andorra',
     fr: 'Andorre',
     id: 'AD',
-    phoneMask: '99999 999999',
   },
   {
     code: 'AO',
@@ -62,7 +55,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Angola',
     fr: 'Angola',
     id: 'AO',
-    phoneMask: '99999 999999',
   },
   {
     code: 'AI',
@@ -70,7 +62,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Anguilla',
     fr: 'Anguilla',
     id: 'AI',
-    phoneMask: '99999 999999',
   },
   {
     code: 'AQ',
@@ -78,7 +69,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Antarctica',
     fr: 'Antarctique',
     id: 'AQ',
-    phoneMask: '99999 999999',
   },
   {
     code: 'AG',
@@ -86,7 +76,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Antigua and Barbuda',
     fr: 'Antigua-et-Barbuda',
     id: 'AG',
-    phoneMask: '99999 999999',
   },
   {
     code: 'AR',
@@ -94,7 +83,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Argentina',
     fr: 'Argentine',
     id: 'AR',
-    phoneMask: '99999 999999',
   },
   {
     code: 'AM',
@@ -102,7 +90,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Armenia',
     fr: 'Arménie',
     id: 'AM',
-    phoneMask: '99999 999999',
   },
   {
     code: 'AW',
@@ -110,7 +97,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Aruba',
     fr: 'Aruba',
     id: 'AW',
-    phoneMask: '99999 999999',
   },
   {
     code: 'AU',
@@ -118,7 +104,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Australia',
     fr: 'Australie',
     id: 'AU',
-    phoneMask: '99999 999999',
   },
   {
     code: 'AT',
@@ -126,7 +111,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Austria',
     fr: 'Autriche',
     id: 'AT',
-    phoneMask: '99999 999999',
   },
   {
     code: 'AZ',
@@ -134,7 +118,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Azerbaijan',
     fr: 'Azerbaïdjan',
     id: 'AZ',
-    phoneMask: '99999 999999',
   },
   {
     code: 'BS',
@@ -142,7 +125,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Bahamas',
     fr: 'Bahamas',
     id: 'BS',
-    phoneMask: '99999 999999',
   },
   {
     code: 'BH',
@@ -150,7 +132,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Bahrain',
     fr: 'Bahreïn',
     id: 'BH',
-    phoneMask: '99999 999999',
   },
   {
     code: 'BD',
@@ -158,7 +139,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Bangladesh',
     fr: 'Bangladesh',
     id: 'BD',
-    phoneMask: '99999 999999',
   },
   {
     code: 'BB',
@@ -166,7 +146,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Barbados',
     fr: 'Barbade',
     id: 'BB',
-    phoneMask: '99999 999999',
   },
   {
     code: 'BY',
@@ -174,7 +153,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Belarus',
     fr: 'Biélorussie',
     id: 'BY',
-    phoneMask: '99999 999999',
   },
   {
     code: 'BE',
@@ -182,7 +160,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Belgium',
     fr: 'Belgique',
     id: 'BE',
-    phoneMask: '99999 999999',
   },
   {
     code: 'BZ',
@@ -190,7 +167,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Belize',
     fr: 'Belize',
     id: 'BZ',
-    phoneMask: '99999 999999',
   },
   {
     code: 'BJ',
@@ -198,7 +174,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Benin',
     fr: 'Bénin',
     id: 'BJ',
-    phoneMask: '99999 999999',
   },
   {
     code: 'BM',
@@ -206,7 +181,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Bermuda',
     fr: 'Bermudes',
     id: 'BM',
-    phoneMask: '99999 999999',
   },
   {
     code: 'BT',
@@ -214,7 +188,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Bhutan',
     fr: 'Bhoutan',
     id: 'BT',
-    phoneMask: '99999 999999',
   },
   {
     code: 'BO',
@@ -222,7 +195,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Bolivia',
     fr: 'Bolivie',
     id: 'BO',
-    phoneMask: '99999 999999',
   },
   {
     code: 'BA',
@@ -230,7 +202,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Bosnia and Herzegovina',
     fr: 'Bosnie-Herzégovine',
     id: 'BA',
-    phoneMask: '99999 999999',
   },
   {
     code: 'BW',
@@ -238,7 +209,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Botswana',
     fr: 'Botswana',
     id: 'BW',
-    phoneMask: '99999 999999',
   },
   {
     code: 'BR',
@@ -246,7 +216,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Brazil',
     fr: 'Brésil',
     id: 'BR',
-    phoneMask: '99999 999999',
   },
   {
     code: 'IO',
@@ -254,7 +223,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'British Indian Ocean Territory',
     fr: "Territoire britannique de l'océan Indien",
     id: 'IO',
-    phoneMask: '99999 999999',
   },
   {
     code: 'BN',
@@ -262,7 +230,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Brunei',
     fr: 'Brunei',
     id: 'BN',
-    phoneMask: '99999 999999',
   },
   {
     code: 'BG',
@@ -270,7 +237,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Bulgaria',
     fr: 'Bulgarie',
     id: 'BG',
-    phoneMask: '99999 999999',
   },
   {
     code: 'BF',
@@ -278,7 +244,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Burkina Faso',
     fr: 'Burkina Faso',
     id: 'BF',
-    phoneMask: '99999 999999',
   },
   {
     code: 'BI',
@@ -286,7 +251,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Burundi',
     fr: 'Burundi',
     id: 'BI',
-    phoneMask: '99999 999999',
   },
   {
     code: 'KH',
@@ -294,7 +258,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Cambodia',
     fr: 'Cambodge',
     id: 'KH',
-    phoneMask: '99999 999999',
   },
   {
     code: 'CM',
@@ -302,7 +265,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Cameroon',
     fr: 'Cameroun',
     id: 'CM',
-    phoneMask: '99999 999999',
   },
   {
     code: 'CA',
@@ -310,7 +272,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Canada',
     fr: 'Canada',
     id: 'CA',
-    phoneMask: '(999) 999-9999',
   },
   {
     code: 'CV',
@@ -318,7 +279,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Cape Verde',
     fr: 'Cap-Vert',
     id: 'CV',
-    phoneMask: '99999 999999',
   },
   {
     code: 'KY',
@@ -326,7 +286,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Cayman Islands',
     fr: 'Îles Caïmans',
     id: 'KY',
-    phoneMask: '99999 999999',
   },
   {
     code: 'CF',
@@ -334,7 +293,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Central African Republic',
     fr: 'République centrafricaine',
     id: 'CF',
-    phoneMask: '99999 999999',
   },
   {
     code: 'TD',
@@ -342,7 +300,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Chad',
     fr: 'Tchad',
     id: 'TD',
-    phoneMask: '99999 999999',
   },
   {
     code: 'CL',
@@ -350,7 +307,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Chile',
     fr: 'Chili',
     id: 'CL',
-    phoneMask: '99999 999999',
   },
   {
     code: 'CN',
@@ -358,7 +314,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'China',
     fr: 'Chine',
     id: 'CN',
-    phoneMask: '999 9999 9999',
   },
   {
     code: 'CX',
@@ -366,7 +321,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Christmas Island',
     fr: 'Île Christmas',
     id: 'CX',
-    phoneMask: '99999 999999',
   },
   {
     code: 'CC',
@@ -374,7 +328,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Cocos (Keeling) Islands',
     fr: 'Îles Cocos',
     id: 'CC',
-    phoneMask: '99999 999999',
   },
   {
     code: 'CO',
@@ -382,7 +335,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Colombia',
     fr: 'Colombie',
     id: 'CO',
-    phoneMask: '99999 999999',
   },
   {
     code: 'KM',
@@ -390,7 +342,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Comoros',
     fr: 'Comores',
     id: 'KM',
-    phoneMask: '99999 999999',
   },
   {
     code: 'CG',
@@ -398,7 +349,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Congo',
     fr: 'Congo',
     id: 'CG',
-    phoneMask: '99999 999999',
   },
   {
     code: 'CD',
@@ -406,7 +356,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Democratic Republic of the Congo',
     fr: 'République démocratique du Congo',
     id: 'CD',
-    phoneMask: '99999 999999',
   },
   {
     code: 'CK',
@@ -414,7 +363,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Cook Islands',
     fr: 'Îles Cook',
     id: 'CK',
-    phoneMask: '99999 999999',
   },
   {
     code: 'CR',
@@ -422,7 +370,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Costa Rica',
     fr: 'Costa Rica',
     id: 'CR',
-    phoneMask: '99999 999999',
   },
   {
     code: 'CI',
@@ -430,7 +377,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Ivory Coast',
     fr: "Côte d'Ivoire",
     id: 'CI',
-    phoneMask: '99999 999999',
   },
   {
     code: 'HR',
@@ -438,7 +384,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Croatia',
     fr: 'Croatie',
     id: 'HR',
-    phoneMask: '99999 999999',
   },
   {
     code: 'CU',
@@ -446,7 +391,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Cuba',
     fr: 'Cuba',
     id: 'CU',
-    phoneMask: '99999 999999',
   },
   {
     code: 'CY',
@@ -454,7 +398,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Cyprus',
     fr: 'Chypre',
     id: 'CY',
-    phoneMask: '99999 999999',
   },
   {
     code: 'CZ',
@@ -462,7 +405,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Czech Republic',
     fr: 'République tchèque',
     id: 'CZ',
-    phoneMask: '99999 999999',
   },
   {
     code: 'DK',
@@ -470,7 +412,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Denmark',
     fr: 'Danemark',
     id: 'DK',
-    phoneMask: '99999 999999',
   },
   {
     code: 'DJ',
@@ -478,7 +419,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Djibouti',
     fr: 'Djibouti',
     id: 'DJ',
-    phoneMask: '99999 999999',
   },
   {
     code: 'DM',
@@ -486,7 +426,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Dominica',
     fr: 'Dominique',
     id: 'DM',
-    phoneMask: '99999 999999',
   },
   {
     code: 'DO',
@@ -494,7 +433,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Dominican Republic',
     fr: 'République dominicaine',
     id: 'DO',
-    phoneMask: '99999 999999',
   },
   {
     code: 'EC',
@@ -502,7 +440,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Ecuador',
     fr: 'Équateur',
     id: 'EC',
-    phoneMask: '99999 999999',
   },
   {
     code: 'EG',
@@ -510,7 +447,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Egypt',
     fr: 'Égypte',
     id: 'EG',
-    phoneMask: '99999 999999',
   },
   {
     code: 'SV',
@@ -518,7 +454,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'El Salvador',
     fr: 'El Salvador',
     id: 'SV',
-    phoneMask: '99999 999999',
   },
   {
     code: 'GQ',
@@ -526,7 +461,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Equatorial Guinea',
     fr: 'Guinée équatoriale',
     id: 'GQ',
-    phoneMask: '99999 999999',
   },
   {
     code: 'ER',
@@ -534,7 +468,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Eritrea',
     fr: 'Érythrée',
     id: 'ER',
-    phoneMask: '99999 999999',
   },
   {
     code: 'EE',
@@ -542,7 +475,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Estonia',
     fr: 'Estonie',
     id: 'EE',
-    phoneMask: '99999 999999',
   },
   {
     code: 'ET',
@@ -550,7 +482,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Ethiopia',
     fr: 'Éthiopie',
     id: 'ET',
-    phoneMask: '99999 999999',
   },
   {
     code: 'FK',
@@ -558,7 +489,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Falkland Islands',
     fr: 'Îles Malouines',
     id: 'FK',
-    phoneMask: '99999 999999',
   },
   {
     code: 'FO',
@@ -566,7 +496,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Faroe Islands',
     fr: 'Îles Féroé',
     id: 'FO',
-    phoneMask: '99999 999999',
   },
   {
     code: 'FJ',
@@ -574,7 +503,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Fiji',
     fr: 'Fidji',
     id: 'FJ',
-    phoneMask: '99999 999999',
   },
   {
     code: 'FI',
@@ -582,7 +510,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Finland',
     fr: 'Finlande',
     id: 'FI',
-    phoneMask: '99999 999999',
   },
   {
     code: 'FR',
@@ -590,7 +517,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'France',
     fr: 'France',
     id: 'FR',
-    phoneMask: '99 99 99 99 99',
   },
   {
     code: 'GF',
@@ -598,7 +524,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'French Guiana',
     fr: 'Guyane française',
     id: 'GF',
-    phoneMask: '99999 999999',
   },
   {
     code: 'PF',
@@ -606,7 +531,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'French Polynesia',
     fr: 'Polynésie française',
     id: 'PF',
-    phoneMask: '99999 999999',
   },
   {
     code: 'GA',
@@ -614,7 +538,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Gabon',
     fr: 'Gabon',
     id: 'GA',
-    phoneMask: '99999 999999',
   },
   {
     code: 'GM',
@@ -622,7 +545,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Gambia',
     fr: 'Gambie',
     id: 'GM',
-    phoneMask: '99999 999999',
   },
   {
     code: 'GE',
@@ -630,7 +552,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Georgia',
     fr: 'Géorgie',
     id: 'GE',
-    phoneMask: '99999 999999',
   },
   {
     code: 'DE',
@@ -638,7 +559,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Germany',
     fr: 'Allemagne',
     id: 'DE',
-    phoneMask: '99999 999999',
   },
   {
     code: 'GH',
@@ -646,7 +566,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Ghana',
     fr: 'Ghana',
     id: 'GH',
-    phoneMask: '99999 999999',
   },
   {
     code: 'GI',
@@ -654,7 +573,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Gibraltar',
     fr: 'Gibraltar',
     id: 'GI',
-    phoneMask: '99999 999999',
   },
   {
     code: 'GR',
@@ -662,7 +580,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Greece',
     fr: 'Grèce',
     id: 'GR',
-    phoneMask: '99999 999999',
   },
   {
     code: 'GL',
@@ -670,7 +587,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Greenland',
     fr: 'Groenland',
     id: 'GL',
-    phoneMask: '99999 999999',
   },
   {
     code: 'GD',
@@ -678,7 +594,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Grenada',
     fr: 'Grenade',
     id: 'GD',
-    phoneMask: '99999 999999',
   },
   {
     code: 'GP',
@@ -686,7 +601,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Guadeloupe',
     fr: 'Guadeloupe',
     id: 'GP',
-    phoneMask: '99999 999999',
   },
   {
     code: 'GU',
@@ -694,7 +608,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Guam',
     fr: 'Guam',
     id: 'GU',
-    phoneMask: '99999 999999',
   },
   {
     code: 'GT',
@@ -702,7 +615,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Guatemala',
     fr: 'Guatemala',
     id: 'GT',
-    phoneMask: '99999 999999',
   },
   {
     code: 'GG',
@@ -710,7 +622,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Guernsey',
     fr: 'Guernesey',
     id: 'GG',
-    phoneMask: '99999 999999',
   },
   {
     code: 'GN',
@@ -718,7 +629,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Guinea',
     fr: 'Guinée',
     id: 'GN',
-    phoneMask: '99999 999999',
   },
   {
     code: 'GW',
@@ -726,7 +636,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Guinea-Bissau',
     fr: 'Guinée-Bissau',
     id: 'GW',
-    phoneMask: '99999 999999',
   },
   {
     code: 'GY',
@@ -734,7 +643,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Guyana',
     fr: 'Guyana',
     id: 'GY',
-    phoneMask: '99999 999999',
   },
   {
     code: 'HT',
@@ -742,7 +650,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Haiti',
     fr: 'Haïti',
     id: 'HT',
-    phoneMask: '99999 999999',
   },
   {
     code: 'VA',
@@ -750,7 +657,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Vatican City',
     fr: 'Vatican',
     id: 'VA',
-    phoneMask: '99999 999999',
   },
   {
     code: 'HN',
@@ -758,7 +664,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Honduras',
     fr: 'Honduras',
     id: 'HN',
-    phoneMask: '99999 999999',
   },
   {
     code: 'HK',
@@ -766,7 +671,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Hong Kong',
     fr: 'Hong Kong',
     id: 'HK',
-    phoneMask: '99999 999999',
   },
   {
     code: 'HU',
@@ -774,7 +678,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Hungary',
     fr: 'Hongrie',
     id: 'HU',
-    phoneMask: '99999 999999',
   },
   {
     code: 'IS',
@@ -782,7 +685,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Iceland',
     fr: 'Islande',
     id: 'IS',
-    phoneMask: '99999 999999',
   },
   {
     code: 'IN',
@@ -790,7 +692,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'India',
     fr: 'Inde',
     id: 'IN',
-    phoneMask: '99999 999999',
   },
   {
     code: 'ID',
@@ -798,7 +699,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Indonesia',
     fr: 'Indonésie',
     id: 'ID',
-    phoneMask: '99999 999999',
   },
   {
     code: 'IR',
@@ -806,7 +706,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Iran',
     fr: 'Iran',
     id: 'IR',
-    phoneMask: '99999 999999',
   },
   {
     code: 'IQ',
@@ -814,7 +713,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Iraq',
     fr: 'Irak',
     id: 'IQ',
-    phoneMask: '99999 999999',
   },
   {
     code: 'IE',
@@ -822,7 +720,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Ireland',
     fr: 'Irlande',
     id: 'IE',
-    phoneMask: '99999 999999',
   },
   {
     code: 'IM',
@@ -830,7 +727,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Isle of Man',
     fr: 'Île de Man',
     id: 'IM',
-    phoneMask: '99999 999999',
   },
   {
     code: 'IL',
@@ -838,7 +734,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Israel',
     fr: 'Israël',
     id: 'IL',
-    phoneMask: '99999 999999',
   },
   {
     code: 'IT',
@@ -846,7 +741,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Italy',
     fr: 'Italie',
     id: 'IT',
-    phoneMask: '99999 999999',
   },
   {
     code: 'JM',
@@ -854,7 +748,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Jamaica',
     fr: 'Jamaïque',
     id: 'JM',
-    phoneMask: '99999 999999',
   },
   {
     code: 'JP',
@@ -862,7 +755,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Japan',
     fr: 'Japon',
     id: 'JP',
-    phoneMask: '99999 999999',
   },
   {
     code: 'JE',
@@ -870,7 +762,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Jersey',
     fr: 'Jersey',
     id: 'JE',
-    phoneMask: '99999 999999',
   },
   {
     code: 'JO',
@@ -878,7 +769,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Jordan',
     fr: 'Jordanie',
     id: 'JO',
-    phoneMask: '99999 999999',
   },
   {
     code: 'KZ',
@@ -886,7 +776,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Kazakhstan',
     fr: 'Kazakhstan',
     id: 'KZ',
-    phoneMask: '99999 999999',
   },
   {
     code: 'KE',
@@ -894,7 +783,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Kenya',
     fr: 'Kenya',
     id: 'KE',
-    phoneMask: '99999 999999',
   },
   {
     code: 'KI',
@@ -902,7 +790,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Kiribati',
     fr: 'Kiribati',
     id: 'KI',
-    phoneMask: '99999 999999',
   },
   {
     code: 'KP',
@@ -910,7 +797,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'North Korea',
     fr: 'Corée du Nord',
     id: 'KP',
-    phoneMask: '99999 999999',
   },
   {
     code: 'KR',
@@ -918,7 +804,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'South Korea',
     fr: 'Corée du Sud',
     id: 'KR',
-    phoneMask: '99999 999999',
   },
   {
     code: 'KW',
@@ -926,7 +811,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Kuwait',
     fr: 'Koweït',
     id: 'KW',
-    phoneMask: '99999 999999',
   },
   {
     code: 'KG',
@@ -934,7 +818,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Kyrgyzstan',
     fr: 'Kirghizistan',
     id: 'KG',
-    phoneMask: '99999 999999',
   },
   {
     code: 'LA',
@@ -942,7 +825,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Laos',
     fr: 'Laos',
     id: 'LA',
-    phoneMask: '99999 999999',
   },
   {
     code: 'LV',
@@ -950,7 +832,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Latvia',
     fr: 'Lettonie',
     id: 'LV',
-    phoneMask: '99999 999999',
   },
   {
     code: 'LB',
@@ -958,7 +839,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Lebanon',
     fr: 'Liban',
     id: 'LB',
-    phoneMask: '99999 999999',
   },
   {
     code: 'LS',
@@ -966,7 +846,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Lesotho',
     fr: 'Lesotho',
     id: 'LS',
-    phoneMask: '99999 999999',
   },
   {
     code: 'LR',
@@ -974,7 +853,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Liberia',
     fr: 'Libéria',
     id: 'LR',
-    phoneMask: '99999 999999',
   },
   {
     code: 'LY',
@@ -982,7 +860,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Libya',
     fr: 'Libye',
     id: 'LY',
-    phoneMask: '99999 999999',
   },
   {
     code: 'LI',
@@ -990,7 +867,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Liechtenstein',
     fr: 'Liechtenstein',
     id: 'LI',
-    phoneMask: '99999 999999',
   },
   {
     code: 'LT',
@@ -998,7 +874,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Lithuania',
     fr: 'Lituanie',
     id: 'LT',
-    phoneMask: '99999 999999',
   },
   {
     code: 'LU',
@@ -1006,7 +881,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Luxembourg',
     fr: 'Luxembourg',
     id: 'LU',
-    phoneMask: '99999 999999',
   },
   {
     code: 'MO',
@@ -1014,7 +888,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Macao',
     fr: 'Macao',
     id: 'MO',
-    phoneMask: '99999 999999',
   },
   {
     code: 'MK',
@@ -1022,7 +895,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'North Macedonia',
     fr: 'Macédoine du Nord',
     id: 'MK',
-    phoneMask: '99999 999999',
   },
   {
     code: 'MG',
@@ -1030,7 +902,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Madagascar',
     fr: 'Madagascar',
     id: 'MG',
-    phoneMask: '99999 999999',
   },
   {
     code: 'MW',
@@ -1038,7 +909,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Malawi',
     fr: 'Malawi',
     id: 'MW',
-    phoneMask: '99999 999999',
   },
   {
     code: 'MY',
@@ -1046,7 +916,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Malaysia',
     fr: 'Malaisie',
     id: 'MY',
-    phoneMask: '99999 999999',
   },
   {
     code: 'MV',
@@ -1054,7 +923,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Maldives',
     fr: 'Maldives',
     id: 'MV',
-    phoneMask: '99999 999999',
   },
   {
     code: 'ML',
@@ -1062,7 +930,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Mali',
     fr: 'Mali',
     id: 'ML',
-    phoneMask: '99999 999999',
   },
   {
     code: 'MT',
@@ -1070,7 +937,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Malta',
     fr: 'Malte',
     id: 'MT',
-    phoneMask: '99999 999999',
   },
   {
     code: 'MH',
@@ -1078,7 +944,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Marshall Islands',
     fr: 'Îles Marshall',
     id: 'MH',
-    phoneMask: '99999 999999',
   },
   {
     code: 'MQ',
@@ -1086,7 +951,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Martinique',
     fr: 'Martinique',
     id: 'MQ',
-    phoneMask: '99999 999999',
   },
   {
     code: 'MR',
@@ -1094,7 +958,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Mauritania',
     fr: 'Mauritanie',
     id: 'MR',
-    phoneMask: '99999 999999',
   },
   {
     code: 'MU',
@@ -1102,7 +965,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Mauritius',
     fr: 'Maurice',
     id: 'MU',
-    phoneMask: '99999 999999',
   },
   {
     code: 'YT',
@@ -1110,7 +972,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Mayotte',
     fr: 'Mayotte',
     id: 'YT',
-    phoneMask: '99999 999999',
   },
   {
     code: 'MX',
@@ -1118,7 +979,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Mexico',
     fr: 'Mexique',
     id: 'MX',
-    phoneMask: '99999 999999',
   },
   {
     code: 'FM',
@@ -1126,7 +986,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Micronesia',
     fr: 'Micronésie',
     id: 'FM',
-    phoneMask: '99999 999999',
   },
   {
     code: 'MD',
@@ -1134,7 +993,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Moldova',
     fr: 'Moldavie',
     id: 'MD',
-    phoneMask: '99999 999999',
   },
   {
     code: 'MC',
@@ -1142,7 +1000,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Monaco',
     fr: 'Monaco',
     id: 'MC',
-    phoneMask: '99999 999999',
   },
   {
     code: 'MN',
@@ -1150,7 +1007,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Mongolia',
     fr: 'Mongolie',
     id: 'MN',
-    phoneMask: '99999 999999',
   },
   {
     code: 'ME',
@@ -1158,7 +1014,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Montenegro',
     fr: 'Monténégro',
     id: 'ME',
-    phoneMask: '99999 999999',
   },
   {
     code: 'MS',
@@ -1166,7 +1021,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Montserrat',
     fr: 'Montserrat',
     id: 'MS',
-    phoneMask: '99999 999999',
   },
   {
     code: 'MA',
@@ -1174,7 +1028,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Morocco',
     fr: 'Maroc',
     id: 'MA',
-    phoneMask: '99999 999999',
   },
   {
     code: 'MZ',
@@ -1182,7 +1035,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Mozambique',
     fr: 'Mozambique',
     id: 'MZ',
-    phoneMask: '99999 999999',
   },
   {
     code: 'MM',
@@ -1190,7 +1042,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Myanmar',
     fr: 'Myanmar',
     id: 'MM',
-    phoneMask: '99999 999999',
   },
   {
     code: 'NA',
@@ -1198,7 +1049,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Namibia',
     fr: 'Namibie',
     id: 'NA',
-    phoneMask: '99999 999999',
   },
   {
     code: 'NR',
@@ -1206,7 +1056,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Nauru',
     fr: 'Nauru',
     id: 'NR',
-    phoneMask: '99999 999999',
   },
   {
     code: 'NP',
@@ -1214,7 +1063,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Nepal',
     fr: 'Népal',
     id: 'NP',
-    phoneMask: '99999 999999',
   },
   {
     code: 'NL',
@@ -1222,7 +1070,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Netherlands',
     fr: 'Pays-Bas',
     id: 'NL',
-    phoneMask: '99999 999999',
   },
   {
     code: 'NC',
@@ -1230,7 +1077,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'New Caledonia',
     fr: 'Nouvelle-Calédonie',
     id: 'NC',
-    phoneMask: '99999 999999',
   },
   {
     code: 'NZ',
@@ -1238,7 +1084,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'New Zealand',
     fr: 'Nouvelle-Zélande',
     id: 'NZ',
-    phoneMask: '99999 999999',
   },
   {
     code: 'NI',
@@ -1246,7 +1091,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Nicaragua',
     fr: 'Nicaragua',
     id: 'NI',
-    phoneMask: '99999 999999',
   },
   {
     code: 'NE',
@@ -1254,7 +1098,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Niger',
     fr: 'Niger',
     id: 'NE',
-    phoneMask: '99999 999999',
   },
   {
     code: 'NG',
@@ -1262,7 +1105,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Nigeria',
     fr: 'Nigeria',
     id: 'NG',
-    phoneMask: '99999 999999',
   },
   {
     code: 'NU',
@@ -1270,7 +1112,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Niue',
     fr: 'Niue',
     id: 'NU',
-    phoneMask: '99999 999999',
   },
   {
     code: 'NF',
@@ -1278,7 +1119,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Norfolk Island',
     fr: 'Île Norfolk',
     id: 'NF',
-    phoneMask: '99999 999999',
   },
   {
     code: 'MP',
@@ -1286,7 +1126,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Northern Mariana Islands',
     fr: 'Îles Mariannes du Nord',
     id: 'MP',
-    phoneMask: '99999 999999',
   },
   {
     code: 'NO',
@@ -1294,7 +1133,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Norway',
     fr: 'Norvège',
     id: 'NO',
-    phoneMask: '99999 999999',
   },
   {
     code: 'OM',
@@ -1302,7 +1140,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Oman',
     fr: 'Oman',
     id: 'OM',
-    phoneMask: '99999 999999',
   },
   {
     code: 'PK',
@@ -1310,7 +1147,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Pakistan',
     fr: 'Pakistan',
     id: 'PK',
-    phoneMask: '99999 999999',
   },
   {
     code: 'PW',
@@ -1318,7 +1154,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Palau',
     fr: 'Palaos',
     id: 'PW',
-    phoneMask: '99999 999999',
   },
   {
     code: 'PS',
@@ -1326,7 +1161,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Palestine',
     fr: 'Palestine',
     id: 'PS',
-    phoneMask: '99999 999999',
   },
   {
     code: 'PA',
@@ -1334,7 +1168,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Panama',
     fr: 'Panama',
     id: 'PA',
-    phoneMask: '99999 999999',
   },
   {
     code: 'PG',
@@ -1342,7 +1175,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Papua New Guinea',
     fr: 'Papouasie-Nouvelle-Guinée',
     id: 'PG',
-    phoneMask: '99999 999999',
   },
   {
     code: 'PY',
@@ -1350,7 +1182,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Paraguay',
     fr: 'Paraguay',
     id: 'PY',
-    phoneMask: '99999 999999',
   },
   {
     code: 'PE',
@@ -1358,7 +1189,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Peru',
     fr: 'Pérou',
     id: 'PE',
-    phoneMask: '99999 999999',
   },
   {
     code: 'PH',
@@ -1366,7 +1196,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Philippines',
     fr: 'Philippines',
     id: 'PH',
-    phoneMask: '99999 999999',
   },
   {
     code: 'PN',
@@ -1374,7 +1203,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Pitcairn',
     fr: 'Îles Pitcairn',
     id: 'PN',
-    phoneMask: '99999 999999',
   },
   {
     code: 'PL',
@@ -1382,7 +1210,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Poland',
     fr: 'Pologne',
     id: 'PL',
-    phoneMask: '99999 999999',
   },
   {
     code: 'PT',
@@ -1390,7 +1217,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Portugal',
     fr: 'Portugal',
     id: 'PT',
-    phoneMask: '99999 999999',
   },
   {
     code: 'PR',
@@ -1398,7 +1224,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Puerto Rico',
     fr: 'Porto Rico',
     id: 'PR',
-    phoneMask: '99999 999999',
   },
   {
     code: 'QA',
@@ -1406,7 +1231,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Qatar',
     fr: 'Qatar',
     id: 'QA',
-    phoneMask: '99999 999999',
   },
   {
     code: 'RO',
@@ -1414,7 +1238,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Romania',
     fr: 'Roumanie',
     id: 'RO',
-    phoneMask: '99999 999999',
   },
   {
     code: 'RU',
@@ -1422,7 +1245,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Russia',
     fr: 'Russie',
     id: 'RU',
-    phoneMask: '99999 999999',
   },
   {
     code: 'RW',
@@ -1430,7 +1252,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Rwanda',
     fr: 'Rwanda',
     id: 'RW',
-    phoneMask: '99999 999999',
   },
   {
     code: 'RE',
@@ -1438,7 +1259,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Reunion',
     fr: 'La Réunion',
     id: 'RE',
-    phoneMask: '99999 999999',
   },
   {
     code: 'BL',
@@ -1446,7 +1266,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Saint Barthelemy',
     fr: 'Saint-Barthélemy',
     id: 'BL',
-    phoneMask: '99999 999999',
   },
   {
     code: 'SH',
@@ -1454,7 +1273,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Saint Helena',
     fr: 'Sainte-Hélène',
     id: 'SH',
-    phoneMask: '99999 999999',
   },
   {
     code: 'KN',
@@ -1462,7 +1280,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Saint Kitts and Nevis',
     fr: 'Saint-Kitts-et-Nevis',
     id: 'KN',
-    phoneMask: '99999 999999',
   },
   {
     code: 'LC',
@@ -1470,7 +1287,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Saint Lucia',
     fr: 'Sainte-Lucie',
     id: 'LC',
-    phoneMask: '99999 999999',
   },
   {
     code: 'MF',
@@ -1478,7 +1294,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Saint Martin',
     fr: 'Saint-Martin',
     id: 'MF',
-    phoneMask: '99999 999999',
   },
   {
     code: 'PM',
@@ -1486,7 +1301,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Saint Pierre and Miquelon',
     fr: 'Saint-Pierre-et-Miquelon',
     id: 'PM',
-    phoneMask: '99999 999999',
   },
   {
     code: 'VC',
@@ -1494,7 +1308,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Saint Vincent and the Grenadines',
     fr: 'Saint-Vincent-et-les-Grenadines',
     id: 'VC',
-    phoneMask: '99999 999999',
   },
   {
     code: 'WS',
@@ -1502,7 +1315,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Samoa',
     fr: 'Samoa',
     id: 'WS',
-    phoneMask: '99999 999999',
   },
   {
     code: 'SM',
@@ -1510,7 +1322,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'San Marino',
     fr: 'Saint-Marin',
     id: 'SM',
-    phoneMask: '99999 999999',
   },
   {
     code: 'ST',
@@ -1518,7 +1329,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Sao Tome and Principe',
     fr: 'Sao Tomé-et-Principe',
     id: 'ST',
-    phoneMask: '99999 999999',
   },
   {
     code: 'SA',
@@ -1526,7 +1336,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Saudi Arabia',
     fr: 'Arabie saoudite',
     id: 'SA',
-    phoneMask: '99999 999999',
   },
   {
     code: 'SN',
@@ -1534,7 +1343,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Senegal',
     fr: 'Sénégal',
     id: 'SN',
-    phoneMask: '99999 999999',
   },
   {
     code: 'RS',
@@ -1542,7 +1350,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Serbia',
     fr: 'Serbie',
     id: 'RS',
-    phoneMask: '99999 999999',
   },
   {
     code: 'SC',
@@ -1550,7 +1357,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Seychelles',
     fr: 'Seychelles',
     id: 'SC',
-    phoneMask: '99999 999999',
   },
   {
     code: 'SL',
@@ -1558,7 +1364,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Sierra Leone',
     fr: 'Sierra Leone',
     id: 'SL',
-    phoneMask: '99999 999999',
   },
   {
     code: 'SG',
@@ -1566,7 +1371,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Singapore',
     fr: 'Singapour',
     id: 'SG',
-    phoneMask: '99999 999999',
   },
   {
     code: 'SK',
@@ -1574,7 +1378,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Slovakia',
     fr: 'Slovaquie',
     id: 'SK',
-    phoneMask: '99999 999999',
   },
   {
     code: 'SI',
@@ -1582,7 +1385,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Slovenia',
     fr: 'Slovénie',
     id: 'SI',
-    phoneMask: '99999 999999',
   },
   {
     code: 'SB',
@@ -1590,7 +1392,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Solomon Islands',
     fr: 'Îles Salomon',
     id: 'SB',
-    phoneMask: '99999 999999',
   },
   {
     code: 'SO',
@@ -1598,7 +1399,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Somalia',
     fr: 'Somalie',
     id: 'SO',
-    phoneMask: '99999 999999',
   },
   {
     code: 'ZA',
@@ -1606,7 +1406,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'South Africa',
     fr: 'Afrique du Sud',
     id: 'ZA',
-    phoneMask: '99999 999999',
   },
   {
     code: 'SS',
@@ -1614,7 +1413,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'South Sudan',
     fr: 'Soudan du Sud',
     id: 'SS',
-    phoneMask: '99999 999999',
   },
   {
     code: 'ES',
@@ -1622,7 +1420,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Spain',
     fr: 'Espagne',
     id: 'ES',
-    phoneMask: '99999 999999',
   },
   {
     code: 'LK',
@@ -1630,7 +1427,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Sri Lanka',
     fr: 'Sri Lanka',
     id: 'LK',
-    phoneMask: '99999 999999',
   },
   {
     code: 'SD',
@@ -1638,7 +1434,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Sudan',
     fr: 'Soudan',
     id: 'SD',
-    phoneMask: '99999 999999',
   },
   {
     code: 'SR',
@@ -1646,7 +1441,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Suriname',
     fr: 'Suriname',
     id: 'SR',
-    phoneMask: '99999 999999',
   },
   {
     code: 'SJ',
@@ -1654,7 +1448,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Svalbard and Jan Mayen',
     fr: 'Svalbard et Jan Mayen',
     id: 'SJ',
-    phoneMask: '99999 999999',
   },
   {
     code: 'SZ',
@@ -1662,7 +1455,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Eswatini',
     fr: 'Eswatini',
     id: 'SZ',
-    phoneMask: '99999 999999',
   },
   {
     code: 'SE',
@@ -1670,7 +1462,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Sweden',
     fr: 'Suède',
     id: 'SE',
-    phoneMask: '99999 999999',
   },
   {
     code: 'CH',
@@ -1678,7 +1469,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Switzerland',
     fr: 'Suisse',
     id: 'CH',
-    phoneMask: '99999 999999',
   },
   {
     code: 'SY',
@@ -1686,7 +1476,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Syria',
     fr: 'Syrie',
     id: 'SY',
-    phoneMask: '99999 999999',
   },
   {
     code: 'TW',
@@ -1694,7 +1483,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Taiwan',
     fr: 'Taïwan',
     id: 'TW',
-    phoneMask: '99999 999999',
   },
   {
     code: 'TJ',
@@ -1702,7 +1490,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Tajikistan',
     fr: 'Tadjikistan',
     id: 'TJ',
-    phoneMask: '99999 999999',
   },
   {
     code: 'TZ',
@@ -1710,7 +1497,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Tanzania',
     fr: 'Tanzanie',
     id: 'TZ',
-    phoneMask: '99999 999999',
   },
   {
     code: 'TH',
@@ -1718,7 +1504,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Thailand',
     fr: 'Thaïlande',
     id: 'TH',
-    phoneMask: '99999 999999',
   },
   {
     code: 'TL',
@@ -1726,7 +1511,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Timor-Leste',
     fr: 'Timor oriental',
     id: 'TL',
-    phoneMask: '99999 999999',
   },
   {
     code: 'TG',
@@ -1734,7 +1518,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Togo',
     fr: 'Togo',
     id: 'TG',
-    phoneMask: '99999 999999',
   },
   {
     code: 'TK',
@@ -1742,7 +1525,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Tokelau',
     fr: 'Tokelau',
     id: 'TK',
-    phoneMask: '99999 999999',
   },
   {
     code: 'TO',
@@ -1750,7 +1532,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Tonga',
     fr: 'Tonga',
     id: 'TO',
-    phoneMask: '99999 999999',
   },
   {
     code: 'TT',
@@ -1758,7 +1539,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Trinidad and Tobago',
     fr: 'Trinité-et-Tobago',
     id: 'TT',
-    phoneMask: '99999 999999',
   },
   {
     code: 'TN',
@@ -1766,7 +1546,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Tunisia',
     fr: 'Tunisie',
     id: 'TN',
-    phoneMask: '99999 999999',
   },
   {
     code: 'TR',
@@ -1774,7 +1553,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Turkey',
     fr: 'Turquie',
     id: 'TR',
-    phoneMask: '99999 999999',
   },
   {
     code: 'TM',
@@ -1782,7 +1560,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Turkmenistan',
     fr: 'Turkménistan',
     id: 'TM',
-    phoneMask: '99999 999999',
   },
   {
     code: 'TC',
@@ -1790,7 +1567,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Turks and Caicos Islands',
     fr: 'Îles Turques-et-Caïques',
     id: 'TC',
-    phoneMask: '99999 999999',
   },
   {
     code: 'TV',
@@ -1798,7 +1574,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Tuvalu',
     fr: 'Tuvalu',
     id: 'TV',
-    phoneMask: '99999 999999',
   },
   {
     code: 'UG',
@@ -1806,7 +1581,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Uganda',
     fr: 'Ouganda',
     id: 'UG',
-    phoneMask: '99999 999999',
   },
   {
     code: 'UA',
@@ -1814,7 +1588,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Ukraine',
     fr: 'Ukraine',
     id: 'UA',
-    phoneMask: '99999 999999',
   },
   {
     code: 'AE',
@@ -1822,7 +1595,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'United Arab Emirates',
     fr: 'Émirats arabes unis',
     id: 'AE',
-    phoneMask: '99999 999999',
   },
   {
     code: 'GB',
@@ -1830,7 +1602,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'United Kingdom',
     fr: 'Royaume-Uni',
     id: 'GB',
-    phoneMask: '99999 999999',
   },
   {
     code: 'US',
@@ -1838,7 +1609,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'United States',
     fr: 'États-Unis',
     id: 'US',
-    phoneMask: '(999) 999-9999',
   },
   {
     code: 'UY',
@@ -1846,7 +1616,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Uruguay',
     fr: 'Uruguay',
     id: 'UY',
-    phoneMask: '99999 999999',
   },
   {
     code: 'UZ',
@@ -1854,7 +1623,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Uzbekistan',
     fr: 'Ouzbékistan',
     id: 'UZ',
-    phoneMask: '99999 999999',
   },
   {
     code: 'VU',
@@ -1862,7 +1630,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Vanuatu',
     fr: 'Vanuatu',
     id: 'VU',
-    phoneMask: '99999 999999',
   },
   {
     code: 'VE',
@@ -1870,7 +1637,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Venezuela',
     fr: 'Venezuela',
     id: 'VE',
-    phoneMask: '99999 999999',
   },
   {
     code: 'VN',
@@ -1878,7 +1644,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Vietnam',
     fr: 'Vietnam',
     id: 'VN',
-    phoneMask: '99999 999999',
   },
   {
     code: 'VG',
@@ -1886,7 +1651,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'British Virgin Islands',
     fr: 'Îles Vierges britanniques',
     id: 'VG',
-    phoneMask: '99999 999999',
   },
   {
     code: 'VI',
@@ -1894,7 +1658,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'U.S. Virgin Islands',
     fr: 'Îles Vierges des États-Unis',
     id: 'VI',
-    phoneMask: '(999) 999-9999',
   },
   {
     code: 'WF',
@@ -1902,7 +1665,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Wallis and Futuna',
     fr: 'Wallis-et-Futuna',
     id: 'WF',
-    phoneMask: '99999 999999',
   },
   {
     code: 'YE',
@@ -1910,7 +1672,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Yemen',
     fr: 'Yémen',
     id: 'YE',
-    phoneMask: '99999 999999',
   },
   {
     code: 'ZM',
@@ -1918,7 +1679,6 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Zambia',
     fr: 'Zambie',
     id: 'ZM',
-    phoneMask: '99999 999999',
   },
   {
     code: 'ZW',
@@ -1926,6 +1686,5 @@ export const countryCodes: CountryCodesProps[] = [
     en: 'Zimbabwe',
     fr: 'Zimbabwe',
     id: 'ZW',
-    phoneMask: '99999 999999',
   },
 ] as const;

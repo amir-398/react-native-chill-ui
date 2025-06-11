@@ -39,11 +39,17 @@ export const getPhoneNumberWithSuffix = (
   countryCode: CountryCodesProps['code'] = 'FR',
   phoneNumber: string | undefined = '',
 ) => {
+  if (!hasLibrary) {
+    return phoneNumber;
+  }
   const parsedNumber = safeParsePhoneNumber(phoneNumber, { defaultCountry: countryCode });
   return parsedNumber?.formatInternational();
 };
 
 export const getCountryCode = (phoneNumber: string | undefined = '') => {
+  if (!hasLibrary) {
+    return '';
+  }
   const parsedNumber = safeParsePhoneNumber(phoneNumber);
   return parsedNumber?.country;
 };
@@ -51,10 +57,6 @@ export const getCountryCode = (phoneNumber: string | undefined = '') => {
 export const isValidNumber = (number: string, countryCode: CountryCodesProps['code']): boolean => {
   if (!hasLibrary) {
     return true;
-  }
-  if (!countryCode || !number) {
-    console.error('countryCode or number is required in isValidNumber function');
-    return false;
   }
   try {
     const cleanNumber = number.replace(/\s+/g, '');
@@ -71,10 +73,7 @@ export const isValidNumberWithSuffix = (number: string) => {
   if (!hasLibrary) {
     return true;
   }
-  if (!number) {
-    console.error('number is required in isValidNumberWithSuffix function');
-    return false;
-  }
+
   const cleanNumber = number.replace(/\s+/g, '');
   const parsedNumber = safeParsePhoneNumber(cleanNumber);
   if (!parsedNumber) return false;
@@ -82,6 +81,9 @@ export const isValidNumberWithSuffix = (number: string) => {
 };
 
 export const getPhoneNumberWithoutSuffix = (phoneNumber: string | undefined = '') => {
+  if (!hasLibrary) {
+    return phoneNumber;
+  }
   const parsedNumber = safeParsePhoneNumber(phoneNumber);
   return parsedNumber?.nationalNumber || '';
 };
