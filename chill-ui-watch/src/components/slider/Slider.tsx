@@ -149,13 +149,15 @@ function Slider(props: SliderProps) {
     maximumValue = 1,
     minimumTrackTintColor = '#3f3f3f',
     minimumValue = 0,
+    onSlidingComplete,
+    onSlidingStart,
+    onValueChange,
     renderAboveThumbComponent,
     renderBelowThumbComponent,
     renderMaximumTrackComponent,
     renderMinimumTrackComponent,
     renderThumbComponent,
     renderTrackMarkComponent,
-    startFromZero = false,
     step = 0,
     thumbImage,
     thumbStyle = {},
@@ -184,6 +186,46 @@ function Slider(props: SliderProps) {
     }),
   );
 
+  const setCurrentValueAnimated = useCallback(
+    (val: number, thumbIndex = 0) => {
+      const animationConfigs = {
+        ...DEFAULT_ANIMATION_CONFIGS[animationType],
+        ...animationConfig,
+        toValue: val,
+        useNativeDriver: false,
+      };
+      const animatedValue =
+        values[thumbIndex] instanceof Animated.Value
+          ? values[thumbIndex]
+          : new Animated.Value(values[thumbIndex] as number);
+      Animated[animationType](animatedValue, animationConfigs).start();
+    },
+    [animationType, animationConfig, values],
+  );
+
+  const setCurrentValue = useCallback(
+    (val: number, thumbIndex: number, callback?: () => void) => {
+      const safeIndex = thumbIndex ?? 0;
+      const animatedValue = values[safeIndex];
+      if (animatedValue) {
+        (animatedValue as Animated.Value).setValue(val);
+        if (callback) {
+          callback();
+        }
+      } else {
+        setValues(prevValues => {
+          const newValues = [...prevValues];
+          newValues[safeIndex] = new Animated.Value(val);
+          return newValues;
+        });
+        if (callback) {
+          callback();
+        }
+      }
+    },
+    [values],
+  );
+
   // Refs pour les valeurs qui persistent entre les renders
   const activeThumbIndexRef = useRef(0);
   const containerSizeRef = useRef({ height: 0, width: 0 });
@@ -203,7 +245,7 @@ function Slider(props: SliderProps) {
 
       newValues.forEach((newValue, i) => {
         // eslint-disable-next-line
-        const currentValue = updatedValues[i].__getValue();
+        const currentValue = (updatedValues[i] as any).__getValue();
         if (newValue !== currentValue && animateTransitions) {
           setCurrentValueAnimated(newValue, i);
         } else {
@@ -211,9 +253,9 @@ function Slider(props: SliderProps) {
         }
       });
     }
+    // eslint-disable-next-line
   }, [value]);
 
-  // Effet pour mettre à jour les trackMarks
   useEffect(() => {
     if (trackMarks) {
       const newTrackMarksValues = normalizeValue(props, trackMarks);
@@ -248,46 +290,6 @@ function Slider(props: SliderProps) {
   );
   // eslint-disable-next-line
   const getCurrentValue = useCallback((thumbIndex = 0) => (values[thumbIndex] as any).__getValue() || 0, [values]);
-
-  const setCurrentValue = useCallback(
-    (val: number, thumbIndex: number, callback: () => void) => {
-      const safeIndex = thumbIndex ?? 0;
-      const animatedValue = values[safeIndex];
-      if (animatedValue) {
-        (animatedValue as Animated.Value).setValue(val);
-        if (callback) {
-          callback();
-        }
-      } else {
-        setValues(prevValues => {
-          const newValues = [...prevValues];
-          newValues[safeIndex] = new Animated.Value(val);
-          return newValues;
-        });
-        if (callback) {
-          callback();
-        }
-      }
-    },
-    [values],
-  );
-
-  const setCurrentValueAnimated = useCallback(
-    (val: number, thumbIndex = 0) => {
-      const animationConfigs = {
-        ...DEFAULT_ANIMATION_CONFIGS[animationType],
-        ...animationConfig,
-        toValue: val,
-        useNativeDriver: false,
-      };
-      const animatedValue =
-        values[thumbIndex] instanceof Animated.Value
-          ? values[thumbIndex]
-          : new Animated.Value(values[thumbIndex] as number);
-      Animated[animationType](animatedValue, animationConfigs).start();
-    },
-    [animationType, animationConfig, values],
-  );
 
   const getValue = useCallback(
     (gestureState: { dy: number; dx: number }) => {
@@ -409,7 +411,7 @@ function Slider(props: SliderProps) {
   const handlePanResponderGrant = useCallback(
     (e: GestureResponderEvent) => {
       const { nativeEvent } = e;
-      const { onSlidingStart, thumbTouchSize } = props;
+
       previousLeftRef.current = trackClickable
         ? nativeEvent.locationX - thumbSize.width
         : getThumbLeft(getCurrentValue(activeThumbIndexRef.current));
@@ -418,12 +420,11 @@ function Slider(props: SliderProps) {
       }
       onSlidingStart?.(getRawValues(values), activeThumbIndexRef.current);
     },
-    [trackClickable, thumbSize, getThumbLeft, getCurrentValue, props, getRawValues, values],
+    [trackClickable, thumbSize, getThumbLeft, getCurrentValue, getRawValues, values, onSlidingStart, thumbTouchSize],
   );
 
   const handlePanResponderMove = useCallback(
     (_e: GestureResponderEvent, gestureState: { dx: number; dy: number }) => {
-      const { disabled, onValueChange } = props;
       if (disabled) {
         return;
       }
@@ -431,14 +432,13 @@ function Slider(props: SliderProps) {
         onValueChange?.(getRawValues(values), activeThumbIndexRef.current);
       });
     },
-    [disabled, getValue, setCurrentValue, props, getRawValues, values],
+    [disabled, getValue, setCurrentValue, getRawValues, values, onValueChange],
   );
 
   const handlePanResponderRequestEnd = useCallback(() => false, []);
 
   const handlePanResponderEnd = useCallback(
     (_e: GestureResponderEvent, gestureState: { dx: number; dy: number }) => {
-      const { disabled, onSlidingComplete, onValueChange } = props;
       if (disabled) {
         return;
       }
@@ -450,7 +450,7 @@ function Slider(props: SliderProps) {
       });
       activeThumbIndexRef.current = 0;
     },
-    [props.disabled, getValue, setCurrentValue, trackClickable, props, getRawValues, values],
+    [disabled, getValue, setCurrentValue, trackClickable, getRawValues, values, onValueChange, onSlidingComplete],
   );
 
   const panResponder = useMemo(
@@ -693,7 +693,7 @@ function Slider(props: SliderProps) {
                 ? {}
                 : {
                     backgroundColor: thumbTintColor,
-                    ...thumbStyle,
+                    ...(thumbStyle as ViewStyle),
                   },
               {
                 position: 'absolute' as const,
@@ -709,7 +709,10 @@ function Slider(props: SliderProps) {
               if (Array.isArray(renderThumbComponent)) {
                 return renderThumbComponent[i](i);
               }
-              return renderThumbComponent(i);
+              if (typeof renderThumbComponent === 'function') {
+                return renderThumbComponent(i);
+              }
+              return renderThumbComponent;
             })()}
           </Animated.View>
         ))}
