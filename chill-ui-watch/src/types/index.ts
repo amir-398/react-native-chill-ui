@@ -588,3 +588,43 @@ export type PhoneNumberTextInputProps = {
 } & Omit<MaskedInputProps, 'onChangeText' | 'mask'>;
 
 // --------------------------------------------------------------------------------
+
+// Slider ------------------------------------------------------------
+// --------------------------------------------------------------------------------
+export interface SliderProps {
+  step?: number;
+  disabled?: boolean;
+  vertical?: boolean;
+  thumbColor?: string;
+  minimumValue: number;
+  maximumValue: number;
+  trackMarks?: number[];
+  animationConfig?: any;
+  startFromZero?: boolean;
+  trackClassName?: string;
+  thumbClassName?: string;
+  value: number | number[];
+  trackClickable?: boolean;
+  debugTouchArea?: boolean;
+  trackRightPadding?: number;
+  maximumTrackColor?: string;
+  minimumTrackColor?: string;
+  containerClassName?: string;
+  animateTransitions?: boolean;
+  maximumTrackClassName?: string;
+  minimumTrackClassName?: string;
+  thumbImage?: string | string[];
+  animationType?: 'timing' | 'spring';
+  thumbTouchSize?: { width: number; height: number };
+  renderMaximumTrackComponent?: () => React.ReactNode;
+  renderMinimumTrackComponent?: () => React.ReactNode;
+  renderTrackMarkComponent?: (index: number) => React.ReactNode;
+  onValueChange?: (values: number[], activeThumbIndex: number) => void;
+  onSlidingStart?: (values: number[], activeThumbIndex: number) => void;
+  onSlidingComplete?: (values: number[], activeThumbIndex: number) => void;
+  renderAboveThumbComponent?: (index: number, value: number) => React.ReactNode;
+  renderBelowThumbComponent?: (index: number, value: number) => React.ReactNode;
+  renderThumbComponent?: React.ReactNode | ((index: number) => React.ReactNode);
+}
+
+// --------------------------------------------------------------------------------

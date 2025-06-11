@@ -43,6 +43,17 @@ export function WithTrackMarks() {
   return <Template minimumValue={0} maximumValue={100} value={50} trackMarks={[0, 25, 50, 75, 100]} />;
 }
 
+export function WithThumbMarkers() {
+  return (
+    <Template
+      minimumValue={0}
+      maximumValue={100}
+      value={50}
+      renderAboveThumbComponent={() => <View className="size-5 rounded-full bg-red-500" />}
+    />
+  );
+}
+
 export function CustomThumbComponent() {
   return (
     <Template

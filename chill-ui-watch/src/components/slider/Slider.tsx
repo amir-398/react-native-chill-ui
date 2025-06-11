@@ -1,55 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import {
-  Animated,
-  Easing,
-  GestureResponderEvent,
-  I18nManager,
-  Image,
-  PanResponder,
-  StyleProp,
-  ViewStyle,
-} from 'react-native';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { Animated, Easing, GestureResponderEvent, I18nManager, Image, PanResponder, ViewStyle } from 'react-native';
 
+import cn from '../cn';
 import { Box } from '../box';
 import defaultStyles from './styles';
-
-export interface SliderProps {
-  step?: number;
-  disabled?: boolean;
-  vertical?: boolean;
-  minimumValue: number;
-  maximumValue: number;
-  trackMarks?: number[];
-  animationConfig?: any;
-  thumbTintColor?: string;
-  startFromZero?: boolean;
-  value: number | number[];
-  trackClickable?: boolean;
-  debugTouchArea?: boolean;
-  trackRightPadding?: number;
-  animateTransitions?: boolean;
-  trackMarksTintColor?: string;
-  thumbImage?: string | string[];
-  maximumTrackTintColor?: string;
-  minimumTrackTintColor?: string;
-  trackStyle?: StyleProp<ViewStyle>;
-  thumbStyle?: StyleProp<ViewStyle>;
-  animationType?: 'timing' | 'spring';
-  containerStyle?: StyleProp<ViewStyle>;
-  trackMarksStyle?: StyleProp<ViewStyle>;
-  maximumTrackStyle?: StyleProp<ViewStyle>;
-  minimumTrackStyle?: StyleProp<ViewStyle>;
-  thumbTouchSize?: { width: number; height: number };
-  renderMaximumTrackComponent?: () => React.ReactNode;
-  renderMinimumTrackComponent?: () => React.ReactNode;
-  renderTrackMarkComponent?: (index: number) => React.ReactNode;
-  onValueChange?: (values: number[], activeThumbIndex: number) => void;
-  onSlidingStart?: (values: number[], activeThumbIndex: number) => void;
-  onSlidingComplete?: (values: number[], activeThumbIndex: number) => void;
-  renderAboveThumbComponent?: (index: number, value: number) => React.ReactNode;
-  renderBelowThumbComponent?: (index: number, value: number) => React.ReactNode;
-  renderThumbComponent?: React.ReactNode | ((index: number) => React.ReactNode);
-}
+import { SliderProps } from '../../types';
 
 const Rect = ({ height, width, x, y }: { height: number; width: number; x: number; y: number }) => ({
   containsPoint: (nativeX: number, nativeY: number) =>
@@ -141,13 +96,14 @@ function Slider(props: SliderProps) {
     animateTransitions = true,
     animationConfig = {},
     animationType = 'timing',
-    containerStyle,
+    containerClassName,
     debugTouchArea = false,
     disabled = false,
-    maximumTrackStyle,
-    maximumTrackTintColor = '#b3b3b3',
+    maximumTrackClassName,
+    maximumTrackColor = '#b3b3b3',
     maximumValue = 1,
-    minimumTrackTintColor = '#3f3f3f',
+    minimumTrackClassName,
+    minimumTrackColor = '#3f3f3f',
     minimumValue = 0,
     onSlidingComplete,
     onSlidingStart,
@@ -159,13 +115,13 @@ function Slider(props: SliderProps) {
     renderThumbComponent,
     renderTrackMarkComponent,
     step = 0,
+    thumbClassName,
+    thumbColor = '#343434',
     thumbImage,
-    thumbStyle = {},
-    thumbTintColor = '#343434',
-    thumbTouchSize = { height: 40, width: 40 },
+    thumbTouchSize = { height: 10, width: 10 },
+    trackClassName,
     trackClickable = true,
     trackMarks = [],
-    trackStyle,
     value = 0,
     vertical = false,
     ...restProps
@@ -604,12 +560,11 @@ function Slider(props: SliderProps) {
   }
 
   const minimumTrackStyle: ViewStyle = {
-    backgroundColor: minimumTrackTintColor,
+    backgroundColor: minimumTrackColor,
     left:
       interpolatedTrackValues.length === 1
         ? new Animated.Value(startPositionOnTrack)
         : Animated.add(minTrackWidth, thumbSize.width / 2),
-    position: 'absolute' as const,
     width:
       interpolatedTrackValues.length === 1
         ? Animated.add(minTrackWidth, thumbSize.width / 2)
@@ -623,7 +578,7 @@ function Slider(props: SliderProps) {
   return (
     <>
       {renderAboveThumbComponent && (
-        <Box style={[defaultStyles.aboveThumbComponentsContainer, { flexDirection: 'row' as const }]}>
+        <Box className="flex-row">
           {interpolatedThumbValues.map((interpolationValue, i) => {
             const animatedValue = values[i] || 0;
             // eslint-disable-next-line
@@ -631,10 +586,9 @@ function Slider(props: SliderProps) {
             return (
               <Animated.View
                 key={`slider-above-thumb-${i}`}
+                className="absolute bottom-0"
                 style={[
-                  defaultStyles.renderThumbComponent,
                   {
-                    bottom: 0,
                     left: thumbSize.width / 2,
                     position: 'absolute' as const,
                     transform: [{ translateX: interpolationValue }, { translateY: 0 }],
@@ -652,29 +606,33 @@ function Slider(props: SliderProps) {
       <Box
         {...restProps}
         onLayout={measureContainer}
-        style={[defaultStyles.container, vertical ? { transform: [{ rotate: '-90deg' }] } : {}, containerStyle]}
+        className={cn(vertical ? 'rotate-[-90deg]' : '', 'h-10 justify-center', containerClassName)}
       >
         <Box
           onLayout={measureTrack}
           renderToHardwareTextureAndroid
-          style={[defaultStyles.track, { backgroundColor: maximumTrackTintColor }, trackStyle, maximumTrackStyle]}
+          className={cn('h-1 rounded-full', trackClassName, maximumTrackClassName)}
+          style={[{ backgroundColor: maximumTrackColor }]}
         >
           {renderMaximumTrackComponent?.()}
         </Box>
 
-        <Animated.View renderToHardwareTextureAndroid style={[defaultStyles.track, trackStyle, minimumTrackStyle]}>
+        <Animated.View
+          renderToHardwareTextureAndroid
+          className={cn('absolute h-1.5 rounded-full', trackClassName, minimumTrackClassName)}
+          style={minimumTrackStyle}
+        >
           {renderMinimumTrackComponent?.()}
         </Animated.View>
 
         {renderTrackMarkComponent &&
-          interpolatedTrackMarksValues?.map((value, i) => (
+          interpolatedTrackMarksValues?.map((val, i) => (
             <Animated.View
               key={`track-mark-${i}`}
+              className="absolute"
               style={[
-                defaultStyles.renderThumbComponent,
                 {
-                  position: 'absolute' as const,
-                  transform: [{ translateX: value }, { translateY: 0 }],
+                  transform: [{ translateX: val }, { translateY: 0 }],
                   ...valueVisibleStyle,
                 } as ViewStyle,
               ]}
@@ -687,16 +645,10 @@ function Slider(props: SliderProps) {
           <Animated.View
             key={`slider-thumb-${i}`}
             onLayout={measureThumb}
+            className={cn(renderThumbComponent ? 'absolute' : 'absolute size-5 rounded-full', thumbClassName)}
             style={[
-              renderThumbComponent ? defaultStyles.renderThumbComponent : defaultStyles.thumb,
-              renderThumbComponent
-                ? {}
-                : {
-                    backgroundColor: thumbTintColor,
-                    ...(thumbStyle as ViewStyle),
-                  },
+              !renderThumbComponent && { backgroundColor: thumbColor },
               {
-                position: 'absolute' as const,
                 transform: [{ translateX: val }, { translateY: 0 }],
                 ...valueVisibleStyle,
               } as ViewStyle,
@@ -717,13 +669,17 @@ function Slider(props: SliderProps) {
           </Animated.View>
         ))}
 
-        <Box style={[defaultStyles.touchArea, touchOverflowStyle]} {...panResponder.panHandlers}>
+        <Box
+          className="absolute bottom-0 left-0 right-0 top-0 bg-transparent"
+          style={touchOverflowStyle}
+          {...panResponder.panHandlers}
+        >
           {!!debugTouchArea && interpolatedThumbValues.map((val, i) => renderDebugThumbTouchRect(val, i))}
         </Box>
       </Box>
 
       {renderBelowThumbComponent && (
-        <Box style={[defaultStyles.belowThumbComponentsContainer, { flexDirection: 'row' as const }]}>
+        <Box className="flex-row">
           {interpolatedThumbValues.map((interpolationValue, i) => {
             const animatedValue = values[i] || 0;
             // eslint-disable-next-line
@@ -731,12 +687,10 @@ function Slider(props: SliderProps) {
             return (
               <Animated.View
                 key={`slider-below-thumb-${i}`}
+                className="absolute"
                 style={[
-                  defaultStyles.renderThumbComponent,
                   {
                     left: thumbSize.width / 2,
-                    position: 'absolute' as const,
-                    top: 0,
                     transform: [{ translateX: interpolationValue }, { translateY: 0 }],
                     ...valueVisibleStyle,
                   } as ViewStyle,
