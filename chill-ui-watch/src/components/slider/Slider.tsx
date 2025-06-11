@@ -142,10 +142,13 @@ function Slider(props: SliderProps) {
     animationConfig = {},
     animationType = 'timing',
     debugTouchArea = false,
+    disabled = false,
     maximumTrackTintColor = '#b3b3b3',
     maximumValue = 1,
     minimumTrackTintColor = '#3f3f3f',
     minimumValue = 0,
+    renderBelowThumbComponent,
+    renderThumbComponent,
     startFromZero = false,
     step = 0,
     thumbTintColor = '#343434',
@@ -242,7 +245,7 @@ function Slider(props: SliderProps) {
       const safeIndex = thumbIndex ?? 0;
       const animatedValue = values[safeIndex];
       if (animatedValue) {
-        animatedValue.setValue(val);
+        (animatedValue as Animated.Value).setValue(val);
         if (callback) {
           callback();
         }
@@ -390,48 +393,51 @@ function Slider(props: SliderProps) {
     [values, getThumbTouchRect, trackClickable],
   );
 
-  const handleStartShouldSetPanResponder = useCallback(e => thumbHitTest(e), [thumbHitTest]);
+  const handleStartShouldSetPanResponder = useCallback((e: GestureResponderEvent) => thumbHitTest(e), [thumbHitTest]);
 
   const handleMoveShouldSetPanResponder = useCallback(() => false, []);
 
   const handlePanResponderGrant = useCallback(
-    e => {
+    (e: GestureResponderEvent) => {
       const { nativeEvent } = e;
+      const { onSlidingStart, thumbTouchSize } = props;
       previousLeftRef.current = trackClickable
         ? nativeEvent.locationX - thumbSize.width
         : getThumbLeft(getCurrentValue(activeThumbIndexRef.current));
-      if (props.thumbTouchSize) {
-        previousLeftRef.current -= (props.thumbTouchSize.width - thumbSize.width) / 2;
+      if (thumbTouchSize) {
+        previousLeftRef.current -= (thumbTouchSize.width - thumbSize.width) / 2;
       }
-      props.onSlidingStart?.(getRawValues(values), activeThumbIndexRef.current);
+      onSlidingStart?.(getRawValues(values), activeThumbIndexRef.current);
     },
     [trackClickable, thumbSize, getThumbLeft, getCurrentValue, props, getRawValues, values],
   );
 
   const handlePanResponderMove = useCallback(
-    (e, gestureState) => {
-      if (props.disabled) {
+    (_e: GestureResponderEvent, gestureState: { dx: number; dy: number }) => {
+      const { disabled, onValueChange } = props;
+      if (disabled) {
         return;
       }
       setCurrentValue(getValue(gestureState), activeThumbIndexRef.current, () => {
-        props.onValueChange?.(getRawValues(values), activeThumbIndexRef.current);
+        onValueChange?.(getRawValues(values), activeThumbIndexRef.current);
       });
     },
-    [props.disabled, getValue, setCurrentValue, props, getRawValues, values],
+    [disabled, getValue, setCurrentValue, props, getRawValues, values],
   );
 
   const handlePanResponderRequestEnd = useCallback(() => false, []);
 
   const handlePanResponderEnd = useCallback(
-    (e, gestureState) => {
-      if (props.disabled) {
+    (_e: GestureResponderEvent, gestureState: { dx: number; dy: number }) => {
+      const { disabled, onSlidingComplete, onValueChange } = props;
+      if (disabled) {
         return;
       }
       setCurrentValue(getValue(gestureState), activeThumbIndexRef.current, () => {
         if (trackClickable) {
-          props.onValueChange?.(getRawValues(values), activeThumbIndexRef.current);
+          onValueChange?.(getRawValues(values), activeThumbIndexRef.current);
         }
-        props.onSlidingComplete?.(getRawValues(values), activeThumbIndexRef.current);
+        onSlidingComplete?.(getRawValues(values), activeThumbIndexRef.current);
       });
       activeThumbIndexRef.current = 0;
     },
@@ -486,12 +492,12 @@ function Slider(props: SliderProps) {
     }
   }, []);
 
-  const measureContainer = useCallback(e => handleMeasure('_containerSize', e), [handleMeasure]);
-  const measureTrack = useCallback(e => handleMeasure('_trackSize', e), [handleMeasure]);
-  const measureThumb = useCallback(e => handleMeasure('_thumbSize', e), [handleMeasure]);
+  const measureContainer = useCallback((e: any) => handleMeasure('_containerSize', e), [handleMeasure]);
+  const measureTrack = useCallback((e: any) => handleMeasure('_trackSize', e), [handleMeasure]);
+  const measureThumb = useCallback((e: any) => handleMeasure('_thumbSize', e), [handleMeasure]);
 
   const renderDebugThumbTouchRect = useCallback(
-    (thumbLeft, index) => {
+    (_thumbLeft: number, index: number) => {
       const { height, width, x, y } = getThumbTouchRect() || {};
       const positionStyle = { height, left: x, top: y, width };
 
@@ -499,7 +505,7 @@ function Slider(props: SliderProps) {
         <Animated.View
           key={`debug-thumb-${index}`}
           pointerEvents="none"
-          style={[defaultStyles.debugThumbTouchArea, positionStyle]}
+          style={[defaultStyles.debugThumbTouchArea, positionStyle as any]}
         />
       );
     },
@@ -508,19 +514,22 @@ function Slider(props: SliderProps) {
 
   const renderThumbImage = useCallback(
     (thumbIndex = 0) => {
-      if (!props.thumbImage) {
+      const { thumbImage } = props;
+      if (!thumbImage) {
         return null;
       }
-      return <Image source={Array.isArray(props.thumbImage) ? props.thumbImage[thumbIndex] : props.thumbImage} />;
+      const source = Array.isArray(thumbImage) ? thumbImage[thumbIndex] : thumbImage;
+      return <Image source={{ uri: source }} />;
     },
     [props.thumbImage],
   );
 
   // Calculs pour le rendu
-  const rightPadding = props.trackRightPadding ?? thumbSize.width;
-  const _startFromZero = values.length === 1 && minimumValue < 0 && maximumValue > 0 ? startFromZero : false;
+  const { startFromZero: propStartFromZero, trackRightPadding } = props;
+  const rightPadding = trackRightPadding ?? thumbSize.width;
+  const shouldStartFromZero = values.length === 1 && minimumValue < 0 && maximumValue > 0 ? propStartFromZero : false;
 
-  const interpolatedThumbValues = values.map(value =>
+  const interpolatedThumbValues = values.map((value: any) =>
     value.interpolate({
       inputRange: [minimumValue, maximumValue],
       outputRange: I18nManager.isRTL
@@ -529,7 +538,7 @@ function Slider(props: SliderProps) {
     }),
   );
 
-  const interpolatedTrackValues = values.map(value =>
+  const interpolatedTrackValues = values.map((value: any) =>
     value.interpolate({
       inputRange: [minimumValue, maximumValue],
       outputRange: [0, containerSize.width - rightPadding],
@@ -538,7 +547,7 @@ function Slider(props: SliderProps) {
 
   const interpolatedTrackMarksValues =
     trackMarksValues &&
-    trackMarksValues.map(v =>
+    trackMarksValues.map((v: any) =>
       v.interpolate({
         inputRange: [minimumValue, maximumValue],
         outputRange: I18nManager.isRTL
@@ -547,34 +556,46 @@ function Slider(props: SliderProps) {
       }),
     );
 
-  const valueVisibleStyle = {};
+  const valueVisibleStyle: { opacity?: number } = {};
   if (!allMeasured) {
     valueVisibleStyle.opacity = 0;
   }
 
-  const _value = values[0].__getValue();
+  const currentValue = values[0].__getValue();
   const sliderWidthCoefficient = containerSize.width / (Math.abs(minimumValue) + Math.abs(maximumValue));
-  const startPositionOnTrack = _startFromZero
-    ? _value < 0 + step
-      ? (_value + Math.abs(minimumValue)) * sliderWidthCoefficient
-      : Math.abs(minimumValue) * sliderWidthCoefficient
-    : 0;
-  const minTrackWidth = _startFromZero
-    ? Math.abs(_value) * sliderWidthCoefficient - thumbSize.width / 2
+
+  let startPositionOnTrack = 0;
+  if (shouldStartFromZero) {
+    if (currentValue < 0 + step) {
+      startPositionOnTrack = (currentValue + Math.abs(minimumValue)) * sliderWidthCoefficient;
+    } else {
+      startPositionOnTrack = Math.abs(minimumValue) * sliderWidthCoefficient;
+    }
+  }
+
+  const minTrackWidth = shouldStartFromZero
+    ? Math.abs(currentValue) * sliderWidthCoefficient - thumbSize.width / 2
     : interpolatedTrackValues[0];
+
   const maxTrackWidth = interpolatedTrackValues[1];
 
-  const clearBorderRadius = {};
-  if (_startFromZero && _value < 0 + step) {
+  const clearBorderRadius: {
+    borderBottomRightRadius?: number;
+    borderTopRightRadius?: number;
+    borderTopLeftRadius?: number;
+    borderBottomLeftRadius?: number;
+  } = {};
+
+  if (shouldStartFromZero && currentValue < 0 + step) {
     clearBorderRadius.borderBottomRightRadius = 0;
     clearBorderRadius.borderTopRightRadius = 0;
   }
-  if (_startFromZero && _value > 0) {
+  if (shouldStartFromZero && currentValue > 0) {
     clearBorderRadius.borderTopLeftRadius = 0;
     clearBorderRadius.borderBottomLeftRadius = 0;
   }
 
-  const minimumTrackStyle = {
+  const minimumTrackStyle: ViewStyle = {
     backgroundColor: minimumTrackTintColor,
     left:
       interpolatedTrackValues.length === 1
@@ -594,7 +615,7 @@ function Slider(props: SliderProps) {
   return (
     <>
       {props.renderAboveThumbComponent && (
-        <Box style={defaultStyles.aboveThumbComponentsContainer}>
+        <Box style={[defaultStyles.aboveThumbComponentsContainer, { flexDirection: 'row' as const }]}>
           {interpolatedThumbValues.map((interpolationValue, i) => {
             const animatedValue = values[i] || 0;
             const value = animatedValue instanceof Animated.Value ? animatedValue.__getValue() : animatedValue;
@@ -633,19 +654,18 @@ function Slider(props: SliderProps) {
             props.maximumTrackStyle,
           ]}
         >
-          {props.renderMaximumTrackComponent ? props.renderMaximumTrackComponent() : null}
+          {props.renderMaximumTrackComponent?.()}
         </Box>
 
         <Animated.View
           renderToHardwareTextureAndroid
           style={[defaultStyles.track, props.trackStyle, minimumTrackStyle, props.minimumTrackStyle]}
         >
-          {props.renderMinimumTrackComponent ? props.renderMinimumTrackComponent() : null}
+          {props.renderMinimumTrackComponent?.()}
         </Animated.View>
 
         {props.renderTrackMarkComponent &&
-          interpolatedTrackMarksValues &&
-          interpolatedTrackMarksValues.map((value, i) => (
+          interpolatedTrackMarksValues?.map((value, i) => (
             <Animated.View
               key={`track-mark-${i}`}
               style={[
@@ -678,10 +698,10 @@ function Slider(props: SliderProps) {
               },
             ]}
           >
-            {props.renderThumbComponent
-              ? Array.isArray(props.renderThumbComponent)
-                ? props.renderThumbComponent[i](i)
-                : props.renderThumbComponent(i)
+            {renderThumbComponent
+              ? Array.isArray(renderThumbComponent)
+                ? renderThumbComponent[i](i)
+                : renderThumbComponent(i)
               : renderThumbImage(i)}
           </Animated.View>
         ))}
@@ -691,11 +711,12 @@ function Slider(props: SliderProps) {
         </Box>
       </Box>
 
-      {props.renderBelowThumbComponent && (
-        <Box style={defaultStyles.belowThumbComponentsContainer}>
+      {renderBelowThumbComponent && (
+        <Box style={[defaultStyles.belowThumbComponentsContainer, { flexDirection: 'row' as const }]}>
           {interpolatedThumbValues.map((interpolationValue, i) => {
             const animatedValue = values[i] || 0;
-            const value = animatedValue instanceof Animated.Value ? animatedValue.__getValue() : animatedValue;
+            // eslint-disable-next-line
+            const val = animatedValue instanceof Animated.Value ? (animatedValue as any).__getValue() : animatedValue;
             return (
               <Animated.View
                 key={`slider-below-thumb-${i}`}
@@ -709,7 +730,7 @@ function Slider(props: SliderProps) {
                   },
                 ]}
               >
-                {props.renderBelowThumbComponent(i, value)}
+                {renderBelowThumbComponent?.(i, val)}
               </Animated.View>
             );
           })}
