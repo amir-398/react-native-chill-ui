@@ -204,7 +204,10 @@ export default function Input(props: InputProps) {
   const renderPressableInput = () => {
     if (clickableAs === 'scale') {
       return (
-        <Animated.View style={animatedStyle} className="flex-1">
+        <Animated.View
+          style={animatedStyle}
+          className={cn('flex-1', inputSizeVariants({ isStretchable, multiline, size }))}
+        >
           {renderInput()}
         </Animated.View>
       );

@@ -628,3 +628,55 @@ export interface SliderProps {
 }
 
 // --------------------------------------------------------------------------------
+
+// SelectDropdown ------------------------------------------------------------
+// --------------------------------------------------------------------------------
+
+export type IDropdownRef = {
+  open: () => void;
+  close: () => void;
+};
+
+export type DropdownProps = {
+  className?: string;
+  hasShadow?: boolean;
+} & Omit<FlatListProps<any>, 'renderItem' | 'data'>;
+
+export type InputsProps = {
+  containerClassName?: string;
+} & InputProps;
+
+export interface SelectDropdownProps<T> {
+  dataSet: T[];
+  disable?: boolean;
+  maxHeight?: number;
+  minHeight?: number;
+  excludeItems?: T[];
+  valueField: keyof T;
+  hasSearch?: boolean;
+  onBlur?: () => void;
+  autoScroll?: boolean;
+  onFocus?: () => void;
+  searchField?: keyof T;
+  inputProps?: InputsProps;
+  excludeSearchItems?: T[];
+  keyboardAvoiding?: boolean;
+  confirmSelectItem?: boolean;
+  dropdownProps?: DropdownProps;
+  searchInputProps?: InputsProps;
+  onSelectItem: (item: T) => void;
+  mode?: 'default' | 'modal' | 'auto';
+  closeModalWhenSelectedItem?: boolean;
+  onConfirmSelectItem?: (item: T) => void;
+  dropdownPosition?: 'auto' | 'top' | 'bottom';
+  searchQuery?: (keyword: string, labelValue: string) => boolean;
+  customDropdownItem?: (item: T, selected?: boolean) => React.ReactElement | null;
+  customInputSearch?: (onSearch: (text: string) => void) => React.ReactElement | null;
+  ref?: React.RefObject<IDropdownRef> | React.RefObject<IDropdownRef> | null | undefined;
+  dropdownItemProps?: {
+    className?: string;
+    activeBackgroundColor?: string;
+    textItemProps?: StringProps;
+  };
+}
+// --------------------------------------------------------------------------------

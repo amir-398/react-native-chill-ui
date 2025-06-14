@@ -425,96 +425,87 @@ function Slider(props: SliderProps) {
   const touchOverflowStyle = getTouchOverflowStyle();
 
   return (
-    <>
-      {renderAboveThumbComponent && (
-        <Box className="flex-row">
-          {interpolatedThumbValues.map((interpolationValue: any, i: number) => {
-            const animatedValue = values[i] || 0;
-            // eslint-disable-next-line
-            const val = animatedValue instanceof Animated.Value ? (animatedValue as any).__getValue() : animatedValue;
-            return (
-              <Animated.View
-                key={`slider-above-thumb-${i}`}
-                className="absolute bottom-0"
-                style={[
-                  {
-                    left: thumbSize.width / 2,
-                    transform: [{ translateX: interpolationValue }, { translateY: 0 }],
-                    ...valueVisibleStyle,
-                  } as ViewStyle,
-                ]}
-              >
-                {renderAboveThumbComponent?.(i, val)}
-              </Animated.View>
-            );
-          })}
-        </Box>
-      )}
+    <Box
+      {...restProps}
+      onLayout={measureContainer}
+      className={cn(vertical ? 'rotate-[-90deg]' : '', 'h-10 justify-center', containerClassName)}
+    >
+      {renderAboveThumbComponent &&
+        interpolatedThumbValues.map((interpolationValue: any, i: number) => {
+          const animatedValue = values[i] || 0;
+          // eslint-disable-next-line
+          const val = animatedValue instanceof Animated.Value ? (animatedValue as any).__getValue() : animatedValue;
+          return (
+            <Animated.View
+              key={`slider-above-thumb-${i}`}
+              className="absolute"
+              style={[
+                {
+                  bottom: '90%',
+                  transform: [{ translateX: interpolationValue }, { translateY: 0 }],
+                  ...valueVisibleStyle,
+                } as ViewStyle,
+              ]}
+            >
+              {renderAboveThumbComponent?.(i, val)}
+            </Animated.View>
+          );
+        })}
+
+      <SliderTrack
+        trackClassName={trackClassName}
+        maximumTrackClassName={maximumTrackClassName}
+        minimumTrackClassName={minimumTrackClassName}
+        maximumTrackColor={maximumTrackColor}
+        minimumTrackColor={minimumTrackColor}
+        minimumTrackStyle={minimumTrackStyle}
+        renderMaximumTrackComponent={renderMaximumTrackComponent}
+        renderMinimumTrackComponent={renderMinimumTrackComponent}
+        renderTrackMarkComponent={renderTrackMarkComponent}
+        interpolatedTrackMarksValues={interpolatedTrackMarksValues}
+        valueVisibleStyle={valueVisibleStyle}
+        measureTrack={measureTrack}
+      />
+
+      <SliderThumb
+        thumbClassName={thumbClassName}
+        thumbColor={thumbColor}
+        thumbImage={thumbImage}
+        renderThumbComponent={renderThumbComponent}
+        interpolatedThumbValues={interpolatedThumbValues}
+        valueVisibleStyle={valueVisibleStyle}
+        measureThumb={measureThumb}
+      />
 
       <Box
-        {...restProps}
-        onLayout={measureContainer}
-        className={cn(vertical ? 'rotate-[-90deg]' : '', 'h-10 justify-center', containerClassName)}
+        className="absolute bottom-0 left-0 right-0 top-0 bg-transparent"
+        style={touchOverflowStyle}
+        {...panResponder.panHandlers}
       >
-        <SliderTrack
-          trackClassName={trackClassName}
-          maximumTrackClassName={maximumTrackClassName}
-          minimumTrackClassName={minimumTrackClassName}
-          maximumTrackColor={maximumTrackColor}
-          minimumTrackColor={minimumTrackColor}
-          minimumTrackStyle={minimumTrackStyle}
-          renderMaximumTrackComponent={renderMaximumTrackComponent}
-          renderMinimumTrackComponent={renderMinimumTrackComponent}
-          renderTrackMarkComponent={renderTrackMarkComponent}
-          interpolatedTrackMarksValues={interpolatedTrackMarksValues}
-          valueVisibleStyle={valueVisibleStyle}
-          measureTrack={measureTrack}
-        />
-
-        <SliderThumb
-          thumbClassName={thumbClassName}
-          thumbColor={thumbColor}
-          thumbImage={thumbImage}
-          renderThumbComponent={renderThumbComponent}
-          interpolatedThumbValues={interpolatedThumbValues}
-          valueVisibleStyle={valueVisibleStyle}
-          measureThumb={measureThumb}
-        />
-
-        <Box
-          className="absolute bottom-0 left-0 right-0 top-0 bg-transparent"
-          style={touchOverflowStyle}
-          {...panResponder.panHandlers}
-        >
-          {!!debugTouchArea && interpolatedThumbValues.map((val: any, i: number) => renderDebugThumbTouchRect(val, i))}
-        </Box>
+        {!!debugTouchArea && interpolatedThumbValues.map((val: any, i: number) => renderDebugThumbTouchRect(val, i))}
       </Box>
-
-      {renderBelowThumbComponent && (
-        <Box className="flex-row">
-          {interpolatedThumbValues.map((interpolationValue: any, i: number) => {
-            const animatedValue = values[i] || 0;
-            // eslint-disable-next-line
-            const val = animatedValue instanceof Animated.Value ? (animatedValue as any).__getValue() : animatedValue;
-            return (
-              <Animated.View
-                key={`slider-below-thumb-${i}`}
-                className="absolute"
-                style={[
-                  {
-                    left: thumbSize.width / 2,
-                    transform: [{ translateX: interpolationValue }, { translateY: 0 }],
-                    ...valueVisibleStyle,
-                  } as ViewStyle,
-                ]}
-              >
-                {renderBelowThumbComponent?.(i, val)}
-              </Animated.View>
-            );
-          })}
-        </Box>
-      )}
-    </>
+      {renderBelowThumbComponent &&
+        interpolatedThumbValues.map((interpolationValue: any, i: number) => {
+          const animatedValue = values[i] || 0;
+          // eslint-disable-next-line
+          const val = animatedValue instanceof Animated.Value ? (animatedValue as any).__getValue() : animatedValue;
+          return (
+            <Animated.View
+              key={`slider-below-thumb-${i}`}
+              className="absolute"
+              style={[
+                {
+                  top: '90%',
+                  transform: [{ translateX: interpolationValue }, { translateY: 0 }],
+                  ...valueVisibleStyle,
+                } as ViewStyle,
+              ]}
+            >
+              {renderBelowThumbComponent?.(i, val)}
+            </Animated.View>
+          );
+        })}
+    </Box>
   );
 }
 

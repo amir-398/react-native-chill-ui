@@ -37,6 +37,13 @@
     }
   },
   "extends": "expo/tsconfig.base",
-  "include": ["**/*.ts", "**/*.tsx", "nativewind-env.d.ts", "global.d.ts"],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "nativewind-env.d.ts",
+    "global.d.ts",
+    "src/components/select/react-native-element-dropdown/src/components/Dropdown",
+    "src/components/select/react-native-element-dropdown/src/components/InputSelectDropdown"
+  ],
   "exclude": ["node_modules", ".storybook"]
 }

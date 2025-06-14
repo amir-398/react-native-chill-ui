@@ -286,7 +286,7 @@ export const WithThumbBelow: Story = {
     maximumValue: 100,
     minimumValue: 0,
     renderBelowThumbComponent: (_, value) => (
-      <Box className="rounded-md bg-blue-500 p-2">
+      <Box className="bg-primary rounded-md p-1">
         <String>{value}</String>
       </Box>
     ),
@@ -314,13 +314,11 @@ export const WithStartFromZero: Story = {
   },
 };
 
-export const WithCustomClasses: Story = {
+export const WithThumbAbove: Story = {
   args: {
-    containerClassName: 'bg-gray-100 p-4 rounded-lg',
     maximumValue: 100,
     minimumValue: 0,
-    thumbClassName: 'size-6 rounded-full bg-blue-500',
-    trackClassName: 'h-2 rounded-full',
+    renderAboveThumbComponent: (_, value) => <String>{value}</String>,
     value: 50,
   },
 };
