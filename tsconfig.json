@@ -39,6 +39,13 @@
     /* Types */
     "types": ["nativewind/types"]
   },
-  "include": ["**/*.ts", "**/*.tsx", "nativewind-env.d.ts", "global.d.ts"],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "nativewind-env.d.ts",
+    "global.d.ts",
+    "chill-ui-watch/src/components/select/react-native-element-dropdown/src/components/Dropdown",
+    "chill-ui-watch/src/components/select/react-native-element-dropdown/src/components/InputSelectDropdown"
+  ],
   "exclude": ["node_modules"]
 }
