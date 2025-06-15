@@ -20,7 +20,7 @@ import String from '@/components/string';
 import Input from '@/components/inputs/Input';
 
 import { useDetectDevice, useDeviceOrientation } from '../utils';
-import { IDropdownRef, SelectDropdownProps } from '../../../types';
+import { IDropdownRef, InputProps, SelectDropdownProps } from '../../../types';
 import { get, debounce, assign, isEqual, findIndex, differenceWith } from '../../../utils';
 
 const { isTablet } = useDetectDevice;
@@ -322,12 +322,6 @@ const InputDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<any>>((
       return;
     }
 
-    // reset search when close
-    if (!willBeVisible) {
-      setState(prev => ({ ...prev, searchText: '' }));
-      performSearch('');
-    }
-
     measureComponent();
     setState(prev => ({ ...prev, visible: willBeVisible }));
 
@@ -360,6 +354,12 @@ const InputDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<any>>((
     onBlur,
     performSearch,
   ]);
+
+  useEffect(() => {
+    if (state.visible) {
+      inputRef.current?.focus();
+    }
+  }, [state.visible]);
 
   // Sélection d'un élément
   const selectItem = useCallback(
@@ -396,20 +396,22 @@ const InputDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<any>>((
     [performSearch, searchInputProps, state.visible, eventOpen],
   );
 
-  console.log('state.searchText', state.searchText);
+  const renderInput = useCallback(
+    (inputRefParam?: InputProps['inputRef']) => {
+      const isSelected = state.currentValue && get(state.currentValue, valueField);
 
-  const renderInput = useCallback(() => {
-    const isSelected = state.currentValue && get(state.currentValue, valueField);
-
-    return (
-      <Input
-        placeholder={inputProps?.placeholder ?? DEFAULT_CONFIG.PLACEHOLDER}
-        value={state.searchText || (isSelected ? get(state.currentValue, valueField) : undefined)}
-        onChangeText={handleSearchTextChange}
-        {...inputProps}
-      />
-    );
-  }, [inputProps, state.currentValue, state.searchText, valueField, handleSearchTextChange]);
+      return (
+        <Input
+          inputRef={inputRefParam ?? undefined}
+          placeholder={inputProps?.placeholder ?? DEFAULT_CONFIG.PLACEHOLDER}
+          value={state.searchText || (isSelected ? get(state.currentValue, valueField) : undefined)}
+          onChangeText={handleSearchTextChange}
+          {...inputProps}
+        />
+      );
+    },
+    [inputProps, state.currentValue, state.searchText, valueField, handleSearchTextChange],
+  );
 
   // Rendu d'un élément de la liste - mémorisé pour les performances
   const renderListItem = useCallback(
@@ -489,6 +491,7 @@ const InputDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<any>>((
     if (keyboardAvoiding && state.keyboardHeight > 0 && isTopPosition && dropdownPosition === 'auto') {
       extendHeight = state.keyboardHeight;
     }
+
     return (
       <Modal
         transparent
@@ -508,7 +511,7 @@ const InputDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<any>>((
                 zIndex: 1000,
               }}
             >
-              {renderInput()}
+              {renderInput(inputRef)}
             </Box>
             <Box
               className={cn('flex-1', { 'items-center justify-center': isFull })}
