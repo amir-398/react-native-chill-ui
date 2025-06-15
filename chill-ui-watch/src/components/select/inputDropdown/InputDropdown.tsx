@@ -56,7 +56,7 @@ interface DropdownState {
   position: Position | null;
 }
 
-const InputSelectDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<any>>((props, currentRef) => {
+const InputDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<any>>((props, currentRef) => {
   const orientation = useDeviceOrientation();
 
   const {
@@ -90,6 +90,7 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<a
 
   const ref = useRef<View>(null);
   const refList = useRef<FlatList>(null);
+  const inputRef = useRef<any>(null);
 
   const [state, setState] = useState<DropdownState>({
     currentValue: null,
@@ -159,14 +160,11 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<a
 
       const searchFilter = createSearchFilter();
       const dataSearch = dataSet.filter(searchFilter);
-      console.log('dataSearch', dataSearch);
-
       if (excludeSearchItems.length > 0 || excludeItems.length > 0) {
         const excludeSearchData = differenceWith(dataSearch, excludeSearchItems, (obj1, obj2) =>
           isEqual(get(obj1, valueField), get(obj2, valueField)),
         );
         const filterData = excludeData(excludeSearchData);
-        console.log('filterData', filterData);
         setState(prev => ({ ...prev, listData: filterData }));
       } else {
         setState(prev => ({ ...prev, listData: dataSearch }));
@@ -204,7 +202,7 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<a
       const isFull = isTablet ? false : mode === 'modal' || orientation === 'LANDSCAPE';
       const isAutoMode = mode === 'auto';
 
-      const top = isFull && !isAutoMode ? 20 : height + pageY + 2;
+      const top = isFull && !isAutoMode ? 20 : height + pageY;
       const bottom = H - top + height;
       const left = I18nManager.isRTL ? W - width - pageX : pageX;
 
@@ -389,28 +387,29 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<a
       searchInputProps?.onChangeText?.(text);
       setState(prev => ({ ...prev, searchText: text }));
       performSearch(text);
+
+      // Ouvrir le dropdown au début de la saisie
+      if (!state.visible) {
+        eventOpen();
+      }
     },
-    [performSearch, searchInputProps],
+    [performSearch, searchInputProps, state.visible, eventOpen],
   );
 
-  const renderDropdown = useCallback(() => {
+  console.log('state.searchText', state.searchText);
+
+  const renderInput = useCallback(() => {
     const isSelected = state.currentValue && get(state.currentValue, valueField);
 
     return (
       <Input
-        editable={false}
-        onPress={toggleDropdown}
         placeholder={inputProps?.placeholder ?? DEFAULT_CONFIG.PLACEHOLDER}
-        value={isSelected ? get(state.currentValue, valueField) : undefined}
-        rightIconAction={{
-          iconColor: 'black',
-          iconName: state.visible ? 'angle-up-solid' : 'angle-down-solid',
-          iconPress: toggleDropdown,
-        }}
+        value={state.searchText || (isSelected ? get(state.currentValue, valueField) : undefined)}
+        onChangeText={handleSearchTextChange}
         {...inputProps}
       />
     );
-  }, [inputProps, state.currentValue, state.visible, toggleDropdown, valueField]);
+  }, [inputProps, state.currentValue, state.searchText, valueField, handleSearchTextChange]);
 
   // Rendu d'un élément de la liste - mémorisé pour les performances
   const renderListItem = useCallback(
@@ -440,27 +439,10 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<a
     [dropdownItemProps, state.currentValue, valueField, selectItem, customDropdownItem],
   );
 
-  // Rendu du champ de recherche
-  const renderSearchInput = useCallback(() => {
-    if (!hasSearch) return null;
-
-    if (customInputSearch) {
-      return customInputSearch(handleSearchTextChange);
-    }
-
-    return (
-      <Box className={cn('px-3 py-2', searchInputProps?.containerClassName)}>
-        <Input size="xs" {...searchInputProps} value={state.searchText} onChangeText={handleSearchTextChange} />
-      </Box>
-    );
-  }, [handleSearchTextChange, searchInputProps, state.searchText, hasSearch, customInputSearch]);
-
   const renderList = useCallback(
     () => (
       <TouchableWithoutFeedback>
         <Box className="flex-shrink">
-          {renderSearchInput()}
-
           <FlatList
             {...dropdownProps}
             keyboardShouldPersistTaps="handled"
@@ -477,7 +459,7 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<a
         </Box>
       </TouchableWithoutFeedback>
     ),
-    [renderListItem, dropdownProps, state.listData, renderSearchInput, scrollToSelectedIndex],
+    [renderListItem, dropdownProps, state.listData, scrollToSelectedIndex],
   );
 
   // Rendu du modal
@@ -507,7 +489,6 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<a
     if (keyboardAvoiding && state.keyboardHeight > 0 && isTopPosition && dropdownPosition === 'auto') {
       extendHeight = state.keyboardHeight;
     }
-
     return (
       <Modal
         transparent
@@ -518,6 +499,17 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<a
       >
         <TouchableWithoutFeedback onPress={toggleDropdown}>
           <Box className={cn('flex-1', { 'items-center bg-black/50': isFull })}>
+            <Box
+              className="absolute"
+              style={{
+                left,
+                top: top - height,
+                width,
+                zIndex: 1000,
+              }}
+            >
+              {renderInput()}
+            </Box>
             <Box
               className={cn('flex-1', { 'items-center justify-center': isFull })}
               style={StyleSheet.flatten([
@@ -569,6 +561,7 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<a
     styleHorizontal,
     renderList,
     dropdownProps?.className,
+    renderInput,
   ]);
 
   // Cleanup effect
@@ -582,12 +575,12 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<a
 
   return (
     <View className={cn('justify-center', inputProps?.containerClassName)} ref={ref} onLayout={measureComponent}>
-      {renderDropdown()}
+      {renderInput()}
       {renderModal()}
     </View>
   );
 });
 
-InputSelectDropdown.displayName = 'InputSelectDropdown';
+InputDropdown.displayName = 'InputDropdown';
 
-export default memo(InputSelectDropdown);
+export default memo(InputDropdown);

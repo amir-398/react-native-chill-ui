@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import UiPresentation from './storybook';
-import Dropdown from '../src/components/select/InputSelectDropdown';
+import InputDropdown from '../src/components/select/inputDropdown';
 
-const meta: Meta<typeof Dropdown> = {
+const meta: Meta<typeof InputDropdown> = {
   argTypes: {
     // Configuration de base
     dataSet: {
@@ -131,7 +131,7 @@ const meta: Meta<typeof Dropdown> = {
       description: 'Fonction de recherche personnalisée',
     },
   },
-  component: Dropdown,
+  component: InputDropdown,
   decorators: [
     Story => (
       <UiPresentation className="items-start justify-center px-5">
@@ -139,11 +139,11 @@ const meta: Meta<typeof Dropdown> = {
       </UiPresentation>
     ),
   ],
-  title: 'Components/SelectDropdown',
+  title: 'Components/InputDropdown',
 };
 
 export default meta;
-type Story = StoryObj<typeof Dropdown>;
+type Story = StoryObj<typeof InputDropdown>;
 
 const data = [
   { label: 'labelItem 1', value: 'ValueItem 1' },
@@ -167,12 +167,6 @@ export const Default: Story = {
     hasSearch: true,
     inputProps: {
       placeholder: 'Sélectionnez une options',
-    },
-    searchInputProps: {
-      onChangeText: (text: string) => {
-        console.log('text', text);
-      },
-      placeholder: 'Rechercher une option',
     },
     valueField: 'label',
   },

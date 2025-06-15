@@ -32,7 +32,6 @@ export default function DevToolAction({ children, handleToggleStorybook }: DevTo
         <Icon
           name={position === 'bottom' ? 'angle-up-solid' : 'angle-down-solid'}
           size="sm"
-          wrapper
           onPress={handleTogglePosition}
           color="#fff"
         />
