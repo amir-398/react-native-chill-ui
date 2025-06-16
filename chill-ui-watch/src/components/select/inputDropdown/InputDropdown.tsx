@@ -1,70 +1,27 @@
-import React, { useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState, memo } from 'react';
-import {
-  Dimensions,
-  FlatList,
-  I18nManager,
-  Keyboard,
-  KeyboardEvent,
-  Modal,
-  StatusBar,
-  StyleSheet,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
-  View,
-  ViewStyle,
-} from 'react-native';
+import { Keyboard, TextInput, View } from 'react-native';
+import React, { useCallback, useEffect, useImperativeHandle, useMemo, useRef, memo } from 'react';
 
 import cn from '@/components/cn';
-import { Box } from '@/components/box';
-import String from '@/components/string';
 import Input from '@/components/inputs/Input';
 
-import { useDetectDevice, useDeviceOrientation } from '../utils';
+import { DEFAULT_CONFIG } from './types';
+import { useDeviceOrientation } from '../utils';
+import DropdownList from './components/DropdownList';
+import DropdownModal from './components/DropdownModal';
+import useDropdownState from './hooks/useDropdownState';
+import useDropdownSearch from './hooks/useDropdownSearch';
+import useDropdownKeyboard from './hooks/useDropdownKeyboard';
+import useMeasureComponent from './hooks/useMeasureComponent';
+import { get, findIndex, debounce, isEqual } from '../../../utils';
 import { IDropdownRef, InputProps, SelectDropdownProps } from '../../../types';
-import { get, debounce, assign, isEqual, findIndex, differenceWith } from '../../../utils';
-
-const { isTablet } = useDetectDevice;
-
-const statusBarHeight: number = StatusBar.currentHeight || 0;
-
-// default config
-const DEFAULT_CONFIG = {
-  DEBOUNCE_DELAY: 200,
-  FALLBACK_THRESHOLD: 100,
-  MAX_HEIGHT: 340,
-  MIN_HEIGHT: 0,
-  PLACEHOLDER: 'Select item',
-  SCROLL_THRESHOLD: 150,
-} as const;
-
-// types
-interface Position {
-  top: number;
-  left: number;
-  width: number;
-  bottom: number;
-  height: number;
-  isFull: boolean;
-}
-
-interface DropdownState {
-  listData: any[];
-  visible: boolean;
-  currentValue: any;
-  searchText: string;
-  keyboardHeight: number;
-  position: Position | null;
-}
 
 const InputDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<any>>((props, currentRef) => {
   const orientation = useDeviceOrientation();
-
   const {
     autoScroll = true,
     closeModalWhenSelectedItem = true,
     confirmSelectItem,
     customDropdownItem,
-    customInputSearch,
     dataSet = [],
     disable = false,
     dropdownItemProps,
@@ -72,8 +29,10 @@ const InputDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<any>>((
     dropdownProps,
     excludeItems = [],
     excludeSearchItems = [],
+    hasPerformSearch = true,
     hasSearch = false,
     inputProps,
+    isLoading,
     keyboardAvoiding = true,
     maxHeight = DEFAULT_CONFIG.MAX_HEIGHT,
     minHeight = DEFAULT_CONFIG.MIN_HEIGHT,
@@ -89,158 +48,45 @@ const InputDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<any>>((
   } = props;
 
   const ref = useRef<View>(null);
-  const refList = useRef<FlatList>(null);
-  const inputRef = useRef<any>(null);
+  const refList = useRef<any>(null);
+  const inputRef = useRef<TextInput>(null);
 
-  const [state, setState] = useState<DropdownState>({
-    currentValue: null,
-    keyboardHeight: 0,
-    listData: dataSet,
-    position: null,
-    searchText: '',
-    visible: false,
+  const { state, updateState } = useDropdownState(dataSet);
+  const { debouncedSearch, excludeData, performSearch } = useDropdownSearch(
+    dataSet,
+    excludeItems,
+    excludeSearchItems,
+    String(valueField),
+    searchField ? String(searchField) : undefined,
+    searchQuery,
+  );
+
+  const measureComponent = useMeasureComponent({
+    mode,
+    orientation,
+    ref,
+    updateState,
   });
 
-  const { height: H, width: W } = Dimensions.get('window');
-
-  const styleHorizontal: ViewStyle = useMemo(
-    () => ({
-      alignSelf: 'center',
-      width: orientation === 'LANDSCAPE' ? W / 2 : '100%',
-    }),
-    [W, orientation],
-  );
-
-  // Fonction utilitaire pour exclure les données
-  const excludeData = useCallback(
-    (dataToFilter: any[]) => {
-      if (excludeItems.length === 0) return dataToFilter || [];
-
-      return (
-        differenceWith(dataToFilter, excludeItems, (obj1, obj2) =>
-          isEqual(get(obj1, valueField), get(obj2, valueField)),
-        ) || []
-      );
-    },
-    [excludeItems, valueField],
-  );
-
-  // perform search with debounce
-  const performSearch = useCallback(
-    (text: string) => {
-      if (text.length === 0) {
-        const filterData = excludeData(dataSet);
-        setState(prev => ({ ...prev, listData: filterData }));
-        return;
-      }
-
-      const createSearchFilter = () => {
-        if (searchQuery) {
-          return (e: any) => {
-            const labelText = get(e, searchField || valueField);
-            return searchQuery(text, labelText);
-          };
-        }
-
-        return (e: any) => {
-          const item = get(e, searchField || valueField)
-            ?.toLowerCase()
-            .replace(/\s/g, '')
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '');
-          const key = text
-            .toLowerCase()
-            .replace(/\s/g, '')
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '');
-
-          return item?.indexOf(key) >= 0;
-        };
-      };
-
-      const searchFilter = createSearchFilter();
-      const dataSearch = dataSet.filter(searchFilter);
-      if (excludeSearchItems.length > 0 || excludeItems.length > 0) {
-        const excludeSearchData = differenceWith(dataSearch, excludeSearchItems, (obj1, obj2) =>
-          isEqual(get(obj1, valueField), get(obj2, valueField)),
-        );
-        const filterData = excludeData(excludeSearchData);
-        setState(prev => ({ ...prev, listData: filterData }));
-      } else {
-        setState(prev => ({ ...prev, listData: dataSearch }));
-      }
-    },
-    [dataSet, searchQuery, excludeSearchItems, excludeItems, searchField, valueField, excludeData],
-  );
-
-  // Gestion de la recherche avec debounce
-  const debouncedSearch = useMemo(() => debounce(performSearch, DEFAULT_CONFIG.DEBOUNCE_DELAY), [performSearch]);
-
-  // Effet pour la synchronisation des données
-  useEffect(() => {
-    if (dataSet && state.searchText.length === 0) {
-      const filterData = excludeData(dataSet);
-      setState(prev => ({ ...prev, listData: [...filterData] }));
-    }
-
-    if (state.searchText) {
-      debouncedSearch(state.searchText);
-    }
-
-    // Cleanup debounce
-    return () => {
-      debouncedSearch.cancel();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dataSet, state.searchText]);
-
-  // Fonction de mesure des dimensions
-  const measureComponent = useCallback(() => {
-    if (!ref.current) return;
-
-    ref.current.measureInWindow((pageX, pageY, width, height) => {
-      const isFull = isTablet ? false : mode === 'modal' || orientation === 'LANDSCAPE';
-      const isAutoMode = mode === 'auto';
-
-      const top = isFull && !isAutoMode ? 20 : height + pageY;
-      const bottom = H - top + height;
-      const left = I18nManager.isRTL ? W - width - pageX : pageX;
-
-      setState(prev => ({
-        ...prev,
-        position: {
-          bottom: Math.floor(bottom - statusBarHeight),
-          height: Math.floor(height),
-          isFull: isFull && !isAutoMode,
-          left: Math.floor(left),
-          top: Math.floor(top + statusBarHeight),
-          width: Math.floor(width),
-        },
-      }));
-    });
-  }, [H, W, orientation, mode]);
-
-  // Gestion des événements d'ouverture/fermeture
   const eventOpen = useCallback(() => {
     if (disable) return;
 
     measureComponent();
-    setState(prev => ({ ...prev, visible: true }));
+    updateState({ visible: true });
     onFocus?.();
 
     if (state.searchText.length > 0) {
       performSearch(state.searchText);
     }
-  }, [disable, onFocus, state.searchText, performSearch, measureComponent]);
+  }, [disable, onFocus, state.searchText, performSearch, measureComponent, updateState]);
 
   const eventClose = useCallback(() => {
     if (disable) return;
 
-    setState(prev => ({ ...prev, visible: false }));
+    updateState({ visible: false });
     onBlur?.();
-  }, [disable, onBlur]);
+  }, [disable, onBlur, updateState]);
 
-  // Méthodes d'interface exposées
   useImperativeHandle(
     currentRef,
     () => ({
@@ -249,43 +95,29 @@ const InputDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<any>>((
     }),
     [eventClose, eventOpen],
   );
-  // Gestion du clavier
-  const handleKeyboardShow = useCallback(
-    (e: KeyboardEvent) => {
+
+  useDropdownKeyboard(
+    height => {
       measureComponent();
-      setState(prev => ({ ...prev, keyboardHeight: e.endCoordinates.height }));
+      updateState({ keyboardHeight: height });
     },
-    [measureComponent],
+    () => {
+      updateState({ keyboardHeight: 0 });
+      measureComponent();
+    },
   );
 
-  const handleKeyboardHide = useCallback(() => {
-    setState(prev => ({ ...prev, keyboardHeight: 0 }));
-    measureComponent();
-  }, [measureComponent]);
-
-  useEffect(() => {
-    const keyboardShowListener = Keyboard.addListener('keyboardDidShow', handleKeyboardShow);
-    const keyboardHideListener = Keyboard.addListener('keyboardDidHide', handleKeyboardHide);
-
-    return () => {
-      keyboardShowListener?.remove();
-      keyboardHideListener?.remove();
-    };
-  }, [handleKeyboardShow, handleKeyboardHide]);
-
-  // Gestion de la valeur sélectionnée
   const updateCurrentValue = useCallback(() => {
     const defaultValue = typeof inputProps?.value === 'object' ? get(inputProps?.value, valueField) : inputProps?.value;
     const selectedItem = dataSet.find((e: any) => isEqual(defaultValue, get(e, valueField)));
 
-    setState(prev => ({ ...prev, currentValue: selectedItem || null }));
-  }, [dataSet, inputProps?.value, valueField]);
+    updateState({ currentValue: selectedItem || null });
+  }, [dataSet, inputProps?.value, valueField, updateState]);
 
   useEffect(() => {
     updateCurrentValue();
   }, [updateCurrentValue]);
 
-  // Scroll automatique avec debounce
   const scrollToSelectedIndex = useMemo(
     () =>
       debounce(() => {
@@ -310,35 +142,30 @@ const InputDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<any>>((
     [autoScroll, dataSet?.length, state.listData, inputProps?.value, valueField],
   );
 
-  // Toggle du dropdown
   const toggleDropdown = useCallback(() => {
     if (disable) return;
 
     const willBeVisible = !state.visible;
 
-    // handle keyboard
     if (state.keyboardHeight > 0 && !willBeVisible) {
       Keyboard.dismiss();
       return;
     }
 
     measureComponent();
-    setState(prev => ({ ...prev, visible: willBeVisible }));
+    updateState({ visible: willBeVisible });
 
-    // update dataSet
     if (dataSet) {
       const filterData = excludeData(dataSet);
-      setState(prev => ({ ...prev, listData: filterData }));
+      updateState({ listData: filterData });
     }
 
-    // callbacks
     if (willBeVisible) {
       onFocus?.();
     } else {
       onBlur?.();
     }
 
-    // search if necessary
     if (state.searchText.length > 0) {
       performSearch(state.searchText);
     }
@@ -353,6 +180,7 @@ const InputDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<any>>((
     onFocus,
     onBlur,
     performSearch,
+    updateState,
   ]);
 
   useEffect(() => {
@@ -361,50 +189,63 @@ const InputDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<any>>((
     }
   }, [state.visible]);
 
-  // Sélection d'un élément
   const selectItem = useCallback(
     (item: any) => {
       if (confirmSelectItem && onConfirmSelectItem) {
         return onConfirmSelectItem(item);
       }
 
-      setState(prev => ({ ...prev, currentValue: item }));
+      updateState({ currentValue: item });
       onSelectItem?.(item);
 
       if (closeModalWhenSelectedItem) {
-        setState(prev => ({ ...prev, searchText: '', visible: false }));
+        updateState({ searchText: '', visible: false });
         performSearch('');
         onBlur?.();
       }
       return undefined;
     },
-    [confirmSelectItem, onSelectItem, onConfirmSelectItem, performSearch, closeModalWhenSelectedItem, onBlur],
+    [
+      confirmSelectItem,
+      onSelectItem,
+      onConfirmSelectItem,
+      performSearch,
+      closeModalWhenSelectedItem,
+      onBlur,
+      updateState,
+    ],
   );
 
-  // handle search text change
   const handleSearchTextChange = useCallback(
     (text: string) => {
       searchInputProps?.onChangeText?.(text);
-      setState(prev => ({ ...prev, searchText: text }));
-      performSearch(text);
+      updateState({
+        currentValue: text === '' ? null : state.currentValue,
+        searchText: text,
+        visible: text.length > 0 ? state.visible : false,
+      });
 
-      // Ouvrir le dropdown au début de la saisie
-      if (!state.visible) {
+      if (hasPerformSearch) {
+        performSearch(text);
+      }
+
+      if (!state.visible && text.length > 0) {
         eventOpen();
       }
     },
-    [performSearch, searchInputProps, state.visible, eventOpen],
+    [performSearch, searchInputProps, state.visible, eventOpen, updateState, state.currentValue, hasPerformSearch],
   );
 
   const renderInput = useCallback(
     (inputRefParam?: InputProps['inputRef']) => {
       const isSelected = state.currentValue && get(state.currentValue, valueField);
+      const displayValue = state.searchText || (isSelected ? get(state.currentValue, valueField) : '');
 
       return (
         <Input
           inputRef={inputRefParam ?? undefined}
           placeholder={inputProps?.placeholder ?? DEFAULT_CONFIG.PLACEHOLDER}
-          value={state.searchText || (isSelected ? get(state.currentValue, valueField) : undefined)}
+          value={displayValue}
           onChangeText={handleSearchTextChange}
           {...inputProps}
         />
@@ -413,161 +254,23 @@ const InputDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<any>>((
     [inputProps, state.currentValue, state.searchText, valueField, handleSearchTextChange],
   );
 
-  // Rendu d'un élément de la liste - mémorisé pour les performances
-  const renderListItem = useCallback(
-    ({ index, item }: { item: any; index: number }) => {
-      const isSelected = state.currentValue && get(state.currentValue, valueField);
-      const selected = isEqual(get(item, valueField), isSelected);
-      assign(item, { _index: index });
+  useEffect(() => {
+    if (!hasPerformSearch) return;
 
-      return (
-        <TouchableHighlight
-          key={index.toString()}
-          onPress={() => selectItem(item)}
-          underlayColor={dropdownItemProps?.activeBackgroundColor ?? '#F6F7F8'}
-        >
-          <Box>
-            {customDropdownItem ? (
-              customDropdownItem(item, selected)
-            ) : (
-              <Box className={cn('p-3', dropdownItemProps?.className)}>
-                <String {...dropdownItemProps?.textItemProps}>{get(item, valueField)}</String>
-              </Box>
-            )}
-          </Box>
-        </TouchableHighlight>
-      );
-    },
-    [dropdownItemProps, state.currentValue, valueField, selectItem, customDropdownItem],
-  );
-
-  const renderList = useCallback(
-    () => (
-      <TouchableWithoutFeedback>
-        <Box className="flex-shrink">
-          <FlatList
-            {...dropdownProps}
-            keyboardShouldPersistTaps="handled"
-            ref={refList}
-            onContentSizeChange={scrollToSelectedIndex}
-            onScrollToIndexFailed={scrollToSelectedIndex}
-            data={state.listData}
-            renderItem={renderListItem}
-            keyExtractor={(_item, index) => index.toString()}
-            removeClippedSubviews
-            maxToRenderPerBatch={10}
-            windowSize={10}
-          />
-        </Box>
-      </TouchableWithoutFeedback>
-    ),
-    [renderListItem, dropdownProps, state.listData, scrollToSelectedIndex],
-  );
-
-  // Rendu du modal
-  const renderModal = useCallback(() => {
-    if (!state.visible || !state.position) return null;
-
-    const { bottom, height, isFull, left, top, width } = state.position;
-
-    const shouldPositionTop = () => {
-      if (state.keyboardHeight > 0) {
-        return bottom < state.keyboardHeight + height;
-      }
-      return bottom < (hasSearch ? DEFAULT_CONFIG.SCROLL_THRESHOLD : DEFAULT_CONFIG.FALLBACK_THRESHOLD);
-    };
-
-    if (!width || !top || !bottom) return null;
-
-    const styleVertical: ViewStyle = {
-      left,
-      maxHeight,
-      minHeight,
-    };
-
-    const isTopPosition = dropdownPosition === 'auto' ? shouldPositionTop() : dropdownPosition === 'top';
-    let extendHeight = !isTopPosition ? top : bottom;
-
-    if (keyboardAvoiding && state.keyboardHeight > 0 && isTopPosition && dropdownPosition === 'auto') {
-      extendHeight = state.keyboardHeight;
+    if (dataSet && state.searchText.length === 0) {
+      const filterData = excludeData(dataSet);
+      updateState({ listData: [...filterData] });
     }
 
-    return (
-      <Modal
-        transparent
-        statusBarTranslucent
-        visible={state.visible}
-        supportedOrientations={['landscape', 'portrait']}
-        onRequestClose={toggleDropdown}
-      >
-        <TouchableWithoutFeedback onPress={toggleDropdown}>
-          <Box className={cn('flex-1', { 'items-center bg-black/50': isFull })}>
-            <Box
-              className="absolute"
-              style={{
-                left,
-                top: top - height,
-                width,
-                zIndex: 1000,
-              }}
-            >
-              {renderInput(inputRef)}
-            </Box>
-            <Box
-              className={cn('flex-1', { 'items-center justify-center': isFull })}
-              style={StyleSheet.flatten([
-                !isTopPosition
-                  ? { paddingTop: extendHeight }
-                  : {
-                      justifyContent: 'flex-end',
-                      paddingBottom: extendHeight,
-                    },
-              ])}
-            >
-              <Box
-                className={cn(
-                  'elevation-lg flex-shrink rounded-lg border border-[#E5E7EB] bg-white',
-                  dropdownProps?.className,
-                )}
-                style={StyleSheet.flatten([
-                  isFull ? styleHorizontal : styleVertical,
-                  { width },
-                  dropdownProps?.hasShadow && {
-                    shadowColor: '#000',
-                    shadowOffset: {
-                      height: 1,
-                      width: 0,
-                    },
-                    shadowOpacity: 0.2,
-                    shadowRadius: 1.41,
-                  },
-                ])}
-              >
-                {renderList()}
-              </Box>
-            </Box>
-          </Box>
-        </TouchableWithoutFeedback>
-      </Modal>
-    );
-  }, [
-    state.visible,
-    state.position,
-    state.keyboardHeight,
-    dropdownProps?.hasShadow,
-    hasSearch,
-    maxHeight,
-    minHeight,
-    dropdownPosition,
-    keyboardAvoiding,
-    toggleDropdown,
-    styleHorizontal,
-    renderList,
-    dropdownProps?.className,
-    renderInput,
-  ]);
+    if (state.searchText) {
+      const searchResults = performSearch(state.searchText);
+      updateState({ listData: searchResults });
+    }
+    // eslint-disable-next-line
+    return () => debouncedSearch.cancel();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dataSet, state.searchText, updateState, hasPerformSearch]);
 
-  // Cleanup effect
   useEffect(
     () => () => {
       debouncedSearch.cancel();
@@ -579,7 +282,39 @@ const InputDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<any>>((
   return (
     <View className={cn('justify-center', inputProps?.containerClassName)} ref={ref} onLayout={measureComponent}>
       {renderInput()}
-      {renderModal()}
+      {state.position && (
+        <DropdownModal
+          visible={state.visible}
+          position={state.position}
+          keyboardHeight={state.keyboardHeight}
+          hasSearch={hasSearch}
+          maxHeight={maxHeight}
+          minHeight={minHeight}
+          dropdownPosition={dropdownPosition}
+          keyboardAvoiding={keyboardAvoiding}
+          onClose={toggleDropdown}
+          className={dropdownProps?.className}
+          hasShadow={dropdownProps?.hasShadow}
+          renderInput={() => renderInput(inputRef)}
+        >
+          <DropdownList
+            data={state.listData}
+            valueField={String(valueField)}
+            currentValue={state.currentValue}
+            onSelectItem={selectItem}
+            dropdownItemProps={dropdownItemProps}
+            customDropdownItem={customDropdownItem}
+            dropdownProps={dropdownProps}
+            emptyText={dropdownProps?.emptyText}
+            customEmpty={dropdownProps?.customEmpty}
+            isLoading={isLoading}
+            onScrollToIndexFailed={scrollToSelectedIndex}
+            onContentSizeChange={scrollToSelectedIndex}
+            loadingIndicatorProps={dropdownProps?.loadingIndicatorProps}
+            customLoadingIndicator={dropdownProps?.customLoadingIndicator}
+          />
+        </DropdownModal>
+      )}
     </View>
   );
 });

@@ -230,12 +230,35 @@ export interface SkeletonProps {
   variant?: 'rectangle' | 'circle' | 'square' | 'text';
 }
 
+// --------------------------------------------------------------------------------
+
+// LoadingIndicators ------------------------------------------------------------
+
+// --------------------------------------------------------------------------------
+
 export interface LoadingIndicatorsProps extends ViewProps {
   size?: number;
   color?: string;
   animating?: boolean;
   hidesWhenStopped?: boolean;
 }
+export type LoadingIndicatorType =
+  | 'bounce'
+  | 'chase'
+  | 'circleFade'
+  | 'flow'
+  | 'fold'
+  | 'grid'
+  | 'pulse'
+  | 'spinner'
+  | 'swing'
+  | 'wander';
+
+export type LoadingIndicatorProps = LoadingIndicatorsProps & {
+  name: LoadingIndicatorType;
+};
+// --------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
 
 export type addressComponentsTypes = 'postal_code' | 'locality' | 'country' | 'street_number' | 'route';
 
@@ -640,6 +663,13 @@ export type IDropdownRef = {
 export type DropdownProps = {
   className?: string;
   hasShadow?: boolean;
+  hasBackdrop?: boolean;
+  backdropColor?: string;
+  backdropClassName?: string;
+  emptyText?: string;
+  customEmpty?: () => React.ReactNode;
+  loadingIndicatorProps?: LoadingIndicatorProps;
+  customLoadingIndicator?: () => React.ReactNode;
 } & Omit<FlatListProps<any>, 'renderItem' | 'data'>;
 
 export type InputsProps = {
@@ -655,12 +685,14 @@ export interface SelectDropdownProps<T> {
   valueField: keyof T;
   hasSearch?: boolean;
   onBlur?: () => void;
+  isLoading?: boolean;
   autoScroll?: boolean;
   onFocus?: () => void;
   searchField?: keyof T;
   inputProps?: InputsProps;
   excludeSearchItems?: T[];
   keyboardAvoiding?: boolean;
+  hasPerformSearch?: boolean;
   confirmSelectItem?: boolean;
   dropdownProps?: DropdownProps;
   searchInputProps?: InputsProps;

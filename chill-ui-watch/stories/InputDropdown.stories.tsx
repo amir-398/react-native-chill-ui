@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import UiPresentation from './storybook';
-import InputDropdown from '../src/components/select/inputDropdown';
+import InputDropdown from '../src/components/select/inputDropdown/InputDropdown';
 
 const meta: Meta<typeof InputDropdown> = {
   argTypes: {
@@ -126,6 +126,10 @@ const meta: Meta<typeof InputDropdown> = {
       control: 'boolean',
       description: 'Active la confirmation de sélection',
     },
+    hasPerformSearch: {
+      control: 'boolean',
+      description: 'Active la recherche',
+    },
     searchQuery: {
       control: false,
       description: 'Fonction de recherche personnalisée',
@@ -162,8 +166,11 @@ export const Default: Story = {
     dropdownPosition: 'auto',
     dropdownProps: {
       className: 'rounded-lg mt-1',
+      emptyText: 'Aucun résultat',
+      hasBackdrop: true,
       hasShadow: true,
     },
+
     hasSearch: true,
     inputProps: {
       placeholder: 'Sélectionnez une options',
