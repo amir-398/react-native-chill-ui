@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { FlatList, TouchableHighlight, TouchableWithoutFeedback } from 'react-native';
+import { FlatList, TouchableHighlight } from 'react-native';
 
 import cn from '../../../cn';
 import { Box } from '../../../box';
@@ -93,22 +93,18 @@ export default function DropdownList({
   }
 
   return (
-    <TouchableWithoutFeedback>
-      <Box className="flex-shrink">
-        <FlatList
-          {...dropdownProps}
-          keyboardShouldPersistTaps="handled"
-          onContentSizeChange={onContentSizeChange}
-          onScrollToIndexFailed={onScrollToIndexFailed}
-          data={data}
-          renderItem={renderListItem}
-          ListEmptyComponent={ListEmptyComponent}
-          keyExtractor={(_item, index) => index.toString()}
-          removeClippedSubviews
-          maxToRenderPerBatch={10}
-          windowSize={10}
-        />
-      </Box>
-    </TouchableWithoutFeedback>
+    <FlatList
+      {...dropdownProps}
+      keyboardShouldPersistTaps="handled"
+      onContentSizeChange={onContentSizeChange}
+      onScrollToIndexFailed={onScrollToIndexFailed}
+      data={data}
+      renderItem={renderListItem}
+      ListEmptyComponent={ListEmptyComponent}
+      keyExtractor={(_item, index) => index.toString()}
+      removeClippedSubviews
+      maxToRenderPerBatch={10}
+      windowSize={10}
+    />
   );
 }

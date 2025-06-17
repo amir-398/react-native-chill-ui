@@ -1,4 +1,4 @@
-import { Keyboard, TextInput, View } from 'react-native';
+import { Keyboard, LogBox, TextInput, View } from 'react-native';
 import React, { useCallback, useEffect, useImperativeHandle, useMemo, useRef, memo } from 'react';
 
 import cn from '@/components/cn';
@@ -79,6 +79,10 @@ const InputDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<any>>((
       performSearch(state.searchText);
     }
   }, [disable, onFocus, state.searchText, performSearch, measureComponent, updateState]);
+
+  useEffect(() => {
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+  }, [state.visible]);
 
   const eventClose = useCallback(() => {
     if (disable) return;

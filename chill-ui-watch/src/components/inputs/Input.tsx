@@ -194,7 +194,6 @@ export default function Input(props: InputProps) {
       )}
       onChangeText={handleOnChange}
       secureTextEntry={isSecureEntry}
-      cursorColor="#fff"
       multiline={multiline}
       maxLength={maxLength}
       {...rest}

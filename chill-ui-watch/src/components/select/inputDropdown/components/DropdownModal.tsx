@@ -1,5 +1,4 @@
 import React from 'react';
-import { Modal, TouchableWithoutFeedback } from 'react-native';
 
 import cn from '@/components/cn';
 import { Box } from '@/components/box';
@@ -45,7 +44,7 @@ export default function DropdownModal({
 }: DropdownModalProps) {
   if (!visible || !position) return null;
 
-  const { bottom, height, isFull, left, top, width } = position;
+  const { bottom, height, left, top, width } = position;
 
   const shouldPositionTop = () => {
     if (keyboardHeight > 0) {
@@ -56,64 +55,23 @@ export default function DropdownModal({
 
   if (!width || !top || !bottom) return null;
 
-  const isTopPosition = dropdownPosition === 'auto' ? shouldPositionTop() : dropdownPosition === 'top';
-  let extendHeight = !isTopPosition ? top : bottom;
-
-  if (keyboardAvoiding && keyboardHeight > 0 && isTopPosition && dropdownPosition === 'auto') {
-    extendHeight = keyboardHeight;
-  }
-
   return (
-    <Modal
-      transparent
-      statusBarTranslucent
-      visible={visible}
-      supportedOrientations={['landscape', 'portrait']}
-      onRequestClose={onClose}
+    <Box
+      className={cn('elevation-lg absolute z-50 rounded-lg border border-[#E5E7EB] bg-white', className)}
+      style={[
+        { height: 200, maxHeight, minHeight, top: height, width },
+        hasShadow && {
+          shadowColor: '#000',
+          shadowOffset: {
+            height: 1,
+            width: 0,
+          },
+          shadowOpacity: 0.2,
+          shadowRadius: 1.41,
+        },
+      ]}
     >
-      <TouchableWithoutFeedback onPress={onClose}>
-        <Box
-          className={cn(
-            'flex-1',
-            { 'bg-black/20': hasBackdrop, 'items-center': isFull },
-            hasBackdrop && backdropClassName,
-          )}
-          style={{ ...(hasBackdrop && { backgroundColor: backdropColor }) }}
-        >
-          <Box className="absolute" style={{ left, top: top - height, width }}>
-            {renderInput()}
-          </Box>
-          <Box
-            className={cn('flex-1', { 'items-center justify-center': isFull })}
-            style={[
-              !isTopPosition
-                ? { paddingTop: extendHeight }
-                : {
-                    justifyContent: 'flex-end',
-                    paddingBottom: extendHeight,
-                  },
-            ]}
-          >
-            <Box
-              className={cn('elevation-lg flex-shrink rounded-lg border border-[#E5E7EB] bg-white', className)}
-              style={[
-                { left, maxHeight, minHeight, width },
-                hasShadow && {
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    height: 1,
-                    width: 0,
-                  },
-                  shadowOpacity: 0.2,
-                  shadowRadius: 1.41,
-                },
-              ]}
-            >
-              {children}
-            </Box>
-          </Box>
-        </Box>
-      </TouchableWithoutFeedback>
-    </Modal>
+      {children}
+    </Box>
   );
 }
