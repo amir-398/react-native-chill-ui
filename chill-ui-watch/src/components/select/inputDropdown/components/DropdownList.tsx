@@ -101,10 +101,11 @@ export default function DropdownList({
       data={data}
       renderItem={renderListItem}
       ListEmptyComponent={ListEmptyComponent}
-      keyExtractor={(_item, index) => index.toString()}
+      keyExtractor={(item, index) => item?.id || index.toString()}
       removeClippedSubviews
       maxToRenderPerBatch={10}
       windowSize={10}
+      nestedScrollEnabled
     />
   );
 }
