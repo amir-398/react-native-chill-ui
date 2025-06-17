@@ -106,6 +106,7 @@ export default function DropdownList({
       maxToRenderPerBatch={10}
       windowSize={10}
       nestedScrollEnabled
+      className=""
     />
   );
 }

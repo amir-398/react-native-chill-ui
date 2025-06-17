@@ -286,39 +286,33 @@ const InputDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<any>>((
   return (
     <View className={cn('justify-center', inputProps?.containerClassName)} ref={ref} onLayout={measureComponent}>
       {renderInput()}
-      {state.position && (
-        <DropdownModal
-          visible={state.visible}
-          position={state.position}
-          keyboardHeight={state.keyboardHeight}
-          hasSearch={hasSearch}
-          maxHeight={maxHeight}
-          minHeight={minHeight}
-          dropdownPosition={dropdownPosition}
-          keyboardAvoiding={keyboardAvoiding}
-          onClose={toggleDropdown}
-          className={dropdownProps?.className}
-          hasShadow={dropdownProps?.hasShadow}
-          renderInput={() => renderInput(inputRef)}
-        >
-          <DropdownList
-            data={state.listData}
-            valueField={String(valueField)}
-            currentValue={state.currentValue}
-            onSelectItem={selectItem}
-            dropdownItemProps={dropdownItemProps}
-            customDropdownItem={customDropdownItem}
-            dropdownProps={dropdownProps}
-            emptyText={dropdownProps?.emptyText}
-            customEmpty={dropdownProps?.customEmpty}
-            isLoading={isLoading}
-            onScrollToIndexFailed={scrollToSelectedIndex}
-            onContentSizeChange={scrollToSelectedIndex}
-            loadingIndicatorProps={dropdownProps?.loadingIndicatorProps}
-            customLoadingIndicator={dropdownProps?.customLoadingIndicator}
-          />
-        </DropdownModal>
-      )}
+
+      <DropdownModal
+        visible={state.visible}
+        position={state.position}
+        maxHeight={maxHeight}
+        minHeight={minHeight}
+        className={dropdownProps?.className}
+        hasShadow={dropdownProps?.hasShadow}
+        withAnimation
+      >
+        <DropdownList
+          data={state.listData}
+          valueField={String(valueField)}
+          currentValue={state.currentValue}
+          onSelectItem={selectItem}
+          dropdownItemProps={dropdownItemProps}
+          customDropdownItem={customDropdownItem}
+          dropdownProps={dropdownProps}
+          emptyText={dropdownProps?.emptyText}
+          customEmpty={dropdownProps?.customEmpty}
+          isLoading={isLoading}
+          onScrollToIndexFailed={scrollToSelectedIndex}
+          onContentSizeChange={scrollToSelectedIndex}
+          loadingIndicatorProps={dropdownProps?.loadingIndicatorProps}
+          customLoadingIndicator={dropdownProps?.customLoadingIndicator}
+        />
+      </DropdownModal>
     </View>
   );
 });

@@ -1,7 +1,7 @@
 import type { ViewProps as NativeViewProps } from 'react-native';
 
+import { Animated } from 'react-native';
 import { cssInterop } from 'nativewind';
-import Animated from 'react-native-reanimated';
 
 import type { AnimatedViewProps } from '../../types';
 

@@ -1,9 +1,7 @@
 import type { AnimatedViewProps } from '../../types';
 
-import { AnimatedView } from './View';
+import { AnimatedView as AnimatedViewNative } from './View';
 
 export default function AnimatedBox(props: AnimatedViewProps) {
-  const { className, style, ...rest } = props;
-
-  return <AnimatedView style={style} className={className} {...rest} />;
+  return <AnimatedViewNative {...props} />;
 }
