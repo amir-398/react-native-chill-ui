@@ -96,11 +96,11 @@ export function AutocompleteDropdownContext({ children, headerOffset = 0 }: IAut
       return;
     }
 
-    for (const instance of activeInstances) {
+    activeInstances.forEach(instance => {
       const { dropdownPosition, id, inputContainerRef } = instance;
 
       if (!inputContainerRef.current || !wrapperRef.current) {
-        continue;
+        return;
       }
       try {
         inputContainerRef.current.measureInWindow((x, y, width, height) => {
@@ -108,7 +108,7 @@ export function AutocompleteDropdownContext({ children, headerOffset = 0 }: IAut
             return;
           }
 
-          wrapperRef.current.measureInWindow((wrapperX, wrapperY, wrapperWidth, wrapperHeight) => {
+          wrapperRef.current.measureInWindow((wrapperX, wrapperY, _wrapperWidth, wrapperHeight) => {
             const inputMeasurements = {
               bottomY: y - wrapperY + height,
               height,
@@ -120,7 +120,7 @@ export function AutocompleteDropdownContext({ children, headerOffset = 0 }: IAut
             let contentStyles: { top?: number; left: number; width?: number; bottom?: number } | undefined;
 
             if (dropdownPosition === 'top') {
-              const distanceFromBottom = wrapperHeight - inputMeasurements.topY + height;
+              const distanceFromBottom = wrapperHeight - inputMeasurements.topY + 5 + headerOffset;
               contentStyles = {
                 bottom: distanceFromBottom,
                 left: inputMeasurements.x,
@@ -150,7 +150,7 @@ export function AutocompleteDropdownContext({ children, headerOffset = 0 }: IAut
       } catch {
         return null;
       }
-    }
+    });
   }, [instances, headerOffset]);
 
   useEffect(() => {

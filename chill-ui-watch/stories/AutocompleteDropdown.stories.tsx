@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { String } from '@/components';
+import { View } from '@/components/box/View';
 
 import UiPresentation from './storybook';
 import { AutocompleteDropdownContext, AutocompleteDropdown } from '../src/components/AutocompleteDropdown';
@@ -172,7 +173,7 @@ export const Default: Story = {
       className: 'rounded-lg mt-1',
       emptyText: 'Aucun résultat',
       hasShadow: true,
-      position: 'top',
+      position: 'auto',
       withAnimation: false,
     },
     hasSearch: true,
@@ -181,4 +182,13 @@ export const Default: Story = {
     },
     valueField: 'value',
   },
+  render: args => (
+    <View className="gap-4">
+      <AutocompleteDropdown {...args} />
+      <AutocompleteDropdown {...args} />
+      <AutocompleteDropdown {...args} />
+      <AutocompleteDropdown {...args} />
+      <AutocompleteDropdown {...args} />
+    </View>
+  ),
 };

@@ -130,6 +130,7 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
     const { eventClose, eventOpen, toggleDropdown } = useDropdownActions({
       disabled: disable ?? false,
       getDropdownPosition,
+      position: dropdownProps?.position,
       setDropdownPosition: pos => {
         setDropdownPosition(instanceId, pos);
       },
