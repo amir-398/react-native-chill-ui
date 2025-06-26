@@ -9,7 +9,6 @@ export interface Position {
 
 export interface DropdownState {
   listData: any[];
-  visible: boolean;
   currentValue: any;
   searchText: string;
   keyboardHeight: number;
@@ -19,7 +18,7 @@ export interface DropdownState {
 export const DEFAULT_CONFIG = {
   DEBOUNCE_DELAY: 200,
   FALLBACK_THRESHOLD: 100,
-  MAX_HEIGHT: 340,
+  MAX_HEIGHT: 300,
   MIN_HEIGHT: 0,
   PLACEHOLDER: 'Select item',
   SCROLL_THRESHOLD: 150,

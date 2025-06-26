@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Box, String } from '@/components';
+import { String } from '@/components';
 
 import UiPresentation from './storybook';
-import InputDropdown from '../src/components/select/inputDropdown/InputDropdown';
+import { AutocompleteDropdownContext, AutocompleteDropdown } from '../src/components/AutocompleteDropdown';
 
-const meta: Meta<typeof InputDropdown> = {
+const meta: Meta<typeof AutocompleteDropdown> = {
   argTypes: {
     // Configuration de base
     dataSet: {
@@ -137,19 +137,22 @@ const meta: Meta<typeof InputDropdown> = {
       description: 'Fonction de recherche personnalisée',
     },
   },
-  component: InputDropdown,
+  component: AutocompleteDropdown,
   decorators: [
     Story => (
-      <UiPresentation className="items-start justify-center px-5">
-        <Story />
-      </UiPresentation>
+      <AutocompleteDropdownContext>
+        <UiPresentation className="items-start justify-center px-5">
+          <Story />
+          <String className="text-secondary">lol</String>
+        </UiPresentation>
+      </AutocompleteDropdownContext>
     ),
   ],
-  title: 'Components/InputDropdown',
+  title: 'Components/Inputs/AutocompleteDropdown',
 };
 
 export default meta;
-type Story = StoryObj<typeof InputDropdown>;
+type Story = StoryObj<typeof AutocompleteDropdown>;
 
 const data = [
   { label: 'labelItem 1', value: 'ValueItem 1' },
@@ -165,24 +168,17 @@ const data = [
 export const Default: Story = {
   args: {
     dataSet: data,
-    dropdownPosition: 'auto',
     dropdownProps: {
       className: 'rounded-lg mt-1',
       emptyText: 'Aucun résultat',
-      hasBackdrop: true,
       hasShadow: true,
+      position: 'top',
+      withAnimation: false,
     },
-
     hasSearch: true,
     inputProps: {
       placeholder: 'Sélectionnez une options',
     },
-    valueField: 'label',
+    valueField: 'value',
   },
-  render: args => (
-    <Box>
-      <InputDropdown {...args} />
-      <String>lol</String>
-    </Box>
-  ),
 };

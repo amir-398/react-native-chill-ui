@@ -139,7 +139,7 @@ const meta: Meta<typeof InputSelectDropdown> = {
       </UiPresentation>
     ),
   ],
-  title: 'Components/SelectDropdown',
+  title: 'Components/Inputs/InputSelectDropdown',
 };
 
 export default meta;

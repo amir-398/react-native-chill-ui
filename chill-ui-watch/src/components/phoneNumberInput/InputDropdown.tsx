@@ -4,10 +4,10 @@ import { FlatList } from 'react-native';
 import { memo, useCallback, useEffect, useState } from 'react';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
-import type { InputDropdownProps } from '../../../types';
+import type { InputDropdownProps } from '../../types';
 
-import Input from '../Input';
-import { Box } from '../../box';
+import { Box } from '../box';
+import { Input } from '../inputs';
 
 function ItemSeparator() {
   return <Box className="h-px w-full bg-neutral-200" />;

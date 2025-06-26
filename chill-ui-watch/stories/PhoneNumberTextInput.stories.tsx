@@ -1,9 +1,10 @@
 import { ComponentType, useState } from 'react';
 
-import { Box, String } from '@/components';
+import { String } from '@/components';
 import { PhoneNumberTextInputOnPhoneNumberChange } from '@/types';
 
-import PhoneNumberTextInput from '../src/components/inputs/phoneNumberInput/PhoneNumberInput';
+import UiPresentation from './storybook';
+import PhoneNumberTextInput from '../src/components/phoneNumberInput/PhoneNumberInput';
 
 export default {
   argTypes: {
@@ -45,9 +46,9 @@ export default {
   component: PhoneNumberTextInput,
   decorators: [
     (Story: ComponentType) => (
-      <Box className="items-start justify-start px-3">
+      <UiPresentation className="items-start justify-start px-3">
         <Story />
-      </Box>
+      </UiPresentation>
     ),
   ],
   title: 'Components/Inputs/PhoneNumberTextInput',

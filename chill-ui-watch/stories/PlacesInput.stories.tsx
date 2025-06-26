@@ -134,7 +134,7 @@ const meta: Meta<typeof PlacesInput> = {
       </Box>
     ),
   ],
-  title: 'components/PlacesInput',
+  title: 'components/Inputs/PlacesInput',
 };
 
 export default meta;

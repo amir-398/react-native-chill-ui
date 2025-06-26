@@ -2,11 +2,9 @@ import React, { useCallback, useEffect, useImperativeHandle, useMemo, useRef, us
 import {
   Dimensions,
   FlatList,
-  I18nManager,
   Keyboard,
   KeyboardEvent,
   Modal,
-  StatusBar,
   StyleSheet,
   TouchableHighlight,
   TouchableWithoutFeedback,
@@ -19,13 +17,10 @@ import { Box } from '@/components/box';
 import String from '@/components/string';
 import Input from '@/components/inputs/Input';
 
-import { useDetectDevice, useDeviceOrientation } from '../utils';
+import { useDeviceOrientation } from '../utils';
 import { IDropdownRef, SelectDropdownProps } from '../../../types';
+import useCalculateDropDownPosition from './hooks/useCalculateDropdownPosition';
 import { get, debounce, assign, isEqual, findIndex, differenceWith } from '../../../utils';
-
-const { isTablet } = useDetectDevice;
-
-const statusBarHeight: number = StatusBar.currentHeight || 0;
 
 // default config
 const DEFAULT_CONFIG = {
@@ -100,7 +95,9 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<a
     visible: false,
   });
 
-  const { height: H, width: W } = Dimensions.get('window');
+  const { measureComponent, position } = useCalculateDropDownPosition(ref, mode);
+
+  const { width: W } = Dimensions.get('window');
 
   const styleHorizontal: ViewStyle = useMemo(
     () => ({
@@ -195,32 +192,6 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<a
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataSet, state.searchText]);
-
-  // Fonction de mesure des dimensions
-  const measureComponent = useCallback(() => {
-    if (!ref.current) return;
-
-    ref.current.measureInWindow((pageX, pageY, width, height) => {
-      const isFull = isTablet ? false : mode === 'modal' || orientation === 'LANDSCAPE';
-      const isAutoMode = mode === 'auto';
-
-      const top = isFull && !isAutoMode ? 20 : height + pageY + 2;
-      const bottom = H - top + height;
-      const left = I18nManager.isRTL ? W - width - pageX : pageX;
-
-      setState(prev => ({
-        ...prev,
-        position: {
-          bottom: Math.floor(bottom - statusBarHeight),
-          height: Math.floor(height),
-          isFull: isFull && !isAutoMode,
-          left: Math.floor(left),
-          top: Math.floor(top + statusBarHeight),
-          width: Math.floor(width),
-        },
-      }));
-    });
-  }, [H, W, orientation, mode]);
 
   // Gestion des événements d'ouverture/fermeture
   const eventOpen = useCallback(() => {
@@ -482,9 +453,9 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<a
 
   // Rendu du modal
   const renderModal = useCallback(() => {
-    if (!state.visible || !state.position) return null;
+    if (!state.visible || !position) return null;
 
-    const { bottom, height, isFull, left, top, width } = state.position;
+    const { bottom, height, left, top, width } = position;
 
     const shouldPositionTop = () => {
       if (state.keyboardHeight > 0) {
@@ -517,9 +488,9 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<a
         onRequestClose={toggleDropdown}
       >
         <TouchableWithoutFeedback onPress={toggleDropdown}>
-          <Box className={cn('flex-1', { 'items-center bg-black/50': isFull })}>
+          <Box className={cn('flex-1')}>
             <Box
-              className={cn('flex-1', { 'items-center justify-center': isFull })}
+              className={cn('flex-1')}
               style={StyleSheet.flatten([
                 !isTopPosition
                   ? { paddingTop: extendHeight }
@@ -535,7 +506,7 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<a
                   dropdownProps?.className,
                 )}
                 style={StyleSheet.flatten([
-                  isFull ? styleHorizontal : styleVertical,
+                  styleVertical,
                   { width },
                   dropdownProps?.hasShadow && {
                     shadowColor: '#000',

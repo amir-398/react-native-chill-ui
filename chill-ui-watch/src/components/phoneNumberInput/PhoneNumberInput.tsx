@@ -1,13 +1,15 @@
+import { TextInput, Image, ListRenderItem, View } from 'react-native';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { TextInput, Image, Pressable, ListRenderItem } from 'react-native';
 
-import Input from '../Input';
-import Icon from '../../icon';
-import { Box } from '../../box';
+import useCalculateDropDownPosition from '@/components/select/inputSelectDropdown/hooks/useCalculateDropdownPosition';
+
+import Icon from '../icon';
+import { Box } from '../box';
+import String from '../string';
+import Input from '../inputs/Input';
+import { PhoneNumberTextInputProps } from '../../types';
 import * as flags from './flags';
-import String from '../../string';
-import InputDropdown from './InputDropdown';
-import { PhoneNumberTextInputProps } from '../../../types';
+import InputDropdownModal from '../select/inputSelectDropdown/components/InputDropdownModal';
 import { countryCodes, type CountryCodesProps } from './countryCodes';
 import { applyMaskPhoneNumber, getPhoneNumberWithSuffix, isValidNumber } from './utils';
 
@@ -44,8 +46,13 @@ function PhoneNumberTextInput({
   value,
   ...props
 }: PhoneNumberTextInputProps) {
-  const inputRef = useRef<TextInput>(null);
+  const inputRef = useRef<TextInput | null>(null);
   const searchRef = useRef<TextInput>(null);
+  const { measureComponent, position } = useCalculateDropDownPosition(inputRef);
+
+  useEffect(() => {
+    measureComponent();
+  }, [measureComponent]);
 
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState<CountryCodesProps | undefined>(() =>
@@ -97,12 +104,12 @@ function PhoneNumberTextInput({
 
   // Render d'un item pays dans la dropdown
   const renderItem: ListRenderItem<CountryCodesProps> = useCallback(
-    ({ item }) => (
-      <Pressable className="flex-row items-center gap-2 p-1" onPress={() => onSelectCountry(item)}>
-        <Image source={getFlag(item.code)} className="h-6 w-9 border border-[#D9D9D9]" />
-        <String>{language === 'fr' ? item.fr : item.en}</String>
-        <String>{item.dial_code}</String>
-      </Pressable>
+    item => (
+      <Box className="flex-row items-center gap-2 p-1">
+        <Image source={getFlag(item?.code)} className="h-6 w-9 border border-[#D9D9D9]" />
+        <String>{language === 'fr' ? item?.fr : item?.en}</String>
+        <String>{item?.dial_code}</String>
+      </Box>
     ),
     [onSelectCountry, language],
   );
@@ -174,11 +181,9 @@ function PhoneNumberTextInput({
     setDropdownOpen(open => !open);
     inputRef.current?.focus();
   };
-
   return (
-    <Box className="relative">
+    <View ref={inputRef}>
       <Input
-        inputRef={inputRef}
         value={phoneNumber}
         onChangeText={handleChangeText}
         onFocus={() => setIsValid(true)}
@@ -192,19 +197,26 @@ function PhoneNumberTextInput({
         }}
         {...props}
       />
-      {isDropdownOpen && (
-        <InputDropdown
-          searchRef={searchRef}
-          dataSet={filteredCountries}
-          renderItem={renderItem}
-          onSearch={setSearchQuery}
-          searchInputProps={{
-            onBlur: () => setDropdownOpen(false),
-          }}
-          {...dropdownProps}
-        />
-      )}
-    </Box>
+      <InputDropdownModal
+        dropdownPosition={position}
+        toggleDropdown={handleToggleDropdown}
+        inputDropdownProps={{
+          customDropdownItem: renderItem,
+          data: filteredCountries,
+          hasSearch: true,
+          maxHeight: 250,
+          minHeight: 200,
+          onSelectItem: onSelectCountry,
+          visible: isDropdownOpen,
+        }}
+        modalProps={{
+          onRequestClose: () => setDropdownOpen(false),
+          statusBarTranslucent: true,
+          transparent: true,
+          visible: isDropdownOpen,
+        }}
+      />
+    </View>
   );
 }
 

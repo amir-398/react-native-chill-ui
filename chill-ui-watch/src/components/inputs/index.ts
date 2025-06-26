@@ -1,3 +1,2 @@
-import PhoneNumberTextInput from './phoneNumberInput/PhoneNumberInput';
-
-export default PhoneNumberTextInput;
+export { default as Input } from './Input';
+export { default as MaskedInput } from './MaskedInput';

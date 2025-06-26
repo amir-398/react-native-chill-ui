@@ -652,12 +652,47 @@ export interface SliderProps {
 
 // --------------------------------------------------------------------------------
 
-// SelectDropdown ------------------------------------------------------------
+// AutocompleteDropdown ------------------------------------------------------------
 // --------------------------------------------------------------------------------
 
-export type IDropdownRef = {
+// InputDropdown ----------
+export interface InputDropdownBaseProps {
+  visible: boolean;
+  maxHeight: number;
+  minHeight?: number;
+  className?: string;
+  hasShadow?: boolean;
+  hasSearch?: boolean;
+  withAnimation?: boolean;
+  children: React.ReactNode;
+  searchInputProps?: InputProps;
+}
+
+export interface InputDropdownListProps {
+  data: any[];
+  currentValue?: any;
+  emptyText?: string;
+  valueField?: string;
+  dropdownProps?: any;
+  isLoading?: boolean;
+  onSelectItem?: (item: any) => void;
+  customEmpty?: () => React.ReactNode;
+  loadingIndicatorProps?: LoadingIndicatorProps;
+  customLoadingIndicator?: () => React.ReactNode;
+  customDropdownItem?: (item: any, selected: boolean) => React.ReactNode;
+  dropdownItemProps?: {
+    activeBackgroundColor?: string;
+    className?: string;
+    textItemProps?: any;
+  };
+}
+
+export type InputDropdownPropsBis = Omit<InputDropdownBaseProps, 'children'> & InputDropdownListProps;
+
+export type AutocompleteDropdownRefProps = {
   open: () => void;
   close: () => void;
+  toggle: () => void;
 };
 
 export type DropdownProps = {
@@ -665,18 +700,27 @@ export type DropdownProps = {
   hasShadow?: boolean;
   hasBackdrop?: boolean;
   backdropColor?: string;
-  backdropClassName?: string;
+  backdropOpacity?: number;
   emptyText?: string;
   customEmpty?: () => React.ReactNode;
   loadingIndicatorProps?: LoadingIndicatorProps;
   customLoadingIndicator?: () => React.ReactNode;
+  position?: 'auto' | 'top' | 'bottom';
+  withAnimation?: boolean;
 } & Omit<FlatListProps<any>, 'renderItem' | 'data'>;
 
 export type InputsProps = {
   containerClassName?: string;
 } & InputProps;
 
-export interface SelectDropdownProps<T> {
+export interface AutocompleteDropdownBackdropProps {
+  color: string;
+  opacity: number;
+  visible: boolean;
+  onPress: () => void;
+}
+
+export interface AutocompleteDropdownProps<T> {
   dataSet: T[];
   disable?: boolean;
   maxHeight?: number;
@@ -700,15 +744,20 @@ export interface SelectDropdownProps<T> {
   mode?: 'default' | 'modal' | 'auto';
   closeModalWhenSelectedItem?: boolean;
   onConfirmSelectItem?: (item: T) => void;
-  dropdownPosition?: 'auto' | 'top' | 'bottom';
+  backdrop?: AutocompleteDropdownBackdropProps;
   searchQuery?: (keyword: string, labelValue: string) => boolean;
   customDropdownItem?: (item: T, selected?: boolean) => React.ReactElement | null;
   customInputSearch?: (onSearch: (text: string) => void) => React.ReactElement | null;
-  ref?: React.RefObject<IDropdownRef> | React.RefObject<IDropdownRef> | null | undefined;
   dropdownItemProps?: {
     className?: string;
     activeBackgroundColor?: string;
     textItemProps?: StringProps;
   };
+  ref?:
+    | React.RefObject<AutocompleteDropdownRefProps>
+    | React.RefObject<AutocompleteDropdownRefProps>
+    | null
+    | undefined;
 }
+
 // --------------------------------------------------------------------------------

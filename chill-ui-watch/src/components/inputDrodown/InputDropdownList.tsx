@@ -1,35 +1,14 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { FlatList, TouchableHighlight } from 'react-native';
 
-import cn from '../../../cn';
-import { Box } from '../../../box';
-import String from '../../../string';
-import { get, isEqual } from '../../../../utils';
-import { LoadingIndicatorProps } from '../../../../types';
-import LoadingIndicator from '../../../loadingIndicatorsKit/LoadingIndicator';
+import cn from '../cn';
+import { Box } from '../box';
+import String from '../string';
+import { get, isEqual } from '../../utils';
+import { InputDropdownListProps } from '../../types';
+import LoadingIndicator from '../loadingIndicatorsKit/LoadingIndicator';
 
-interface DropdownListProps {
-  data: any[];
-  currentValue: any;
-  valueField: string;
-  emptyText?: string;
-  dropdownProps?: any;
-  isLoading?: boolean;
-  onContentSizeChange?: () => void;
-  onSelectItem: (item: any) => void;
-  onScrollToIndexFailed?: () => void;
-  customEmpty?: () => React.ReactNode;
-  loadingIndicatorProps?: LoadingIndicatorProps;
-  customLoadingIndicator?: () => React.ReactNode;
-  customDropdownItem?: (item: any, selected: boolean) => React.ReactNode;
-  dropdownItemProps?: {
-    activeBackgroundColor?: string;
-    className?: string;
-    textItemProps?: any;
-  };
-}
-
-export default function DropdownList({
+export default function InputDropdownList({
   currentValue,
   customDropdownItem,
   customEmpty,
@@ -40,11 +19,9 @@ export default function DropdownList({
   emptyText,
   isLoading,
   loadingIndicatorProps,
-  onContentSizeChange,
-  onScrollToIndexFailed,
   onSelectItem,
   valueField,
-}: DropdownListProps) {
+}: InputDropdownListProps) {
   const { name = 'spinner', ...rest } = loadingIndicatorProps || {};
   const renderListItem = useCallback(
     ({ index, item }: { item: any; index: number }) => {
@@ -72,6 +49,8 @@ export default function DropdownList({
     [dropdownItemProps, currentValue, valueField, onSelectItem, customDropdownItem],
   );
 
+  console.log('emptyText', emptyText);
+
   const ListEmptyComponent = useCallback(() => {
     if (customEmpty) {
       return customEmpty();
@@ -96,8 +75,6 @@ export default function DropdownList({
     <FlatList
       {...dropdownProps}
       keyboardShouldPersistTaps="handled"
-      onContentSizeChange={onContentSizeChange}
-      onScrollToIndexFailed={onScrollToIndexFailed}
       data={data}
       renderItem={renderListItem}
       ListEmptyComponent={ListEmptyComponent}
@@ -106,7 +83,6 @@ export default function DropdownList({
       maxToRenderPerBatch={10}
       windowSize={10}
       nestedScrollEnabled
-      className=""
     />
   );
 }
