@@ -162,7 +162,8 @@ const data = [
 
 export const Default: Story = {
   args: {
-    dataSet: data,
+    closeModalWhenSelectedItem: false,
+    dataSet: data, // props verifié
     dropdownProps: {
       className: 'rounded-lg mt-1',
 
@@ -170,10 +171,9 @@ export const Default: Story = {
       position: 'auto',
       withAnimation: false,
     },
-    hasSearch: true,
-    inputProps: {
-      placeholder: 'Sélectionnez une options',
-    },
+    hasPerformSearch: true, // props verifié
+
+    inputProps: {},
     valueField: 'value',
   },
   render: args => (

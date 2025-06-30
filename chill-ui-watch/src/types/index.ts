@@ -560,6 +560,7 @@ export interface InputProps extends TextInputProps {
   isStretchable?: boolean;
   inputRef?: React.RefObject<TextInput | null>;
   size?: VariantProps<typeof inputSizeVariants>['size'];
+  isDisabled?: boolean;
 }
 
 export type MaskedInputProps = {
@@ -725,7 +726,6 @@ export interface AutocompleteDropdownProps<T> {
   minHeight?: number;
   excludeItems?: T[];
   valueField: keyof T;
-  hasSearch?: boolean;
   onBlur?: () => void;
   isLoading?: boolean;
   autoScroll?: boolean;

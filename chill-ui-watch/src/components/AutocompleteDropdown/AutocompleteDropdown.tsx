@@ -42,7 +42,6 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
       confirmSelectItem,
       customDropdownItem,
       dataSet = [],
-      disable = false,
       dropdownItemProps,
       dropdownListProps,
       dropdownProps,
@@ -129,7 +128,7 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
     const debouncedSearch = useMemo(() => debounce(performSearch, 300), [performSearch]);
 
     const { eventClose, eventOpen, toggleDropdown } = useDropdownActions({
-      disabled: disable ?? false,
+      disabled: (inputProps?.isDisabled || inputProps?.editable) ?? false,
       getDropdownPosition,
       position: dropdownProps?.position,
       setDropdownPosition: pos => {

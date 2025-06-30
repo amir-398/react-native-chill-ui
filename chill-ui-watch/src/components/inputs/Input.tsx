@@ -106,6 +106,7 @@ export default function Input(props: InputProps) {
     className,
     clickableAs = 'scale',
     customRegex,
+    editable,
     errorClassName,
     errorIconName,
     errorMessage,
@@ -114,6 +115,7 @@ export default function Input(props: InputProps) {
     hasSecureTextEntry,
     inputClassName,
     inputRef,
+    isDisabled,
     isStretchable,
     label,
     labelClassName,
@@ -196,6 +198,7 @@ export default function Input(props: InputProps) {
       secureTextEntry={isSecureEntry}
       multiline={multiline}
       maxLength={maxLength}
+      editable={!isDisabled || !!editable}
       {...rest}
     />
   );
@@ -225,6 +228,7 @@ export default function Input(props: InputProps) {
         className={cn(
           'flex flex-row items-center rounded-lg border border-gray-300 bg-white px-3 text-black',
           { 'border-red-500': hasError },
+          { 'opacity-50': isDisabled },
           className,
         )}
       >
