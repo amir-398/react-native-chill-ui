@@ -44,21 +44,6 @@ const meta: Meta<typeof AutocompleteDropdown> = {
       control: 'boolean',
       description: 'Active la recherche dans le dropdown',
     },
-    searchField: {
-      control: 'text',
-      description: 'Le champ à utiliser pour la recherche',
-    },
-    searchInputProps: {
-      control: 'object',
-      description: 'Configuration du champ de recherche',
-    },
-
-    // Configuration du positionnement
-    dropdownPosition: {
-      control: 'select',
-      description: 'Position du dropdown',
-      options: ['auto', 'top', 'bottom'],
-    },
     keyboardAvoiding: {
       control: 'boolean',
       description: 'Évite le chevauchement avec le clavier',
@@ -67,9 +52,18 @@ const meta: Meta<typeof AutocompleteDropdown> = {
       control: 'number',
       description: 'Hauteur maximale du dropdown',
     },
+
     minHeight: {
       control: 'number',
       description: 'Hauteur minimale du dropdown',
+    },
+    searchField: {
+      control: 'text',
+      description: 'Le champ à utiliser pour la recherche',
+    },
+    searchInputProps: {
+      control: 'object',
+      description: 'Configuration du champ de recherche',
     },
 
     // Configuration des items
@@ -171,7 +165,7 @@ export const Default: Story = {
     dataSet: data,
     dropdownProps: {
       className: 'rounded-lg mt-1',
-      emptyText: 'Aucun résultat',
+
       hasShadow: true,
       position: 'auto',
       withAnimation: false,

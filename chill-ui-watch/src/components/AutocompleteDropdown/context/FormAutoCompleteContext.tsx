@@ -148,7 +148,7 @@ export function AutocompleteDropdownContext({ children, headerOffset = 0 }: IAut
           });
         });
       } catch {
-        return null;
+        // ignore measurement errors
       }
     });
   }, [instances, headerOffset]);

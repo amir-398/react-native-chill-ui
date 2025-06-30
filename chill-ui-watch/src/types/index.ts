@@ -680,6 +680,7 @@ export interface InputDropdownListProps {
   loadingIndicatorProps?: LoadingIndicatorProps;
   customLoadingIndicator?: () => React.ReactNode;
   customDropdownItem?: (item: any, selected: boolean) => React.ReactNode;
+  dropdownListProps?: Omit<FlatListProps<any>, 'renderItem' | 'data'>;
   dropdownItemProps?: {
     activeBackgroundColor?: string;
     className?: string;
@@ -698,16 +699,13 @@ export type AutocompleteDropdownRefProps = {
 export type DropdownProps = {
   className?: string;
   hasShadow?: boolean;
-  hasBackdrop?: boolean;
-  backdropColor?: string;
-  backdropOpacity?: number;
   emptyText?: string;
   customEmpty?: () => React.ReactNode;
   loadingIndicatorProps?: LoadingIndicatorProps;
   customLoadingIndicator?: () => React.ReactNode;
   position?: 'auto' | 'top' | 'bottom';
   withAnimation?: boolean;
-} & Omit<FlatListProps<any>, 'renderItem' | 'data'>;
+};
 
 export type InputsProps = {
   containerClassName?: string;
@@ -739,6 +737,7 @@ export interface AutocompleteDropdownProps<T> {
   hasPerformSearch?: boolean;
   confirmSelectItem?: boolean;
   dropdownProps?: DropdownProps;
+  dropdownListProps?: Omit<FlatListProps<any>, 'renderItem' | 'data'>;
   searchInputProps?: InputsProps;
   onSelectItem: (item: T) => void;
   mode?: 'default' | 'modal' | 'auto';

@@ -15,7 +15,7 @@ export default function InputDropdownList({
   customLoadingIndicator,
   data,
   dropdownItemProps,
-  dropdownProps,
+  dropdownListProps,
   emptyText,
   isLoading,
   loadingIndicatorProps,
@@ -23,15 +23,16 @@ export default function InputDropdownList({
   valueField,
 }: InputDropdownListProps) {
   const { name = 'spinner', ...rest } = loadingIndicatorProps || {};
+
   const renderListItem = useCallback(
     ({ index, item }: { item: any; index: number }) => {
-      const isSelected = currentValue && get(currentValue, valueField);
-      const selected = isEqual(get(item, valueField), isSelected);
+      const isSelected = currentValue && valueField && get(currentValue, valueField);
+      const selected = valueField ? isEqual(get(item, valueField), isSelected) : false;
 
       return (
         <TouchableHighlight
           key={index.toString()}
-          onPress={() => onSelectItem(item)}
+          onPress={() => onSelectItem?.(item)}
           underlayColor={dropdownItemProps?.activeBackgroundColor ?? '#F6F7F8'}
         >
           <Box>
@@ -39,7 +40,7 @@ export default function InputDropdownList({
               customDropdownItem(item, selected)
             ) : (
               <Box className={cn('p-3', dropdownItemProps?.className)}>
-                <String {...dropdownItemProps?.textItemProps}>{get(item, valueField)}</String>
+                <String {...dropdownItemProps?.textItemProps}>{valueField ? get(item, valueField) : item}</String>
               </Box>
             )}
           </Box>
@@ -48,8 +49,6 @@ export default function InputDropdownList({
     },
     [dropdownItemProps, currentValue, valueField, onSelectItem, customDropdownItem],
   );
-
-  console.log('emptyText', emptyText);
 
   const ListEmptyComponent = useCallback(() => {
     if (customEmpty) {
@@ -73,7 +72,7 @@ export default function InputDropdownList({
 
   return (
     <FlatList
-      {...dropdownProps}
+      {...dropdownListProps}
       keyboardShouldPersistTaps="handled"
       data={data}
       renderItem={renderListItem}

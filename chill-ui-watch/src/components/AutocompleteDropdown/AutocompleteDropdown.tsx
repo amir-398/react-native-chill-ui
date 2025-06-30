@@ -44,6 +44,7 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
       dataSet = [],
       disable = false,
       dropdownItemProps,
+      dropdownListProps,
       dropdownProps,
       excludeItems = [],
       hasPerformSearch = true,
@@ -271,7 +272,11 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
           onSelectItem={selectItem}
           dropdownItemProps={dropdownItemProps}
           customDropdownItem={customDropdownItem}
-          dropdownProps={dropdownProps}
+          dropdownListProps={dropdownListProps}
+          dropdownProps={{
+            ...dropdownProps,
+            emptyText: dropdownProps?.emptyText ?? DEFAULT_CONFIG.EMPTY_TEXT,
+          }}
           isLoading={isLoading}
         />,
       );
