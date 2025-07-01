@@ -162,9 +162,10 @@ export const Default: Story = {
     dropdownPosition: 'auto',
     dropdownProps: {
       className: 'rounded-lg mt-1',
+      hasSearch: true,
       hasShadow: true,
     },
-    hasSearch: true,
+
     inputProps: {
       placeholder: 'Sélectionnez une options',
     },

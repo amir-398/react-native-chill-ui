@@ -1,5 +1,5 @@
 import { FlatList } from 'react-native';
-import { useImperativeHandle, useRef } from 'react';
+import { useImperativeHandle, useRef, useCallback } from 'react';
 
 import { IDropdownRef } from '../types';
 import useDropdownState from './useDropdownState';
@@ -20,12 +20,15 @@ interface InputSelectDropdownHookParams {
   autoScroll?: boolean;
   onFocus?: () => void;
   excludeSearchItems?: any[];
+  onSelectItem?: (item: any) => void;
+  closeModalWhenSelectedItem?: boolean;
   searchQuery?: (searchText: string, itemText: string) => boolean;
 }
 
 export default function useInputSelectDropdown(
   {
     autoScroll = true,
+    closeModalWhenSelectedItem = true,
     dataSet = [],
     disable = false,
     excludeItems = [],
@@ -33,13 +36,14 @@ export default function useInputSelectDropdown(
     inputValue,
     onBlur,
     onFocus,
+    onSelectItem,
     searchField,
     searchQuery,
     valueField,
   }: InputSelectDropdownHookParams,
   currentRef: React.Ref<IDropdownRef>,
 ) {
-  const refList = useRef<FlatList>(null);
+  const refList = useRef<FlatList | null>(null);
   const containerRef = useRef<any>(null);
 
   // État principal du dropdown
@@ -94,6 +98,24 @@ export default function useInputSelectDropdown(
     visible: state.visible,
   });
 
+  // Fonction pour gérer la sélection d'un item
+  const handleSelectItem = useCallback(
+    (item: any) => {
+      // Mettre à jour la valeur courante dans l'état local
+      setCurrentValue(item);
+
+      // Appeler la fonction onSelectItem du parent
+      onSelectItem?.(item);
+
+      // Fermer le dropdown si demandé
+      if (closeModalWhenSelectedItem) {
+        setVisible(false);
+        onBlur?.();
+      }
+    },
+    [setCurrentValue, onSelectItem, closeModalWhenSelectedItem, setVisible, onBlur],
+  );
+
   // Gestion du clavier
   useDropdownKeyboard({
     onKeyboardHide: () => setKeyboardHeight(0),
@@ -124,6 +146,7 @@ export default function useInputSelectDropdown(
     // Actions
     eventClose,
     eventOpen,
+    handleSelectItem,
     toggleDropdown,
 
     // Search

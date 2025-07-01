@@ -106,7 +106,7 @@ export default function Input(props: InputProps) {
     className,
     clickableAs = 'scale',
     customRegex,
-    editable,
+    editable = true,
     errorClassName,
     errorIconName,
     errorMessage,
@@ -181,6 +181,10 @@ export default function Input(props: InputProps) {
     setInputValue(value || '');
   }, [value]);
 
+  console.log('isDisabled', !isDisabled);
+  console.log('editable', !!editable);
+  console.log('isDisabled || editable', isDisabled ? false : !!editable);
+
   const renderInput = () => (
     <TextInput
       onPress={onPress}
@@ -198,7 +202,7 @@ export default function Input(props: InputProps) {
       secureTextEntry={isSecureEntry}
       multiline={multiline}
       maxLength={maxLength}
-      editable={!isDisabled || !!editable}
+      editable={isDisabled ? false : !!editable}
       {...rest}
     />
   );

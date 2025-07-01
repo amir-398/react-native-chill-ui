@@ -10,8 +10,8 @@ interface DropdownSelectionParams {
   inputValue: any;
   valueField: string;
   autoScroll?: boolean;
-  refList?: React.RefObject<FlatList>;
   setCurrentValue: (value: any) => void;
+  refList?: React.RefObject<FlatList | null>;
 }
 
 export default function useDropdownSelection({

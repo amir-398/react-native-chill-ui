@@ -11,13 +11,17 @@ export default function InputDropdown(props: InputDropdownProps) {
     data,
     dropdownItemProps,
     dropdownListProps,
-    dropdownProps,
+    emptyText,
+    hasSearch,
+    hasShadow,
     isLoading,
     maxHeight,
     minHeight,
     onSelectItem,
+    searchInputProps,
     valueField,
     visible,
+    withAnimation,
   } = props;
 
   return (
@@ -26,10 +30,10 @@ export default function InputDropdown(props: InputDropdownProps) {
       maxHeight={maxHeight}
       minHeight={minHeight}
       className={className}
-      hasShadow={dropdownProps?.hasShadow}
-      withAnimation={dropdownProps?.withAnimation}
-      hasSearch={dropdownProps?.hasSearch}
-      searchInputProps={dropdownProps?.searchInputProps}
+      hasShadow={hasShadow}
+      withAnimation={withAnimation}
+      hasSearch={hasSearch}
+      searchInputProps={searchInputProps}
     >
       <DropdownList
         data={data}
@@ -40,7 +44,7 @@ export default function InputDropdown(props: InputDropdownProps) {
         customDropdownItem={customDropdownItem}
         dropdownListProps={dropdownListProps}
         isLoading={isLoading}
-        emptyText={dropdownProps?.emptyText}
+        emptyText={emptyText}
       />
     </DropdownBase>
   );
