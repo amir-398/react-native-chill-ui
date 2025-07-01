@@ -1,13 +1,9 @@
-import { InputDropdownProps } from './dropdown.types';
+import { InputProps } from './input.types';
+import { InputDropdownListProps, InputDropdownProps } from './dropdown.types';
 
 export interface InputSelectDropdownProps<T> {
   dataSet: T[];
   valueField: string;
-  onSelectItem: (item: T) => void;
-
-  // Optional props
-  inputProps?: any;
-  disable?: boolean;
   excludeItems?: T[];
   maxHeight?: number;
   minHeight?: number;
@@ -16,20 +12,19 @@ export interface InputSelectDropdownProps<T> {
   autoScroll?: boolean;
   onFocus?: () => void;
   searchField?: string;
-  searchInputProps?: any;
+  inputProps?: InputProps;
   excludeSearchItems?: T[];
-  keyboardAvoiding?: boolean;
   confirmSelectItem?: boolean;
-  dropdownProps?: InputDropdownProps;
+  onSelectItem: (item: T) => void;
   customInputSearch?: React.ReactNode;
   closeModalWhenSelectedItem?: boolean;
   onConfirmSelectItem?: (item: T) => void;
   dropdownPosition?: 'auto' | 'top' | 'bottom';
   searchQuery?: (keyword: string, labelValue: string) => boolean;
+  dropdownItemProps?: InputDropdownListProps['dropdownItemProps'];
   customDropdownItem?: (item: T, selected?: boolean) => React.ReactElement | null;
-  dropdownItemProps?: {
-    className?: string;
-    activeBackgroundColor?: string;
-    textItemProps?: any;
-  };
+  dropdownProps?: Omit<
+    InputDropdownProps,
+    'data' | 'onSelectItem' | 'valueField' | 'hasSearch' | 'dropdownItemProps' | 'customDropdownItem'
+  >;
 }

@@ -58,10 +58,8 @@ export default function useInputSelectDropdown(
     updateState,
   } = useDropdownState(dataSet);
 
-  // Position du dropdown
   const { measureComponent, position } = useCalculateDropDownPosition(containerRef);
 
-  // Gestion de la recherche
   const { debouncedSearch, excludeData, performSearch } = useDropdownSearch({
     dataSet,
     excludeItems,
@@ -73,7 +71,6 @@ export default function useInputSelectDropdown(
     valueField,
   });
 
-  // Gestion de la sélection
   const { scrollToSelectedIndex, updateCurrentValue } = useDropdownSelection({
     autoScroll,
     dataSet,
@@ -84,7 +81,6 @@ export default function useInputSelectDropdown(
     valueField,
   });
 
-  // Actions du dropdown
   const { eventClose, eventOpen, toggleDropdown } = useDropdownActions({
     disabled: disable,
     keyboardHeight: state.keyboardHeight,
@@ -98,16 +94,12 @@ export default function useInputSelectDropdown(
     visible: state.visible,
   });
 
-  // Fonction pour gérer la sélection d'un item
   const handleSelectItem = useCallback(
     (item: any) => {
-      // Mettre à jour la valeur courante dans l'état local
       setCurrentValue(item);
 
-      // Appeler la fonction onSelectItem du parent
       onSelectItem?.(item);
 
-      // Fermer le dropdown si demandé
       if (closeModalWhenSelectedItem) {
         setVisible(false);
         onBlur?.();
@@ -116,14 +108,12 @@ export default function useInputSelectDropdown(
     [setCurrentValue, onSelectItem, closeModalWhenSelectedItem, setVisible, onBlur],
   );
 
-  // Gestion du clavier
   useDropdownKeyboard({
     onKeyboardHide: () => setKeyboardHeight(0),
     onKeyboardShow: setKeyboardHeight,
     onMeasure: measureComponent,
   });
 
-  // Interface exposée
   useImperativeHandle(
     currentRef,
     () => ({
@@ -134,7 +124,7 @@ export default function useInputSelectDropdown(
   );
 
   return {
-    // État
+    // state
     state,
     updateState,
 

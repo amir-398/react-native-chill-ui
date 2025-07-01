@@ -2,8 +2,9 @@ import type { VariantProps } from 'tailwind-variants';
 import type { TextInput, TextInputProps } from 'react-native';
 
 import { inputSizeVariants } from '@/components/inputs/Input';
-import type { TIcons } from '../constants/ICONS';
+
 import type { IconProps } from './icon.types';
+import type { TIcons } from '../constants/ICONS';
 
 export interface InputProps extends TextInputProps {
   // Basic props

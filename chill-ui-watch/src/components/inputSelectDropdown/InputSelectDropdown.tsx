@@ -1,7 +1,6 @@
 import { View } from 'react-native';
 import React, { memo } from 'react';
 
-import cn from '../cn';
 import { get } from '../../utils';
 import Input from '../inputs/Input';
 import { useInputSelectDropdown } from './hooks';
@@ -17,7 +16,6 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, InputSelectDropdownPr
     customDropdownItem,
     customInputSearch,
     dataSet = [],
-    disable = false,
     dropdownItemProps,
     dropdownPosition = 'auto',
     dropdownProps,
@@ -25,7 +23,6 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, InputSelectDropdownPr
     excludeSearchItems = [],
     hasSearch = false,
     inputProps,
-    keyboardAvoiding = true,
     maxHeight = DEFAULT_CONFIG.MAX_HEIGHT,
     minHeight = DEFAULT_CONFIG.MIN_HEIGHT,
     onBlur,
@@ -33,39 +30,35 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, InputSelectDropdownPr
     onFocus,
     onSelectItem,
     searchField,
-    searchInputProps,
     searchQuery,
     valueField,
   } = props;
 
   // Utilisation du hook principal qui combine toute la logique
-  const { containerRef, handleSelectItem, measureComponent, position, state, toggleDropdown } = useInputSelectDropdown(
-    {
-      autoScroll,
-      closeModalWhenSelectedItem,
-      dataSet,
-      disable,
-      excludeItems,
-      excludeSearchItems,
-      inputValue: inputProps?.value,
-      onBlur,
-      onFocus,
-      onSelectItem,
-      searchField,
-      searchQuery,
-      valueField,
-    },
-    currentRef,
-  );
+  const { containerRef, handleSelectItem, measureComponent, position, setSearchText, state, toggleDropdown } =
+    useInputSelectDropdown(
+      {
+        autoScroll,
+        closeModalWhenSelectedItem,
+        dataSet,
+        disable: inputProps?.isDisabled || !inputProps?.editable,
+        excludeItems,
+        excludeSearchItems,
+        inputValue: inputProps?.value,
+        onBlur,
+        onFocus,
+        onSelectItem,
+        searchField,
+        searchQuery,
+        valueField,
+      },
+      currentRef,
+    );
 
   const isSelected = state.currentValue && get(state.currentValue, valueField);
 
   return (
-    <View
-      className={cn('justify-center', inputProps?.containerClassName)}
-      ref={containerRef}
-      onLayout={measureComponent}
-    >
+    <View ref={containerRef} onLayout={measureComponent}>
       <Input
         editable={false}
         onPress={toggleDropdown}
@@ -90,7 +83,12 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, InputSelectDropdownPr
           maxHeight,
           minHeight,
           onSelectItem: handleSelectItem,
-          searchInputProps,
+          searchInputProps: {
+            ...dropdownProps?.searchInputProps,
+            onChangeText: setSearchText,
+            value: state.searchText,
+          },
+
           valueField,
           visible: state.visible,
           ...dropdownProps,

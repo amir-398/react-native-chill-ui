@@ -181,10 +181,6 @@ export default function Input(props: InputProps) {
     setInputValue(value || '');
   }, [value]);
 
-  console.log('isDisabled', !isDisabled);
-  console.log('editable', !!editable);
-  console.log('isDisabled || editable', isDisabled ? false : !!editable);
-
   const renderInput = () => (
     <TextInput
       onPress={onPress}
