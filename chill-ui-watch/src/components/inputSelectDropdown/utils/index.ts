@@ -27,3 +27,4 @@ const useDetectDevice: IUseDetectDevice = {
 };
 
 export { useDetectDevice, useDeviceOrientation };
+export * from './dropdownHelpers';

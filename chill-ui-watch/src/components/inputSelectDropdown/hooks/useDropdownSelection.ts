@@ -1,0 +1,74 @@
+import { FlatList } from 'react-native';
+import { useCallback, useEffect, useMemo } from 'react';
+
+import { DEFAULT_CONFIG } from '../types';
+import { get, debounce, isEqual, findIndex } from '../../../utils';
+
+interface DropdownSelectionParams {
+  dataSet: any[];
+  listData: any[];
+  inputValue: any;
+  valueField: string;
+  autoScroll?: boolean;
+  refList?: React.RefObject<FlatList>;
+  setCurrentValue: (value: any) => void;
+}
+
+export default function useDropdownSelection({
+  autoScroll = true,
+  dataSet,
+  inputValue,
+  listData,
+  refList,
+  setCurrentValue,
+  valueField,
+}: DropdownSelectionParams) {
+  // Gestion de la valeur sélectionnée
+  const updateCurrentValue = useCallback(() => {
+    const defaultValue = typeof inputValue === 'object' ? get(inputValue, valueField) : inputValue;
+    const selectedItem = dataSet.find((e: any) => isEqual(defaultValue, get(e, valueField)));
+
+    setCurrentValue(selectedItem || null);
+  }, [dataSet, inputValue, valueField, setCurrentValue]);
+
+  useEffect(() => {
+    updateCurrentValue();
+  }, [updateCurrentValue]);
+
+  // Scroll automatique avec debounce
+  const scrollToSelectedIndex = useMemo(
+    () =>
+      debounce(() => {
+        if (!autoScroll || !dataSet?.length || listData?.length !== dataSet?.length) return;
+        if (!refList?.current) return;
+
+        const defaultValue = typeof inputValue === 'object' ? get(inputValue, valueField) : inputValue;
+        const index = findIndex(listData, e => isEqual(defaultValue, get(e, valueField)));
+
+        if (index > -1 && index < listData.length) {
+          try {
+            refList.current.scrollToIndex({
+              animated: false,
+              index,
+            });
+          } catch (error) {
+            console.warn(`scrollToIndex error: ${error}`);
+          }
+        }
+      }, DEFAULT_CONFIG.DEBOUNCE_DELAY),
+    [autoScroll, dataSet?.length, listData, inputValue, valueField, refList],
+  );
+
+  // Cleanup effect
+  useEffect(
+    () => () => {
+      scrollToSelectedIndex.cancel();
+    },
+    [scrollToSelectedIndex],
+  );
+
+  return {
+    scrollToSelectedIndex,
+    updateCurrentValue,
+  };
+}
