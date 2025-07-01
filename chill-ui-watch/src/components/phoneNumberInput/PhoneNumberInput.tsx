@@ -1,7 +1,7 @@
 import { TextInput, Image, ListRenderItem, View } from 'react-native';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import useCalculateDropDownPosition from '@/components/select/inputSelectDropdown/hooks/useCalculateDropdownPosition';
+import useCalculateDropDownPosition from '@/components/inputSelectDropdown/hooks/useCalculateDropdownPosition';
 
 import Icon from '../icon';
 import { Box } from '../box';
@@ -9,7 +9,7 @@ import String from '../string';
 import Input from '../inputs/Input';
 import { PhoneNumberTextInputProps } from '../../types';
 import * as flags from './flags';
-import InputDropdownModal from '../select/inputSelectDropdown/components/InputDropdownModal';
+import InputDropdownModal from '../inputDrodown/InputDropdownModal';
 import { countryCodes, type CountryCodesProps } from './countryCodes';
 import { applyMaskPhoneNumber, getPhoneNumberWithSuffix, isValidNumber } from './utils';
 

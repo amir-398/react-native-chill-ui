@@ -56,7 +56,6 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
       onFocus,
       onSelectItem,
       searchField,
-      searchInputProps,
       searchQuery,
       valueField,
     } = props;
@@ -177,11 +176,12 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
           return onConfirmSelectItem(item);
         }
 
-        updateState({ currentValue: item });
+        // Toujours sélectionner l'item et effacer le searchText pour que displayValue affiche la valeur sélectionnée
+        updateState({ currentValue: item, searchText: '' });
         onSelectItem?.(item);
 
+        // Fermer le dropdown seulement si closeModalWhenSelectedItem est true
         if (closeModalWhenSelectedItem) {
-          updateState({ searchText: '' });
           setShowDropdown(instanceId, false);
           performSearch('');
           onBlur?.();
@@ -203,7 +203,6 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
 
     const handleSearchTextChange = useCallback(
       (text: string) => {
-        searchInputProps?.onChangeText?.(text);
         updateState({
           currentValue: text === '' ? null : state.currentValue,
           searchText: text,
@@ -224,7 +223,6 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
       },
       [
         performSearch,
-        searchInputProps,
         eventOpen,
         updateState,
         state.currentValue,

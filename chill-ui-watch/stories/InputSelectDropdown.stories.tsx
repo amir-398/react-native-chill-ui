@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import UiPresentation from './storybook';
-import InputSelectDropdown from '../src/components/select/inputSelectDropdown';
+import InputSelectDropdown from '../src/components/inputSelectDropdown/InputSelectDropdown';
 
 const meta: Meta<typeof InputSelectDropdown> = {
   argTypes: {

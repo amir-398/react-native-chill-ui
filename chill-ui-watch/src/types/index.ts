@@ -4,7 +4,6 @@ import type { AnimatedProps } from 'react-native-reanimated';
 import {
   FlatListProps,
   ImageSourcePropType,
-  ListRenderItem,
   Modal,
   TextInput,
   type TextInputProps,
@@ -513,6 +512,8 @@ export interface ImageSliderProps {
   }[];
 }
 
+// Input ------------------------------------------------------------
+// --------------------------------------------------------------------------------
 export interface InputProps extends TextInputProps {
   // Basic props
   label?: string;
@@ -557,31 +558,35 @@ export interface InputProps extends TextInputProps {
   allow?: 'all' | 'numbers' | 'letters' | 'lettersWithoutSpecialCharacters';
 
   // Styling
+  isDisabled?: boolean;
   isStretchable?: boolean;
   inputRef?: React.RefObject<TextInput | null>;
   size?: VariantProps<typeof inputSizeVariants>['size'];
-  isDisabled?: boolean;
 }
 
+// MaskedInput ------------------------------------------------------------
+// --------------------------------------------------------------------------------
 export type MaskedInputProps = {
   mask: string;
   onChangeText: ({ maskedText, unmaskedText }: { maskedText: string; unmaskedText: string }) => void;
 } & Omit<InputProps, 'onChangeText'>;
 
+// -------------------------------------------------------------------------
+
 export type AutocompleteDropdownItem = CountryCodesProps & { id: string };
 
-export type InputDropdownProps = {
-  searchRef?: React.RefObject<TextInput | null>;
-  dataSet: AutocompleteDropdownItem[];
-  hasItemSeparator?: boolean;
-  renderItem: ListRenderItem<AutocompleteDropdownItem>;
-  suggestionsListMaxHeight?: number;
-  withAnimation?: boolean;
-  footer?: React.ReactNode;
-  onSearch?: (text: string) => void;
-  hasSearch?: boolean;
-  searchInputProps?: Partial<InputProps>;
-} & Partial<FlatListProps<AutocompleteDropdownItem>>;
+// export type InputDropdownProps = {
+//   searchRef?: React.RefObject<TextInput | null>;
+//   dataSet: AutocompleteDropdownItem[];
+//   hasItemSeparator?: boolean;
+//   renderItem: ListRenderItem<AutocompleteDropdownItem>;
+//   suggestionsListMaxHeight?: number;
+//   withAnimation?: boolean;
+//   footer?: React.ReactNode;
+//   onSearch?: (text: string) => void;
+//   hasSearch?: boolean;
+//   searchInputProps?: Partial<InputProps>;
+// } & Partial<FlatListProps<AutocompleteDropdownItem>>;
 
 // PhoneNumberTextInput ------------------------------------------------------------
 // --------------------------------------------------------------------------------
@@ -680,8 +685,8 @@ export interface InputDropdownListProps {
   customEmpty?: () => React.ReactNode;
   loadingIndicatorProps?: LoadingIndicatorProps;
   customLoadingIndicator?: () => React.ReactNode;
-  customDropdownItem?: (item: any, selected: boolean) => React.ReactNode;
   dropdownListProps?: Omit<FlatListProps<any>, 'renderItem' | 'data'>;
+  customDropdownItem?: (item: any, selected: boolean) => React.ReactNode;
   dropdownItemProps?: {
     activeBackgroundColor?: string;
     className?: string;
@@ -689,7 +694,7 @@ export interface InputDropdownListProps {
   };
 }
 
-export type InputDropdownPropsBis = Omit<InputDropdownBaseProps, 'children'> & InputDropdownListProps;
+export type InputDropdownProps = Omit<InputDropdownBaseProps, 'children'> & InputDropdownListProps;
 
 export type AutocompleteDropdownRefProps = {
   open: () => void;
@@ -712,51 +717,50 @@ export type InputsProps = {
   containerClassName?: string;
 } & InputProps;
 
-export interface AutocompleteDropdownBackdropProps {
-  color: string;
-  opacity: number;
-  visible: boolean;
-  onPress: () => void;
-}
-
 export interface AutocompleteDropdownProps<T> {
   dataSet: T[];
-  disable?: boolean;
   maxHeight?: number;
   minHeight?: number;
   excludeItems?: T[];
   valueField: keyof T;
   onBlur?: () => void;
   isLoading?: boolean;
-  autoScroll?: boolean;
   onFocus?: () => void;
   searchField?: keyof T;
   inputProps?: InputsProps;
-  excludeSearchItems?: T[];
-  keyboardAvoiding?: boolean;
   hasPerformSearch?: boolean;
   confirmSelectItem?: boolean;
   dropdownProps?: DropdownProps;
-  dropdownListProps?: Omit<FlatListProps<any>, 'renderItem' | 'data'>;
-  searchInputProps?: InputsProps;
   onSelectItem: (item: T) => void;
-  mode?: 'default' | 'modal' | 'auto';
   closeModalWhenSelectedItem?: boolean;
   onConfirmSelectItem?: (item: T) => void;
-  backdrop?: AutocompleteDropdownBackdropProps;
   searchQuery?: (keyword: string, labelValue: string) => boolean;
   customDropdownItem?: (item: T, selected?: boolean) => React.ReactElement | null;
-  customInputSearch?: (onSearch: (text: string) => void) => React.ReactElement | null;
   dropdownItemProps?: {
     className?: string;
     activeBackgroundColor?: string;
     textItemProps?: StringProps;
   };
+  dropdownListProps?: Omit<FlatListProps<any>, 'renderItem' | 'data'> &
+    InputDropdownListProps['customLoadingIndicator'];
   ref?:
     | React.RefObject<AutocompleteDropdownRefProps>
     | React.RefObject<AutocompleteDropdownRefProps>
     | null
     | undefined;
+}
+
+// --------------------------------------------------------------------------------
+
+// --------------------------------------------------------------------------------
+// InputSelectDropdown ------------------------------------------------------------
+// --------------------------------------------------------------------------------
+
+export interface InputSelectDropdownProps<T> {
+  dataSet: T[];
+  valueField: keyof T;
+  onSelectItem: (item: T) => void;
+  dropdownProps?: InputDropdownProps;
 }
 
 // --------------------------------------------------------------------------------

@@ -1,12 +1,12 @@
 import { Modal, ModalProps, TouchableWithoutFeedback } from 'react-native';
 
-import { Box } from '../../../box';
-import InputDropdown from '../../../inputDrodown';
-import { InputDropdownPropsBis } from '../../../../types';
+import { Box } from '../box';
+import InputDropdown from './InputDropdown';
+import { InputDropdownProps } from '../../types';
 
 type InputDropdownModalProps = {
   modalProps: ModalProps;
-  inputDropdownProps: InputDropdownPropsBis;
+  dropdownProps: InputDropdownProps;
   dropdownPosition?: {
     left: number;
     top: number;
@@ -16,7 +16,7 @@ type InputDropdownModalProps = {
 };
 
 export default function InputDropdownModal(props: InputDropdownModalProps) {
-  const { dropdownPosition, inputDropdownProps, modalProps, toggleDropdown } = props;
+  const { dropdownPosition, dropdownProps, modalProps, toggleDropdown } = props;
   if (!dropdownPosition) return null;
 
   return (
@@ -29,7 +29,7 @@ export default function InputDropdownModal(props: InputDropdownModalProps) {
               ...dropdownPosition,
             }}
           >
-            <InputDropdown {...inputDropdownProps} />
+            <InputDropdown {...dropdownProps} />
           </Box>
         </Box>
       </TouchableWithoutFeedback>

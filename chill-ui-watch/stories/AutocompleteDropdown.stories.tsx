@@ -8,128 +8,106 @@ import { AutocompleteDropdownContext, AutocompleteDropdown } from '../src/compon
 
 const meta: Meta<typeof AutocompleteDropdown> = {
   argTypes: {
-    // Configuration de base
+    // Basic configuration
     dataSet: {
       control: 'object',
-      description: 'Les données à afficher dans la liste déroulante',
-    },
-    disable: {
-      control: 'boolean',
-      description: 'Désactive le composant',
-    },
-    mode: {
-      control: 'select',
-      description: "Mode d'affichage du dropdown",
-      options: ['default', 'modal', 'auto'],
+      description: 'The data to display in the dropdown list',
     },
     valueField: {
       control: 'text',
-      description: 'Le champ à utiliser comme valeur',
+      description: 'The field to use as value',
     },
 
-    // Configuration de l'input
+    // Input configuration
     inputProps: {
       control: 'object',
-      description: "Configuration de l'input",
+      description: 'Input configuration',
     },
 
-    // Configuration du dropdown
+    // Dropdown configuration
     dropdownProps: {
       control: 'object',
-      description: 'Configuration du dropdown',
+      description: 'Dropdown configuration',
     },
 
-    // Configuration de la recherche
-    hasSearch: {
-      control: 'boolean',
-      description: 'Active la recherche dans le dropdown',
-    },
-    keyboardAvoiding: {
-      control: 'boolean',
-      description: 'Évite le chevauchement avec le clavier',
-    },
     maxHeight: {
       control: 'number',
-      description: 'Hauteur maximale du dropdown',
+      description: 'Maximum height of the dropdown',
     },
 
     minHeight: {
       control: 'number',
-      description: 'Hauteur minimale du dropdown',
+      description: 'Minimum height of the dropdown',
     },
+
     searchField: {
       control: 'text',
-      description: 'Le champ à utiliser pour la recherche',
-    },
-    searchInputProps: {
-      control: 'object',
-      description: 'Configuration du champ de recherche',
+      description: 'The field to use for search',
     },
 
-    // Configuration des items
+    // Items configuration
     dropdownItemProps: {
       control: 'object',
-      description: 'Configuration des items du dropdown',
+      description: 'Dropdown items configuration',
     },
 
-    // Personnalisation
+    dropdownListProps: {
+      control: 'object',
+      description: 'Dropdown FlatList configuration',
+    },
+
+    // State and loading
+    isLoading: {
+      control: 'boolean',
+      description: 'Shows a loading indicator',
+    },
+
+    // Customization
     customDropdownItem: {
       control: false,
-      description: 'Composant personnalisé pour les items',
-    },
-    customInputSearch: {
-      control: false,
-      description: 'Composant personnalisé pour la recherche',
+      description: 'Custom component for items',
     },
 
-    // Filtrage
+    // Filtering
     excludeItems: {
       control: 'object',
-      description: 'Items à exclure de la liste',
+      description: 'Items to exclude from the list',
     },
-    excludeSearchItems: {
-      control: 'object',
-      description: 'Items à exclure de la recherche',
+
+    // Behavior
+    closeModalWhenSelectedItem: {
+      control: 'boolean',
+      description: 'Closes the modal when selecting an item',
+    },
+    confirmSelectItem: {
+      control: 'boolean',
+      description: 'Activates selection confirmation',
+    },
+    hasPerformSearch: {
+      control: 'boolean',
+      description: 'Activates automatic search',
     },
 
     // Callbacks
     onBlur: {
       control: false,
-      description: 'Callback lors du blur',
+      description: 'Callback when input loses focus',
     },
     onConfirmSelectItem: {
       control: false,
-      description: 'Callback lors de la confirmation de la sélection',
+      description: 'Callback when confirming selection',
     },
     onFocus: {
       control: false,
-      description: 'Callback lors du focus',
+      description: 'Callback when input gains focus',
     },
     onSelectItem: {
       control: false,
-      description: "Callback lors de la sélection d'un item",
-    },
-
-    // Autres options
-    autoScroll: {
-      control: 'boolean',
-      description: 'Active le défilement automatique',
-    },
-    closeModalWhenSelectedItem: {
-      control: 'boolean',
-      description: "Ferme le modal lors de la sélection d'un item",
-    },
-    confirmSelectItem: {
-      control: 'boolean',
-      description: 'Active la confirmation de sélection',
-    },
-    hasPerformSearch: {
-      control: 'boolean',
-      description: 'Active la recherche',
+      description: 'Callback when selecting an item',
     },
     searchQuery: {
       control: false,
-      description: 'Fonction de recherche personnalisée',
+      description: 'Custom search function (keyword, labelValue) => boolean',
     },
   },
   component: AutocompleteDropdown,
@@ -138,7 +116,7 @@ const meta: Meta<typeof AutocompleteDropdown> = {
       <AutocompleteDropdownContext>
         <UiPresentation className="items-start justify-center px-5">
           <Story />
-          <String className="text-secondary">lol</String>
+          <String className="text-secondary">AutocompleteDropdown Examples</String>
         </UiPresentation>
       </AutocompleteDropdownContext>
     ),
@@ -150,38 +128,228 @@ export default meta;
 type Story = StoryObj<typeof AutocompleteDropdown>;
 
 const data = [
-  { label: 'labelItem 1', value: 'ValueItem 1' },
-  { label: 'labelItem 2', value: 'ValueItem 2' },
-  { label: 'labelItem 3', value: 'ValueItem 3' },
-  { label: 'labelItem 4', value: 'ValueItem 4' },
-  { label: 'labelItem 5', value: 'ValueItem 5' },
-  { label: 'labelItem 6', value: 'ValueItem 6' },
-  { label: 'labelItem 7', value: 'ValueItem 7' },
-  { label: 'labelItem 8', value: 'ValueItem 8' },
+  { category: 'fruit', label: 'Apple', value: 'apple' },
+  { category: 'fruit', label: 'Banana', value: 'banana' },
+  { category: 'vegetable', label: 'Carrot', value: 'carrot' },
+  { category: 'vegetable', label: 'Tomato', value: 'tomato' },
+  { category: 'fruit', label: 'Orange', value: 'orange' },
+  { category: 'vegetable', label: 'Lettuce', value: 'lettuce' },
+  { category: 'fruit', label: 'Strawberry', value: 'strawberry' },
+  { category: 'vegetable', label: 'Broccoli', value: 'broccoli' },
+];
+
+const countries = [
+  { code: 'FR', continent: 'Europe', name: 'France' },
+  { code: 'DE', continent: 'Europe', name: 'Germany' },
+  { code: 'US', continent: 'North America', name: 'United States' },
+  { code: 'CA', continent: 'North America', name: 'Canada' },
+  { code: 'JP', continent: 'Asia', name: 'Japan' },
+  { code: 'AU', continent: 'Oceania', name: 'Australia' },
+  { code: 'BR', continent: 'South America', name: 'Brazil' },
+  { code: 'GB', continent: 'Europe', name: 'United Kingdom' },
 ];
 
 export const Default: Story = {
   args: {
-    closeModalWhenSelectedItem: false,
-    dataSet: data, // props verifié
+    closeModalWhenSelectedItem: true,
+    confirmSelectItem: false,
+    customDropdownItem: undefined,
+    dataSet: data,
+    dropdownItemProps: {
+      textItemProps: {},
+    },
     dropdownProps: {
-      className: 'rounded-lg mt-1',
-
       hasShadow: true,
       position: 'auto',
       withAnimation: false,
     },
-    hasPerformSearch: true, // props verifié
-
-    inputProps: {},
+    excludeItems: [],
+    hasPerformSearch: true,
+    inputProps: {
+      placeholder: 'Search for an item...',
+    },
+    isLoading: false,
+    maxHeight: 250,
+    minHeight: undefined,
+    onBlur: () => {},
+    onFocus: () => {},
+    onSelectItem: () => undefined,
+    searchField: 'label',
     valueField: 'value',
+  },
+};
+
+// Variant with custom search
+export const CustomSearch: Story = {
+  args: {
+    ...Default.args,
+    dataSet: countries,
+    inputProps: {
+      placeholder: 'Search for a country (name or code)...',
+    },
+    searchField: 'name',
+    valueField: 'code',
+    // Custom search that searches in both name AND code
+    searchQuery: (keyword, labelValue) => {
+      const country = countries.find(c => c.name === labelValue || c.code === labelValue);
+      if (!country) return false;
+
+      const searchTerm = keyword.toLowerCase();
+      return country.name.toLowerCase().includes(searchTerm) || country.code.toLowerCase().includes(searchTerm);
+    },
+  },
+};
+
+// Variant with loading
+export const WithLoading: Story = {
+  args: {
+    ...Default.args,
+    inputProps: {
+      placeholder: 'Loading...',
+    },
+    isLoading: true,
+  },
+};
+
+// Variant with excluded items
+export const WithExcludedItems: Story = {
+  args: {
+    ...Default.args,
+    excludeItems: [
+      { category: 'fruit', label: 'Apple', value: 'apple' },
+      { category: 'vegetable', label: 'Carrot', value: 'carrot' },
+    ],
+    inputProps: {
+      placeholder: 'Search (Apple and Carrot excluded)...',
+    },
+  },
+};
+
+// Variant with selection confirmation
+export const WithConfirmation: Story = {
+  args: {
+    ...Default.args,
+    confirmSelectItem: true,
+    inputProps: {
+      placeholder: 'Selection with confirmation...',
+    },
+    onConfirmSelectItem: item => {
+      alert(`Do you want to select: ${item.label}?`);
+    },
+  },
+};
+
+// Variant without automatic closing
+export const StayOpenOnSelect: Story = {
+  args: {
+    ...Default.args,
+    closeModalWhenSelectedItem: false,
+    inputProps: {
+      placeholder: 'Dropdown stays open...',
+    },
+  },
+};
+
+// Variant with different search field
+export const DifferentSearchField: Story = {
+  args: {
+    ...Default.args,
+    inputProps: {
+      placeholder: 'Search by category...',
+    },
+    searchField: 'category',
+  },
+};
+
+// Variant without automatic search
+export const NoAutoSearch: Story = {
+  args: {
+    ...Default.args,
+    hasPerformSearch: false,
+    inputProps: {
+      placeholder: 'No automatic search...',
+    },
+  },
+};
+
+// Variant with custom height
+export const CustomHeight: Story = {
+  args: {
+    ...Default.args,
+    inputProps: {
+      placeholder: 'Custom height...',
+    },
+    maxHeight: 150,
+    minHeight: 100,
+  },
+};
+
+// Variant with custom dropdown
+export const CustomDropdownStyle: Story = {
+  args: {
+    ...Default.args,
+    dropdownItemProps: {
+      activeBackgroundColor: '#3B82',
+      textItemProps: {
+        color: '#3B82F6',
+        size: 'md',
+      },
+    },
+
+    dropdownProps: {
+      className: 'border-2 border-blue-500 rounded-xl',
+      hasShadow: false,
+      position: 'bottom',
+      withAnimation: true,
+    },
+    inputProps: {
+      placeholder: 'Custom styling...',
+    },
+  },
+};
+
+// Complete example with all features
+export const Complete: Story = {
+  args: {
+    ...Default.args,
+    dataSet: countries,
+    dropdownItemProps: {
+      activeBackgroundColor: '#EBF8FF',
+      textItemProps: {
+        size: 'sm',
+      },
+    },
+    dropdownProps: {
+      emptyText: 'No country found',
+      hasShadow: true,
+      position: 'auto',
+      withAnimation: true,
+    },
+    inputProps: {
+      hasError: false,
+      label: 'Country selection',
+      placeholder: 'Search by country, code or continent...',
+    },
+    maxHeight: 200,
+    onSelectItem: item => {
+      console.log('Selected country:', item);
+    },
+    searchField: 'name',
+    searchQuery: (keyword, labelValue) => {
+      const country = countries.find(c => c.name === labelValue);
+      if (!country) return false;
+
+      const searchTerm = keyword.toLowerCase();
+      return (
+        country.name.toLowerCase().includes(searchTerm) ||
+        country.code.toLowerCase().includes(searchTerm) ||
+        country.continent.toLowerCase().includes(searchTerm)
+      );
+    },
+    valueField: 'code',
   },
   render: args => (
     <View className="gap-4">
-      <AutocompleteDropdown {...args} />
-      <AutocompleteDropdown {...args} />
-      <AutocompleteDropdown {...args} />
-      <AutocompleteDropdown {...args} />
       <AutocompleteDropdown {...args} />
     </View>
   ),

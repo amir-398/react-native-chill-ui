@@ -1,26 +1,13 @@
+import { FlatList, Keyboard, KeyboardEvent, View } from 'react-native';
 import React, { useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState, memo } from 'react';
-import {
-  Dimensions,
-  FlatList,
-  Keyboard,
-  KeyboardEvent,
-  Modal,
-  StyleSheet,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
-  View,
-  ViewStyle,
-} from 'react-native';
 
-import cn from '@/components/cn';
-import { Box } from '@/components/box';
-import String from '@/components/string';
-import Input from '@/components/inputs/Input';
-
-import { useDeviceOrientation } from '../utils';
-import { IDropdownRef, SelectDropdownProps } from '../../../types';
+import cn from '../cn';
+import Input from '../inputs/Input';
+import { useDeviceOrientation } from './utils';
+import InputDropdownModal from '../inputDrodown/InputDropdownModal';
+import { IDropdownRef, InputSelectDropdownProps } from '../../types';
 import useCalculateDropDownPosition from './hooks/useCalculateDropdownPosition';
-import { get, debounce, assign, isEqual, findIndex, differenceWith } from '../../../utils';
+import { get, debounce, isEqual, findIndex, differenceWith } from '../../utils';
 
 // default config
 const DEFAULT_CONFIG = {
@@ -51,7 +38,7 @@ interface DropdownState {
   position: Position | null;
 }
 
-const InputSelectDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<any>>((props, currentRef) => {
+const InputSelectDropdown = React.forwardRef<IDropdownRef, InputSelectDropdownProps<any>>((props, currentRef) => {
   const orientation = useDeviceOrientation();
 
   const {
@@ -72,7 +59,6 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<a
     keyboardAvoiding = true,
     maxHeight = DEFAULT_CONFIG.MAX_HEIGHT,
     minHeight = DEFAULT_CONFIG.MIN_HEIGHT,
-    mode = 'default',
     onBlur,
     onConfirmSelectItem,
     onFocus,
@@ -95,17 +81,7 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<a
     visible: false,
   });
 
-  const { measureComponent, position } = useCalculateDropDownPosition(ref, mode);
-
-  const { width: W } = Dimensions.get('window');
-
-  const styleHorizontal: ViewStyle = useMemo(
-    () => ({
-      alignSelf: 'center',
-      width: orientation === 'LANDSCAPE' ? W / 2 : '100%',
-    }),
-    [W, orientation],
-  );
+  const { measureComponent, position } = useCalculateDropDownPosition(ref);
 
   // Fonction utilitaire pour exclure les données
   const excludeData = useCallback(
@@ -334,213 +310,7 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<a
     performSearch,
   ]);
 
-  // Sélection d'un élément
-  const selectItem = useCallback(
-    (item: any) => {
-      if (confirmSelectItem && onConfirmSelectItem) {
-        return onConfirmSelectItem(item);
-      }
-
-      setState(prev => ({ ...prev, currentValue: item }));
-      onSelectItem?.(item);
-
-      if (closeModalWhenSelectedItem) {
-        setState(prev => ({ ...prev, searchText: '', visible: false }));
-        performSearch('');
-        onBlur?.();
-      }
-      return undefined;
-    },
-    [confirmSelectItem, onSelectItem, onConfirmSelectItem, performSearch, closeModalWhenSelectedItem, onBlur],
-  );
-
-  // handle search text change
-  const handleSearchTextChange = useCallback(
-    (text: string) => {
-      searchInputProps?.onChangeText?.(text);
-      setState(prev => ({ ...prev, searchText: text }));
-      performSearch(text);
-    },
-    [performSearch, searchInputProps],
-  );
-
-  const renderDropdown = useCallback(() => {
-    const isSelected = state.currentValue && get(state.currentValue, valueField);
-
-    return (
-      <Input
-        editable={false}
-        onPress={toggleDropdown}
-        placeholder={inputProps?.placeholder ?? DEFAULT_CONFIG.PLACEHOLDER}
-        value={isSelected ? get(state.currentValue, valueField) : undefined}
-        rightIconAction={{
-          iconColor: 'black',
-          iconName: state.visible ? 'angle-up-solid' : 'angle-down-solid',
-          iconPress: toggleDropdown,
-        }}
-        {...inputProps}
-      />
-    );
-  }, [inputProps, state.currentValue, state.visible, toggleDropdown, valueField]);
-
-  // Rendu d'un élément de la liste - mémorisé pour les performances
-  const renderListItem = useCallback(
-    ({ index, item }: { item: any; index: number }) => {
-      const isSelected = state.currentValue && get(state.currentValue, valueField);
-      const selected = isEqual(get(item, valueField), isSelected);
-      assign(item, { _index: index });
-
-      return (
-        <TouchableHighlight
-          key={index.toString()}
-          onPress={() => selectItem(item)}
-          underlayColor={dropdownItemProps?.activeBackgroundColor ?? '#F6F7F8'}
-        >
-          <Box>
-            {customDropdownItem ? (
-              customDropdownItem(item, selected)
-            ) : (
-              <Box className={cn('p-3', dropdownItemProps?.className)}>
-                <String {...dropdownItemProps?.textItemProps}>{get(item, valueField)}</String>
-              </Box>
-            )}
-          </Box>
-        </TouchableHighlight>
-      );
-    },
-    [dropdownItemProps, state.currentValue, valueField, selectItem, customDropdownItem],
-  );
-
-  // Rendu du champ de recherche
-  const renderSearchInput = useCallback(() => {
-    if (!hasSearch) return null;
-
-    if (customInputSearch) {
-      return customInputSearch(handleSearchTextChange);
-    }
-
-    return (
-      <Box className={cn('px-3 py-2', searchInputProps?.containerClassName)}>
-        <Input size="xs" {...searchInputProps} value={state.searchText} onChangeText={handleSearchTextChange} />
-      </Box>
-    );
-  }, [handleSearchTextChange, searchInputProps, state.searchText, hasSearch, customInputSearch]);
-
-  const renderList = useCallback(
-    () => (
-      <TouchableWithoutFeedback>
-        <Box className="flex-shrink">
-          {renderSearchInput()}
-
-          <FlatList
-            {...dropdownProps}
-            keyboardShouldPersistTaps="handled"
-            ref={refList}
-            onContentSizeChange={scrollToSelectedIndex}
-            onScrollToIndexFailed={scrollToSelectedIndex}
-            data={state.listData}
-            renderItem={renderListItem}
-            keyExtractor={(_item, index) => index.toString()}
-            removeClippedSubviews
-            maxToRenderPerBatch={10}
-            windowSize={10}
-          />
-        </Box>
-      </TouchableWithoutFeedback>
-    ),
-    [renderListItem, dropdownProps, state.listData, renderSearchInput, scrollToSelectedIndex],
-  );
-
-  // Rendu du modal
-  const renderModal = useCallback(() => {
-    if (!state.visible || !position) return null;
-
-    const { bottom, height, left, top, width } = position;
-
-    const shouldPositionTop = () => {
-      if (state.keyboardHeight > 0) {
-        return bottom < state.keyboardHeight + height;
-      }
-      return bottom < (hasSearch ? DEFAULT_CONFIG.SCROLL_THRESHOLD : DEFAULT_CONFIG.FALLBACK_THRESHOLD);
-    };
-
-    if (!width || !top || !bottom) return null;
-
-    const styleVertical: ViewStyle = {
-      left,
-      maxHeight,
-      minHeight,
-    };
-
-    const isTopPosition = dropdownPosition === 'auto' ? shouldPositionTop() : dropdownPosition === 'top';
-    let extendHeight = !isTopPosition ? top : bottom;
-
-    if (keyboardAvoiding && state.keyboardHeight > 0 && isTopPosition && dropdownPosition === 'auto') {
-      extendHeight = state.keyboardHeight;
-    }
-
-    return (
-      <Modal
-        transparent
-        statusBarTranslucent
-        visible={state.visible}
-        supportedOrientations={['landscape', 'portrait']}
-        onRequestClose={toggleDropdown}
-      >
-        <TouchableWithoutFeedback onPress={toggleDropdown}>
-          <Box className={cn('flex-1')}>
-            <Box
-              className={cn('flex-1')}
-              style={StyleSheet.flatten([
-                !isTopPosition
-                  ? { paddingTop: extendHeight }
-                  : {
-                      justifyContent: 'flex-end',
-                      paddingBottom: extendHeight,
-                    },
-              ])}
-            >
-              <Box
-                className={cn(
-                  'elevation-lg flex-shrink rounded-lg border border-[#E5E7EB] bg-white',
-                  dropdownProps?.className,
-                )}
-                style={StyleSheet.flatten([
-                  styleVertical,
-                  { width },
-                  dropdownProps?.hasShadow && {
-                    shadowColor: '#000',
-                    shadowOffset: {
-                      height: 1,
-                      width: 0,
-                    },
-                    shadowOpacity: 0.2,
-                    shadowRadius: 1.41,
-                  },
-                ])}
-              >
-                {renderList()}
-              </Box>
-            </Box>
-          </Box>
-        </TouchableWithoutFeedback>
-      </Modal>
-    );
-  }, [
-    state.visible,
-    state.position,
-    state.keyboardHeight,
-    dropdownProps?.hasShadow,
-    hasSearch,
-    maxHeight,
-    minHeight,
-    dropdownPosition,
-    keyboardAvoiding,
-    toggleDropdown,
-    styleHorizontal,
-    renderList,
-    dropdownProps?.className,
-  ]);
+  const isSelected = state.currentValue && get(state.currentValue, valueField);
 
   // Cleanup effect
   useEffect(
@@ -553,8 +323,40 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, SelectDropdownProps<a
 
   return (
     <View className={cn('justify-center', inputProps?.containerClassName)} ref={ref} onLayout={measureComponent}>
-      {renderDropdown()}
-      {renderModal()}
+      <Input
+        editable={false}
+        onPress={toggleDropdown}
+        placeholder={inputProps?.placeholder ?? DEFAULT_CONFIG.PLACEHOLDER}
+        value={isSelected ? get(state.currentValue, valueField) : undefined}
+        rightIconAction={{
+          iconColor: 'black',
+          iconName: state.visible ? 'angle-up-solid' : 'angle-down-solid',
+          iconPress: toggleDropdown,
+        }}
+        {...inputProps}
+      />
+      {/* {renderModal()} */}
+      <InputDropdownModal
+        dropdownPosition={position}
+        toggleDropdown={toggleDropdown}
+        dropdownProps={{
+          data: state.listData,
+          dropdownItemProps,
+          hasSearch,
+          maxHeight,
+          minHeight,
+          onSelectItem,
+          valueField,
+          visible: state.visible,
+          ...dropdownProps,
+        }}
+        modalProps={{
+          onRequestClose: () => setState(prev => ({ ...prev, visible: false })),
+          statusBarTranslucent: true,
+          transparent: true,
+          visible: state.visible,
+        }}
+      />
     </View>
   );
 });

@@ -1,9 +1,9 @@
-import { InputDropdownPropsBis } from '@/types';
+import { InputDropdownProps } from '@/types';
 
 import DropdownBase from './InputDropdownBase';
 import DropdownList from './InputDropdownList';
 
-export default function InputDropdown(props: InputDropdownPropsBis) {
+export default function InputDropdown(props: InputDropdownProps) {
   const {
     className,
     currentValue,
