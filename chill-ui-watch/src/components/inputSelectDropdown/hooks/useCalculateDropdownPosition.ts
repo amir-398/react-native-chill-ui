@@ -1,37 +1,67 @@
-import { useCallback, useState } from 'react';
-import { View } from 'react-native-reanimated/lib/typescript/Animated';
-import { TextInput, Dimensions, I18nManager, StatusBar } from 'react-native';
+import { useState } from 'react';
+import { View } from 'react-native';
 
-const { height: H, width: W } = Dimensions.get('window');
+const useCalculateDropdownPosition = ({
+  dropdownPosition,
+  headerOffset,
+  inputContainerRef,
+  wrapperRef,
+}: {
+  inputContainerRef: React.RefObject<View | null>;
+  wrapperRef: React.RefObject<View | null>;
+  dropdownPosition: 'top' | 'bottom';
+  headerOffset: number;
+}) => {
+  const [dropdownStyles, setDropdownStyles] = useState<{
+    top?: number;
+    bottom?: number;
+    left: number;
+    width?: number;
+  } | null>(null);
+  const calculatePosition = () => {
+    inputContainerRef?.current?.measureInWindow((x: number, y: number, width: number, height: number) => {
+      if (!wrapperRef.current) {
+        return;
+      }
 
-type DropdownPositionProps = {
-  bottom: number;
-  left: number;
-  width: number;
-  height: number;
-  top: number;
+      wrapperRef?.current?.measureInWindow(
+        (wrapperX: number, wrapperY: number, _wrapperWidth: number, wrapperHeight: number) => {
+          const inputMeasurements = {
+            bottomY: y - wrapperY + height,
+            height,
+            topY: y - wrapperY,
+            width,
+            x: x - wrapperX,
+          };
+
+          let contentStyles: { top?: number; left: number; width?: number; bottom?: number } | undefined;
+
+          if (dropdownPosition === 'top') {
+            const distanceFromBottom = wrapperHeight - inputMeasurements.topY + 5 + headerOffset;
+            contentStyles = {
+              bottom: distanceFromBottom,
+              left: inputMeasurements.x,
+              top: undefined,
+              width: inputMeasurements.width,
+            };
+          } else if (dropdownPosition === 'bottom') {
+            contentStyles = {
+              bottom: undefined,
+              left: inputMeasurements.x,
+              top: inputMeasurements.topY + inputMeasurements.height + 5 + headerOffset,
+              width: inputMeasurements.width,
+            };
+          }
+
+          if (contentStyles) {
+            setDropdownStyles(contentStyles);
+          }
+        },
+      );
+    });
+  };
+
+  return { calculatePosition, dropdownStyles };
 };
 
-export default function useCalculateDropDownPosition(containerRef: React.RefObject<TextInput | View | null>) {
-  const [position, setPosition] = useState<DropdownPositionProps | null>(null);
-  const statusBarHeight: number = StatusBar.currentHeight || 0;
-
-  const measureComponent = useCallback(() => {
-    if (!containerRef.current) return;
-    containerRef.current.measureInWindow((pageX, pageY, width, height) => {
-      const top = height + pageY + 2;
-      const bottom = H - top + height;
-      const left = I18nManager.isRTL ? W - width - pageX : pageX;
-
-      setPosition({
-        bottom: Math.floor(bottom - statusBarHeight),
-        height: Math.floor(height),
-        left: Math.floor(left),
-        top: Math.floor(top + statusBarHeight),
-        width: Math.floor(width),
-      });
-    });
-  }, [containerRef, statusBarHeight]);
-
-  return { measureComponent, position };
-}
+export default useCalculateDropdownPosition;

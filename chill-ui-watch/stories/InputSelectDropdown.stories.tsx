@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { Box } from '@/components';
+
 import UiPresentation from './storybook';
 import InputSelectDropdown from '../src/components/inputSelectDropdown/InputSelectDropdown';
 
@@ -177,4 +179,20 @@ export const Default: Story = {
     },
     valueField: 'label',
   },
+  render: args => (
+    <Box className="gap-4">
+      <InputSelectDropdown {...args} />
+      <InputSelectDropdown {...args} />
+      <InputSelectDropdown {...args} />
+      <InputSelectDropdown {...args} />
+      <InputSelectDropdown {...args} />
+      <InputSelectDropdown {...args} />
+      <InputSelectDropdown {...args} />
+      <InputSelectDropdown {...args} />
+      <InputSelectDropdown {...args} />
+      <InputSelectDropdown {...args} />
+      <InputSelectDropdown {...args} />
+      <InputSelectDropdown {...args} />
+    </Box>
+  ),
 };

@@ -1,4 +1,4 @@
-import type { FlatListProps, ModalProps } from 'react-native';
+import type { FlatListProps, ModalProps, View } from 'react-native';
 
 import type { InputProps } from './input.types';
 import type { LoadingIndicatorProps } from './loadingIndicator.types';
@@ -56,12 +56,15 @@ export type DropdownProps = {
 };
 
 export type InputDropdownModalProps = {
+  dropdownRef?: React.RefObject<View | null>;
+  wrapperRef?: React.RefObject<View | null>;
   modalProps: ModalProps;
   dropdownProps: InputDropdownProps;
   dropdownPosition?: {
-    left: number;
-    top: number;
-    width: number;
+    left?: number;
+    top?: number;
+    width?: number;
+    bottom?: number;
   } | null;
   toggleDropdown: () => void;
 };

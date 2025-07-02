@@ -1,26 +1,25 @@
-import { Modal, TouchableWithoutFeedback } from 'react-native';
+import { Modal, TouchableWithoutFeedback, View } from 'react-native';
 
-import { Box } from '../box';
 import InputDropdown from './InputDropdown';
 import { InputDropdownModalProps } from '../../types';
 
 export default function InputDropdownModal(props: InputDropdownModalProps) {
-  const { dropdownPosition, dropdownProps, modalProps, toggleDropdown } = props;
-  if (!dropdownPosition) return null;
+  const { dropdownPosition, dropdownProps, dropdownRef, modalProps, toggleDropdown, wrapperRef } = props;
 
   return (
     <Modal transparent statusBarTranslucent {...modalProps}>
       <TouchableWithoutFeedback onPress={toggleDropdown}>
-        <Box className="flex-1">
-          <Box
+        <View className="flex-1" ref={wrapperRef}>
+          <View
+            ref={dropdownRef}
             style={{
               position: 'absolute',
               ...dropdownPosition,
             }}
           >
             <InputDropdown {...dropdownProps} />
-          </Box>
-        </Box>
+          </View>
+        </View>
       </TouchableWithoutFeedback>
     </Modal>
   );

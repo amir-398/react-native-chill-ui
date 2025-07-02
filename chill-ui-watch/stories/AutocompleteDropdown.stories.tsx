@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { String } from '@/components';
+import { Box, String } from '@/components';
 import { View } from '@/components/box/View';
 
 import UiPresentation from './storybook';
@@ -349,8 +349,8 @@ export const Complete: Story = {
     valueField: 'code',
   },
   render: args => (
-    <View className="gap-4">
+    <Box className="gap-4">
       <AutocompleteDropdown {...args} />
-    </View>
+    </Box>
   ),
 };

@@ -1,5 +1,5 @@
-import { FlatList } from 'react-native';
-import { useImperativeHandle, useRef, useCallback } from 'react';
+import { FlatList, View } from 'react-native';
+import { useImperativeHandle, useRef, useCallback, useState } from 'react';
 
 import { IDropdownRef } from '../types';
 import useDropdownState from './useDropdownState';
@@ -7,6 +7,7 @@ import useDropdownSearch from './useDropdownSearch';
 import useDropdownActions from './useDropdownActions';
 import useDropdownKeyboard from './useDropdownKeyboard';
 import useDropdownSelection from './useDropdownSelection';
+import useGetDropdownPosition from './useGetDropdownPosition';
 import useCalculateDropDownPosition from './useCalculateDropdownPosition';
 
 interface InputSelectDropdownHookParams {
@@ -21,6 +22,7 @@ interface InputSelectDropdownHookParams {
   onFocus?: () => void;
   excludeSearchItems?: any[];
   onSelectItem?: (item: any) => void;
+  dropdownPosition?: 'top' | 'bottom';
   closeModalWhenSelectedItem?: boolean;
   searchQuery?: (searchText: string, itemText: string) => boolean;
 }
@@ -31,6 +33,7 @@ export default function useInputSelectDropdown(
     closeModalWhenSelectedItem = true,
     dataSet = [],
     disable = false,
+    dropdownPosition,
     excludeItems = [],
     excludeSearchItems = [],
     inputValue,
@@ -44,7 +47,10 @@ export default function useInputSelectDropdown(
   currentRef: React.Ref<IDropdownRef>,
 ) {
   const refList = useRef<FlatList | null>(null);
-  const containerRef = useRef<any>(null);
+  const inputContainerRef = useRef<any>(null);
+  const wrapperRef = useRef<View | null>(null);
+  const dropdownRef = useRef<View | null>(null);
+  const [calculatedDropdownPosition, setCalculatedDropdownPosition] = useState<'top' | 'bottom'>('bottom');
 
   // État principal du dropdown
   const {
@@ -58,7 +64,20 @@ export default function useInputSelectDropdown(
     updateState,
   } = useDropdownState(dataSet);
 
-  const { measureComponent, position } = useCalculateDropDownPosition(containerRef);
+  const { calculatePosition, dropdownStyles } = useCalculateDropDownPosition({
+    dropdownPosition: calculatedDropdownPosition,
+    headerOffset: 0,
+    inputContainerRef,
+    wrapperRef,
+  });
+
+  const { getDropdownPosition } = useGetDropdownPosition({
+    inputContainerRef,
+    setDropdownPosition: pos => {
+      setCalculatedDropdownPosition(pos);
+    },
+    waitForKeyboard: false,
+  });
 
   const { debouncedSearch, excludeData, performSearch } = useDropdownSearch({
     dataSet,
@@ -83,9 +102,10 @@ export default function useInputSelectDropdown(
 
   const { eventClose, eventOpen, toggleDropdown } = useDropdownActions({
     disabled: disable,
+    getDropdownPosition,
     keyboardHeight: state.keyboardHeight,
     onClose: onBlur,
-    onMeasure: measureComponent,
+    onMeasure: calculatePosition,
     onOpen: onFocus,
     onPerformSearch: performSearch,
     onResetSearch: resetSearch,
@@ -111,7 +131,7 @@ export default function useInputSelectDropdown(
   useDropdownKeyboard({
     onKeyboardHide: () => setKeyboardHeight(0),
     onKeyboardShow: setKeyboardHeight,
-    onMeasure: measureComponent,
+    onMeasure: calculatePosition,
   });
 
   useImperativeHandle(
@@ -129,11 +149,13 @@ export default function useInputSelectDropdown(
     updateState,
 
     // Refs
-    containerRef,
-    position,
+    dropdownRef,
+    inputContainerRef,
     refList,
+    wrapperRef,
 
     // Actions
+    dropdownStyles,
     eventClose,
     eventOpen,
     handleSelectItem,
@@ -149,7 +171,7 @@ export default function useInputSelectDropdown(
     updateCurrentValue,
 
     // Utils
+    calculatePosition,
     excludeData,
-    measureComponent,
   };
 }

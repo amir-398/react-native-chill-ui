@@ -1,21 +1,21 @@
-import { useCallback, useState } from 'react'
-import { View } from 'react-native'
+import { View } from 'react-native';
+import { useCallback, useState } from 'react';
 
 export default function useCalculateDropdownPosition(
   inputContainerRef: React.RefObject<View | null>,
-  wrapperRef: React.RefObject<View | null>
+  wrapperRef: React.RefObject<View | null>,
 ) {
   const [inputMeasurements, setInputMeasurements] = useState<{
-    bottomY: number
-    height: number
-    topY: number
-    width: number
-    x: number
-  } | null>(null)
+    bottomY: number;
+    height: number;
+    topY: number;
+    width: number;
+    x: number;
+  } | null>(null);
 
   const calculatePosition = useCallback(() => {
     if (!inputContainerRef?.current || !wrapperRef?.current) {
-      return
+      return;
     }
     inputContainerRef?.current?.measure((_x, _y, width, height, inputPageX, inputPageY) => {
       wrapperRef.current?.measure((_Wx, _Wy, _w, wrapperH, _wrapperPageX, wrapperPageY) => {
@@ -25,14 +25,14 @@ export default function useCalculateDropdownPosition(
           topY: inputPageY - wrapperPageY,
           width,
           x: inputPageX,
-        }
-        setInputMeasurements((prev) =>
-          JSON.stringify(prev) === JSON.stringify(currentMeasurement) ? prev : currentMeasurement
-        )
-      })
-    })
+        };
+        setInputMeasurements(prev =>
+          JSON.stringify(prev) === JSON.stringify(currentMeasurement) ? prev : currentMeasurement,
+        );
+      });
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
-  return { calculatePosition, inputMeasurements }
+  return { calculatePosition, inputMeasurements };
 }
