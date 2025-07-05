@@ -16,7 +16,7 @@ const useGetDropdownPosition = ({
   setDropdownPosition,
   waitForKeyboard,
 }: GetDropdownPositionProps) => {
-  const getDropdownPosition = async (): Promise<void> => {
+  const getDropdownPosition = async (): Promise<Position> => {
     try {
       if (!inputContainerRef.current) {
         throw new Error('Container ref is not defined');
@@ -30,21 +30,22 @@ const useGetDropdownPosition = ({
 
         const delay = waitForKeyboard ? Platform.select({ android: 250, default: 1, ios: 600 }) : 1;
 
-        await new Promise<void>(resolve => {
+        return await new Promise<Position>(resolve => {
           setTimeout(() => {
             const kbHeight = Keyboard.metrics?.()?.height ?? 0;
             const screenHeight = Dimensions.get('window').height;
             const shouldOpenDown = (screenHeight - kbHeight) / 2 > positionY;
-
-            setDropdownPosition(shouldOpenDown ? 'bottom' : 'top');
-            resolve();
+            const newPos = shouldOpenDown ? 'bottom' : 'top';
+            setDropdownPosition(newPos);
+            resolve(newPos);
           }, delay);
         });
-      } else {
-        setDropdownPosition(position);
       }
+      setDropdownPosition(position);
+      return position;
     } catch {
       setDropdownPosition('bottom');
+      return 'bottom';
     }
   };
   return { getDropdownPosition };

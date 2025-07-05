@@ -18,7 +18,7 @@ const useCalculateDropdownPosition = ({
     left: number;
     width?: number;
   } | null>(null);
-  const calculatePosition = () => {
+  const calculatePosition = (currentPosition: 'top' | 'bottom' = dropdownPosition) => {
     inputContainerRef?.current?.measureInWindow((x: number, y: number, width: number, height: number) => {
       if (!wrapperRef.current) {
         return;
@@ -36,7 +36,7 @@ const useCalculateDropdownPosition = ({
 
           let contentStyles: { top?: number; left: number; width?: number; bottom?: number } | undefined;
 
-          if (dropdownPosition === 'top') {
+          if (currentPosition === 'top') {
             const distanceFromBottom = wrapperHeight - inputMeasurements.topY + 5 + headerOffset;
             contentStyles = {
               bottom: distanceFromBottom,
@@ -44,7 +44,7 @@ const useCalculateDropdownPosition = ({
               top: undefined,
               width: inputMeasurements.width,
             };
-          } else if (dropdownPosition === 'bottom') {
+          } else if (currentPosition === 'bottom') {
             contentStyles = {
               bottom: undefined,
               left: inputMeasurements.x,

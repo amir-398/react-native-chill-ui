@@ -12,15 +12,6 @@ const meta: Meta<typeof InputSelectDropdown> = {
       control: 'object',
       description: 'Les données à afficher dans la liste déroulante',
     },
-    disable: {
-      control: 'boolean',
-      description: 'Désactive le composant',
-    },
-    mode: {
-      control: 'select',
-      description: "Mode d'affichage du dropdown",
-      options: ['default', 'modal', 'auto'],
-    },
     valueField: {
       control: 'text',
       description: 'Le champ à utiliser comme valeur',
@@ -47,10 +38,6 @@ const meta: Meta<typeof InputSelectDropdown> = {
       control: 'text',
       description: 'Le champ à utiliser pour la recherche',
     },
-    searchInputProps: {
-      control: 'object',
-      description: 'Configuration du champ de recherche',
-    },
 
     // Configuration du positionnement
     dropdownPosition: {
@@ -58,10 +45,7 @@ const meta: Meta<typeof InputSelectDropdown> = {
       description: 'Position du dropdown',
       options: ['auto', 'top', 'bottom'],
     },
-    keyboardAvoiding: {
-      control: 'boolean',
-      description: 'Évite le chevauchement avec le clavier',
-    },
+
     maxHeight: {
       control: 'number',
       description: 'Hauteur maximale du dropdown',
@@ -161,13 +145,11 @@ const data = [
 export const Default: Story = {
   args: {
     dataSet: data,
-    dropdownPosition: 'top',
+    dropdownPosition: 'auto',
     dropdownProps: {
       className: 'rounded-lg mt-1',
-      hasSearch: true,
-      hasShadow: true,
     },
-
+    hasSearch: true,
     inputProps: {
       placeholder: 'Sélectionnez une options',
     },

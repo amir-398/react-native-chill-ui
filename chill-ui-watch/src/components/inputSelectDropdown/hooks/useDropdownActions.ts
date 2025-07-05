@@ -10,19 +10,15 @@ interface DropdownActionsParams {
   onOpen?: () => void;
   onClose?: () => void;
   keyboardHeight: number;
-  onMeasure?: () => void;
   onResetSearch?: () => void;
-  getDropdownPosition: () => void;
   setVisible: (visible: boolean) => void;
   onPerformSearch?: (text: string) => void;
 }
 
 export default function useDropdownActions({
   disabled,
-  getDropdownPosition,
   keyboardHeight,
   onClose,
-  onMeasure,
   onOpen,
   onPerformSearch,
   onResetSearch,
@@ -32,15 +28,13 @@ export default function useDropdownActions({
 }: DropdownActionsParams): DropdownActions {
   const eventOpen = useCallback(() => {
     if (disabled) return;
-    getDropdownPosition();
-    onMeasure?.();
     setVisible(true);
     onOpen?.();
 
     if (searchText.length > 0) {
       onPerformSearch?.(searchText);
     }
-  }, [disabled, getDropdownPosition, onMeasure, setVisible, onOpen, searchText, onPerformSearch]);
+  }, [disabled, setVisible, onOpen, searchText, onPerformSearch]);
 
   const eventClose = useCallback(() => {
     if (disabled) return;
@@ -51,8 +45,6 @@ export default function useDropdownActions({
 
   const toggleDropdown = useCallback(() => {
     if (disabled) return;
-
-    getDropdownPosition();
 
     const willBeVisible = !visible;
 
@@ -68,7 +60,6 @@ export default function useDropdownActions({
       onPerformSearch?.('');
     }
 
-    onMeasure?.();
     setVisible(willBeVisible);
 
     // Callbacks
@@ -82,19 +73,7 @@ export default function useDropdownActions({
     if (searchText.length > 0) {
       onPerformSearch?.(searchText);
     }
-  }, [
-    disabled,
-    visible,
-    keyboardHeight,
-    getDropdownPosition,
-    onResetSearch,
-    onPerformSearch,
-    onMeasure,
-    setVisible,
-    onOpen,
-    onClose,
-    searchText,
-  ]);
+  }, [disabled, visible, keyboardHeight, onResetSearch, onPerformSearch, setVisible, onOpen, onClose, searchText]);
 
   return {
     eventClose,

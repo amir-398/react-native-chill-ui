@@ -1,5 +1,5 @@
 import { FlatList, View } from 'react-native';
-import { useImperativeHandle, useRef, useCallback, useState } from 'react';
+import { useImperativeHandle, useRef, useCallback, useState, useEffect } from 'react';
 
 import { IDropdownRef } from '../types';
 import useDropdownState from './useDropdownState';
@@ -79,8 +79,6 @@ export default function useInputSelectDropdown(
     wrapperRef,
   });
 
-  console.log('dropdownStyles', dropdownStyles);
-
   const { debouncedSearch, excludeData, performSearch } = useDropdownSearch({
     dataSet,
     excludeItems,
@@ -104,10 +102,8 @@ export default function useInputSelectDropdown(
 
   const { eventClose, eventOpen, toggleDropdown } = useDropdownActions({
     disabled: disable,
-    getDropdownPosition,
     keyboardHeight: state.keyboardHeight,
     onClose: onBlur,
-    onMeasure: calculatePosition,
     onOpen: onFocus,
     onPerformSearch: performSearch,
     onResetSearch: resetSearch,
@@ -129,6 +125,17 @@ export default function useInputSelectDropdown(
     },
     [setCurrentValue, onSelectItem, closeModalWhenSelectedItem, setVisible, onBlur],
   );
+
+  useEffect(() => {
+    const calculate = async () => {
+      if (state.visible) {
+        const newPosition = await getDropdownPosition();
+        calculatePosition(newPosition);
+      }
+    };
+    calculate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.visible]);
 
   useDropdownKeyboard({
     onKeyboardHide: () => setKeyboardHeight(0),
