@@ -11,9 +11,10 @@ export interface InputDropdownBaseProps {
   className?: string;
   hasShadow?: boolean;
   hasSearch?: boolean;
-  withAnimation?: boolean;
+  hasAnimation?: boolean;
   children: React.ReactNode;
   searchInputProps?: InputProps;
+  customSearchInput?: React.ReactNode;
 }
 
 export interface InputDropdownListProps {

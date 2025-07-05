@@ -12,9 +12,8 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, InputSelectDropdownPr
   const {
     autoScroll = true,
     closeModalWhenSelectedItem = true,
-    confirmSelectItem,
     customDropdownItem,
-    customInputSearch,
+    customSearchInput,
     dataSet = [],
     dropdownItemProps,
     dropdownPosition = 'auto',
@@ -26,10 +25,10 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, InputSelectDropdownPr
     maxHeight = DEFAULT_CONFIG.MAX_HEIGHT,
     minHeight = DEFAULT_CONFIG.MIN_HEIGHT,
     onBlur,
-    onConfirmSelectItem,
     onFocus,
     onSelectItem,
     searchField,
+    searchInputProps,
     searchQuery,
     valueField,
   } = props;
@@ -88,6 +87,7 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, InputSelectDropdownPr
         toggleDropdown={toggleDropdown}
         dropdownProps={{
           customDropdownItem,
+          customSearchInput,
           data: state.listData,
           dropdownItemProps,
           hasSearch,
@@ -95,7 +95,7 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, InputSelectDropdownPr
           minHeight,
           onSelectItem: handleSelectItem,
           searchInputProps: {
-            ...dropdownProps?.searchInputProps,
+            ...searchInputProps,
             onChangeText: setSearchText,
             value: state.searchText,
           },

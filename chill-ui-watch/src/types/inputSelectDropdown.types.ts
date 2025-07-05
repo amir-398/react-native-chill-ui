@@ -14,17 +14,24 @@ export interface InputSelectDropdownProps<T> {
   searchField?: string;
   inputProps?: InputProps;
   excludeSearchItems?: T[];
-  confirmSelectItem?: boolean;
+  searchInputProps?: InputProps;
   onSelectItem: (item: T) => void;
-  customInputSearch?: React.ReactNode;
+  customSearchInput?: React.ReactNode;
   closeModalWhenSelectedItem?: boolean;
-  onConfirmSelectItem?: (item: T) => void;
   dropdownPosition?: 'auto' | 'top' | 'bottom';
   searchQuery?: (keyword: string, labelValue: string) => boolean;
   dropdownItemProps?: InputDropdownListProps['dropdownItemProps'];
   customDropdownItem?: (item: T, selected?: boolean) => React.ReactElement | null;
-  dropdownProps?: Omit<
-    InputDropdownProps,
-    'data' | 'onSelectItem' | 'valueField' | 'hasSearch' | 'dropdownItemProps' | 'customDropdownItem'
+  dropdownProps?: Partial<
+    Omit<
+      InputDropdownProps,
+      | 'data'
+      | 'onSelectItem'
+      | 'valueField'
+      | 'hasSearch'
+      | 'dropdownItemProps'
+      | 'customDropdownItem'
+      | 'searchInputProps'
+    >
   >;
 }

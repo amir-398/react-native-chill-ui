@@ -12,6 +12,7 @@ export default function InputDropdown(props: InputDropdownProps) {
     dropdownItemProps,
     dropdownListProps,
     emptyText,
+    hasAnimation,
     hasSearch,
     hasShadow,
     isLoading,
@@ -21,7 +22,6 @@ export default function InputDropdown(props: InputDropdownProps) {
     searchInputProps,
     valueField,
     visible,
-    withAnimation,
   } = props;
 
   return (
@@ -31,7 +31,7 @@ export default function InputDropdown(props: InputDropdownProps) {
       minHeight={minHeight}
       className={className}
       hasShadow={hasShadow}
-      withAnimation={withAnimation}
+      hasAnimation={hasAnimation}
       hasSearch={hasSearch}
       searchInputProps={searchInputProps}
     >

@@ -145,21 +145,19 @@ const data = [
 export const Default: Story = {
   args: {
     dataSet: data,
+
     dropdownPosition: 'auto',
     dropdownProps: {
-      className: 'rounded-lg mt-1',
+      className: '',
+      hasAnimation: false,
+      hasShadow: true,
     },
     hasSearch: true,
     inputProps: {
       placeholder: 'Sélectionnez une options',
     },
-    searchInputProps: {
-      onChangeText: (text: string) => {
-        console.log('text', text);
-      },
-      placeholder: 'Rechercher une option',
-    },
-    valueField: 'label',
+
+    valueField: 'value',
   },
   render: args => (
     <Box className="gap-4">
