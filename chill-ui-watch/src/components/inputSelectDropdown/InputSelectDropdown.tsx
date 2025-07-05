@@ -36,7 +36,6 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, InputSelectDropdownPr
 
   // Utilisation du hook principal qui combine toute la logique
   const {
-    dropdownPosition,
     dropdownRef,
     dropdownStyles,
     handleSelectItem,
@@ -57,6 +56,7 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, InputSelectDropdownPr
       onBlur,
       onFocus,
       onSelectItem,
+      position: dropdownPosition,
       searchField,
       searchQuery,
       valueField,

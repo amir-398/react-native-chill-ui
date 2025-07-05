@@ -161,7 +161,7 @@ const data = [
 export const Default: Story = {
   args: {
     dataSet: data,
-    dropdownPosition: 'auto',
+    dropdownPosition: 'top',
     dropdownProps: {
       className: 'rounded-lg mt-1',
       hasSearch: true,

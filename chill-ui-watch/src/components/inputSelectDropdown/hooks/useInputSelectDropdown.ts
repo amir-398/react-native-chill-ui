@@ -22,7 +22,7 @@ interface InputSelectDropdownHookParams {
   onFocus?: () => void;
   excludeSearchItems?: any[];
   onSelectItem?: (item: any) => void;
-  dropdownPosition?: 'top' | 'bottom';
+  position: 'top' | 'bottom' | 'auto';
   closeModalWhenSelectedItem?: boolean;
   searchQuery?: (searchText: string, itemText: string) => boolean;
 }
@@ -33,13 +33,13 @@ export default function useInputSelectDropdown(
     closeModalWhenSelectedItem = true,
     dataSet = [],
     disable = false,
-    dropdownPosition,
     excludeItems = [],
     excludeSearchItems = [],
     inputValue,
     onBlur,
     onFocus,
     onSelectItem,
+    position,
     searchField,
     searchQuery,
     valueField,
@@ -63,6 +63,14 @@ export default function useInputSelectDropdown(
     state,
     updateState,
   } = useDropdownState(dataSet);
+  const { getDropdownPosition } = useGetDropdownPosition({
+    inputContainerRef,
+    position,
+    setDropdownPosition: pos => {
+      setCalculatedDropdownPosition(pos);
+    },
+    waitForKeyboard: false,
+  });
 
   const { calculatePosition, dropdownStyles } = useCalculateDropDownPosition({
     dropdownPosition: calculatedDropdownPosition,
@@ -71,13 +79,7 @@ export default function useInputSelectDropdown(
     wrapperRef,
   });
 
-  const { getDropdownPosition } = useGetDropdownPosition({
-    inputContainerRef,
-    setDropdownPosition: pos => {
-      setCalculatedDropdownPosition(pos);
-    },
-    waitForKeyboard: false,
-  });
+  console.log('dropdownStyles', dropdownStyles);
 
   const { debouncedSearch, excludeData, performSearch } = useDropdownSearch({
     dataSet,
