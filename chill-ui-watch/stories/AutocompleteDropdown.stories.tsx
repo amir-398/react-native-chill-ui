@@ -54,6 +54,14 @@ const meta: Meta<typeof AutocompleteDropdown> = {
       control: 'object',
       description: 'Dropdown FlatList configuration',
     },
+    offsetX: {
+      control: 'number',
+      description: 'Offset X of the dropdown',
+    },
+    offsetY: {
+      control: 'number',
+      description: 'Offset Y of the dropdown',
+    },
 
     // State and loading
     isLoading: {
@@ -87,9 +95,18 @@ const meta: Meta<typeof AutocompleteDropdown> = {
       control: 'boolean',
       description: 'Activates selection confirmation',
     },
+    hasHighlightString: {
+      control: 'boolean',
+      description: 'Activates highlight string',
+    },
+
     hasPerformSearch: {
       control: 'boolean',
       description: 'Activates automatic search',
+    },
+    highlightProps: {
+      control: 'object',
+      description: 'Highlight string configuration',
     },
 
     // Callbacks
@@ -160,7 +177,7 @@ export const Default: Story = {
     customDropdownItem: undefined,
     dataSet: data,
     dropdownItemProps: {
-      textItemProps: {},
+      stringItemProps: {},
     },
     dropdownPosition: 'auto',
     dropdownProps: {
@@ -168,13 +185,15 @@ export const Default: Story = {
       hasShadow: true,
     },
     excludeItems: [],
+    hasHighlightString: true,
     hasPerformSearch: true,
+
     inputProps: {
       placeholder: 'Search for an item...',
     },
     isLoading: false,
     maxHeight: 250,
-    minHeight: undefined,
+    minHeight: 0,
     onBlur: () => {},
     onFocus: () => {},
     onSelectItem: () => undefined,
@@ -294,7 +313,7 @@ export const CustomDropdownStyle: Story = {
     ...Default.args,
     dropdownItemProps: {
       activeBackgroundColor: '#3B82',
-      textItemProps: {
+      stringItemProps: {
         color: '#3B82F6',
         size: 'md',
       },
@@ -318,7 +337,7 @@ export const Complete: Story = {
     dataSet: countries,
     dropdownItemProps: {
       activeBackgroundColor: '#EBF8FF',
-      textItemProps: {
+      stringItemProps: {
         size: 'sm',
       },
     },

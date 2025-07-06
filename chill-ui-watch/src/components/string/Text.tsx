@@ -27,12 +27,16 @@ export function Text(props: TextProps) {
     }
   };
 
-  if (onPress || useFastText === false) {
+  if (onPress) {
     return (
       <NativeText {...props} onPress={handlePress}>
         {children}
       </NativeText>
     );
+  }
+
+  if (useFastText === false) {
+    return <NativeText {...props}>{children}</NativeText>;
   }
 
   return <FastText {...props}>{children}</FastText>;

@@ -4,6 +4,7 @@ import type { InputProps } from './input.types';
 import type { LoadingIndicatorProps } from './loadingIndicator.types';
 
 import { StringProps } from './string.types';
+import { HighlightStringProps } from './highlightString.types';
 
 // InputDropdown ----------
 export interface InputDropdownBaseProps {
@@ -25,16 +26,18 @@ export interface InputDropdownListProps {
   valueField?: string;
   isLoading?: boolean;
   currentValue?: string;
+  hasHighlightString?: boolean;
   onSelectItem?: (item: any) => void;
   customEmpty?: () => React.ReactNode;
   loadingIndicatorProps?: LoadingIndicatorProps;
   customLoadingIndicator?: () => React.ReactNode;
+  highlightStringProps?: Partial<Omit<HighlightStringProps, 'text'>>;
   dropdownListProps?: Omit<FlatListProps<any>, 'renderItem' | 'data'>;
   customDropdownItem?: (item: any, selected: boolean) => React.ReactNode;
   dropdownItemProps?: {
     activeBackgroundColor?: string;
     className?: string;
-    textItemProps?: StringProps;
+    stringItemProps?: StringProps;
   };
 }
 

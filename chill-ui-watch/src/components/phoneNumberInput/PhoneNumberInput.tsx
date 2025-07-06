@@ -6,9 +6,9 @@ import useCalculateDropDownPosition from '@/components/inputSelectDropdown/hooks
 import Icon from '../icon';
 import { Box } from '../box';
 import String from '../string';
+import * as flags from './flags';
 import Input from '../inputs/Input';
 import { PhoneNumberTextInputProps } from '../../types';
-import * as flags from './flags';
 import InputDropdownModal from '../inputDrodown/InputDropdownModal';
 import { countryCodes, type CountryCodesProps } from './countryCodes';
 import { applyMaskPhoneNumber, getPhoneNumberWithSuffix, isValidNumber } from './utils';
@@ -198,22 +198,34 @@ function PhoneNumberTextInput({
         {...props}
       />
       <InputDropdownModal
-        dropdownPosition={position}
-        toggleDropdown={handleToggleDropdown}
-        inputDropdownProps={{
-          customDropdownItem: renderItem,
-          data: filteredCountries,
-          hasSearch: true,
-          maxHeight: 250,
-          minHeight: 200,
-          onSelectItem: onSelectCountry,
-          visible: isDropdownOpen,
+        dropdownRef={dropdownRef}
+        wrapperRef={wrapperRef}
+        dropdownPosition={dropdownStyles}
+        toggleDropdown={toggleDropdown}
+        dropdownProps={{
+          customDropdownItem,
+          customSearchInput,
+          data: state.listData,
+          dropdownItemProps,
+          hasSearch,
+          maxHeight,
+          minHeight,
+          onSelectItem: handleSelectItem,
+          searchInputProps: {
+            ...searchInputProps,
+            onChangeText: setSearchText,
+            value: state.searchText,
+          },
+
+          valueField,
+          visible: state.visible,
+          ...dropdownProps,
         }}
         modalProps={{
-          onRequestClose: () => setDropdownOpen(false),
+          onRequestClose: toggleDropdown,
           statusBarTranslucent: true,
           transparent: true,
-          visible: isDropdownOpen,
+          visible: state.visible,
         }}
       />
     </View>

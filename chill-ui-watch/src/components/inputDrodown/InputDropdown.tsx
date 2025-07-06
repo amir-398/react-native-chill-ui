@@ -13,8 +13,10 @@ export default function InputDropdown(props: InputDropdownProps) {
     dropdownListProps,
     emptyText,
     hasAnimation,
+    hasHighlightString,
     hasSearch,
     hasShadow,
+    highlightStringProps,
     isLoading,
     maxHeight,
     minHeight,
@@ -45,6 +47,8 @@ export default function InputDropdown(props: InputDropdownProps) {
         dropdownListProps={dropdownListProps}
         isLoading={isLoading}
         emptyText={emptyText}
+        highlightStringProps={highlightStringProps}
+        hasHighlightString={hasHighlightString}
       />
     </DropdownBase>
   );

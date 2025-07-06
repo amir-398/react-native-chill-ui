@@ -7,7 +7,7 @@ import {
   IAutocompleteDropdownContext,
   IAutocompleteDropdownContextProviderProps,
   IAutocompleteInstance,
-} from './FormAutoCompleteContext.props';
+} from './AutoCompleteDropdownContext.props';
 
 export const AutocompleteContext = React.createContext<IAutocompleteDropdownContext>({
   forceCalculatePositions: () => null,
@@ -27,20 +27,25 @@ export function AutocompleteDropdownContext({ children, headerOffset = 0 }: IAut
   const positionTrackingIntervalRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   // Fonction pour enregistrer une nouvelle instance
-  const registerInstance = useCallback((id: string, inputContainerRef: React.MutableRefObject<View | null>) => {
-    setInstances(prev => {
-      const newInstances = new Map(prev);
-      newInstances.set(id, {
-        contentStyles: undefined,
-        dropdownContent: undefined,
-        dropdownPosition: undefined,
-        id,
-        inputContainerRef,
-        showDropdown: false,
+  const registerInstance = useCallback(
+    (id: string, inputContainerRef: React.MutableRefObject<View | null>, offsetX?: number, offsetY?: number) => {
+      setInstances(prev => {
+        const newInstances = new Map(prev);
+        newInstances.set(id, {
+          contentStyles: undefined,
+          dropdownContent: undefined,
+          dropdownPosition: undefined,
+          id,
+          inputContainerRef,
+          offsetX,
+          offsetY,
+          showDropdown: false,
+        });
+        return newInstances;
       });
-      return newInstances;
-    });
-  }, []);
+    },
+    [],
+  );
 
   const unregisterInstance = useCallback((id: string) => {
     setInstances(prev => {
@@ -97,7 +102,7 @@ export function AutocompleteDropdownContext({ children, headerOffset = 0 }: IAut
     }
 
     activeInstances.forEach(instance => {
-      const { dropdownPosition, id, inputContainerRef } = instance;
+      const { dropdownPosition, id, inputContainerRef, offsetX = 0, offsetY = 0 } = instance;
 
       if (!inputContainerRef.current || !wrapperRef.current) {
         return;
@@ -120,18 +125,18 @@ export function AutocompleteDropdownContext({ children, headerOffset = 0 }: IAut
             let contentStyles: { top?: number; left: number; width?: number; bottom?: number } | undefined;
 
             if (dropdownPosition === 'top') {
-              const distanceFromBottom = wrapperHeight - inputMeasurements.topY + 5 + headerOffset;
+              const distanceFromBottom = wrapperHeight - inputMeasurements.topY + 5 + headerOffset + offsetY;
               contentStyles = {
                 bottom: distanceFromBottom,
-                left: inputMeasurements.x,
+                left: inputMeasurements.x + offsetX,
                 top: undefined,
                 width: inputMeasurements.width,
               };
             } else if (dropdownPosition === 'bottom') {
               contentStyles = {
                 bottom: undefined,
-                left: inputMeasurements.x,
-                top: inputMeasurements.topY + inputMeasurements.height + 5 + headerOffset,
+                left: inputMeasurements.x + offsetX,
+                top: inputMeasurements.topY + inputMeasurements.height + 5 + headerOffset + offsetY,
                 width: inputMeasurements.width,
               };
             }

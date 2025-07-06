@@ -5,6 +5,7 @@ import cn from '../cn';
 import { Box } from '../box';
 import String from '../string';
 import { get, isEqual } from '../../utils';
+import HighlightString from '../highlightString';
 import { InputDropdownListProps } from '../../types';
 import LoadingIndicator from '../loadingIndicatorsKit/LoadingIndicator';
 
@@ -17,6 +18,8 @@ export default function InputDropdownList({
   dropdownItemProps,
   dropdownListProps,
   emptyText,
+  hasHighlightString = true,
+  highlightStringProps,
   isLoading,
   loadingIndicatorProps,
   onSelectItem,
@@ -39,15 +42,32 @@ export default function InputDropdownList({
             {customDropdownItem ? (
               customDropdownItem(item, selected)
             ) : (
-              <Box className={cn('p-3', dropdownItemProps?.className)}>
-                <String {...dropdownItemProps?.textItemProps}>{valueField ? get(item, valueField) : item}</String>
+              <Box className={cn('p-3', dropdownItemProps?.className)} style={{ flex: 1 }}>
+                {hasHighlightString ? (
+                  <HighlightString
+                    text={valueField ? get(item, valueField) : item}
+                    highlightTerm={highlightStringProps?.highlightTerm ?? ''}
+                    stringProps={dropdownItemProps?.stringItemProps ?? {}}
+                    {...highlightStringProps}
+                  />
+                ) : (
+                  <String {...dropdownItemProps?.stringItemProps}>{valueField ? get(item, valueField) : item}</String>
+                )}
               </Box>
             )}
           </Box>
         </TouchableHighlight>
       );
     },
-    [dropdownItemProps, currentValue, valueField, onSelectItem, customDropdownItem],
+    [
+      dropdownItemProps,
+      currentValue,
+      valueField,
+      onSelectItem,
+      customDropdownItem,
+      highlightStringProps,
+      hasHighlightString,
+    ],
   );
 
   const ListEmptyComponent = useCallback(() => {

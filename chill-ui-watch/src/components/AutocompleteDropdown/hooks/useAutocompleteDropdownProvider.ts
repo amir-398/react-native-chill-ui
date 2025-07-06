@@ -1,17 +1,15 @@
-import { useContext } from 'react'
+import { useContext } from 'react';
 
-import { AutocompleteContext } from '../context/FormAutoCompleteContext'
+import { AutocompleteContext } from '../context/AutoCompleteDropdownContext';
 
 const useAutocompleteDropdownProvider = () => {
-  const context = useContext(AutocompleteContext)
+  const context = useContext(AutocompleteContext);
 
   if (!context) {
-    throw new Error(
-      'useAutocompleteDropdownProvider must be used within an AutocompleteDropdownProvider'
-    )
+    throw new Error('useAutocompleteDropdownProvider must be used within an AutocompleteDropdownProvider');
   }
 
-  return context
-}
+  return context;
+};
 
-export default useAutocompleteDropdownProvider
+export default useAutocompleteDropdownProvider;

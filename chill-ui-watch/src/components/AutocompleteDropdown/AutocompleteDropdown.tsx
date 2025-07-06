@@ -47,11 +47,15 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
       dropdownPosition,
       dropdownProps,
       excludeItems = [],
+      hasHighlightString = true,
       hasPerformSearch = true,
+      highlightProps,
       inputProps,
       isLoading,
       maxHeight = DEFAULT_CONFIG.MAX_HEIGHT,
       minHeight,
+      offsetX = 0,
+      offsetY = 0,
       onBlur,
       onConfirmSelectItem,
       onFocus,
@@ -77,11 +81,11 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
 
     // Enregistrer cette instance lors du montage
     useEffect(() => {
-      registerInstance(instanceId, inputContainerRef);
+      registerInstance(instanceId, inputContainerRef, offsetX, offsetY);
       return () => {
         unregisterInstance(instanceId);
       };
-    }, [instanceId, registerInstance, unregisterInstance]);
+    }, [instanceId, registerInstance, unregisterInstance, offsetX, offsetY]);
 
     const instance = getInstance(instanceId);
 
@@ -271,6 +275,12 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
           onSelectItem={selectItem}
           dropdownItemProps={dropdownItemProps}
           customDropdownItem={customDropdownItem}
+          hasHighlightString={hasHighlightString}
+          highlightStringProps={{
+            highlightTerm: state.searchText,
+            stringProps: dropdownItemProps?.stringItemProps ?? {},
+            ...highlightProps,
+          }}
           dropdownListProps={dropdownListProps}
           emptyText={dropdownProps?.emptyText ?? DEFAULT_CONFIG.EMPTY_TEXT}
           isLoading={isLoading}
