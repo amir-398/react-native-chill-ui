@@ -1,126 +1,122 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Box } from '@/components';
+import { Text } from 'react-native';
+
+import { Box, cn } from '@/components';
 
 import UiPresentation from './storybook';
 import InputSelectDropdown from '../src/components/inputSelectDropdown/InputSelectDropdown';
 
 const meta: Meta<typeof InputSelectDropdown> = {
   argTypes: {
-    // Configuration de base
+    // Basic configuration
     dataSet: {
       control: 'object',
-      description: 'Les données à afficher dans la liste déroulante',
+      description: 'The data to display in the dropdown list',
     },
     valueField: {
       control: 'text',
-      description: 'Le champ à utiliser comme valeur',
+      description: 'The field to use as value',
     },
 
-    // Configuration de l'input
+    // Input configuration
     inputProps: {
       control: 'object',
-      description: "Configuration de l'input",
+      description: 'Input configuration',
     },
 
-    // Configuration du dropdown
+    // Dropdown configuration
     dropdownProps: {
       control: 'object',
-      description: 'Configuration du dropdown',
+      description: 'Dropdown configuration',
     },
 
-    // Configuration de la recherche
+    // Search configuration
     hasSearch: {
       control: 'boolean',
-      description: 'Active la recherche dans le dropdown',
+      description: 'Enable search in the dropdown',
     },
     searchField: {
       control: 'text',
-      description: 'Le champ à utiliser pour la recherche',
+      description: 'The field to use for searching',
+    },
+    searchInputProps: {
+      control: 'object',
+      description: 'Search input configuration',
     },
 
-    // Configuration du positionnement
+    // Positioning configuration
     dropdownPosition: {
       control: 'select',
-      description: 'Position du dropdown',
+      description: 'Dropdown position',
       options: ['auto', 'top', 'bottom'],
     },
 
     maxHeight: {
       control: 'number',
-      description: 'Hauteur maximale du dropdown',
+      description: 'Maximum height of the dropdown',
     },
     minHeight: {
       control: 'number',
-      description: 'Hauteur minimale du dropdown',
+      description: 'Minimum height of the dropdown',
     },
 
-    // Configuration des items
+    // Items configuration
     dropdownItemProps: {
       control: 'object',
-      description: 'Configuration des items du dropdown',
+      description: 'Dropdown items configuration',
     },
 
-    // Personnalisation
+    // Customization
     customDropdownItem: {
       control: false,
-      description: 'Composant personnalisé pour les items',
+      description: 'Custom component for items',
     },
-    customInputSearch: {
+    customSearchInput: {
       control: false,
-      description: 'Composant personnalisé pour la recherche',
+      description: 'Custom component for search input',
     },
 
-    // Filtrage
+    // Filtering
     excludeItems: {
       control: 'object',
-      description: 'Items à exclure de la liste',
+      description: 'Items to exclude from the list',
     },
     excludeSearchItems: {
       control: 'object',
-      description: 'Items à exclure de la recherche',
+      description: 'Items to exclude from search',
     },
 
     // Callbacks
     onBlur: {
       control: false,
-      description: 'Callback lors du blur',
-    },
-    onConfirmSelectItem: {
-      control: false,
-      description: 'Callback lors de la confirmation de la sélection',
+      description: 'Callback on blur',
     },
     onFocus: {
       control: false,
-      description: 'Callback lors du focus',
+      description: 'Callback on focus',
     },
     onSelectItem: {
       control: false,
-      description: "Callback lors de la sélection d'un item",
+      description: 'Callback when selecting an item',
     },
 
-    // Autres options
-    autoScroll: {
-      control: 'boolean',
-      description: 'Active le défilement automatique',
-    },
+    // Other options
+
     closeModalWhenSelectedItem: {
       control: 'boolean',
-      description: "Ferme le modal lors de la sélection d'un item",
+      description: 'Close modal when selecting an item',
     },
-    confirmSelectItem: {
-      control: 'boolean',
-      description: 'Active la confirmation de sélection',
-    },
+
     searchQuery: {
       control: false,
-      description: 'Fonction de recherche personnalisée',
+      description: 'Custom search function',
     },
   },
   component: InputSelectDropdown,
   decorators: [
     Story => (
-      <UiPresentation className="items-start justify-center px-5">
+      <UiPresentation className="flex-1 items-start justify-center px-3">
         <Story />
       </UiPresentation>
     ),
@@ -131,48 +127,252 @@ const meta: Meta<typeof InputSelectDropdown> = {
 export default meta;
 type Story = StoryObj<typeof InputSelectDropdown>;
 
-const data = [
-  { label: 'labelItem 1', value: 'ValueItem 1' },
-  { label: 'labelItem 2', value: 'ValueItem 2' },
-  { label: 'labelItem 3', value: 'ValueItem 3' },
-  { label: 'labelItem 4', value: 'ValueItem 4' },
-  { label: 'labelItem 5', value: 'ValueItem 5' },
-  { label: 'labelItem 6', value: 'ValueItem 6' },
-  { label: 'labelItem 7', value: 'ValueItem 7' },
-  { label: 'labelItem 8', value: 'ValueItem 8' },
+// Various datasets
+const basicData = [
+  { label: 'Option 1', value: 'option1' },
+  { label: 'Option 2', value: 'option2' },
+  { label: 'Option 3', value: 'option3' },
+  { label: 'Option 4', value: 'option4' },
+  { label: 'Option 5', value: 'option5' },
+  { label: 'Option 6', value: 'option6' },
+  { label: 'Option 7', value: 'option7' },
+  { label: 'Option 8', value: 'option8' },
+  { label: 'Option 9', value: 'option9' },
+  { label: 'Option 10', value: 'option10' },
 ];
+
+const countriesData = [
+  { code: 'FR', name: 'France', population: 67000000 },
+  { code: 'DE', name: 'Germany', population: 83000000 },
+  { code: 'IT', name: 'Italy', population: 60000000 },
+  { code: 'ES', name: 'Spain', population: 47000000 },
+  { code: 'UK', name: 'United Kingdom', population: 67000000 },
+  { code: 'PL', name: 'Poland', population: 38000000 },
+  { code: 'NL', name: 'Netherlands', population: 17000000 },
+  { code: 'BE', name: 'Belgium', population: 11000000 },
+];
+
+const largeDataSet = Array.from({ length: 50 }, (_, i) => {
+  let category = 'C';
+  if (i % 3 === 0) category = 'A';
+  else if (i % 3 === 1) category = 'B';
+
+  return {
+    category,
+    id: i + 1,
+    label: `Item ${i + 1}`,
+    value: `item${i + 1}`,
+  };
+});
+
+// Custom component for items
+function CustomDropdownItem(item: any, selected?: boolean) {
+  const { code, name, population } = item;
+  return (
+    <Box style={{ backgroundColor: selected ? '#e3f2fd' : 'white', padding: 12 }}>
+      <Box className={cn('text-base', selected && 'font-bold')}>
+        {name} ({code})
+      </Box>
+      <Text style={{ color: '#666', fontSize: 12 }}>Population: {population.toLocaleString()}</Text>
+    </Box>
+  );
+}
+
+// Custom search function
+const customSearchQuery = (keyword: string, labelValue: string) =>
+  labelValue.toLowerCase().includes(keyword.toLowerCase()) || keyword.toLowerCase().includes(labelValue.toLowerCase());
 
 export const Default: Story = {
   args: {
-    dataSet: data,
-
-    dropdownPosition: 'auto',
-    dropdownProps: {
-      className: '',
-      hasAnimation: false,
-      hasShadow: true,
-    },
+    dataSet: basicData,
     hasSearch: true,
     inputProps: {
-      placeholder: 'Sélectionnez une options',
+      placeholder: 'Select an option',
     },
-
+    onSelectItem: item => console.log('Selected:', item),
     valueField: 'value',
   },
-  render: args => (
-    <Box className="gap-4">
-      <InputSelectDropdown {...args} />
-      <InputSelectDropdown {...args} />
-      <InputSelectDropdown {...args} />
-      <InputSelectDropdown {...args} />
-      <InputSelectDropdown {...args} />
-      <InputSelectDropdown {...args} />
-      <InputSelectDropdown {...args} />
-      <InputSelectDropdown {...args} />
-      <InputSelectDropdown {...args} />
-      <InputSelectDropdown {...args} />
-      <InputSelectDropdown {...args} />
-      <InputSelectDropdown {...args} />
-    </Box>
-  ),
+};
+
+export const WithSearch: Story = {
+  args: {
+    dataSet: countriesData,
+    hasSearch: true,
+    inputProps: {
+      placeholder: 'Search for a country...',
+    },
+    onSelectItem: item => console.log('Selected country:', item),
+    searchField: 'name',
+    searchInputProps: {
+      placeholder: 'Type to search...',
+    },
+    valueField: 'name',
+  },
+};
+
+export const WithCustomHeight: Story = {
+  args: {
+    dataSet: largeDataSet,
+    hasSearch: true,
+    inputProps: {
+      placeholder: 'Select from a long list',
+    },
+    maxHeight: 200,
+    minHeight: 100,
+    onSelectItem: item => console.log('Selected item:', item),
+    searchField: 'label',
+    valueField: 'label',
+  },
+};
+
+export const WithExcludedItems: Story = {
+  args: {
+    dataSet: basicData,
+    excludeItems: [basicData[1], basicData[3]], // Excludes Option 2 and Option 4
+    inputProps: {
+      placeholder: 'Options 2 and 4 are excluded',
+    },
+    onSelectItem: item => console.log('Selected:', item),
+    valueField: 'value',
+  },
+};
+
+export const WithCustomDropdownItem: Story = {
+  args: {
+    customDropdownItem: CustomDropdownItem,
+    dataSet: countriesData,
+    hasSearch: true,
+    inputProps: {
+      placeholder: 'Select a country (custom design)',
+    },
+    maxHeight: 300,
+    onSelectItem: item => console.log('Selected country:', item),
+    searchField: 'name',
+    valueField: 'name',
+  },
+};
+
+export const PositionTop: Story = {
+  args: {
+    dataSet: basicData,
+    dropdownPosition: 'top',
+    inputProps: {
+      placeholder: 'Dropdown opens upward',
+    },
+    onSelectItem: item => console.log('Selected:', item),
+    valueField: 'value',
+  },
+};
+
+export const PositionBottom: Story = {
+  args: {
+    dataSet: basicData,
+    dropdownPosition: 'bottom',
+    inputProps: {
+      placeholder: 'Dropdown opens downward',
+    },
+    onSelectItem: item => console.log('Selected:', item),
+    valueField: 'value',
+  },
+};
+
+export const WithoutAutoClose: Story = {
+  args: {
+    closeModalWhenSelectedItem: false,
+    dataSet: basicData,
+    inputProps: {
+      placeholder: 'Does not close automatically',
+    },
+    onSelectItem: item => console.log('Selected:', item),
+    valueField: 'value',
+  },
+};
+
+export const WithCustomSearchQuery: Story = {
+  args: {
+    dataSet: countriesData,
+    hasSearch: true,
+    inputProps: {
+      placeholder: 'Custom search (bidirectional)',
+    },
+    onSelectItem: item => console.log('Selected country:', item),
+    searchField: 'name',
+    searchInputProps: {
+      placeholder: 'Advanced search...',
+    },
+    searchQuery: customSearchQuery,
+    valueField: 'name',
+  },
+};
+
+export const WithExcludedSearchItems: Story = {
+  args: {
+    dataSet: countriesData,
+    excludeSearchItems: [countriesData[0], countriesData[2]], // Excludes France and Italy from search
+    hasSearch: true,
+    inputProps: {
+      placeholder: 'France and Italy excluded from search',
+    },
+    onSelectItem: item => console.log('Selected:', item),
+    searchField: 'name',
+    valueField: 'name',
+  },
+};
+
+export const WithDropdownProps: Story = {
+  args: {
+    dataSet: basicData,
+    dropdownProps: {
+      className: 'border-2 border-blue-500',
+      hasAnimation: true,
+      hasShadow: true,
+    },
+    inputProps: {
+      placeholder: 'Dropdown with custom style',
+    },
+    onSelectItem: item => console.log('Selected:', item),
+    valueField: 'value',
+  },
+};
+
+export const WithDropdownItemProps: Story = {
+  args: {
+    dataSet: basicData,
+    dropdownItemProps: {
+      className: 'py-4 px-6',
+    },
+    inputProps: {
+      placeholder: 'Items with custom style',
+    },
+    onSelectItem: item => console.log('Selected:', item),
+    valueField: 'value',
+  },
+};
+
+export const ComplexExample: Story = {
+  args: {
+    closeModalWhenSelectedItem: true,
+    customDropdownItem: CustomDropdownItem,
+    dataSet: countriesData,
+    dropdownPosition: 'auto',
+    dropdownProps: {
+      hasAnimation: true,
+      hasShadow: true,
+    },
+    excludeItems: [countriesData[countriesData.length - 1]], // Excludes the last country
+    hasSearch: true,
+    inputProps: {
+      placeholder: 'Complex example with all features',
+    },
+    maxHeight: 250,
+    minHeight: 150,
+    onBlur: () => console.log('Focus lost'),
+    onFocus: () => console.log('Focus gained'),
+    onSelectItem: item => console.log('Selected in complex example:', item),
+    searchField: 'name',
+    searchInputProps: {
+      placeholder: 'Search for a country...',
+    },
+    valueField: 'name',
+  },
 };

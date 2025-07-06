@@ -13,6 +13,8 @@ import useCalculateDropDownPosition from './useCalculateDropdownPosition';
 interface InputSelectDropdownHookParams {
   dataSet: any[];
   inputValue?: any;
+  offsetX?: number;
+  offsetY?: number;
   disable?: boolean;
   valueField: string;
   onBlur?: () => void;
@@ -29,13 +31,14 @@ interface InputSelectDropdownHookParams {
 
 export default function useInputSelectDropdown(
   {
-    autoScroll = true,
     closeModalWhenSelectedItem = true,
     dataSet = [],
     disable = false,
     excludeItems = [],
     excludeSearchItems = [],
     inputValue,
+    offsetX = 0,
+    offsetY = 0,
     onBlur,
     onFocus,
     onSelectItem,
@@ -47,12 +50,11 @@ export default function useInputSelectDropdown(
   currentRef: React.Ref<IDropdownRef>,
 ) {
   const refList = useRef<FlatList | null>(null);
-  const inputContainerRef = useRef<any>(null);
+  const inputRef = useRef<any>(null);
   const wrapperRef = useRef<View | null>(null);
   const dropdownRef = useRef<View | null>(null);
   const [calculatedDropdownPosition, setCalculatedDropdownPosition] = useState<'top' | 'bottom'>('bottom');
 
-  // État principal du dropdown
   const {
     resetSearch,
     setCurrentValue,
@@ -64,7 +66,7 @@ export default function useInputSelectDropdown(
     updateState,
   } = useDropdownState(dataSet);
   const { getDropdownPosition } = useGetDropdownPosition({
-    inputContainerRef,
+    inputRef,
     position,
     setDropdownPosition: pos => {
       setCalculatedDropdownPosition(pos);
@@ -75,7 +77,9 @@ export default function useInputSelectDropdown(
   const { calculatePosition, dropdownStyles } = useCalculateDropDownPosition({
     dropdownPosition: calculatedDropdownPosition,
     headerOffset: 0,
-    inputContainerRef,
+    inputRef,
+    offsetX,
+    offsetY,
     wrapperRef,
   });
 
@@ -91,7 +95,6 @@ export default function useInputSelectDropdown(
   });
 
   const { scrollToSelectedIndex, updateCurrentValue } = useDropdownSelection({
-    autoScroll,
     dataSet,
     inputValue,
     listData: state.listData,
@@ -159,7 +162,7 @@ export default function useInputSelectDropdown(
 
     // Refs
     dropdownRef,
-    inputContainerRef,
+    inputRef,
     refList,
     wrapperRef,
 

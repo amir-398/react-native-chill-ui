@@ -1,5 +1,5 @@
 import { RefObject } from 'react';
-import { Dimensions, Keyboard, Platform, View } from 'react-native';
+import { Dimensions, Keyboard, Platform, TextInput } from 'react-native';
 
 type Position = 'top' | 'bottom';
 
@@ -7,23 +7,23 @@ interface GetDropdownPositionProps {
   waitForKeyboard: boolean;
   position: 'top' | 'bottom' | 'auto';
   setDropdownPosition: (position: Position) => void;
-  inputContainerRef: RefObject<View | null | undefined>;
+  inputRef: RefObject<TextInput | null | undefined>;
 }
 
 const useGetDropdownPosition = ({
-  inputContainerRef,
+  inputRef,
   position,
   setDropdownPosition,
   waitForKeyboard,
 }: GetDropdownPositionProps) => {
   const getDropdownPosition = async (): Promise<Position> => {
     try {
-      if (!inputContainerRef.current) {
+      if (!inputRef.current) {
         throw new Error('Container ref is not defined');
       }
       if (position === 'auto') {
         const [, positionY] = await new Promise<[number, number, number, number]>((resolve, _reject) => {
-          inputContainerRef.current?.measureInWindow((x, y, width, height) => {
+          inputRef.current?.measureInWindow((x, y, width, height) => {
             resolve([x, y, width, height]);
           });
         });

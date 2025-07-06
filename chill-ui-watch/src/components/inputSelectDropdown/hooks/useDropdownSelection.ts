@@ -15,7 +15,6 @@ interface DropdownSelectionParams {
 }
 
 export default function useDropdownSelection({
-  autoScroll = true,
   dataSet,
   inputValue,
   listData,
@@ -23,7 +22,6 @@ export default function useDropdownSelection({
   setCurrentValue,
   valueField,
 }: DropdownSelectionParams) {
-  // Gestion de la valeur sélectionnée
   const updateCurrentValue = useCallback(() => {
     const defaultValue = typeof inputValue === 'object' ? get(inputValue, valueField) : inputValue;
     const selectedItem = dataSet.find((e: any) => isEqual(defaultValue, get(e, valueField)));
@@ -35,11 +33,10 @@ export default function useDropdownSelection({
     updateCurrentValue();
   }, [updateCurrentValue]);
 
-  // Scroll automatique avec debounce
   const scrollToSelectedIndex = useMemo(
     () =>
       debounce(() => {
-        if (!autoScroll || !dataSet?.length || listData?.length !== dataSet?.length) return;
+        if (!dataSet?.length || listData?.length !== dataSet?.length) return;
         if (!refList?.current) return;
 
         const defaultValue = typeof inputValue === 'object' ? get(inputValue, valueField) : inputValue;
@@ -56,10 +53,9 @@ export default function useDropdownSelection({
           }
         }
       }, DEFAULT_CONFIG.DEBOUNCE_DELAY),
-    [autoScroll, dataSet?.length, listData, inputValue, valueField, refList],
+    [dataSet?.length, listData, inputValue, valueField, refList],
   );
 
-  // Cleanup effect
   useEffect(
     () => () => {
       scrollToSelectedIndex.cancel();

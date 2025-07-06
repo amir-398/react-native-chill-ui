@@ -1,4 +1,3 @@
-import { View } from 'react-native';
 import React, { memo } from 'react';
 
 import { get } from '../../utils';
@@ -10,7 +9,6 @@ import InputDropdownModal from '../inputDrodown/InputDropdownModal';
 
 const InputSelectDropdown = React.forwardRef<IDropdownRef, InputSelectDropdownProps<any>>((props, currentRef) => {
   const {
-    autoScroll = true,
     closeModalWhenSelectedItem = true,
     customDropdownItem,
     customSearchInput,
@@ -24,6 +22,8 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, InputSelectDropdownPr
     inputProps,
     maxHeight = DEFAULT_CONFIG.MAX_HEIGHT,
     minHeight = DEFAULT_CONFIG.MIN_HEIGHT,
+    offsetX = 0,
+    offsetY = 0,
     onBlur,
     onFocus,
     onSelectItem,
@@ -34,40 +34,34 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, InputSelectDropdownPr
   } = props;
 
   // Utilisation du hook principal qui combine toute la logique
-  const {
-    dropdownRef,
-    dropdownStyles,
-    handleSelectItem,
-    inputContainerRef,
-    setSearchText,
-    state,
-    toggleDropdown,
-    wrapperRef,
-  } = useInputSelectDropdown(
-    {
-      autoScroll,
-      closeModalWhenSelectedItem,
-      dataSet,
-      disable: inputProps?.isDisabled,
-      excludeItems,
-      excludeSearchItems,
-      inputValue: inputProps?.value,
-      onBlur,
-      onFocus,
-      onSelectItem,
-      position: dropdownPosition,
-      searchField,
-      searchQuery,
-      valueField,
-    },
-    currentRef,
-  );
+  const { dropdownRef, dropdownStyles, handleSelectItem, inputRef, setSearchText, state, toggleDropdown, wrapperRef } =
+    useInputSelectDropdown(
+      {
+        closeModalWhenSelectedItem,
+        dataSet,
+        disable: inputProps?.isDisabled,
+        excludeItems,
+        excludeSearchItems,
+        inputValue: inputProps?.value,
+        offsetX,
+        offsetY,
+        onBlur,
+        onFocus,
+        onSelectItem,
+        position: dropdownPosition,
+        searchField,
+        searchQuery,
+        valueField,
+      },
+      currentRef,
+    );
 
   const isSelected = state.currentValue && get(state.currentValue, valueField);
 
   return (
-    <View ref={inputContainerRef}>
+    <>
       <Input
+        wrapperRef={inputRef}
         editable={false}
         onPress={toggleDropdown}
         placeholder={inputProps?.placeholder ?? DEFAULT_CONFIG.PLACEHOLDER}
@@ -111,7 +105,7 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, InputSelectDropdownPr
           visible: state.visible,
         }}
       />
-    </View>
+    </>
   );
 });
 

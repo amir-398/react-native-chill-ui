@@ -1,5 +1,5 @@
 import type { VariantProps } from 'tailwind-variants';
-import type { TextInput, TextInputProps } from 'react-native';
+import type { TextInputProps, View } from 'react-native';
 
 import { inputSizeVariants } from '@/components/inputs/Input';
 
@@ -11,6 +11,9 @@ export interface InputProps extends TextInputProps {
   label?: string;
   className?: string;
   labelClassName?: string;
+
+  // Refs
+  wrapperRef?: React.RefObject<View>;
 
   // Error handling
   hasError?: boolean;
@@ -52,7 +55,6 @@ export interface InputProps extends TextInputProps {
   // Styling
   isDisabled?: boolean;
   isStretchable?: boolean;
-  inputRef?: React.RefObject<TextInput | null>;
   size?: VariantProps<typeof inputSizeVariants>['size'];
 }
 

@@ -3,6 +3,8 @@ import type { FlatListProps, ModalProps, View } from 'react-native';
 import type { InputProps } from './input.types';
 import type { LoadingIndicatorProps } from './loadingIndicator.types';
 
+import { StringProps } from './string.types';
+
 // InputDropdown ----------
 export interface InputDropdownBaseProps {
   visible: boolean;
@@ -19,11 +21,10 @@ export interface InputDropdownBaseProps {
 
 export interface InputDropdownListProps {
   data: any[];
-  currentValue?: any;
   emptyText?: string;
   valueField?: string;
-  dropdownProps?: any;
   isLoading?: boolean;
+  currentValue?: string;
   onSelectItem?: (item: any) => void;
   customEmpty?: () => React.ReactNode;
   loadingIndicatorProps?: LoadingIndicatorProps;
@@ -33,28 +34,11 @@ export interface InputDropdownListProps {
   dropdownItemProps?: {
     activeBackgroundColor?: string;
     className?: string;
-    textItemProps?: any;
+    textItemProps?: StringProps;
   };
 }
 
 export type InputDropdownProps = Omit<InputDropdownBaseProps, 'children'> & InputDropdownListProps;
-
-export type AutocompleteDropdownRefProps = {
-  open: () => void;
-  close: () => void;
-  toggle: () => void;
-};
-
-export type DropdownProps = {
-  className?: string;
-  hasShadow?: boolean;
-  emptyText?: string;
-  customEmpty?: () => React.ReactNode;
-  loadingIndicatorProps?: LoadingIndicatorProps;
-  customLoadingIndicator?: () => React.ReactNode;
-  position?: 'auto' | 'top' | 'bottom';
-  withAnimation?: boolean;
-};
 
 export type InputDropdownModalProps = {
   dropdownRef?: React.RefObject<View | null>;

@@ -3,13 +3,14 @@ import { InputDropdownListProps, InputDropdownProps } from './dropdown.types';
 
 export interface InputSelectDropdownProps<T> {
   dataSet: T[];
+  offsetX?: number;
+  offsetY?: number;
   valueField: string;
   excludeItems?: T[];
   maxHeight?: number;
   minHeight?: number;
   hasSearch?: boolean;
   onBlur?: () => void;
-  autoScroll?: boolean;
   onFocus?: () => void;
   searchField?: string;
   inputProps?: InputProps;

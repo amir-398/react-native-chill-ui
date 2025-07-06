@@ -19,7 +19,6 @@ export default function useDropdownSearch({
   setListData,
   valueField,
 }: DropdownSearchParams) {
-  // Fonction utilitaire pour exclure les données
   const excludeData = useCallback(
     (dataToFilter: any[]) => {
       if (excludeItems.length === 0) return dataToFilter || [];
@@ -33,7 +32,6 @@ export default function useDropdownSearch({
     [excludeItems, valueField],
   );
 
-  // Perform search with debounce
   const performSearch = useCallback(
     (text: string) => {
       if (text.length === 0) {
@@ -85,7 +83,6 @@ export default function useDropdownSearch({
   // Debounced search
   const debouncedSearch = useMemo(() => debounce(performSearch, DEFAULT_CONFIG.DEBOUNCE_DELAY), [performSearch]);
 
-  // Effect pour la synchronisation des données
   useEffect(() => {
     if (dataSet && searchText.length === 0) {
       const filterData = excludeData(dataSet);

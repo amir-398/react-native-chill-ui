@@ -1,4 +1,4 @@
-import { TextInput, View } from 'react-native';
+import { TextInput } from 'react-native';
 import React, { useCallback, useEffect, useImperativeHandle, useRef, memo, useMemo } from 'react';
 
 import { Input } from '../inputs';
@@ -44,6 +44,7 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
       dataSet = [],
       dropdownItemProps,
       dropdownListProps,
+      dropdownPosition,
       dropdownProps,
       excludeItems = [],
       hasPerformSearch = true,
@@ -72,7 +73,7 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
     } = useAutocompleteDropdownProvider();
 
     const inputRef = useRef<TextInput>(null);
-    const inputContainerRef = useRef<View | null>(null);
+    const inputContainerRef = useRef<any>(null);
 
     // Enregistrer cette instance lors du montage
     useEffect(() => {
@@ -129,7 +130,7 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
     const { eventClose, eventOpen, toggleDropdown } = useDropdownActions({
       disabled: (inputProps?.isDisabled || inputProps?.editable) ?? false,
       getDropdownPosition,
-      position: dropdownProps?.position,
+      position: dropdownPosition,
       setDropdownPosition: pos => {
         setDropdownPosition(instanceId, pos);
       },
@@ -260,6 +261,7 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
       setDropdownContent(
         instanceId,
         <InputDropdown
+          {...dropdownProps}
           visible={instance?.showDropdown ?? false}
           maxHeight={maxHeight}
           minHeight={minHeight}
@@ -270,10 +272,7 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
           dropdownItemProps={dropdownItemProps}
           customDropdownItem={customDropdownItem}
           dropdownListProps={dropdownListProps}
-          dropdownProps={{
-            ...dropdownProps,
-            emptyText: dropdownProps?.emptyText ?? DEFAULT_CONFIG.EMPTY_TEXT,
-          }}
+          emptyText={dropdownProps?.emptyText ?? DEFAULT_CONFIG.EMPTY_TEXT}
           isLoading={isLoading}
         />,
       );
@@ -294,25 +293,24 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
     ]);
 
     return (
-      <View ref={inputContainerRef} className={inputProps?.containerClassName}>
-        <Input
-          inputRef={inputRef}
-          placeholder={inputProps?.placeholder ?? DEFAULT_CONFIG.PLACEHOLDER}
-          value={displayValue}
-          onBlur={() => {
-            setShowDropdown(instanceId, false);
-            onBlur?.();
-          }}
-          onFocus={() => {
-            onFocus?.();
-            if (displayValue.length > 0) {
-              setShowDropdown(instanceId, true);
-            }
-          }}
-          onChangeText={handleSearchTextChange}
-          {...inputProps}
-        />
-      </View>
+      <Input
+        ref={inputRef}
+        wrapperRef={inputContainerRef}
+        placeholder={inputProps?.placeholder ?? DEFAULT_CONFIG.PLACEHOLDER}
+        value={displayValue}
+        onBlur={() => {
+          setShowDropdown(instanceId, false);
+          onBlur?.();
+        }}
+        onFocus={() => {
+          onFocus?.();
+          if (displayValue.length > 0) {
+            setShowDropdown(instanceId, true);
+          }
+        }}
+        onChangeText={handleSearchTextChange}
+        {...inputProps}
+      />
     );
   },
 );

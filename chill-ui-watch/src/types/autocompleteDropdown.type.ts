@@ -2,8 +2,13 @@ import { FlatListProps } from 'react-native';
 
 import { InputProps } from './input.types';
 import { StringProps } from './string.types';
-import { AutocompleteDropdownRefProps, DropdownProps, InputDropdownListProps } from './dropdown.types';
+import { InputDropdownListProps, InputDropdownProps } from './dropdown.types';
 
+export type AutocompleteDropdownRefProps = {
+  open: () => void;
+  close: () => void;
+  toggle: () => void;
+};
 export interface AutocompleteDropdownProps<T> {
   dataSet: T[];
   maxHeight?: number;
@@ -17,10 +22,10 @@ export interface AutocompleteDropdownProps<T> {
   inputProps?: InputProps;
   hasPerformSearch?: boolean;
   confirmSelectItem?: boolean;
-  dropdownProps?: DropdownProps;
   onSelectItem: (item: T) => void;
   closeModalWhenSelectedItem?: boolean;
   onConfirmSelectItem?: (item: T) => void;
+  dropdownPosition?: 'auto' | 'top' | 'bottom';
   searchQuery?: (keyword: string, labelValue: string) => boolean;
   customDropdownItem?: (item: T, selected?: boolean) => React.ReactElement | null;
   dropdownItemProps?: {
@@ -35,4 +40,16 @@ export interface AutocompleteDropdownProps<T> {
     | React.RefObject<AutocompleteDropdownRefProps>
     | null
     | undefined;
+  dropdownProps?: Partial<
+    Omit<
+      InputDropdownProps,
+      | 'data'
+      | 'onSelectItem'
+      | 'valueField'
+      | 'hasSearch'
+      | 'dropdownItemProps'
+      | 'customDropdownItem'
+      | 'searchInputProps'
+    >
+  >;
 }

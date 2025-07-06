@@ -26,3 +26,4 @@ export * from './phoneNumberInput.types';
 export * from './slider.types';
 export * from './dropdown.types';
 export * from './inputSelectDropdown.types';
+export * from './autocompleteDropdown.type';

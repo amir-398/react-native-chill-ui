@@ -18,11 +18,9 @@ export interface DropdownState {
 
 export const DEFAULT_CONFIG = {
   DEBOUNCE_DELAY: 200,
-  FALLBACK_THRESHOLD: 100,
   MAX_HEIGHT: 340,
   MIN_HEIGHT: 0,
   PLACEHOLDER: 'Select item',
-  SCROLL_THRESHOLD: 150,
 } as const;
 
 export interface DropdownActions {

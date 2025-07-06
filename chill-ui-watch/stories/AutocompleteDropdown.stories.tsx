@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Box, String } from '@/components';
-import { View } from '@/components/box/View';
 
 import UiPresentation from './storybook';
 import { AutocompleteDropdownContext, AutocompleteDropdown } from '../src/components/AutocompleteDropdown';
@@ -66,6 +65,11 @@ const meta: Meta<typeof AutocompleteDropdown> = {
     customDropdownItem: {
       control: false,
       description: 'Custom component for items',
+    },
+    dropdownPosition: {
+      control: 'select',
+      description: 'Position of the dropdown',
+      options: ['auto', 'top', 'bottom'],
     },
 
     // Filtering
@@ -158,10 +162,10 @@ export const Default: Story = {
     dropdownItemProps: {
       textItemProps: {},
     },
+    dropdownPosition: 'auto',
     dropdownProps: {
+      hasAnimation: true,
       hasShadow: true,
-      position: 'auto',
-      withAnimation: false,
     },
     excludeItems: [],
     hasPerformSearch: true,
@@ -298,9 +302,8 @@ export const CustomDropdownStyle: Story = {
 
     dropdownProps: {
       className: 'border-2 border-blue-500 rounded-xl',
+      hasAnimation: true,
       hasShadow: false,
-      position: 'bottom',
-      withAnimation: true,
     },
     inputProps: {
       placeholder: 'Custom styling...',
@@ -321,9 +324,8 @@ export const Complete: Story = {
     },
     dropdownProps: {
       emptyText: 'No country found',
+      hasAnimation: true,
       hasShadow: true,
-      position: 'auto',
-      withAnimation: true,
     },
     inputProps: {
       hasError: false,

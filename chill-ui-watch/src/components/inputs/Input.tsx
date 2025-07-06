@@ -1,6 +1,6 @@
 import { tv } from 'tailwind-variants';
-import { useEffect, useState } from 'react';
-import { Pressable, TextInput } from 'react-native';
+import { forwardRef, useEffect, useState } from 'react';
+import { Pressable, TextInput, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import cn from '../cn';
@@ -100,7 +100,7 @@ export const inputSizeVariants = tv({
   },
 });
 
-export default function Input(props: InputProps) {
+const Input = forwardRef<TextInput, InputProps>((props, ref) => {
   const {
     allow = 'all',
     className,
@@ -114,7 +114,6 @@ export default function Input(props: InputProps) {
     hasError,
     hasSecureTextEntry,
     inputClassName,
-    inputRef,
     isDisabled,
     isStretchable,
     label,
@@ -128,6 +127,7 @@ export default function Input(props: InputProps) {
     showLength,
     size = 'md',
     value,
+    wrapperRef,
     ...rest
   } = props;
 
@@ -186,7 +186,7 @@ export default function Input(props: InputProps) {
       onPress={onPress}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
-      ref={inputRef}
+      ref={ref}
       value={inputValue}
       className={cn(
         'flex-1',
@@ -224,7 +224,8 @@ export default function Input(props: InputProps) {
           {label}
         </String>
       )}
-      <Box
+      <View
+        ref={wrapperRef}
         className={cn(
           'flex flex-row items-center rounded-lg border border-gray-300 bg-white px-3 text-black',
           { 'border-red-500': hasError },
@@ -272,7 +273,7 @@ export default function Input(props: InputProps) {
             size="sm"
           />
         )}
-      </Box>
+      </View>
       <Box className={cn('flex-row items-center justify-between gap-1', showLength && 'justify-end')}>
         {hasError && (
           <Box className="h-5 flex-row items-center gap-1 pl-1">
@@ -290,4 +291,8 @@ export default function Input(props: InputProps) {
       </Box>
     </Box>
   );
-}
+});
+
+Input.displayName = 'Input';
+
+export default Input;

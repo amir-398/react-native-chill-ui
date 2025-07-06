@@ -18,6 +18,7 @@ export default function InputDropdownBase({
   searchInputProps,
   visible,
 }: InputDropdownBaseProps) {
+  console.log('maxHeight', maxHeight);
   // Animated value for height
   const animatedHeight = useRef(new Animated.Value(minHeight ?? 0)).current;
 
@@ -26,12 +27,6 @@ export default function InputDropdownBase({
       Animated.timing(animatedHeight, {
         duration: 200,
         toValue: maxHeight ?? 250,
-        useNativeDriver: false,
-      }).start();
-    } else if (!visible && hasAnimation) {
-      Animated.timing(animatedHeight, {
-        duration: 200,
-        toValue: minHeight ?? 0,
         useNativeDriver: false,
       }).start();
     }
@@ -44,7 +39,7 @@ export default function InputDropdownBase({
         {
           height: 'auto',
           maxHeight: hasAnimation ? animatedHeight : maxHeight,
-          minHeight: hasAnimation ? animatedHeight : minHeight,
+          minHeight,
         },
         hasShadow && {
           shadowColor: '#000',
@@ -60,7 +55,7 @@ export default function InputDropdownBase({
       {hasSearch &&
         (customSearchInput ?? (
           <Box className="px-3 py-2">
-            <Input size="xs" {...searchInputProps} />
+            <Input size="xs" placeholder="search" {...searchInputProps} />
           </Box>
         ))}
       {children}
