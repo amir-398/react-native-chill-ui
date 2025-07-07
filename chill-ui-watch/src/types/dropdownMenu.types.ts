@@ -24,6 +24,11 @@ export interface DropdownMenuProps {
   items: DropdownMenuItem[];
 
   /**
+   * Élément actuellement sélectionné (pour l'auto-scroll)
+   */
+  selectedItem?: DropdownMenuItem;
+
+  /**
    * Position du dropdown par rapport au trigger
    */
   dropdownPosition?: 'top' | 'bottom' | 'auto';
@@ -87,6 +92,16 @@ export interface DropdownMenuProps {
    * Désactiver le dropdown
    */
   disabled?: boolean;
+
+  /**
+   * Activer le scroll automatique vers l'élément sélectionné
+   */
+  hasAutoScroll?: boolean;
+
+  /**
+   * Activer/désactiver le scroll dans la liste
+   */
+  hasScroll?: boolean;
 
   /**
    * Personnaliser le rendu des éléments

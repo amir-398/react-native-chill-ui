@@ -1,5 +1,5 @@
-import { useCallback, useMemo } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, FlatList } from 'react-native';
+import { useCallback, useMemo, useEffect, useRef } from 'react';
 
 import Icon from '../icon';
 import { Box } from '../box';
@@ -14,6 +14,8 @@ function DropdownMenu({
   customItemRender,
   disabled = false,
   dropdownPosition = 'auto',
+  hasAutoScroll = true,
+  hasScroll = false,
   horizontalPosition = 'auto',
   items,
   maxHeight = DEFAULT_CONFIG.MAX_HEIGHT,
@@ -24,28 +26,50 @@ function DropdownMenu({
   onClose,
   onOpen,
   onSelectItem,
+  selectedItem,
   triggerClassName,
   triggerStyle,
   width = 200,
 }: DropdownMenuProps) {
+  const flatListRef = useRef<FlatList>(null);
+
   // Utilisation du hook principal pour gérer l'état du dropdown
-  const { dropdownRef, dropdownStyles, handleSelectItem, inputRef, toggleDropdown, visible, wrapperRef } =
-    useDropdownMenu(
-      {
-        closeModalWhenSelectedItem: true,
-        disabled,
-        dropdownWidth: width,
-        horizontalPosition,
-        items,
-        offsetX,
-        offsetY,
-        onBlur: onClose,
-        onFocus: onOpen,
-        onSelectItem,
-        verticalPosition: dropdownPosition,
-      },
-      null,
-    );
+  const {
+    dropdownRef,
+    dropdownStyles,
+    handleSelectItem,
+    hasScroll: scrollEnabled,
+    inputRef,
+    refList,
+    toggleDropdown,
+    visible,
+    wrapperRef,
+  } = useDropdownMenu(
+    {
+      closeModalWhenSelectedItem: true,
+      disabled,
+      dropdownWidth: width,
+      hasAutoScroll,
+      hasScroll,
+      horizontalPosition,
+      items,
+      offsetX,
+      offsetY,
+      onBlur: onClose,
+      onFocus: onOpen,
+      onSelectItem,
+      selectedItem,
+      verticalPosition: dropdownPosition,
+    },
+    null,
+  );
+
+  // Connecter notre ref locale avec celle du hook
+  useEffect(() => {
+    if (refList && refList.current !== flatListRef.current) {
+      refList.current = flatListRef.current;
+    }
+  }, [refList]);
 
   // Render par défaut d'un item du menu
   const defaultItemRender = useCallback(
@@ -108,7 +132,11 @@ function DropdownMenu({
             customSearchInput: undefined,
             data: activeItems,
             dropdownItemProps: undefined,
-            hasSearch: false, // Pas de recherche pour un menu simple
+            dropdownListProps: {
+              scrollEnabled,
+              showsVerticalScrollIndicator: scrollEnabled,
+            },
+            hasSearch: false,
             maxHeight,
             minHeight,
             onSelectItem: handleSelectItem,
