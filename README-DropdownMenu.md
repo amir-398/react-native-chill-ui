@@ -66,25 +66,25 @@ function MyComponent() {
 
 ### DropdownMenuProps
 
-| Prop                 | Type                                    | Description                      | Défaut   |
-| -------------------- | --------------------------------------- | -------------------------------- | -------- |
-| `children`           | `ReactNode`                             | Le contenu du trigger            | -        |
-| `items`              | `DropdownMenuItem[]`                    | Les éléments du menu             | -        |
-| `dropdownPosition`   | `'top' \| 'bottom' \| 'auto'`           | Position verticale du dropdown   | `'auto'` |
-| `horizontalPosition` | `'left' \| 'right' \| 'auto'`           | Position horizontale du dropdown | `'auto'` |
-| `offsetX`            | `number`                                | Décalage horizontal              | `0`      |
-| `offsetY`            | `number`                                | Décalage vertical                | `5`      |
-| `width`              | `number`                                | Largeur du dropdown              | `200`    |
-| `maxHeight`          | `number`                                | Hauteur maximale du dropdown     | `200`    |
-| `minHeight`          | `number`                                | Hauteur minimale du dropdown     | `50`     |
-| `triggerStyle`       | `ViewStyle`                             | Style du container trigger       | -        |
-| `triggerClassName`   | `string`                                | Classe CSS du trigger            | -        |
-| `onSelectItem`       | `(item: DropdownMenuItem) => void`      | Callback global de sélection     | -        |
-| `onOpen`             | `() => void`                            | Callback à l'ouverture           | -        |
-| `onClose`            | `() => void`                            | Callback à la fermeture          | -        |
-| `disabled`           | `boolean`                               | Désactiver le dropdown           | `false`  |
-| `customItemRender`   | `(item: DropdownMenuItem) => ReactNode` | Rendu personnalisé des éléments  | -        |
-| `modalProps`         | `any`                                   | Props pour le modal              | -        |
+| Prop                 | Type                                      | Description                      | Défaut   |
+| -------------------- | ----------------------------------------- | -------------------------------- | -------- |
+| `children`           | `ReactNode`                               | Le contenu du trigger            | -        |
+| `items`              | `DropdownMenuItem[]`                      | Les éléments du menu             | -        |
+| `dropdownPosition`   | `'top' \| 'bottom' \| 'auto'`             | Position verticale du dropdown   | `'auto'` |
+| `horizontalPosition` | `'left' \| 'right' \| 'center' \| 'auto'` | Position horizontale du dropdown | `'auto'` |
+| `offsetX`            | `number`                                  | Décalage horizontal              | `0`      |
+| `offsetY`            | `number`                                  | Décalage vertical                | `5`      |
+| `width`              | `number`                                  | Largeur du dropdown              | `200`    |
+| `maxHeight`          | `number`                                  | Hauteur maximale du dropdown     | `200`    |
+| `minHeight`          | `number`                                  | Hauteur minimale du dropdown     | `50`     |
+| `triggerStyle`       | `ViewStyle`                               | Style du container trigger       | -        |
+| `triggerClassName`   | `string`                                  | Classe CSS du trigger            | -        |
+| `onSelectItem`       | `(item: DropdownMenuItem) => void`        | Callback global de sélection     | -        |
+| `onOpen`             | `() => void`                              | Callback à l'ouverture           | -        |
+| `onClose`            | `() => void`                              | Callback à la fermeture          | -        |
+| `disabled`           | `boolean`                                 | Désactiver le dropdown           | `false`  |
+| `customItemRender`   | `(item: DropdownMenuItem) => ReactNode`   | Rendu personnalisé des éléments  | -        |
+| `modalProps`         | `any`                                     | Props pour le modal              | -        |
 
 ### DropdownMenuItem
 
@@ -147,7 +147,8 @@ Le composant supporte maintenant le positionnement horizontal pour mieux gérer 
 
 - **`left`** : Le coin gauche du menu s'aligne avec le coin gauche du trigger
 - **`right`** : Le coin droit du menu s'aligne avec le coin droit du trigger
-- **`auto`** : Détecte automatiquement la meilleure position selon l'espace disponible
+- **`center`** : Le menu se centre par rapport au trigger
+- **`auto`** : Détecte automatiquement la meilleure position selon l'espace disponible (privilégie center si possible)
 
 ### Exemples
 
@@ -170,6 +171,15 @@ Le composant supporte maintenant le positionnement horizontal pour mieux gérer 
   <Icon name="home-solid" size="md" color="black" />
 </DropdownMenu>
 
+// Menu centré par rapport au trigger
+<DropdownMenu
+  items={items}
+  horizontalPosition="center"
+  width={200}
+>
+  <Icon name="home-solid" size="md" color="black" />
+</DropdownMenu>
+
 // Mode auto (recommandé)
 <DropdownMenu
   items={items}
@@ -187,3 +197,4 @@ Le composant supporte maintenant le positionnement horizontal pour mieux gérer 
 - Les éléments désactivés sont filtrés automatiquement de la liste affichée
 - Le composant gère automatiquement le clavier sur mobile
 - Le mode `auto` pour le positionnement horizontal est recommandé pour une expérience utilisateur optimale
+- L'option `center` centre parfaitement le menu par rapport au trigger, idéale pour les interfaces symétriques

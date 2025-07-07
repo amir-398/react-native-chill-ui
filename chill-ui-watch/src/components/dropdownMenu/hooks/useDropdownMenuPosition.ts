@@ -2,14 +2,14 @@ import { RefObject } from 'react';
 import { Dimensions, Keyboard, Platform, TextInput } from 'react-native';
 
 type VerticalPosition = 'top' | 'bottom';
-type HorizontalPosition = 'left' | 'right';
+type HorizontalPosition = 'left' | 'right' | 'center';
 
 interface DropdownMenuPositionProps {
   dropdownWidth: number;
   waitForKeyboard: boolean;
   verticalPosition: 'top' | 'bottom' | 'auto';
-  horizontalPosition: 'left' | 'right' | 'auto';
   inputRef: RefObject<TextInput | null | undefined>;
+  horizontalPosition: 'left' | 'right' | 'center' | 'auto';
   setDropdownPosition: (vertical: VerticalPosition, horizontal: HorizontalPosition) => void;
 }
 
@@ -55,11 +55,20 @@ const useDropdownMenuPosition = ({
           // Calcul de la position horizontale
           let finalHorizontalPosition: HorizontalPosition;
           if (horizontalPosition === 'auto') {
-            // Vérifier s'il y a assez d'espace à droite
+            // Calculer l'espace disponible pour chaque option
             const spaceOnRight = screenWidth - triggerX;
             const spaceOnLeft = triggerX + triggerWidth;
 
-            if (spaceOnRight >= dropdownWidth) {
+            // Pour centrer, vérifier si on peut centrer le dropdown sur le trigger
+            const triggerCenter = triggerX + triggerWidth / 2;
+            const dropdownHalfWidth = dropdownWidth / 2;
+            const centerLeftPosition = triggerCenter - dropdownHalfWidth;
+            const centerRightPosition = triggerCenter + dropdownHalfWidth;
+
+            // Vérifier si on peut centrer
+            if (centerLeftPosition >= 0 && centerRightPosition <= screenWidth) {
+              finalHorizontalPosition = 'center';
+            } else if (spaceOnRight >= dropdownWidth) {
               // Assez d'espace à droite, aligner à gauche du trigger
               finalHorizontalPosition = 'left';
             } else if (spaceOnLeft >= dropdownWidth) {

@@ -3,7 +3,7 @@ import { TextInput, View } from 'react-native';
 
 type UseCalculateDropdownMenuPositionProps = {
   verticalPosition: 'top' | 'bottom';
-  horizontalPosition: 'left' | 'right';
+  horizontalPosition: 'left' | 'right' | 'center';
   inputRef: React.RefObject<TextInput | null>;
   offsetX?: number;
   offsetY?: number;
@@ -33,7 +33,7 @@ const useCalculateDropdownMenuPosition = ({
 
   const calculatePosition = (
     currentVerticalPosition: 'top' | 'bottom' = verticalPosition,
-    currentHorizontalPosition: 'left' | 'right' = horizontalPosition,
+    currentHorizontalPosition: 'left' | 'right' | 'center' = horizontalPosition,
   ) => {
     inputRef?.current?.measureInWindow((x: number, y: number, width: number, height: number) => {
       if (!wrapperRef.current) {
@@ -68,9 +68,13 @@ const useCalculateDropdownMenuPosition = ({
           if (currentHorizontalPosition === 'left') {
             // Aligner le coin gauche du dropdown avec le coin gauche du trigger
             leftPosition = inputMeasurements.x + offsetX;
-          } else {
+          } else if (currentHorizontalPosition === 'right') {
             // Aligner le coin droit du dropdown avec le coin droit du trigger
             leftPosition = inputMeasurements.x + inputMeasurements.width - dropdownWidth + offsetX;
+          } else {
+            // center: Centrer le dropdown par rapport au trigger
+            const triggerCenter = inputMeasurements.x + inputMeasurements.width / 2;
+            leftPosition = triggerCenter - dropdownWidth / 2 + offsetX;
           }
 
           const contentStyles = {

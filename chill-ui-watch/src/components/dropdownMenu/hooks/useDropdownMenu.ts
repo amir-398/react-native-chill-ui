@@ -16,8 +16,8 @@ interface DropdownMenuHookParams {
   items: DropdownMenuItem[];
   closeModalWhenSelectedItem?: boolean;
   verticalPosition: 'top' | 'bottom' | 'auto';
-  horizontalPosition: 'left' | 'right' | 'auto';
   onSelectItem?: (item: DropdownMenuItem) => void;
+  horizontalPosition: 'left' | 'right' | 'center' | 'auto';
 }
 
 export default function useDropdownMenu(
@@ -42,7 +42,7 @@ export default function useDropdownMenu(
   const [visible, setVisible] = useState(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [calculatedVerticalPosition, setCalculatedVerticalPosition] = useState<'top' | 'bottom'>('bottom');
-  const [calculatedHorizontalPosition, setCalculatedHorizontalPosition] = useState<'left' | 'right'>('left');
+  const [calculatedHorizontalPosition, setCalculatedHorizontalPosition] = useState<'left' | 'right' | 'center'>('left');
 
   const { getDropdownPosition } = useDropdownMenuPosition({
     dropdownWidth,

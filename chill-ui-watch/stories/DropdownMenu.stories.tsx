@@ -43,12 +43,12 @@ const sampleItems: DropdownMenuItem[] = [
 
 export const Default: Story = {
   render: () => (
-    <View className="flex flex-row justify-center bg-black p-4">
+    <View className="flex flex-row justify-end bg-black p-4">
       <DropdownMenu
         items={sampleItems}
         onSelectItem={(item: DropdownMenuItem) => console.log('Item sélectionné:', item)}
         dropdownPosition="bottom"
-        horizontalPosition="right"
+        horizontalPosition="auto"
         width={180}
       >
         <Box className="bg-primary">
@@ -88,6 +88,24 @@ export const RightAligned: Story = {
         width={180}
       >
         <Box className="rounded bg-red-500 p-2">
+          <Icon name="home-solid" size="md" color="white" />
+        </Box>
+      </DropdownMenu>
+    </View>
+  ),
+};
+
+export const CenterAligned: Story = {
+  render: () => (
+    <View className="flex flex-row justify-center bg-gray-100 p-4">
+      <DropdownMenu
+        items={sampleItems}
+        onSelectItem={(item: DropdownMenuItem) => console.log('Item sélectionné:', item)}
+        dropdownPosition="bottom"
+        horizontalPosition="center"
+        width={180}
+      >
+        <Box className="rounded bg-green-500 p-2">
           <Icon name="home-solid" size="md" color="white" />
         </Box>
       </DropdownMenu>

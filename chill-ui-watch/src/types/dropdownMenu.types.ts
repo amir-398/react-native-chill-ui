@@ -31,7 +31,7 @@ export interface DropdownMenuProps {
   /**
    * Position horizontale du dropdown par rapport au trigger
    */
-  horizontalPosition?: 'left' | 'right' | 'auto';
+  horizontalPosition?: 'left' | 'right' | 'center' | 'auto';
 
   /**
    * Décalage horizontal
