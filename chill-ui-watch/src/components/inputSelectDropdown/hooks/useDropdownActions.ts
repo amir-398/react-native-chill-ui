@@ -10,6 +10,7 @@ interface DropdownActionsParams {
   onOpen?: () => void;
   onClose?: () => void;
   keyboardHeight: number;
+
   onResetSearch?: () => void;
   setVisible: (visible: boolean) => void;
   onPerformSearch?: (text: string) => void;
@@ -22,6 +23,7 @@ export default function useDropdownActions({
   onOpen,
   onPerformSearch,
   onResetSearch,
+
   searchText,
   setVisible,
   visible,

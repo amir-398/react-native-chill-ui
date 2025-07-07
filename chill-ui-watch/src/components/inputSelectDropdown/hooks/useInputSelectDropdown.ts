@@ -76,7 +76,6 @@ export default function useInputSelectDropdown(
 
   const { calculatePosition, dropdownStyles } = useCalculateDropDownPosition({
     dropdownPosition: calculatedDropdownPosition,
-    headerOffset: 0,
     inputRef,
     offsetX,
     offsetY,

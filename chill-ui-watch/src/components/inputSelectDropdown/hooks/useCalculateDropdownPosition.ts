@@ -1,21 +1,22 @@
 import { useState } from 'react';
 import { TextInput, View } from 'react-native';
 
+type UseCalculateDropdownPositionProps = {
+  dropdownPosition: 'top' | 'bottom';
+  inputRef: React.RefObject<TextInput | null>;
+  offsetX?: number;
+  offsetY?: number;
+  wrapperRef: React.RefObject<View | null>;
+};
+
 const useCalculateDropdownPosition = ({
   dropdownPosition,
-  headerOffset,
+
   inputRef,
   offsetX = 0,
   offsetY = 0,
   wrapperRef,
-}: {
-  inputRef: React.RefObject<TextInput | null>;
-  wrapperRef: React.RefObject<View | null>;
-  dropdownPosition: 'top' | 'bottom';
-  headerOffset: number;
-  offsetX?: number;
-  offsetY?: number;
-}) => {
+}: UseCalculateDropdownPositionProps) => {
   const [dropdownStyles, setDropdownStyles] = useState<{
     top?: number;
     bottom?: number;
@@ -31,8 +32,6 @@ const useCalculateDropdownPosition = ({
       if (!wrapperRef.current) {
         return;
       }
-      console.log('width', width);
-
       wrapperRef?.current?.measureInWindow(
         (wrapperX: number, wrapperY: number, _wrapperWidth: number, wrapperHeight: number) => {
           const inputMeasurements = {
@@ -46,7 +45,7 @@ const useCalculateDropdownPosition = ({
           let contentStyles: { top?: number; left: number; width?: number; bottom?: number } | undefined;
 
           if (currentPosition === 'top') {
-            const distanceFromBottom = wrapperHeight - inputMeasurements.topY + 5 + headerOffset + offsetY;
+            const distanceFromBottom = wrapperHeight - inputMeasurements.topY + offsetY;
             contentStyles = {
               bottom: distanceFromBottom,
               left: inputMeasurements.x + offsetX,
@@ -57,7 +56,7 @@ const useCalculateDropdownPosition = ({
             contentStyles = {
               bottom: undefined,
               left: inputMeasurements.x + offsetX,
-              top: inputMeasurements.topY + inputMeasurements.height + 5 + headerOffset + offsetY,
+              top: inputMeasurements.topY + inputMeasurements.height + offsetY,
               width: inputMeasurements.width,
             };
           }
@@ -69,8 +68,11 @@ const useCalculateDropdownPosition = ({
       );
     });
   };
+  const resetPosition = () => {
+    setDropdownStyles(null);
+  };
 
-  return { calculatePosition, dropdownStyles };
+  return { calculatePosition, dropdownStyles, resetPosition };
 };
 
 export default useCalculateDropdownPosition;

@@ -18,8 +18,10 @@ export interface DropdownState {
 
 export const DEFAULT_CONFIG = {
   DEBOUNCE_DELAY: 200,
+  HEADER_OFFSET_Y: 5,
   MAX_HEIGHT: 340,
   MIN_HEIGHT: 0,
+  PHONE_NUMBER_INPUT_PLACEHOLDER: '06 12 34 56 78',
   PLACEHOLDER: 'Select item',
 } as const;
 

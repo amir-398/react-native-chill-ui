@@ -1,16 +1,16 @@
-import { TextInput, Image, ListRenderItem, View } from 'react-native';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
-import useCalculateDropDownPosition from '@/components/inputSelectDropdown/hooks/useCalculateDropdownPosition';
+import { Image } from 'react-native';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Icon from '../icon';
 import { Box } from '../box';
 import String from '../string';
 import * as flags from './flags';
 import Input from '../inputs/Input';
-import { PhoneNumberTextInputProps } from '../../types';
+import { PhoneNumberInputProps } from '../../types';
+import { DEFAULT_CONFIG } from '../inputSelectDropdown/types';
 import InputDropdownModal from '../inputDrodown/InputDropdownModal';
 import { countryCodes, type CountryCodesProps } from './countryCodes';
+import { useInputSelectDropdown } from '../inputSelectDropdown/hooks';
 import { applyMaskPhoneNumber, getPhoneNumberWithSuffix, isValidNumber } from './utils';
 
 function getFlag(code?: string) {
@@ -18,8 +18,8 @@ function getFlag(code?: string) {
   return (flags as Record<string, any>)[code.toLowerCase()];
 }
 
-const DEFAULT_LANG = 'fr';
-const DEFAULT_COUNTRY_CODE = 'FR';
+const DEFAULT_LANG = 'en';
+const DEFAULT_COUNTRY_CODE = 'US';
 const DEFAULT_ERROR_MESSAGE = 'the phone number is invalid';
 
 const getInitialCountry = (
@@ -33,88 +33,102 @@ const getInitialCountry = (
   return candidates.find(c => c.code === (defaultCountry || DEFAULT_COUNTRY_CODE)) || candidates[0];
 };
 
-function PhoneNumberTextInput({
+function PhoneNumberInput({
   allowedCountries,
   defaultCountry,
+  dropdownPosition = 'auto',
   dropdownProps = { hasSearch: true },
   errorMessage,
   hasErrorOnChange = true,
+  inputProps,
   language = DEFAULT_LANG,
+  maxHeight = DEFAULT_CONFIG.MAX_HEIGHT,
+  minHeight = DEFAULT_CONFIG.MIN_HEIGHT,
+  offsetX = 0,
+  offsetY = DEFAULT_CONFIG.HEADER_OFFSET_Y,
+  onBlur,
   onCountryChange,
   onError,
+  onFocus,
   onPhoneNumberChange,
+  placeholder = DEFAULT_CONFIG.PHONE_NUMBER_INPUT_PLACEHOLDER,
   value,
-  ...props
-}: PhoneNumberTextInputProps) {
-  const inputRef = useRef<TextInput | null>(null);
-  const searchRef = useRef<TextInput>(null);
-  const { measureComponent, position } = useCalculateDropDownPosition(inputRef);
-
-  useEffect(() => {
-    measureComponent();
-  }, [measureComponent]);
-
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
+}: PhoneNumberInputProps) {
   const [selectedCountry, setSelectedCountry] = useState<CountryCodesProps | undefined>(() =>
     getInitialCountry(defaultCountry, allowedCountries),
   );
   const [phoneNumber, setPhoneNumber] = useState(value ?? '');
-  const [searchQuery, setSearchQuery] = useState('');
   const [isValid, setIsValid] = useState(true);
 
-  useEffect(() => {
-    setSelectedCountry(getInitialCountry(defaultCountry, allowedCountries));
-  }, [allowedCountries, defaultCountry]);
-
-  // Clean search input when dropdown state changes
-  useEffect(() => {
-    if (isDropdownOpen) {
-      searchRef.current?.focus();
-    } else {
-      setSearchQuery('');
-    }
-  }, [isDropdownOpen]);
-
+  // Préparer les données pour le dropdown
   const filteredCountries = useMemo(() => {
     let list = countryCodes;
     if (allowedCountries) {
       list = list.filter(c => allowedCountries.includes(c.code));
     }
-    if (searchQuery) {
-      const q = searchQuery.toLowerCase();
-      list = list.filter(
-        c =>
-          (language === 'fr' ? c.fr : c.en).toLowerCase().includes(q) ||
-          c.dial_code.includes(q) ||
-          c.code.toLowerCase().includes(q),
-      );
-    }
     return list;
-  }, [allowedCountries, searchQuery, language]);
+  }, [allowedCountries]);
 
-  // Sélection d'un pays dans la dropdown
-  const onSelectCountry = useCallback(
-    (country: CountryCodesProps) => {
-      setSelectedCountry(country);
-      setDropdownOpen(false);
-      onCountryChange?.(country);
+  // Fonction de recherche personnalisée pour rechercher dans plusieurs champs
+
+  // Filtrage côté client pour rechercher dans plusieurs champs
+  const getFilteredCountries = useCallback(
+    (countries: CountryCodesProps[], searchText: string) => {
+      if (!searchText) return countries;
+
+      const q = searchText.toLowerCase();
+      return countries.filter(
+        country =>
+          (language === 'fr' ? country.fr : country.en).toLowerCase().includes(q) ||
+          country.dial_code.includes(q) ||
+          country.code.toLowerCase().includes(q),
+      );
     },
-    [onCountryChange],
+    [language],
+  );
+
+  // Utilisation du hook principal
+  const { dropdownRef, dropdownStyles, handleSelectItem, inputRef, setSearchText, state, toggleDropdown, wrapperRef } =
+    useInputSelectDropdown(
+      {
+        closeModalWhenSelectedItem: true,
+        dataSet: filteredCountries,
+        excludeItems: [],
+        excludeSearchItems: [],
+        inputValue: selectedCountry,
+        offsetX,
+        offsetY,
+        onBlur,
+        onFocus,
+        onSelectItem: (country: CountryCodesProps) => {
+          setSelectedCountry(country);
+          onCountryChange?.(country);
+        },
+        position: dropdownPosition,
+        searchField: language === 'fr' ? 'fr' : 'en',
+        searchQuery: () => true,
+        valueField: 'code',
+      },
+      null,
+    );
+
+  const displayedCountries = useMemo(
+    () => getFilteredCountries(state.listData, state.searchText),
+    [state.listData, state.searchText, getFilteredCountries],
   );
 
   // Render d'un item pays dans la dropdown
-  const renderItem: ListRenderItem<CountryCodesProps> = useCallback(
-    item => (
-      <Box className="flex-row items-center gap-2 p-1">
+  const customDropdownItem = useCallback(
+    (item: CountryCodesProps) => (
+      <Box className="flex-row items-center gap-2 p-3">
         <Image source={getFlag(item?.code)} className="h-6 w-9 border border-[#D9D9D9]" />
-        <String>{language === 'fr' ? item?.fr : item?.en}</String>
+        <String className="flex-1">{language === 'fr' ? item?.fr : item?.en}</String>
         <String>{item?.dial_code}</String>
       </Box>
     ),
-    [onSelectCountry, language],
+    [language],
   );
 
-  // Icone à gauche de l'input
   const leftCustomIcon = useMemo(
     () => (
       <Box className="flex-row items-center gap-1">
@@ -127,7 +141,6 @@ function PhoneNumberTextInput({
     [selectedCountry],
   );
 
-  // Gestion du changement d'input téléphone
   const handleChangeText = useCallback(
     (raw: string) => {
       if (!selectedCountry) return;
@@ -171,65 +184,61 @@ function PhoneNumberTextInput({
     [selectedCountry, onError, onPhoneNumberChange, errorMessage],
   );
 
-  // Gestion du blur
-  const handleBlur = useCallback(() => {
-    if (!dropdownProps?.hasSearch) setDropdownOpen(false);
-  }, [dropdownProps?.hasSearch]);
+  useEffect(() => {
+    setSelectedCountry(getInitialCountry(defaultCountry, allowedCountries));
+  }, [allowedCountries, defaultCountry]);
 
-  // Toggle dropdown au clic sur l'icone
-  const handleToggleDropdown = () => {
-    setDropdownOpen(open => !open);
-    inputRef.current?.focus();
-  };
   return (
-    <View ref={inputRef}>
+    <>
       <Input
+        wrapperRef={inputRef}
         value={phoneNumber}
+        placeholder={placeholder}
         onChangeText={handleChangeText}
         onFocus={() => setIsValid(true)}
-        onBlur={handleBlur}
         keyboardType="numeric"
         hasError={!isValid && hasErrorOnChange}
-        errorMessage={hasErrorOnChange ? errorMessage || DEFAULT_ERROR_MESSAGE : undefined}
+        errorMessage={hasErrorOnChange ? (errorMessage ?? DEFAULT_ERROR_MESSAGE) : undefined}
         leftIconAction={{
           customIcon: leftCustomIcon,
-          iconPress: handleToggleDropdown,
+          iconPress: toggleDropdown,
         }}
-        {...props}
+        {...inputProps}
       />
-      <InputDropdownModal
-        dropdownRef={dropdownRef}
-        wrapperRef={wrapperRef}
-        dropdownPosition={dropdownStyles}
-        toggleDropdown={toggleDropdown}
-        dropdownProps={{
-          customDropdownItem,
-          customSearchInput,
-          data: state.listData,
-          dropdownItemProps,
-          hasSearch,
-          maxHeight,
-          minHeight,
-          onSelectItem: handleSelectItem,
-          searchInputProps: {
-            ...searchInputProps,
-            onChangeText: setSearchText,
-            value: state.searchText,
-          },
-
-          valueField,
-          visible: state.visible,
-          ...dropdownProps,
-        }}
-        modalProps={{
-          onRequestClose: toggleDropdown,
-          statusBarTranslucent: true,
-          transparent: true,
-          visible: state.visible,
-        }}
-      />
-    </View>
+      {dropdownStyles && (
+        <InputDropdownModal
+          dropdownRef={dropdownRef}
+          wrapperRef={wrapperRef}
+          dropdownPosition={dropdownStyles}
+          toggleDropdown={toggleDropdown}
+          dropdownProps={{
+            customDropdownItem,
+            customSearchInput: undefined,
+            data: displayedCountries,
+            dropdownItemProps: undefined,
+            hasSearch: dropdownProps?.hasSearch ?? true,
+            maxHeight,
+            minHeight,
+            onSelectItem: handleSelectItem,
+            searchInputProps: {
+              onChangeText: setSearchText,
+              placeholder: 'Rechercher un pays...',
+              value: state.searchText,
+            },
+            valueField: 'code',
+            visible: state.visible,
+            ...dropdownProps,
+          }}
+          modalProps={{
+            onRequestClose: toggleDropdown,
+            statusBarTranslucent: true,
+            transparent: true,
+            visible: state.visible,
+          }}
+        />
+      )}
+    </>
   );
 }
 
-export default PhoneNumberTextInput;
+export default PhoneNumberInput;
