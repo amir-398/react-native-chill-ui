@@ -29,6 +29,11 @@ export interface DropdownMenuProps {
   dropdownPosition?: 'top' | 'bottom' | 'auto';
 
   /**
+   * Position horizontale du dropdown par rapport au trigger
+   */
+  horizontalPosition?: 'left' | 'right' | 'auto';
+
+  /**
    * Décalage horizontal
    */
   offsetX?: number;
@@ -37,6 +42,11 @@ export interface DropdownMenuProps {
    * Décalage vertical
    */
   offsetY?: number;
+
+  /**
+   * Largeur du dropdown
+   */
+  width?: number;
 
   /**
    * Hauteur maximale du dropdown

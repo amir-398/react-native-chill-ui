@@ -4,16 +4,17 @@ import { TouchableOpacity } from 'react-native';
 import Icon from '../icon';
 import { Box } from '../box';
 import String from '../string';
+import useDropdownMenu from './hooks/useDropdownMenu';
 import { DEFAULT_CONFIG } from '../inputSelectDropdown/types';
 import { DropdownMenuProps, DropdownMenuItem } from '../../types';
 import InputDropdownModal from '../inputDrodown/InputDropdownModal';
-import { useInputSelectDropdown } from '../inputSelectDropdown/hooks';
 
 function DropdownMenu({
   children,
   customItemRender,
   disabled = false,
   dropdownPosition = 'auto',
+  horizontalPosition = 'auto',
   items,
   maxHeight = DEFAULT_CONFIG.MAX_HEIGHT,
   minHeight = DEFAULT_CONFIG.MIN_HEIGHT,
@@ -25,31 +26,23 @@ function DropdownMenu({
   onSelectItem,
   triggerClassName,
   triggerStyle,
+  width = 200,
 }: DropdownMenuProps) {
   // Utilisation du hook principal pour gérer l'état du dropdown
-  const { dropdownRef, dropdownStyles, handleSelectItem, inputRef, state, toggleDropdown, wrapperRef } =
-    useInputSelectDropdown(
+  const { dropdownRef, dropdownStyles, handleSelectItem, inputRef, toggleDropdown, visible, wrapperRef } =
+    useDropdownMenu(
       {
         closeModalWhenSelectedItem: true,
-        dataSet: items,
-        disable: disabled,
-        excludeItems: [],
-        excludeSearchItems: [],
-        inputValue: null,
+        disabled,
+        dropdownWidth: width,
+        horizontalPosition,
+        items,
         offsetX,
         offsetY,
         onBlur: onClose,
         onFocus: onOpen,
-        onSelectItem: (item: DropdownMenuItem) => {
-          // Appeler d'abord l'action personnalisée de l'élément
-          item.onPress?.();
-          // Puis le callback global
-          onSelectItem?.(item);
-        },
-        position: dropdownPosition,
-        searchField: 'label',
-        searchQuery: () => true,
-        valueField: 'id',
+        onSelectItem,
+        verticalPosition: dropdownPosition,
       },
       null,
     );
@@ -120,13 +113,13 @@ function DropdownMenu({
             minHeight,
             onSelectItem: handleSelectItem,
             valueField: 'id',
-            visible: state.visible,
+            visible,
           }}
           modalProps={{
             onRequestClose: toggleDropdown,
             statusBarTranslucent: true,
             transparent: true,
-            visible: state.visible,
+            visible,
             ...modalProps,
           }}
         />

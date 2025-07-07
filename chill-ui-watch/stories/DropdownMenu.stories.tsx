@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { View, Alert } from 'react-native';
 
 import { DropdownMenuItem } from '../src/types';
-import { DropdownMenu, Icon } from '../src/components';
+import { Box, DropdownMenu, Icon } from '../src/components';
 
 const meta: Meta<typeof DropdownMenu> = {
   component: DropdownMenu,
@@ -43,14 +43,53 @@ const sampleItems: DropdownMenuItem[] = [
 
 export const Default: Story = {
   render: () => (
-    <View className="flex-1 p-4">
-      {/* <String className="mb-4 text-lg font-semibold">Cliquez sur l&apos;icône pour ouvrir le menu</String> */}
+    <View className="flex flex-row justify-center bg-black p-4">
       <DropdownMenu
         items={sampleItems}
         onSelectItem={(item: DropdownMenuItem) => console.log('Item sélectionné:', item)}
         dropdownPosition="bottom"
+        horizontalPosition="right"
+        width={180}
       >
-        <Icon name="home-solid" size="md" color="black" />
+        <Box className="bg-primary">
+          <Icon name="home-solid" size="md" color="black" />
+        </Box>
+      </DropdownMenu>
+    </View>
+  ),
+};
+
+export const LeftAligned: Story = {
+  render: () => (
+    <View className="flex flex-row justify-start bg-gray-100 p-4">
+      <DropdownMenu
+        items={sampleItems}
+        onSelectItem={(item: DropdownMenuItem) => console.log('Item sélectionné:', item)}
+        dropdownPosition="bottom"
+        horizontalPosition="left"
+        width={180}
+      >
+        <Box className="rounded bg-blue-500 p-2">
+          <Icon name="home-solid" size="md" color="white" />
+        </Box>
+      </DropdownMenu>
+    </View>
+  ),
+};
+
+export const RightAligned: Story = {
+  render: () => (
+    <View className="flex flex-row justify-end bg-gray-100 p-4">
+      <DropdownMenu
+        items={sampleItems}
+        onSelectItem={(item: DropdownMenuItem) => console.log('Item sélectionné:', item)}
+        dropdownPosition="bottom"
+        horizontalPosition="right"
+        width={180}
+      >
+        <Box className="rounded bg-red-500 p-2">
+          <Icon name="home-solid" size="md" color="white" />
+        </Box>
       </DropdownMenu>
     </View>
   ),

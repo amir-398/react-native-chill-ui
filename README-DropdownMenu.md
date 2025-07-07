@@ -8,8 +8,10 @@ Le composant `DropdownMenu` permet de créer un menu déroulant avec un trigger 
 - **Éléments de menu avec icônes** : Chaque élément peut avoir une icône optionnelle
 - **Gestion des éléments désactivés** : Possibilité de désactiver certains éléments
 - **Callbacks pour les actions** : Callbacks individuels par élément et callback global
-- **Positionnement automatique** : Le menu se positionne automatiquement selon l'espace disponible
+- **Positionnement intelligent** : Le menu se positionne automatiquement selon l'espace disponible
+- **Positionnement horizontal** : Support pour aligner le menu à gauche ou à droite du trigger
 - **Render personnalisé** : Possibilité de personnaliser le rendu des éléments
+- **Largeur configurable** : Possibilité de définir une largeur fixe pour le menu
 
 ## Installation
 
@@ -48,7 +50,12 @@ const items = [
 
 function MyComponent() {
   return (
-    <DropdownMenu items={items} onSelectItem={item => console.log('Item sélectionné:', item)}>
+    <DropdownMenu
+      items={items}
+      onSelectItem={item => console.log('Item sélectionné:', item)}
+      width={200}
+      horizontalPosition="auto"
+    >
       <Icon name="home-solid" size="md" color="black" />
     </DropdownMenu>
   );
@@ -59,23 +66,25 @@ function MyComponent() {
 
 ### DropdownMenuProps
 
-| Prop               | Type                                    | Description                     | Défaut   |
-| ------------------ | --------------------------------------- | ------------------------------- | -------- |
-| `children`         | `ReactNode`                             | Le contenu du trigger           | -        |
-| `items`            | `DropdownMenuItem[]`                    | Les éléments du menu            | -        |
-| `dropdownPosition` | `'top' \| 'bottom' \| 'auto'`           | Position du dropdown            | `'auto'` |
-| `offsetX`          | `number`                                | Décalage horizontal             | `0`      |
-| `offsetY`          | `number`                                | Décalage vertical               | `5`      |
-| `maxHeight`        | `number`                                | Hauteur maximale du dropdown    | `200`    |
-| `minHeight`        | `number`                                | Hauteur minimale du dropdown    | `50`     |
-| `triggerStyle`     | `ViewStyle`                             | Style du container trigger      | -        |
-| `triggerClassName` | `string`                                | Classe CSS du trigger           | -        |
-| `onSelectItem`     | `(item: DropdownMenuItem) => void`      | Callback global de sélection    | -        |
-| `onOpen`           | `() => void`                            | Callback à l'ouverture          | -        |
-| `onClose`          | `() => void`                            | Callback à la fermeture         | -        |
-| `disabled`         | `boolean`                               | Désactiver le dropdown          | `false`  |
-| `customItemRender` | `(item: DropdownMenuItem) => ReactNode` | Rendu personnalisé des éléments | -        |
-| `modalProps`       | `any`                                   | Props pour le modal             | -        |
+| Prop                 | Type                                    | Description                      | Défaut   |
+| -------------------- | --------------------------------------- | -------------------------------- | -------- |
+| `children`           | `ReactNode`                             | Le contenu du trigger            | -        |
+| `items`              | `DropdownMenuItem[]`                    | Les éléments du menu             | -        |
+| `dropdownPosition`   | `'top' \| 'bottom' \| 'auto'`           | Position verticale du dropdown   | `'auto'` |
+| `horizontalPosition` | `'left' \| 'right' \| 'auto'`           | Position horizontale du dropdown | `'auto'` |
+| `offsetX`            | `number`                                | Décalage horizontal              | `0`      |
+| `offsetY`            | `number`                                | Décalage vertical                | `5`      |
+| `width`              | `number`                                | Largeur du dropdown              | `200`    |
+| `maxHeight`          | `number`                                | Hauteur maximale du dropdown     | `200`    |
+| `minHeight`          | `number`                                | Hauteur minimale du dropdown     | `50`     |
+| `triggerStyle`       | `ViewStyle`                             | Style du container trigger       | -        |
+| `triggerClassName`   | `string`                                | Classe CSS du trigger            | -        |
+| `onSelectItem`       | `(item: DropdownMenuItem) => void`      | Callback global de sélection     | -        |
+| `onOpen`             | `() => void`                            | Callback à l'ouverture           | -        |
+| `onClose`            | `() => void`                            | Callback à la fermeture          | -        |
+| `disabled`           | `boolean`                               | Désactiver le dropdown           | `false`  |
+| `customItemRender`   | `(item: DropdownMenuItem) => ReactNode` | Rendu personnalisé des éléments  | -        |
+| `modalProps`         | `any`                                   | Props pour le modal              | -        |
 
 ### DropdownMenuItem
 
@@ -130,9 +139,51 @@ function MyComponent() {
 </DropdownMenu>
 ```
 
+## Positionnement horizontal
+
+Le composant supporte maintenant le positionnement horizontal pour mieux gérer les cas où l'icône est proche des bords de l'écran :
+
+### Modes de positionnement
+
+- **`left`** : Le coin gauche du menu s'aligne avec le coin gauche du trigger
+- **`right`** : Le coin droit du menu s'aligne avec le coin droit du trigger
+- **`auto`** : Détecte automatiquement la meilleure position selon l'espace disponible
+
+### Exemples
+
+```tsx
+// Menu aligné à gauche (pour icône à gauche de l'écran)
+<DropdownMenu
+  items={items}
+  horizontalPosition="left"
+  width={200}
+>
+  <Icon name="home-solid" size="md" color="black" />
+</DropdownMenu>
+
+// Menu aligné à droite (pour icône à droite de l'écran)
+<DropdownMenu
+  items={items}
+  horizontalPosition="right"
+  width={200}
+>
+  <Icon name="home-solid" size="md" color="black" />
+</DropdownMenu>
+
+// Mode auto (recommandé)
+<DropdownMenu
+  items={items}
+  horizontalPosition="auto"
+  width={200}
+>
+  <Icon name="home-solid" size="md" color="black" />
+</DropdownMenu>
+```
+
 ## Notes
 
-- Le composant utilise le même système de positionnement que le `PhoneNumberInput`
+- Le composant utilise maintenant un système de positionnement avancé avec support horizontal
 - Le modal se ferme automatiquement lors du clic sur un élément (configurable)
 - Les éléments désactivés sont filtrés automatiquement de la liste affichée
 - Le composant gère automatiquement le clavier sur mobile
+- Le mode `auto` pour le positionnement horizontal est recommandé pour une expérience utilisateur optimale
