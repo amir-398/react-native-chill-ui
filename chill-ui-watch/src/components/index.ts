@@ -16,3 +16,4 @@ export { default as Avatar } from './avatar';
 export { default as Separator } from './separator';
 export * from './tooltip';
 export { default as Checkbox } from './checkbox/Checkbox';
+export { default as DropdownMenu } from './dropdownMenu';
