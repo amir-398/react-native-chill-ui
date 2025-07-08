@@ -1,32 +1,51 @@
 import { ReactNode } from 'react';
-import { ViewStyle } from 'react-native';
+import { ModalProps, StyleProp, ViewStyle } from 'react-native';
 
 import { TIcons } from '../constants/ICONS';
+import { DropdownItemProps } from './dropdown.types';
 
-export interface DropdownMenuItem {
+export interface DropdownMenuItemProps {
   id: string;
   label: string;
   disabled?: boolean;
-  icon?: keyof TIcons;
   onPress?: () => void;
+  leftIcon?: keyof TIcons;
+  rightIcon?: keyof TIcons;
+  customLeftIcon?: ReactNode;
+  customRightIcon?: ReactNode;
   customRender?: () => ReactNode;
 }
 
 export interface DropdownMenuProps {
+  /**
+   * Classe CSS du dropdown
+   */
+  className?: string;
+
+  /**
+   * Props pour le dropdown item
+   */
+  dropdownItemProps?: DropdownItemProps;
+
   /**
    * Le contenu qui déclenchera l'ouverture du menu (ex: icon, bouton)
    */
   children: ReactNode;
 
   /**
+   * Afficher l'animation du dropdown
+   */
+  hasAnimation?: boolean;
+
+  /**
    * Les éléments du menu
    */
-  items: DropdownMenuItem[];
+  items: DropdownMenuItemProps[];
 
   /**
    * Élément actuellement sélectionné (pour l'auto-scroll)
    */
-  selectedItem?: DropdownMenuItem;
+  selectedItem?: DropdownMenuItemProps;
 
   /**
    * Position du dropdown par rapport au trigger
@@ -66,7 +85,7 @@ export interface DropdownMenuProps {
   /**
    * Style du container trigger
    */
-  triggerStyle?: ViewStyle;
+  triggerStyle?: StyleProp<ViewStyle>;
 
   /**
    * Classe CSS du trigger
@@ -76,7 +95,7 @@ export interface DropdownMenuProps {
   /**
    * Callback appelé quand un élément est sélectionné
    */
-  onSelectItem?: (item: DropdownMenuItem) => void;
+  onSelectItem?: (item: DropdownMenuItemProps) => void;
 
   /**
    * Callback appelé quand le menu s'ouvre
@@ -94,11 +113,6 @@ export interface DropdownMenuProps {
   disabled?: boolean;
 
   /**
-   * Activer le scroll automatique vers l'élément sélectionné
-   */
-  hasAutoScroll?: boolean;
-
-  /**
    * Activer/désactiver le scroll dans la liste
    */
   hasScroll?: boolean;
@@ -106,10 +120,10 @@ export interface DropdownMenuProps {
   /**
    * Personnaliser le rendu des éléments
    */
-  customItemRender?: (item: DropdownMenuItem) => ReactNode;
+  customItemRender?: (item: DropdownMenuItemProps) => ReactNode;
 
   /**
    * Props pour le modal
    */
-  modalProps?: any;
+  modalProps?: Partial<ModalProps>;
 }

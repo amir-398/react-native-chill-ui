@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { View } from 'react-native';
 
 import Icon from '../src/components/icon';
-import { DropdownMenuItem } from '../src/types';
+import { DropdownMenuItemProps } from '../src/types';
 import DropdownMenu from '../src/components/dropdownMenu';
 
 const meta: Meta<typeof DropdownMenu> = {
@@ -18,55 +18,44 @@ const meta: Meta<typeof DropdownMenu> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const sampleItems: DropdownMenuItem[] = [
+const sampleItems: DropdownMenuItemProps[] = [
   {
-    icon: 'pen-to-square-solid',
     id: '1',
     label: 'Éditer',
+    leftIcon: 'pen-to-square-solid',
     onPress: () => console.log('Edit clicked'),
   },
   {
-    icon: 'share-solid',
     id: '2',
     label: 'Partager',
+    leftIcon: 'share-solid',
     onPress: () => console.log('Share clicked'),
   },
   {
-    icon: 'trash-solid',
     id: '3',
     label: 'Supprimer',
+    leftIcon: 'trash-solid',
     onPress: () => console.log('Delete clicked'),
   },
   {
-    icon: 'filter-solid',
     id: '4',
     label: 'Archiver',
+    leftIcon: 'filter-solid',
     onPress: () => console.log('Archive clicked'),
   },
   {
-    icon: 'filter-solid',
-    id: '5',
-    label: 'Archiver',
-    onPress: () => console.log('Archive clicked'),
-  },
-  {
-    icon: 'filter-solid',
-    id: '6',
-    label: 'Archiver',
-    onPress: () => console.log('Archive clicked'),
-  },
-  {
-    icon: 'filter-solid',
     id: '7',
     label: 'Archiver',
+    leftIcon: 'filter-solid',
     onPress: () => console.log('Archive clicked'),
   },
 ];
 
-const longListItems: DropdownMenuItem[] = Array.from({ length: 15 }, (_, index) => ({
-  icon: index % 2 === 0 ? 'star-solid' : 'heart-solid',
-  id: (index + 1).toString(),
+// Créer une liste longue pour tester le scroll
+const longListItems: DropdownMenuItemProps[] = Array.from({ length: 15 }, (_, index) => ({
+  id: `item-${index + 1}`,
   label: `Option ${index + 1}`,
+  leftIcon: index % 2 === 0 ? 'star-solid' : 'heart-solid',
   onPress: () => console.log(`Option ${index + 1} clicked`),
 }));
 
@@ -77,6 +66,7 @@ export const Default: Story = {
         items={sampleItems}
         onSelectItem={item => console.log('Selected:', item.label)}
         horizontalPosition="auto"
+        hasScroll={false}
       >
         <Icon name="ellipsis-vertical-solid" size="md" color="white" />
       </DropdownMenu>
@@ -84,26 +74,27 @@ export const Default: Story = {
   ),
 };
 
-export const WithAutoScroll: Story = {
+export const WithScroll: Story = {
   render: () => (
-    <View className="flex flex-row justify-center bg-gray-100 p-4">
+    <View className="flex flex-row justify-center bg-green-100 p-4">
       <DropdownMenu
         items={longListItems}
-        selectedItem={longListItems[10]} // Sélectionner l'option 11
-        hasAutoScroll
+        hasScroll
         maxHeight={200}
         onSelectItem={item => console.log('Selected:', item.label)}
         horizontalPosition="center"
       >
-        <Icon name="angle-down-solid" size="md" color="black" />
+        <View className="rounded bg-green-500 p-2">
+          <Icon name="angle-down-solid" size="md" color="white" />
+        </View>
       </DropdownMenu>
     </View>
   ),
 };
 
-export const WithScrollDisabled: Story = {
+export const WithoutScroll: Story = {
   render: () => (
-    <View className="flex flex-row justify-center bg-gray-100 p-4">
+    <View className="flex flex-row justify-center bg-red-100 p-4">
       <DropdownMenu
         items={longListItems}
         hasScroll={false}
@@ -111,25 +102,9 @@ export const WithScrollDisabled: Story = {
         onSelectItem={item => console.log('Selected:', item.label)}
         horizontalPosition="center"
       >
-        <Icon name="angle-down-solid" size="md" color="black" />
-      </DropdownMenu>
-    </View>
-  ),
-};
-
-export const AutoScrollWithCenter: Story = {
-  render: () => (
-    <View className="flex flex-row justify-center bg-blue-100 p-4">
-      <DropdownMenu
-        items={longListItems}
-        selectedItem={longListItems[7]} // Sélectionner l'option 8
-        hasAutoScroll
-        hasScroll
-        maxHeight={180}
-        onSelectItem={item => console.log('Selected:', item.label)}
-        horizontalPosition="center"
-      >
-        <Icon name="settings-solid" size="md" color="blue" />
+        <View className="rounded bg-red-500 p-2">
+          <Icon name="angle-down-solid" size="md" color="white" />
+        </View>
       </DropdownMenu>
     </View>
   ),
@@ -143,7 +118,7 @@ export const LeftPosition: Story = {
         onSelectItem={item => console.log('Selected:', item.label)}
         horizontalPosition="left"
       >
-        <Icon name="menu-solid" size="md" color="green" />
+        <Icon name="home-solid" size="md" color="green" />
       </DropdownMenu>
     </View>
   ),
@@ -171,7 +146,7 @@ export const CenterPosition: Story = {
         onSelectItem={item => console.log('Selected:', item.label)}
         horizontalPosition="center"
       >
-        <Icon name="plus-solid" size="md" color="purple" />
+        <Icon name="user-solid" size="md" color="purple" />
       </DropdownMenu>
     </View>
   ),
@@ -201,21 +176,6 @@ export const CustomWidth: Story = {
         horizontalPosition="center"
       >
         <Icon name="angle-down-solid" size="md" color="black" />
-      </DropdownMenu>
-    </View>
-  ),
-};
-
-export const Disabled: Story = {
-  render: () => (
-    <View className="flex flex-row justify-center bg-gray-100 p-4">
-      <DropdownMenu
-        items={sampleItems}
-        disabled
-        onSelectItem={item => console.log('Selected:', item.label)}
-        horizontalPosition="center"
-      >
-        <Icon name="angle-down-solid" size="md" color="gray" />
       </DropdownMenu>
     </View>
   ),

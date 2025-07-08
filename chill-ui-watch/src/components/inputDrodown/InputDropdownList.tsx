@@ -42,7 +42,7 @@ export default function InputDropdownList({
             {customDropdownItem ? (
               customDropdownItem(item, selected)
             ) : (
-              <Box className={cn('p-3', dropdownItemProps?.className)} style={{ flex: 1 }}>
+              <Box className={cn('bg-secondary p-3', dropdownItemProps?.className)} style={{ flex: 1 }}>
                 {hasHighlightString ? (
                   <HighlightString
                     text={valueField ? get(item, valueField) : item}
