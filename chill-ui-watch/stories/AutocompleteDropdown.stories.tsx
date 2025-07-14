@@ -174,7 +174,7 @@ export const Default: Story = {
   args: {
     closeModalWhenSelectedItem: true,
     confirmSelectItem: false,
-    customDropdownItem: undefined,
+
     dataSet: data,
     dropdownItemProps: {
       stringItemProps: {},

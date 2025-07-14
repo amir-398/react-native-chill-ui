@@ -1,8 +1,12 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 
-import { get } from '../../utils';
+import cn from '../cn';
+import { Box } from '../box';
+import String from '../string';
 import Input from '../inputs/Input';
+import { get, isEqual } from '../../utils';
 import { useInputSelectDropdown } from './hooks';
+import HighlightString from '../highlightString';
 import { IDropdownRef, DEFAULT_CONFIG } from './types';
 import { InputSelectDropdownProps } from '../../types';
 import InputDropdownModal from '../inputDrodown/InputDropdownModal';
@@ -18,7 +22,9 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, InputSelectDropdownPr
     dropdownProps,
     excludeItems = [],
     excludeSearchItems = [],
+    hasHighlightString = true,
     hasSearch = false,
+    highlightProps,
     inputProps,
     maxHeight = DEFAULT_CONFIG.MAX_HEIGHT,
     minHeight = DEFAULT_CONFIG.MIN_HEIGHT,
@@ -58,6 +64,38 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, InputSelectDropdownPr
 
   const isSelected = state.currentValue && get(state.currentValue, valueField);
 
+  const defaultDropdownItemRender = useCallback(
+    (item: any) => (
+      <Box className={cn('p-3', dropdownItemProps?.className)} style={{ flex: 1 }}>
+        {hasHighlightString ? (
+          <HighlightString
+            text={valueField ? get(item, valueField) : item}
+            highlightTerm={highlightProps?.highlightTerm ?? state.searchText ?? ''}
+            stringProps={dropdownItemProps?.stringItemProps ?? {}}
+            {...highlightProps}
+          />
+        ) : (
+          <String {...dropdownItemProps?.stringItemProps} color="black">
+            {valueField ? get(item, valueField) : item}
+          </String>
+        )}
+      </Box>
+    ),
+    [dropdownItemProps, valueField, highlightProps, hasHighlightString, state.searchText],
+  );
+
+  const renderDropdownItem = useCallback(
+    (item: any) => {
+      if (customDropdownItem) {
+        const selected = valueField ? isEqual(get(item, valueField), isSelected) : false;
+        return customDropdownItem(item, selected);
+      }
+
+      return defaultDropdownItemRender(item);
+    },
+    [customDropdownItem, isSelected, defaultDropdownItemRender, valueField],
+  );
+
   return (
     <>
       <Input
@@ -80,10 +118,10 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, InputSelectDropdownPr
         dropdownPosition={dropdownStyles}
         toggleDropdown={toggleDropdown}
         dropdownProps={{
-          customDropdownItem,
           customSearchInput,
           data: state.listData,
           dropdownItemProps,
+          DropdownItemRender: renderDropdownItem,
           hasSearch,
           maxHeight,
           minHeight,
@@ -94,7 +132,6 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, InputSelectDropdownPr
             value: state.searchText,
           },
 
-          valueField,
           visible: state.visible,
           ...dropdownProps,
         }}

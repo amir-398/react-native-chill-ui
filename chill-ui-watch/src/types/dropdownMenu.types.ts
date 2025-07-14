@@ -2,7 +2,20 @@ import { ReactNode } from 'react';
 import { ModalProps, StyleProp, ViewStyle } from 'react-native';
 
 import { TIcons } from '../constants/ICONS';
-import { DropdownItemProps } from './dropdown.types';
+import { DropdownItemProps, InputDropdownListProps } from './dropdown.types';
+
+export type DropdownMenuTriggerType =
+  | 'TouchableOpacity'
+  | 'TouchableHighlight'
+  | 'Pressable'
+  | 'RipplePressable'
+  | 'none';
+
+export interface DropdownMenuRef {
+  open: () => void;
+  close: () => void;
+  toggle: () => void;
+}
 
 export interface DropdownMenuItemProps {
   id: string;
@@ -21,6 +34,11 @@ export interface DropdownMenuProps {
    * Classe CSS du dropdown
    */
   className?: string;
+
+  /**
+   * Props pour la liste du dropdown
+   */
+  dropdownListProps?: InputDropdownListProps['dropdownListProps'];
 
   /**
    * Props pour le dropdown item
@@ -126,4 +144,19 @@ export interface DropdownMenuProps {
    * Props pour le modal
    */
   modalProps?: Partial<ModalProps>;
+
+  /**
+   * Type de composant cliquable à utiliser pour les éléments du menu
+   */
+  itemClickableAs?: InputDropdownListProps['itemClickableAs'];
+
+  /**
+   * Type de composant à utiliser pour le trigger du menu
+   */
+  triggerAs?: DropdownMenuTriggerType;
+
+  /**
+   * Fermer le modal quand un élément est sélectionné
+   */
+  closeDropdownWhenSelectedItem?: boolean;
 }

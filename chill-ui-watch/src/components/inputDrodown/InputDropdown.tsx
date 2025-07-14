@@ -6,23 +6,20 @@ import DropdownList from './InputDropdownList';
 export default function InputDropdown(props: InputDropdownProps) {
   const {
     className,
-    currentValue,
-    customDropdownItem,
     data,
     dropdownItemProps,
+    DropdownItemRender,
     dropdownListProps,
     emptyText,
     hasAnimation,
-    hasHighlightString,
     hasSearch,
     hasShadow,
-    highlightStringProps,
     isLoading,
+    itemClickableAs,
     maxHeight,
     minHeight,
     onSelectItem,
     searchInputProps,
-    valueField,
     visible,
   } = props;
 
@@ -39,16 +36,13 @@ export default function InputDropdown(props: InputDropdownProps) {
     >
       <DropdownList
         data={data}
-        valueField={String(valueField)}
-        currentValue={currentValue}
         onSelectItem={onSelectItem}
         dropdownItemProps={dropdownItemProps}
-        customDropdownItem={customDropdownItem}
+        DropdownItemRender={DropdownItemRender}
         dropdownListProps={dropdownListProps}
         isLoading={isLoading}
         emptyText={emptyText}
-        highlightStringProps={highlightStringProps}
-        hasHighlightString={hasHighlightString}
+        itemClickableAs={itemClickableAs}
       />
     </DropdownBase>
   );

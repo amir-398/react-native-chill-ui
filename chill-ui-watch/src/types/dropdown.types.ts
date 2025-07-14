@@ -4,7 +4,6 @@ import type { InputProps } from './input.types';
 import type { LoadingIndicatorProps } from './loadingIndicator.types';
 
 import { StringProps } from './string.types';
-import { HighlightStringProps } from './highlightString.types';
 
 export interface DropdownItemProps {
   className?: string;
@@ -29,18 +28,15 @@ export interface InputDropdownBaseProps {
 export interface InputDropdownListProps {
   data: any[];
   emptyText?: string;
-  valueField?: string;
   isLoading?: boolean;
-  currentValue?: string;
-  hasHighlightString?: boolean;
   onSelectItem?: (item: any) => void;
   customEmpty?: () => React.ReactNode;
   dropdownItemProps?: DropdownItemProps;
   loadingIndicatorProps?: LoadingIndicatorProps;
   customLoadingIndicator?: () => React.ReactNode;
-  highlightStringProps?: Partial<Omit<HighlightStringProps, 'text'>>;
+  DropdownItemRender?: (item: any) => React.ReactNode;
   dropdownListProps?: Omit<FlatListProps<any>, 'renderItem' | 'data'>;
-  customDropdownItem?: (item: any, selected: boolean) => React.ReactNode;
+  itemClickableAs?: 'TouchableOpacity' | 'Pressable' | 'TouchableHighlight' | 'RipplePressable' | 'none';
 }
 
 export type InputDropdownProps = Omit<InputDropdownBaseProps, 'children'> & InputDropdownListProps;

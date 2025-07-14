@@ -1,8 +1,12 @@
 import { TextInput } from 'react-native';
 import React, { useCallback, useEffect, useImperativeHandle, useRef, memo, useMemo } from 'react';
 
+import cn from '../cn';
+import { Box } from '../box';
+import String from '../string';
 import { Input } from '../inputs';
 import { DEFAULT_CONFIG } from './types';
+import HighlightString from '../highlightString';
 import { get, isEqual, debounce } from '../../utils';
 import InputDropdown from '../inputDrodown/InputDropdown';
 import useDropdownActions from './hooks/useDropdownActions';
@@ -117,11 +121,11 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
         const filteredData = dataSet.filter(item => {
           if (searchQuery) {
             const searchValue = searchField ? get(item, searchField) : get(item, valueField);
-            return searchQuery(searchText, String(searchValue));
+            return searchQuery(searchText, searchValue);
           }
 
           const searchValue = searchField ? get(item, searchField) : get(item, valueField);
-          return String(searchValue).toLowerCase().includes(searchText.toLowerCase());
+          return searchValue?.toLowerCase().includes(searchText.toLowerCase());
         });
 
         return excludeData(filteredData);
@@ -261,6 +265,38 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dataSet, state.searchText, updateState, hasPerformSearch]);
 
+    const defaultDropdownItemRender = useCallback(
+      (item: any) => (
+        <Box className={cn('p-3', dropdownItemProps?.className)} style={{ flex: 1 }}>
+          {hasHighlightString ? (
+            <HighlightString
+              text={valueField ? get(item, valueField) : item}
+              highlightTerm={highlightProps?.highlightTerm ?? state.searchText ?? ''}
+              stringProps={dropdownItemProps?.stringItemProps ?? {}}
+              {...highlightProps}
+            />
+          ) : (
+            <String {...dropdownItemProps?.stringItemProps} color="black">
+              {valueField ? get(item, valueField) : item}
+            </String>
+          )}
+        </Box>
+      ),
+      [dropdownItemProps, valueField, highlightProps, hasHighlightString, state.searchText],
+    );
+
+    const renderDropdownItem = useCallback(
+      (item: any) => {
+        if (customDropdownItem) {
+          const selected = valueField ? isEqual(get(item, valueField), isSelected) : false;
+          return customDropdownItem(item, selected);
+        }
+
+        return defaultDropdownItemRender(item);
+      },
+      [customDropdownItem, isSelected, defaultDropdownItemRender, valueField],
+    );
+
     useEffect(() => {
       setDropdownContent(
         instanceId,
@@ -270,17 +306,9 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
           maxHeight={maxHeight}
           minHeight={minHeight}
           data={state.listData}
-          valueField={String(valueField)}
-          currentValue={state.currentValue}
           onSelectItem={selectItem}
           dropdownItemProps={dropdownItemProps}
-          customDropdownItem={customDropdownItem}
-          hasHighlightString={hasHighlightString}
-          highlightStringProps={{
-            highlightTerm: state.searchText,
-            stringProps: dropdownItemProps?.stringItemProps ?? {},
-            ...highlightProps,
-          }}
+          DropdownItemRender={renderDropdownItem}
           dropdownListProps={dropdownListProps}
           emptyText={dropdownProps?.emptyText ?? DEFAULT_CONFIG.EMPTY_TEXT}
           isLoading={isLoading}

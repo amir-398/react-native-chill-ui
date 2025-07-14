@@ -1,44 +1,61 @@
-import { useCallback, useMemo } from 'react';
-import { TouchableHighlight, TouchableOpacity } from 'react-native';
+import { useCallback, useMemo, forwardRef, useImperativeHandle } from 'react';
+import { TouchableHighlight, TouchableOpacity, Pressable } from 'react-native';
 
 import cn from '../cn';
 import Icon from '../icon';
 import { Box } from '../box';
 import String from '../string';
+import RipplePressable from '../ripple-pressable';
 import useDropdownMenu from './hooks/useDropdownMenu';
 import { DEFAULT_CONFIG } from '../inputSelectDropdown/types';
 import InputDropdownModal from '../inputDrodown/InputDropdownModal';
-import { DropdownMenuItemProps, DropdownMenuProps } from '../../types';
+import { DropdownMenuItemProps, DropdownMenuProps, DropdownMenuRef } from '../../types';
 
-function DropdownMenu({
-  children,
-  className,
-  customItemRender,
-  disabled = false,
-  dropdownItemProps,
-  dropdownPosition = 'auto',
-  hasAnimation = true,
-  hasScroll = true,
-  horizontalPosition = 'auto',
-  items,
-  maxHeight = DEFAULT_CONFIG.MAX_HEIGHT,
-  minHeight = DEFAULT_CONFIG.MIN_HEIGHT,
-  modalProps,
-  offsetX = 0,
-  offsetY = 5,
-  onClose,
-  onOpen,
-  onSelectItem,
-  selectedItem,
-  triggerClassName,
-  triggerStyle,
-  width = 200,
-}: DropdownMenuProps) {
-  // Utilisation du hook principal pour gérer l'état du dropdown
-  const { dropdownRef, dropdownStyles, handleSelectItem, inputRef, toggleDropdown, visible, wrapperRef } =
-    useDropdownMenu(
+const DropdownMenu = forwardRef<DropdownMenuRef, DropdownMenuProps>(
+  (
+    {
+      children,
+      className,
+      closeDropdownWhenSelectedItem = true,
+      customItemRender,
+      disabled = false,
+      dropdownItemProps,
+      dropdownListProps,
+      dropdownPosition = 'auto',
+      hasAnimation = true,
+      hasScroll = true,
+      horizontalPosition = 'auto',
+      itemClickableAs = 'TouchableHighlight',
+      items,
+      maxHeight = DEFAULT_CONFIG.MAX_HEIGHT,
+      minHeight = DEFAULT_CONFIG.MIN_HEIGHT,
+      modalProps,
+      offsetX = 0,
+      offsetY = 5,
+      onClose,
+      onOpen,
+      onSelectItem,
+      selectedItem,
+      triggerAs = 'TouchableOpacity',
+      triggerClassName,
+      triggerStyle,
+      width = 200,
+    },
+    ref,
+  ) => {
+    const {
+      dropdownRef,
+      dropdownStyles,
+      eventClose,
+      eventOpen,
+      handleSelectItem,
+      inputRef,
+      toggleDropdown,
+      visible,
+      wrapperRef,
+    } = useDropdownMenu(
       {
-        closeModalWhenSelectedItem: true,
+        closeModalWhenSelectedItem: closeDropdownWhenSelectedItem,
         disabled,
         dropdownWidth: width,
         hasScroll,
@@ -55,15 +72,19 @@ function DropdownMenu({
       null,
     );
 
-  // Render par défaut d'un item du menu
-  const defaultItemRender = useCallback(
-    (item: DropdownMenuItemProps) => (
-      <TouchableHighlight
-        key={item.id}
-        disabled={item.disabled}
-        onPress={() => handleSelectItem(item)}
-        underlayColor={dropdownItemProps?.activeBackgroundColor ?? '#F6F7F8'}
-      >
+    // Exposer les méthodes via useImperativeHandle
+    useImperativeHandle(
+      ref,
+      () => ({
+        close: eventClose,
+        open: eventOpen,
+        toggle: toggleDropdown,
+      }),
+      [eventOpen, eventClose, toggleDropdown],
+    );
+
+    const defaultItemRender = useCallback(
+      (item: DropdownMenuItemProps) => (
         <Box className={cn('flex-row items-center gap-3 p-4', dropdownItemProps?.className)}>
           {item.customLeftIcon
             ? item.customLeftIcon
@@ -78,84 +99,111 @@ function DropdownMenu({
             ? item.customRightIcon
             : item.rightIcon && <Icon name={item.rightIcon} size="sm" color={item.disabled ? 'gray' : 'black'} />}
         </Box>
-      </TouchableHighlight>
-    ),
-    [
-      handleSelectItem,
-      dropdownItemProps?.activeBackgroundColor,
-      dropdownItemProps?.className,
-      dropdownItemProps?.stringItemProps,
-    ],
-  );
+      ),
+      [dropdownItemProps?.className, dropdownItemProps?.stringItemProps],
+    );
 
-  // Render personnalisé d'un item du menu
-  const customDropdownItem = useCallback(
-    (item: DropdownMenuItemProps) => {
-      if (item.customRender) {
-        return item.customRender();
+    const customDropdownItem = useCallback(
+      (item: DropdownMenuItemProps) => {
+        if (item.customRender) {
+          return item.customRender();
+        }
+
+        if (customItemRender) {
+          return customItemRender(item);
+        }
+
+        return defaultItemRender(item);
+      },
+      [customItemRender, defaultItemRender],
+    );
+
+    const activeItems = useMemo(() => items.filter(item => !item.disabled), [items]);
+
+    const renderTrigger = useCallback(() => {
+      if (triggerAs === 'none') {
+        return null;
       }
 
-      if (customItemRender) {
-        return customItemRender(item);
+      const commonTriggerProps = {
+        className: triggerClassName,
+        disabled,
+        onPress: disabled ? undefined : toggleDropdown,
+        ref: inputRef,
+        style: triggerStyle,
+      };
+
+      const triggerContent = <Box className="flex-row items-center">{children}</Box>;
+
+      switch (triggerAs) {
+        case 'TouchableHighlight':
+          return (
+            <TouchableHighlight {...commonTriggerProps} underlayColor="#F6F7F8">
+              {triggerContent}
+            </TouchableHighlight>
+          );
+        case 'Pressable':
+          return (
+            <Pressable {...commonTriggerProps} android_ripple={{ color: '#F6F7F8' }}>
+              {triggerContent}
+            </Pressable>
+          );
+        case 'RipplePressable':
+          return <RipplePressable {...commonTriggerProps}>{triggerContent}</RipplePressable>;
+        case 'TouchableOpacity':
+        default:
+          return (
+            <TouchableOpacity {...commonTriggerProps} activeOpacity={0.7}>
+              {triggerContent}
+            </TouchableOpacity>
+          );
       }
+    }, [triggerAs, inputRef, disabled, toggleDropdown, triggerStyle, triggerClassName, children]);
 
-      return defaultItemRender(item);
-    },
-    [customItemRender, defaultItemRender],
-  );
+    return (
+      <>
+        {/* trigger */}
+        {renderTrigger()}
 
-  // Filtrer les éléments actifs
-  const activeItems = useMemo(() => items.filter(item => !item.disabled), [items]);
+        {/* modal */}
+        {dropdownStyles && (
+          <InputDropdownModal
+            dropdownRef={dropdownRef}
+            wrapperRef={wrapperRef}
+            dropdownPosition={dropdownStyles}
+            toggleDropdown={toggleDropdown}
+            dropdownProps={{
+              className,
+              customSearchInput: undefined,
+              data: activeItems,
+              dropdownItemProps: undefined,
+              DropdownItemRender: (item: any) => customDropdownItem(item as DropdownMenuItemProps),
+              dropdownListProps: {
+                scrollEnabled: hasScroll,
+                ...dropdownListProps,
+              },
+              hasAnimation,
+              hasSearch: false,
+              itemClickableAs,
+              maxHeight,
+              minHeight,
+              onSelectItem: handleSelectItem,
+              visible,
+            }}
+            modalProps={{
+              onRequestClose: toggleDropdown,
+              statusBarTranslucent: true,
+              transparent: true,
+              visible,
+              ...modalProps,
+            }}
+          />
+        )}
+      </>
+    );
+  },
+);
 
-  return (
-    <>
-      {/* Trigger qui ouvre le menu */}
-      <TouchableOpacity
-        ref={inputRef}
-        onPress={disabled ? undefined : toggleDropdown}
-        style={triggerStyle}
-        className={triggerClassName}
-        disabled={disabled}
-        activeOpacity={0.7}
-      >
-        <Box className="flex-row items-center">{children}</Box>
-      </TouchableOpacity>
-
-      {/* Modal du dropdown */}
-      {dropdownStyles && (
-        <InputDropdownModal
-          dropdownRef={dropdownRef}
-          wrapperRef={wrapperRef}
-          dropdownPosition={dropdownStyles}
-          toggleDropdown={toggleDropdown}
-          dropdownProps={{
-            className,
-            customDropdownItem: (item: any) => customDropdownItem(item as DropdownMenuItemProps),
-            customSearchInput: undefined,
-            data: activeItems,
-            dropdownItemProps: undefined,
-            dropdownListProps: {
-              scrollEnabled: hasScroll,
-            },
-            hasAnimation,
-            hasSearch: false,
-            maxHeight,
-            minHeight,
-            onSelectItem: handleSelectItem,
-            valueField: 'id',
-            visible,
-          }}
-          modalProps={{
-            onRequestClose: toggleDropdown,
-            statusBarTranslucent: true,
-            transparent: true,
-            visible,
-            ...modalProps,
-          }}
-        />
-      )}
-    </>
-  );
-}
+DropdownMenu.displayName = 'DropdownMenu';
 
 export default DropdownMenu;
