@@ -191,7 +191,6 @@ export const DisabledAccordion: Story = {
   args: {
     collapsible: true,
     disabled: true,
-    hasAnimation: true,
     iconPosition: 'right',
     type: 'single',
   },
@@ -217,7 +216,6 @@ export const DisabledAccordion: Story = {
 export const CustomTriggerContent: Story = {
   args: {
     collapsible: true,
-    hasAnimation: true,
     iconPosition: 'right',
     type: 'single',
   },

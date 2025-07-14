@@ -24,9 +24,9 @@ const meta: Meta<typeof Avatar> = {
       description: 'Size of the avatar',
       options: ['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'],
     },
-    textClassName: {
-      control: 'text',
-      description: 'CSS classes for the text',
+    stringProps: {
+      control: 'object',
+      description: 'Props for the String component',
     },
     variant: {
       control: 'radio',
@@ -64,6 +64,11 @@ export const Default: Story = {
   args: {
     data: defaultUser,
   },
+  render: args => (
+    <Box className="gap-4">
+      <Avatar {...args} />
+    </Box>
+  ),
 };
 
 export const WithImage: Story = {

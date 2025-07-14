@@ -5,44 +5,7 @@ import type { TIcons } from '../constants/ICONS';
 
 import { StringProps } from './string.types';
 
-// Legacy types for backward compatibility
-export type AccordionItem = {
-  id: string;
-  title: string;
-  content: ReactNode;
-  disabled?: boolean;
-};
-
-export type AccordionProps = {
-  items: AccordionItem[];
-  className?: string;
-  multiple?: boolean; // Allow multiple items to be open at once
-  defaultOpenItems?: string[]; // IDs of items that should be open by default
-  onItemToggle?: (itemId: string, isOpen: boolean) => void;
-  hasAnimation?: boolean;
-  animationDuration?: number;
-  headerClassName?: string;
-  contentClassName?: string;
-  iconPosition?: 'left' | 'right';
-  expandIcon?: keyof TIcons;
-  collapseIcon?: keyof TIcons;
-  disabled?: boolean;
-} & ViewProps;
-
-export type AccordionItemComponentProps = {
-  item: AccordionItem;
-  isOpen: boolean;
-  onToggle: () => void;
-  hasAnimation?: boolean;
-  animationDuration?: number;
-  headerClassName?: string;
-  contentClassName?: string;
-  iconPosition?: 'left' | 'right';
-  expandIcon?: keyof TIcons;
-  collapseIcon?: keyof TIcons;
-} & TouchableOpacityProps;
-
-// New compositional API types
+// Accordion types
 
 /** Accordion behavior type - single allows only one item open, multiple allows several */
 export type AccordionType = 'single' | 'multiple';

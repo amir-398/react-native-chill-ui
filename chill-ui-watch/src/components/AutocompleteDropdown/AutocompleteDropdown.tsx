@@ -355,4 +355,65 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
 
 AutocompleteDropdown.displayName = 'AutocompleteDropdown';
 
-export default memo(AutocompleteDropdown);
+/**
+ * AutocompleteDropdown provides a smart dropdown with search functionality and auto-completion features.
+ * Supports custom rendering, positioning, and advanced search capabilities.
+ *
+ * @example
+ * ```tsx
+ * <AutocompleteDropdown
+ *   dataSet={data}
+ *   valueField="name"
+ *   searchField="name"
+ *   onSelectItem={(item) => console.log('Selected:', item)}
+ *   inputProps={{
+ *     placeholder: 'Search...',
+ *   }}
+ * />
+ * ```
+ *
+ * @example
+ * // With custom rendering
+ * <AutocompleteDropdown
+ *   dataSet={products}
+ *   valueField="name"
+ *   customDropdownItem={(item, selected) => (
+ *     <Box className={`p-3 ${selected ? 'bg-blue-100' : 'bg-white'}`}>
+ *       <String className="font-bold">{item.name}</String>
+ *       <String className="text-gray-500">{item.category}</String>
+ *     </Box>
+ *   )}
+ *   onSelectItem={(item) => console.log('Selected:', item)}
+ * />
+ *
+ * @param dataSet - Array of data items to display in the dropdown
+ * @param valueField - Field to use as the display value and identifier
+ * @param onSelectItem - Callback function when an item is selected
+ * @param searchField - Field to search in (defaults to valueField)
+ * @param offsetX - Horizontal offset for dropdown positioning (default: 0)
+ * @param offsetY - Vertical offset for dropdown positioning (default: 0)
+ * @param maxHeight - Maximum height of dropdown (default: 300)
+ * @param minHeight - Minimum height of dropdown (default: 0)
+ * @param excludeItems - Items to exclude from dropdown
+ * @param isLoading - Show loading indicator
+ * @param hasPerformSearch - Enable search functionality (default: true)
+ * @param hasHighlightString - Highlight search terms in results (default: true)
+ * @param confirmSelectItem - Require confirmation before selecting
+ * @param closeModalWhenSelectedItem - Close dropdown after selection (default: true)
+ * @param dropdownPosition - Dropdown positioning: 'auto', 'top', or 'bottom'
+ * @param onBlur - Callback when input loses focus
+ * @param onFocus - Callback when input gains focus
+ * @param onConfirmSelectItem - Callback for confirmed selection
+ * @param searchQuery - Custom search function for filtering items
+ * @param customDropdownItem - Custom renderer for dropdown items
+ * @param inputProps - Props to pass to the input component
+ * @param dropdownItemProps - Props for styling dropdown items
+ * @param dropdownListProps - Props for the dropdown FlatList
+ * @param dropdownProps - Props for the dropdown container
+ * @param highlightProps - Props for text highlighting configuration
+ *
+ * @see {@link https://github.com/your-repo/chill-ui/tree/main/src/components/AutocompleteDropdown/README.md Documentation}
+ */
+const MemoizedAutocompleteDropdown = memo(AutocompleteDropdown);
+
+export default MemoizedAutocompleteDropdown;

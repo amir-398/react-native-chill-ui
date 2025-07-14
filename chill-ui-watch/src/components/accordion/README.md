@@ -1,8 +1,6 @@
 # Accordion Component
 
-The Accordion component provides a collapsible content area with two APIs: a legacy array-based API and a new compositional API inspired by Radix UI.
-
-## New Compositional API (Recommended)
+The Accordion component provides a collapsible content area with a compositional API inspired by Radix UI.
 
 ### Basic Usage
 
@@ -193,49 +191,6 @@ accordion/
 </AccordionItem>
 ```
 
-## Legacy Array API
-
-For backward compatibility, the original array-based API is still available:
-
-```tsx
-import { Accordion } from 'chill-ui';
-
-const items = [
-  {
-    id: '1',
-    title: 'Question 1',
-    content: <Text>Answer 1</Text>,
-  },
-];
-
-<Accordion items={items} />;
-```
-
-## Migration Guide
-
-To migrate from the legacy API to the new compositional API:
-
-**Before:**
-
-```tsx
-const items = [{ id: '1', title: 'Question', content: <Text>Answer</Text> }];
-
-<Accordion items={items} multiple={true} />;
-```
-
-**After:**
-
-```tsx
-<Accordion type="multiple">
-  <AccordionItem value="1">
-    <AccordionTrigger>Question</AccordionTrigger>
-    <AccordionContent>
-      <Text>Answer</Text>
-    </AccordionContent>
-  </AccordionItem>
-</Accordion>
-```
-
 ## Advanced Usage
 
 ### The asChild Pattern
@@ -285,8 +240,7 @@ The `asChild` prop allows you to use your own components as triggers while maint
 
 See the Storybook documentation for interactive examples:
 
-- `components/Accordion` - Legacy API examples
-- `components/Accordion (New API)` - Compositional API examples
+- `components/Accordion` - Complete accordion examples with all features
 
 ## Troubleshooting
 

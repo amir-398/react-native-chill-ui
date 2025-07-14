@@ -257,6 +257,7 @@ export const WithConfirmation: Story = {
       placeholder: 'Selection with confirmation...',
     },
     onConfirmSelectItem: item => {
+      // eslint-disable-next-line no-alert
       alert(`Do you want to select: ${item.label}?`);
     },
   },
