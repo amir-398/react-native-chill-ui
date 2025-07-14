@@ -1,6 +1,8 @@
 export * from './box';
 export * from './toast';
 export * from './loadingIndicatorsKit';
+export { default as Accordion } from './accordion';
+export { Accordion as NewAccordion, AccordionItem, AccordionTrigger, AccordionContent } from './accordion';
 export { default as ButtonIcon } from './buttonIcon';
 export { default as cn } from './cn';
 export { default as Icon } from './icon';

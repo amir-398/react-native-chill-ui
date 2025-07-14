@@ -29,7 +29,7 @@ export const dotPositionVariants = tv({
   },
 });
 
-export default function ImageSlider(props: ImageSliderProps) {
+export default function Carousel(props: ImageSliderProps) {
   const {
     children,
     dotActiveColor = 'white',

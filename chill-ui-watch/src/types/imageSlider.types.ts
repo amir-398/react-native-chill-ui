@@ -4,7 +4,7 @@ import type { ImageSourcePropType } from 'react-native';
 import type { IconProps } from './icon.types';
 import type { StringProps } from './string.types';
 
-import { dotPositionVariants, dotVariant } from '../components/imageSlider/ImageSlider';
+import { dotPositionVariants, dotVariant } from '../components/carousel/Carousel';
 
 export interface ImageSliderProps {
   hasDot?: boolean;

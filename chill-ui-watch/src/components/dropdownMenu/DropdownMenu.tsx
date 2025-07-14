@@ -18,6 +18,7 @@ const DropdownMenu = forwardRef<DropdownMenuRef, DropdownMenuProps>(
       className,
       closeDropdownWhenSelectedItem = true,
       customItemRender,
+      dataSet,
       disabled = false,
       dropdownItemProps,
       dropdownListProps,
@@ -26,7 +27,6 @@ const DropdownMenu = forwardRef<DropdownMenuRef, DropdownMenuProps>(
       hasScroll = true,
       horizontalPosition = 'auto',
       itemClickableAs = 'TouchableHighlight',
-      items,
       maxHeight = DEFAULT_CONFIG.MAX_HEIGHT,
       minHeight = DEFAULT_CONFIG.MIN_HEIGHT,
       modalProps,
@@ -60,7 +60,7 @@ const DropdownMenu = forwardRef<DropdownMenuRef, DropdownMenuProps>(
         dropdownWidth: width,
         hasScroll,
         horizontalPosition,
-        items,
+        items: dataSet,
         offsetX,
         offsetY,
         onBlur: onClose,
@@ -118,7 +118,7 @@ const DropdownMenu = forwardRef<DropdownMenuRef, DropdownMenuProps>(
       [customItemRender, defaultItemRender],
     );
 
-    const activeItems = useMemo(() => items.filter(item => !item.disabled), [items]);
+    const activeItems = useMemo(() => dataSet.filter(item => !item.disabled), [dataSet]);
 
     const renderTrigger = useCallback(() => {
       if (triggerAs === 'none') {

@@ -29,3 +29,4 @@ export * from './inputSelectDropdown.types';
 export * from './autocompleteDropdown.type';
 export * from './highlightString.types';
 export * from './dropdownMenu.types';
+export * from './accordion.types';

@@ -22,49 +22,6 @@ export default function InputDropdownList({
 }: InputDropdownListProps) {
   const { name = 'spinner', ...rest } = loadingIndicatorProps || {};
 
-  // const renderListItem = useCallback(
-  //   ({ index, item }: { item: any; index: number }) => {
-  //     const isSelected = currentValue && valueField && get(currentValue, valueField);
-  //     const selected = valueField ? isEqual(get(item, valueField), isSelected) : false;
-
-  //     return (
-  //       <TouchableHighlight
-  //         key={index.toString()}
-  //         onPress={() => onSelectItem?.(item)}
-  //         underlayColor={dropdownItemProps?.activeBackgroundColor ?? '#F6F7F8'}
-  //       >
-  //         <Box>
-  //           {customDropdownItem ? (
-  //             customDropdownItem(item, selected)
-  //           ) : (
-  //             <Box className={cn('bg-secondary p-3', dropdownItemProps?.className)} style={{ flex: 1 }}>
-  //               {hasHighlightString ? (
-  //                 <HighlightString
-  //                   text={valueField ? get(item, valueField) : item}
-  //                   highlightTerm={highlightStringProps?.highlightTerm ?? ''}
-  //                   stringProps={dropdownItemProps?.stringItemProps ?? {}}
-  //                   {...highlightStringProps}
-  //                 />
-  //               ) : (
-  //                 <String {...dropdownItemProps?.stringItemProps}>{valueField ? get(item, valueField) : item}</String>
-  //               )}
-  //             </Box>
-  //           )}
-  //         </Box>
-  //       </TouchableHighlight>
-  //     );
-  //   },
-  //   [
-  //     dropdownItemProps,
-  //     currentValue,
-  //     valueField,
-  //     onSelectItem,
-  //     customDropdownItem,
-  //     highlightStringProps,
-  //     hasHighlightString,
-  //   ],
-  // );
-
   const renderListItem = useCallback(
     ({ index, item }: { item: any; index: number }) => {
       if (DropdownItemRender?.(item)) {

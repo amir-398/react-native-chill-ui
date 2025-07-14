@@ -58,7 +58,7 @@ export interface DropdownMenuProps {
   /**
    * Les éléments du menu
    */
-  items: DropdownMenuItemProps[];
+  dataSet: DropdownMenuItemProps[];
 
   /**
    * Élément actuellement sélectionné (pour l'auto-scroll)

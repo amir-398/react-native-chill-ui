@@ -2,18 +2,144 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { useRef } from 'react';
 
-import { Box, String } from '@/components';
+import { Box } from '@/components';
 
 import Icon from '../src/components/icon';
 import DropdownMenu from '../src/components/dropdownMenu';
 import { DropdownMenuRef, DropdownMenuItemProps } from '../src/types';
 
 const meta: Meta<typeof DropdownMenu> = {
+  argTypes: {
+    // Basic configuration
+    children: {
+      control: false,
+      description: "Le contenu qui déclenchera l'ouverture du menu (ex: icon, bouton)",
+    },
+    dataSet: {
+      control: 'object',
+      description: 'Les éléments du menu',
+    },
+
+    // Styling
+    className: {
+      control: 'text',
+      description: 'Classe CSS du dropdown',
+    },
+    triggerClassName: {
+      control: 'text',
+      description: 'Classe CSS du trigger',
+    },
+    triggerStyle: {
+      control: 'object',
+      description: 'Style du container trigger',
+    },
+
+    // Position configuration
+    dropdownPosition: {
+      control: 'select',
+      description: 'Position du dropdown par rapport au trigger',
+      options: ['top', 'bottom', 'auto'],
+    },
+    horizontalPosition: {
+      control: 'select',
+      description: 'Position horizontale du dropdown par rapport au trigger',
+      options: ['left', 'right', 'center', 'auto'],
+    },
+
+    // Offset and dimensions
+    maxHeight: {
+      control: 'number',
+      description: 'Hauteur maximale du dropdown',
+    },
+    minHeight: {
+      control: 'number',
+      description: 'Hauteur minimale du dropdown',
+    },
+    offsetX: {
+      control: 'number',
+      description: 'Décalage horizontal',
+    },
+    offsetY: {
+      control: 'number',
+      description: 'Décalage vertical',
+    },
+    width: {
+      control: 'number',
+      description: 'Largeur du dropdown',
+    },
+
+    // Selection and behavior
+    closeDropdownWhenSelectedItem: {
+      control: 'boolean',
+      description: 'Fermer le modal quand un élément est sélectionné',
+    },
+    disabled: {
+      control: 'boolean',
+      description: 'Désactiver le dropdown',
+    },
+    hasAnimation: {
+      control: 'boolean',
+      description: "Afficher l'animation du dropdown",
+    },
+    hasScroll: {
+      control: 'boolean',
+      description: 'Activer/désactiver le scroll dans la liste',
+    },
+    selectedItem: {
+      control: 'object',
+      description: "Élément actuellement sélectionné (pour l'auto-scroll)",
+    },
+
+    // Component types
+    itemClickableAs: {
+      control: 'select',
+      description: 'Type de composant cliquable à utiliser pour les éléments du menu',
+      options: ['TouchableOpacity', 'TouchableHighlight', 'Pressable', 'RipplePressable', 'none'],
+    },
+    triggerAs: {
+      control: 'select',
+      description: 'Type de composant à utiliser pour le trigger du menu',
+      options: ['TouchableOpacity', 'TouchableHighlight', 'Pressable', 'RipplePressable', 'none'],
+    },
+
+    // Props objects
+    dropdownItemProps: {
+      control: 'object',
+      description: 'Props pour le dropdown item (className, stringItemProps, activeBackgroundColor)',
+    },
+    dropdownListProps: {
+      control: 'object',
+      description: 'Props pour la liste du dropdown',
+    },
+    modalProps: {
+      control: 'object',
+      description: 'Props pour le modal',
+    },
+
+    // Custom renders
+    customItemRender: {
+      control: false,
+      description: 'Personnaliser le rendu des éléments',
+    },
+
+    // Callbacks
+    onClose: {
+      action: 'onClose',
+      description: 'Callback appelé quand le menu se ferme',
+    },
+    onOpen: {
+      action: 'onOpen',
+      description: "Callback appelé quand le menu s'ouvre",
+    },
+    onSelectItem: {
+      action: 'onSelectItem',
+      description: 'Callback appelé quand un élément est sélectionné',
+    },
+  },
   component: DropdownMenu,
   parameters: {
     layout: 'fullscreen',
   },
-  tags: ['autodocs'],
   title: 'Components/DropdownMenu',
 };
 
@@ -23,37 +149,30 @@ type Story = StoryObj<typeof meta>;
 const sampleItems: DropdownMenuItemProps[] = [
   {
     id: '1',
-    label: 'Éditer',
+    label: 'Edit',
     leftIcon: 'pen-to-square-solid',
     onPress: () => console.log('Edit clicked'),
   },
   {
     id: '2',
-    label: 'Partager',
+    label: 'Share',
     leftIcon: 'share-solid',
     onPress: () => console.log('Share clicked'),
   },
   {
     id: '3',
-    label: 'Supprimer',
+    label: 'Delete',
     leftIcon: 'trash-solid',
     onPress: () => console.log('Delete clicked'),
   },
   {
     id: '4',
-    label: 'Archiver',
-    leftIcon: 'filter-solid',
-    onPress: () => console.log('Archive clicked'),
-  },
-  {
-    id: '7',
-    label: 'Archiver',
+    label: 'Archive',
     leftIcon: 'filter-solid',
     onPress: () => console.log('Archive clicked'),
   },
 ];
 
-// Créer une liste longue pour tester le scroll
 const longListItems: DropdownMenuItemProps[] = Array.from({ length: 15 }, (_, index) => ({
   id: `item-${index + 1}`,
   label: `Option ${index + 1}`,
@@ -62,14 +181,15 @@ const longListItems: DropdownMenuItemProps[] = Array.from({ length: 15 }, (_, in
 }));
 
 export const Default: Story = {
-  render: () => (
+  args: {
+    dataSet: sampleItems,
+    hasScroll: false,
+    horizontalPosition: 'auto',
+    onSelectItem: (item: DropdownMenuItemProps) => console.log('Selected:', item.label),
+  },
+  render: args => (
     <Box className="flex flex-row justify-end bg-black p-4">
-      <DropdownMenu
-        items={sampleItems}
-        onSelectItem={item => console.log('Selected:', item.label)}
-        horizontalPosition="auto"
-        hasScroll={false}
-      >
+      <DropdownMenu dataSet={sampleItems} {...args}>
         <Icon name="ellipsis-vertical-solid" size="md" color="white" />
       </DropdownMenu>
     </Box>
@@ -77,18 +197,19 @@ export const Default: Story = {
 };
 
 export const WithScroll: Story = {
-  render: () => (
+  args: {
+    dataSet: longListItems,
+    dropdownListProps: {
+      showsVerticalScrollIndicator: false,
+    },
+    hasScroll: true,
+    horizontalPosition: 'center',
+    maxHeight: 200,
+    onSelectItem: (item: DropdownMenuItemProps) => console.log('Selected:', item.label),
+  },
+  render: args => (
     <Box className="flex flex-row justify-center bg-green-100 p-4">
-      <DropdownMenu
-        items={longListItems}
-        hasScroll
-        maxHeight={200}
-        onSelectItem={item => console.log('Selected:', item.label)}
-        horizontalPosition="center"
-        dropdownListProps={{
-          showsVerticalScrollIndicator: false,
-        }}
-      >
+      <DropdownMenu dataSet={longListItems} {...args}>
         <Box className="rounded bg-green-500 p-2">
           <Icon name="angle-down-solid" size="md" />
         </Box>
@@ -98,13 +219,14 @@ export const WithScroll: Story = {
 };
 
 export const LeftPosition: Story = {
-  render: () => (
+  args: {
+    dataSet: sampleItems,
+    horizontalPosition: 'left',
+    onSelectItem: (item: DropdownMenuItemProps) => console.log('Selected:', item.label),
+  },
+  render: args => (
     <Box className="flex flex-row justify-start bg-green-100 p-4">
-      <DropdownMenu
-        items={sampleItems}
-        onSelectItem={item => console.log('Selected:', item.label)}
-        horizontalPosition="left"
-      >
+      <DropdownMenu dataSet={sampleItems} {...args}>
         <Icon name="ellipsis-vertical-solid" size="md" color="black" />
       </DropdownMenu>
     </Box>
@@ -112,13 +234,14 @@ export const LeftPosition: Story = {
 };
 
 export const RightPosition: Story = {
-  render: () => (
+  args: {
+    dataSet: sampleItems,
+    horizontalPosition: 'right',
+    onSelectItem: (item: DropdownMenuItemProps) => console.log('Selected:', item.label),
+  },
+  render: args => (
     <Box className="flex flex-row justify-end bg-red-100 p-4">
-      <DropdownMenu
-        items={sampleItems}
-        onSelectItem={item => console.log('Selected:', item.label)}
-        horizontalPosition="right"
-      >
+      <DropdownMenu dataSet={sampleItems} {...args}>
         <Icon name="ellipsis-vertical-solid" size="md" color="black" />
       </DropdownMenu>
     </Box>
@@ -126,13 +249,14 @@ export const RightPosition: Story = {
 };
 
 export const CenterPosition: Story = {
-  render: () => (
+  args: {
+    dataSet: sampleItems,
+    horizontalPosition: 'center',
+    onSelectItem: (item: DropdownMenuItemProps) => console.log('Selected:', item.label),
+  },
+  render: args => (
     <Box className="flex flex-row justify-center bg-purple-100 p-4">
-      <DropdownMenu
-        items={sampleItems}
-        onSelectItem={item => console.log('Selected:', item.label)}
-        horizontalPosition="center"
-      >
+      <DropdownMenu dataSet={sampleItems} {...args}>
         <Icon name="user-solid" size="md" color="purple" />
       </DropdownMenu>
     </Box>
@@ -140,13 +264,14 @@ export const CenterPosition: Story = {
 };
 
 export const AutoPosition: Story = {
-  render: () => (
+  args: {
+    dataSet: sampleItems,
+    horizontalPosition: 'auto',
+    onSelectItem: (item: DropdownMenuItemProps) => console.log('Selected:', item.label),
+  },
+  render: args => (
     <Box className="flex flex-row justify-center bg-gray-100 p-4">
-      <DropdownMenu
-        items={sampleItems}
-        onSelectItem={item => console.log('Selected:', item.label)}
-        horizontalPosition="auto"
-      >
+      <DropdownMenu dataSet={sampleItems} {...args}>
         <Icon name="angle-down-solid" size="md" color="black" />
       </DropdownMenu>
     </Box>
@@ -154,14 +279,15 @@ export const AutoPosition: Story = {
 };
 
 export const CustomWidth: Story = {
-  render: () => (
+  args: {
+    dataSet: sampleItems,
+    horizontalPosition: 'center',
+    onSelectItem: (item: DropdownMenuItemProps) => console.log('Selected:', item.label),
+    width: 300,
+  },
+  render: args => (
     <Box className="flex flex-row justify-center bg-gray-100 p-4">
-      <DropdownMenu
-        items={sampleItems}
-        width={300}
-        onSelectItem={item => console.log('Selected:', item.label)}
-        horizontalPosition="center"
-      >
+      <DropdownMenu dataSet={sampleItems} {...args}>
         <Icon name="angle-down-solid" size="md" color="black" />
       </DropdownMenu>
     </Box>
@@ -169,20 +295,14 @@ export const CustomWidth: Story = {
 };
 
 export const DoNotCloseOnSelect: Story = {
-  render: () => (
+  args: {
+    dataSet: sampleItems,
+    horizontalPosition: 'center',
+    onSelectItem: (item: DropdownMenuItemProps) => console.log('Selected:', item.label),
+  },
+  render: args => (
     <Box className="flex flex-row justify-center bg-yellow-100 p-4">
-      <DropdownMenu
-        items={sampleItems}
-        closeDropdownWhenSelectedItem={false}
-        itemClickableAs="none"
-        customItemRender={item => (
-          <Box className="rounded bg-yellow-500 p-2">
-            <String>{item.label} lol</String>
-          </Box>
-        )}
-        onSelectItem={item => console.log('Selected:', item.label)}
-        horizontalPosition="center"
-      >
+      <DropdownMenu dataSet={sampleItems} {...args}>
         <Box className="rounded bg-yellow-500 p-2">
           <Icon name="angle-down-solid" size="md" />
         </Box>
@@ -192,10 +312,14 @@ export const DoNotCloseOnSelect: Story = {
 };
 
 export const WithRef: Story = {
-  render: () => {
+  args: {
+    dataSet: sampleItems,
+    horizontalPosition: 'center',
+    onSelectItem: (item: DropdownMenuItemProps) => console.log('Selected:', item.label),
+  },
+  render: args => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const dropdownRef = useRef<DropdownMenuRef>(null);
-
     return (
       <Box className="flex flex-col items-center gap-4 bg-slate-100 p-4">
         <Box className="flex flex-row gap-2">
@@ -210,13 +334,7 @@ export const WithRef: Story = {
           </Box>
         </Box>
 
-        <DropdownMenu
-          ref={dropdownRef}
-          items={sampleItems}
-          closeDropdownWhenSelectedItem={false}
-          onSelectItem={item => console.log('Selected:', item.label)}
-          horizontalPosition="center"
-        >
+        <DropdownMenu dataSet={sampleItems} ref={dropdownRef} {...args} closeDropdownWhenSelectedItem={false}>
           <Box className="rounded bg-gray-500 p-2">
             <Icon name="angle-down-solid" size="md" />
           </Box>

@@ -3,9 +3,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Box, Button } from '@/components';
 import { ImageSliderProps } from '@/types';
 
-import ImageSlider from '../src/components/imageSlider/ImageSlider';
+import Carousel from '../src/components/carousel/Carousel';
 
-const meta: Meta<typeof ImageSlider> = {
+const meta: Meta<typeof Carousel> = {
   argTypes: {
     dotActiveColor: {
       control: 'color',
@@ -79,12 +79,12 @@ const meta: Meta<typeof ImageSlider> = {
       description: 'Class name for the wrapper container',
     },
   },
-  component: ImageSlider,
-  title: 'Components/ImageSlider',
+  component: Carousel,
+  title: 'Components/Carousel',
 };
 
 export default meta;
-type Story = StoryObj<typeof ImageSlider>;
+type Story = StoryObj<typeof Carousel>;
 
 const sampleImages = [
   {
@@ -107,18 +107,18 @@ const sampleImages = [
 function CustomImageSlider() {
   return (
     <Box className="h-52">
-      <ImageSlider items={sampleImages} />
+      <Carousel items={sampleImages} />
     </Box>
   );
 }
 
 function WithChildrenComponent(props: ImageSliderProps) {
   return (
-    <ImageSlider dotOffset={30} {...props}>
+    <Carousel dotOffset={30} {...props}>
       <Box className="w-full px-1">
         <Button variant="primary" size="sm" title="Next" />
       </Box>
-    </ImageSlider>
+    </Carousel>
   );
 }
 
