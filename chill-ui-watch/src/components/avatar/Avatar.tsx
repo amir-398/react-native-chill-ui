@@ -79,7 +79,9 @@ export default function Avatar({
       )}
       style={{ ...(backgroundColor && { backgroundColor }) }}
     >
-      <String {...stringProps}>{initials}</String>
+      <String size={size} {...stringProps}>
+        {initials}
+      </String>
       {image && <Image className="absolute h-full w-full" source={{ uri: image }} />}
     </Box>
   );

@@ -28,11 +28,10 @@ export default function Badge({
   badgeColor,
   children,
   className,
-  iconColor,
-  iconName,
+  iconProps,
   rounded = 'md',
   size = 'md',
-  textClassName,
+  stringProps,
   textColor,
 }: BadgeProps) {
   return (
@@ -44,15 +43,10 @@ export default function Badge({
       )}
       style={{ ...(badgeColor && { backgroundColor: badgeColor }) }}
     >
-      {iconName ? (
-        <Icon name={iconName} size={size} color={iconColor} />
+      {iconProps && iconProps?.name ? (
+        <Icon {...iconProps} name={iconProps?.name} size={size} />
       ) : (
-        <String
-          size={size}
-          weight="semiBold"
-          className={textClassName}
-          style={{ ...(textColor && { color: textColor }) }}
-        >
+        <String size={size} weight="semiBold" style={{ ...(textColor && { color: textColor }) }} {...stringProps}>
           {children}
         </String>
       )}

@@ -42,54 +42,49 @@ function Example() {
 
 ### Components
 
-#### Accordion
+## Props
 
-The root component that manages the state and configuration.
+### Accordion Props
 
-**Props:**
+| Prop              | Type                                  | Required | Default   | Description                                          |
+| ----------------- | ------------------------------------- | -------- | --------- | ---------------------------------------------------- |
+| `type`            | `'single' \| 'multiple'`              | ✅       | -         | Whether single or multiple items can be open at once |
+| `children`        | `ReactNode`                           | ✅       | -         | Child AccordionItem components                       |
+| `collapsible`     | `boolean`                             | ❌       | `false`   | Whether items can be collapsed (single mode only)    |
+| `defaultValue`    | `string \| string[]`                  | ❌       | -         | Default open items                                   |
+| `disabled`        | `boolean`                             | ❌       | `false`   | Disable the entire accordion                         |
+| `hasCollapseIcon` | `boolean`                             | ❌       | `true`    | Whether to show collapse/expand icons                |
+| `iconPosition`    | `'left' \| 'right'`                   | ❌       | `'right'` | Position of the expand/collapse icon                 |
+| `expandIcon`      | `keyof TIcons`                        | ❌       | -         | Icon to show when item is collapsed                  |
+| `collapseIcon`    | `keyof TIcons`                        | ❌       | -         | Icon to show when item is expanded                   |
+| `onValueChange`   | `(value: string \| string[]) => void` | ❌       | -         | Callback fired when accordion state changes          |
+| `className`       | `string`                              | ❌       | -         | Custom CSS classes                                   |
 
-- `type: 'single' | 'multiple'` - Whether single or multiple items can be open
-- `collapsible?: boolean` - Whether items can be collapsed (single mode only)
-- `defaultValue?: string | string[]` - Default open items
-- `disabled?: boolean` - Disable the entire accordion
-- `hasAnimation?: boolean` - Enable/disable animations (default: true)
-- `animationDuration?: number` - Animation duration in ms (default: 300)
-- `iconPosition?: 'left' | 'right'` - Icon position (default: 'right')
-- `expandIcon?: string` - Icon to show when collapsed
-- `collapseIcon?: string` - Icon to show when expanded
-- `hasCollapseIcon?: boolean` - Whether to show collapse/expand icons (default: true)
-- `onValueChange?: (value: string | string[]) => void` - Callback when items change
+### AccordionItem Props
 
-#### AccordionItem
+| Prop        | Type        | Required | Default | Description                            |
+| ----------- | ----------- | -------- | ------- | -------------------------------------- |
+| `value`     | `string`    | ✅       | -       | Unique identifier for this item        |
+| `children`  | `ReactNode` | ✅       | -       | AccordionTrigger and AccordionContent  |
+| `disabled`  | `boolean`   | ❌       | `false` | Whether this specific item is disabled |
+| `className` | `string`    | ❌       | -       | Custom CSS classes                     |
 
-Wraps a single accordion item with its trigger and content.
+### AccordionTrigger Props
 
-**Props:**
+| Prop          | Type                                                                             | Required | Default              | Description                                                           |
+| ------------- | -------------------------------------------------------------------------------- | -------- | -------------------- | --------------------------------------------------------------------- |
+| `children`    | `ReactNode`                                                                      | ✅       | -                    | Content to display in the trigger                                     |
+| `className`   | `string`                                                                         | ❌       | -                    | Custom CSS classes                                                    |
+| `stringProps` | `StringProps`                                                                    | ❌       | -                    | Props to pass to String component when children is a string           |
+| `as`          | `'TouchableOpacity' \| 'TouchableHighlight' \| 'Pressable' \| 'RipplePressable'` | ❌       | `'TouchableOpacity'` | Component type to use for the trigger                                 |
+| `asChild`     | `boolean`                                                                        | ❌       | `false`              | Use the child component as the trigger element instead of wrapping it |
 
-- `value: string` - Unique identifier for the item
-- `disabled?: boolean` - Disable this specific item
-- `className?: string` - Custom styling
+### AccordionContent Props
 
-#### AccordionTrigger
-
-The clickable header that toggles the accordion item.
-
-**Props:**
-
-- `children: ReactNode` - Content to display in the trigger
-- `className?: string` - Custom styling
-- `stringProps?: StringProps` - Props to pass to the String component when children is a string
-- `as?: 'TouchableOpacity' | 'TouchableHighlight' | 'Pressable' | 'RipplePressable'` - Component to use for the trigger
-- `asChild?: boolean` - Use the child component as the trigger element instead of wrapping it
-
-#### AccordionContent
-
-The collapsible content area.
-
-**Props:**
-
-- `children: ReactNode` - Content to display when expanded
-- `className?: string` - Custom styling
+| Prop        | Type        | Required | Default | Description                                        |
+| ----------- | ----------- | -------- | ------- | -------------------------------------------------- |
+| `children`  | `ReactNode` | ✅       | -       | Content to display when accordion item is expanded |
+| `className` | `string`    | ❌       | -       | Custom CSS classes                                 |
 
 ### Features
 

@@ -13,14 +13,9 @@ const meta: Meta<typeof Badge> = {
       control: 'text',
       description: 'Additional className for the badge',
     },
-    iconColor: {
-      control: 'color',
-      description: 'Color of the badge icon',
-    },
-    iconName: {
-      control: 'select',
-      description: 'Icon to display in the badge',
-      options: ['check-solid', 'xmark-solid', 'info-solid', 'warning-solid'],
+    iconProps: {
+      control: 'object',
+      description: 'Props for the Icon component',
     },
     rounded: {
       control: 'select',
@@ -32,9 +27,9 @@ const meta: Meta<typeof Badge> = {
       description: 'Size of the badge content',
       options: ['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'],
     },
-    textClassName: {
-      control: 'text',
-      description: 'Additional className for the badge text',
+    stringProps: {
+      control: 'object',
+      description: 'Props for the String component',
     },
     textColor: {
       control: 'color',
@@ -65,7 +60,9 @@ export const Default: Story = {
 
 export const WithIcon: Story = {
   args: {
-    iconName: 'check-solid',
+    iconProps: {
+      name: 'check-solid',
+    },
     rounded: 'md',
     size: 'md',
   },
