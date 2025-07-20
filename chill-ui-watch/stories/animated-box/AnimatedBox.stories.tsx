@@ -4,7 +4,7 @@ import { Animated } from 'react-native';
 import { useRef, useEffect } from 'react';
 
 import { String } from '../../src/components';
-import AnimatedBox from '../../src/components/animated-box/AnimatedBox';
+import AnimatedBox from '../../src/components/animatedBox/AnimatedBox';
 
 const meta = {
   component: AnimatedBox,

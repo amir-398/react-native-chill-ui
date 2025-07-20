@@ -7,7 +7,7 @@ import cn from '../cn';
 import Icon from '../icon';
 import { Box } from '../box';
 import String from '../string';
-import { AnimatedBox } from '../animated-box';
+import { AnimatedBox } from '../animatedBox';
 import RipplePressable from '../ripple-pressable';
 import { useAccordion } from './AccordionContext';
 import { useAccordionItem } from './AccordionItemContext';

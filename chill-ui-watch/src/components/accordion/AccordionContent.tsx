@@ -5,7 +5,7 @@ import type { AccordionContentProps } from '../../types';
 
 import cn from '../cn';
 import { Box } from '../box';
-import { AnimatedBox } from '../animated-box';
+import { AnimatedBox } from '../animatedBox';
 import { useAccordion } from './AccordionContext';
 import { useAccordionItem } from './AccordionItemContext';
 

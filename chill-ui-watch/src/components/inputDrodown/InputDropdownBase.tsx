@@ -2,8 +2,9 @@ import { Animated } from 'react-native';
 import { useEffect, useRef } from 'react';
 
 import cn from '../cn';
+import { Box } from '../box';
 import { Input } from '../inputs';
-import { AnimatedBox, Box } from '../box';
+import { AnimatedBox } from '../animatedBox';
 import { InputDropdownBaseProps } from '../../types';
 
 export default function InputDropdownBase({

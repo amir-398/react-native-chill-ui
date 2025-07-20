@@ -3,8 +3,9 @@ import { Dimensions, FlatList, Pressable } from 'react-native';
 import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import cn from '../cn';
+import { Box } from '../box';
 import String from '../string';
-import { AnimatedBox, Box } from '../box';
+import { AnimatedBox } from '../animatedBox';
 import { TabSwitchProps } from '../../types';
 import TabSwitchRender from './TabSwitchRender';
 

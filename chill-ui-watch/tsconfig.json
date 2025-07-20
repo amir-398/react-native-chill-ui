@@ -45,5 +45,13 @@
     "src/components/select/react-native-element-dropdown/src/components/Dropdown",
     "src/components/select/react-native-element-dropdown/src/components/InputSelectDropdown"
   ],
-  "exclude": ["node_modules", ".storybook"]
+  "exclude": [
+    "node_modules",
+    ".storybook",
+    "stories",
+    "**/*.stories.ts",
+    "**/*.stories.tsx",
+    "**/*.stories.js",
+    "**/*.stories.jsx"
+  ]
 }

@@ -1,18 +1,20 @@
 import { ReactNode } from 'react';
 import { ScrollView } from 'react-native';
 
+import cn from '../../src/components/cn';
 import { Box } from '../../src/components';
 
 interface UiPresentationProps {
+  className?: string;
   children: ReactNode;
 }
 
 export default function UiPresentation(props: UiPresentationProps) {
-  const { children } = props;
+  const { children, className } = props;
 
   return (
     <ScrollView>
-      <Box {...props} style={{ alignItems: 'center', flex: 1, justifyContent: 'center', padding: 16 }}>
+      <Box {...props} className={cn('flex-1 items-center justify-center p-4', className)}>
         {children}
       </Box>
     </ScrollView>

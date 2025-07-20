@@ -30,6 +30,9 @@ export interface SlideInBoxProps extends AnimatedViewProps {
 
   /** Whether to loop the animation infinitely. @default false */
   infiniteLoop?: boolean;
+
+  /** Additional className for the slide-in box */
+  className?: string;
 }
 
 /**

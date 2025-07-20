@@ -7,7 +7,7 @@ import { IconProps } from './icon.types';
 import { LoadingIndicatorProps } from './loadingIndicator.types';
 import { btnVariant, heightVr, positionVr } from '../components/button/styleVariants';
 
-export type TouchableComponentType = 'TouchableOpacity' | 'Pressable' | 'RipplePressable';
+type TouchableComponentType = 'TouchableOpacity' | 'Pressable' | 'RipplePressable';
 
 /**
  * Props for the Button component

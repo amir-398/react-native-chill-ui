@@ -1,1 +1,1 @@
-export { Dialog, DialogTrigger, DialogContent, DialogToaster, useDialog } from './Dialog';
+export { Dialog, DialogTrigger, DialogContent, DialogToaster } from './Dialog';

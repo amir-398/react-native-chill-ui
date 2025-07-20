@@ -24,6 +24,9 @@ export interface ScaleInBoxProps extends AnimatedViewProps {
 
   /** Whether to loop the animation infinitely. @default false */
   infiniteLoop?: boolean;
+
+  /** Additional className for the scale-in box */
+  className?: string;
 }
 
 /**

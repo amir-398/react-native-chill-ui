@@ -3,6 +3,27 @@ import type { Modal, TextProps } from 'react-native';
 import type { StringProps } from './string.types';
 import type { Size, DisplayInsets, Side, Orientation } from './common.types';
 
+export type WindowDimensions = {
+  width: number;
+  height: number;
+};
+
+export type Rect = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+};
+
+export type GeometryParams = {
+  arrowSize: Size;
+  childRect: Rect;
+  contentSize: Size;
+  displayInsets: DisplayInsets;
+  sideOffset: number;
+  windowDims: WindowDimensions;
+};
+
 /**
  * Props for the TooltipRoot component
  */

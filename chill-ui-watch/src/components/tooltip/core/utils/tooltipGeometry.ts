@@ -1,5 +1,5 @@
 import { Size, Rect, Point } from '../models';
-import { DisplayInsets, WindowDimensions, GeometryParams } from '../types';
+import { DisplayInsets, WindowDimensions, GeometryParams } from '../../../../types';
 
 const swapSizeDimmensions = (size: Size) => new Size(size.height, size.width);
 

@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": [
+    "node_modules",
+    ".storybook",
+    "stories",
+    "**/*.stories.ts",
+    "**/*.stories.tsx",
+    "**/*.stories.js",
+    "**/*.stories.jsx",
+    "global.d.ts"
+  ],
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "noEmit": true
+  }
+}

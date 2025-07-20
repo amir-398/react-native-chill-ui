@@ -30,6 +30,9 @@ export interface BounceBoxProps extends AnimatedViewProps {
 
   /** Whether to loop the animation infinitely. @default false */
   infiniteLoop?: boolean;
+
+  /** Additional className for the bounce box */
+  className?: string;
 }
 
 /**

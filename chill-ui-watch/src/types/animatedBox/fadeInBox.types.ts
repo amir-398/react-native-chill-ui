@@ -24,6 +24,9 @@ export interface FadeInBoxProps extends AnimatedViewProps {
 
   /** Whether to loop the animation infinitely. @default false */
   infiniteLoop?: boolean;
+
+  /** Whether to use native driver for the animation. @default true */
+  className?: string;
 }
 
 /**

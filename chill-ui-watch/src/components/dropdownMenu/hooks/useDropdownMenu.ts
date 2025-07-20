@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 import { useImperativeHandle, useRef, useCallback, useState, useEffect } from 'react';
 
-import { DropdownMenuItem } from '../../../types';
+import { DropdownMenuItemProps } from '../../../types';
 import useDropdownMenuPosition from './useDropdownMenuPosition';
 import { useDropdownKeyboard } from '../../inputSelectDropdown/hooks';
 import useCalculateDropdownMenuPosition from './useCalculateDropdownMenuPosition';
@@ -14,11 +14,11 @@ interface DropdownMenuHookParams {
   hasScroll?: boolean;
   onFocus?: () => void;
   dropdownWidth: number;
-  items: DropdownMenuItem[];
-  selectedItem?: DropdownMenuItem;
+  items: DropdownMenuItemProps[];
+  selectedItem?: DropdownMenuItemProps;
   closeModalWhenSelectedItem?: boolean;
   verticalPosition: 'top' | 'bottom' | 'auto';
-  onSelectItem?: (item: DropdownMenuItem) => void;
+  onSelectItem?: (item: DropdownMenuItemProps) => void;
   horizontalPosition: 'left' | 'right' | 'center' | 'auto';
 }
 
@@ -92,7 +92,7 @@ export default function useDropdownMenu(
   }, [onBlur]);
 
   const handleSelectItem = useCallback(
-    (item: DropdownMenuItem) => {
+    (item: DropdownMenuItemProps) => {
       onSelectItem?.(item);
       item.onPress?.();
 

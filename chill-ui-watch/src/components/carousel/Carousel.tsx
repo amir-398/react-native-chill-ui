@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { tv } from 'tailwind-variants';
 import { FlatList, ImageBackground, NativeScrollEvent } from 'react-native';
 
 import cn from '../cn';
@@ -7,26 +6,7 @@ import Icon from '../icon';
 import { Box } from '../box';
 import String from '../string';
 import { CarouselProps } from '../../types';
-
-export const dotVariant = tv({
-  variants: {
-    gap: {
-      lg: 'gap-6',
-      md: 'gap-4',
-      sm: 'gap-2',
-      xl: 'gap-8',
-    },
-  },
-});
-
-export const dotPositionVariants = tv({
-  variants: {
-    position: {
-      bottom: 'bottom-0',
-      top: 'top-0',
-    },
-  },
-});
+import { dotPositionVariants, dotVariant } from './styleVariants';
 
 /**
  * Carousel component with support for image slides, text overlays, and customizable navigation dots.

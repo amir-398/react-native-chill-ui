@@ -4,7 +4,7 @@ import type { ImageSourcePropType } from 'react-native';
 import type { IconProps } from './icon.types';
 import type { StringProps } from './string.types';
 
-import { dotPositionVariants, dotVariant } from '../components/carousel/Carousel';
+import { dotPositionVariants, dotVariant } from '../components/carousel/styleVariants';
 
 /**
  * Props for the Carousel component

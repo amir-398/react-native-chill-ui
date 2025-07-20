@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import UiPresentation from 'stories/storybook';
-
 import { String } from '../../src/components';
-import InteractiveBox from '../../src/components/animated-box/InteractiveBox';
+import UiPresentation from '../storybook/UiPresentation';
+import InteractiveBox from '../../src/components/animatedBox/InteractiveBox';
 
 const meta = {
   component: InteractiveBox,

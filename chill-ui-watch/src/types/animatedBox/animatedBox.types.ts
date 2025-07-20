@@ -8,5 +8,6 @@ import type { AnimatedViewProps } from '../index';
  * ```
  */
 export interface AnimatedBoxProps extends AnimatedViewProps {
-  // Basic AnimatedBox doesn't have additional props beyond AnimatedViewProps
+  /** Additional className for the animated box */
+  className?: string;
 }

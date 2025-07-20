@@ -1,7 +1,7 @@
 import type { VariantProps } from 'tailwind-variants';
 import type { TextInputProps, View } from 'react-native';
 
-import { inputSizeVariants } from '@/components/inputs/Input';
+import inputSizeVariants from '@/components/inputs/styleVariants';
 
 import type { IconProps } from './icon.types';
 import type { TIcons } from '../constants/ICONS';

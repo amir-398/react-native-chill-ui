@@ -1,6 +1,8 @@
 import { start } from '@storybook/react-native';
 
 declare global {
-  let view: ReturnType<typeof start>;
-  let STORIES: any[];
+  // eslint-disable-next-line
+  var view: ReturnType<typeof start>;
+  // eslint-disable-next-line
+  var STORIES: any[];
 }

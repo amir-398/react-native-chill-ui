@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react-native';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { Box } from '../src/components/box';
 import String from '../src/components/string';

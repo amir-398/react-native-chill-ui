@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import UiPresentation from 'stories/storybook';
-
 import { String } from '../../src/components';
-import ScaleInBox from '../../src/components/animated-box/ScaleInBox';
+import UiPresentation from '../storybook/UiPresentation';
+import ScaleInBox from '../../src/components/animatedBox/ScaleInBox';
 
 const meta = {
   argTypes: {

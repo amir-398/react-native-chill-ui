@@ -9,7 +9,6 @@ export default function useDropdownState(initialData: any[] = []) {
     listData: initialData,
     position: null,
     searchText: '',
-    visible: false,
   });
 
   const updateState = useCallback((newState: Partial<DropdownState>) => {

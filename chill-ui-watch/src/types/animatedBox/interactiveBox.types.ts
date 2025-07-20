@@ -27,4 +27,7 @@ export interface InteractiveBoxProps extends AnimatedViewProps {
 
   /** Callback function called when pressing out */
   onPressOut?: () => void;
+
+  /** Additional className for the interactive box */
+  className?: string;
 }
