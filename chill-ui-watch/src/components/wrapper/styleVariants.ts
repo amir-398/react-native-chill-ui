@@ -1,11 +1,33 @@
 import { tv } from 'tailwind-variants';
 
+/**
+ * Tailwind variants for Wrapper component styling.
+ * Provides flexible padding and margin options with consistent spacing.
+ *
+ * @example
+ * ```tsx
+ * // Default wrapper with px-4
+ * <Wrapper>Content</Wrapper>
+ *
+ * // Custom padding
+ * <Wrapper px={6} py={8}>Content</Wrapper>
+ *
+ * // Margin variants
+ * <Wrapper my={4} px={3}>Content</Wrapper>
+ * ```
+ */
 export default tv({
+  /** Base styles applied to all wrapper variants */
   base: 'flex-grow',
+
+  /** Default variants applied when no props are provided */
   defaultVariants: {
     px: true,
   },
+
+  /** Available styling variants */
   variants: {
+    /** Margin on Y-axis (top and bottom) */
     my: {
       1: 'my-1',
       10: 'my-10',
@@ -19,6 +41,8 @@ export default tv({
       9: 'my-9',
       true: 'my-4',
     },
+
+    /** Padding on top */
     pt: {
       1: 'pt-1',
       10: 'pt-10',
@@ -32,6 +56,8 @@ export default tv({
       9: 'pt-9',
       true: 'pt-4',
     },
+
+    /** Padding on X-axis (left and right) */
     px: {
       1: 'px-1',
       10: 'px-10',
@@ -45,6 +71,8 @@ export default tv({
       9: 'px-9',
       true: 'px-4',
     },
+
+    /** Padding on Y-axis (top and bottom) */
     py: {
       1: 'py-1',
       10: 'py-10',

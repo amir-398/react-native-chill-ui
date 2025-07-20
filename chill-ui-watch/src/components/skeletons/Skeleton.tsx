@@ -4,7 +4,33 @@ import { tv } from 'tailwind-variants';
 import cn from '../cn';
 import { SkeletonProps } from '../../types';
 
+/**
+ * Skeleton component that provides loading placeholders with animated pulse effect.
+ * Supports multiple variants and sizes for different content types.
+ *
+ * @example
+ * ```tsx
+ * // Basic rectangle skeleton
+ * <Skeleton variant="rectangle" size="md" />
+ *
+ * // Circle skeleton for avatar
+ * <Skeleton variant="circle" size="lg" />
+ *
+ * // Text skeleton with custom styling
+ * <Skeleton variant="text" size="sm" className="mb-2" />
+ * ```
+ *
+ * @param children - Child components to render inside the skeleton
+ * @param className - Custom CSS classes for additional styling
+ * @param size - Size variant for the skeleton ('xs' | 'sm' | 'md' | 'lg' | 'xl')
+ * @param variant - Shape variant for the skeleton ('rectangle' | 'square' | 'circle' | 'text')
+ * @returns Skeleton component with animated pulse effect
+ */
 export default function Skeleton({ children, className, size = 'md', variant = 'rectangle' }: SkeletonProps) {
+  /**
+   * Tailwind variants for skeleton styling with size and variant combinations
+   * Provides different dimensions and shapes based on props
+   */
   const skeletonStyleVariants = tv({
     base: 'bg-gray-300 animate-pulse',
     compoundVariants: [

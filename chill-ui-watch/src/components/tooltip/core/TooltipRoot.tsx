@@ -20,6 +20,7 @@ import {
 
 export { TooltipChildrenContext };
 
+/** Internal state interface for tooltip positioning and measurements */
 interface TooltipState {
   childRect: Rect;
   contentSize: Size;
@@ -33,6 +34,7 @@ interface TooltipState {
   side: 'top' | 'left' | 'bottom' | 'right' | 'center';
 }
 
+/** Default display insets for tooltip positioning */
 const DEFAULT_DISPLAY_INSETS: DisplayInsets = {
   bottom: 24,
   left: 24,
@@ -40,11 +42,21 @@ const DEFAULT_DISPLAY_INSETS: DisplayInsets = {
   top: 24,
 };
 
+/**
+ * Computes display insets by merging default values with custom props
+ * @param insetsFromProps - Custom display insets from props
+ * @returns Merged display insets object
+ */
 const computeDisplayInsets = (insetsFromProps: Partial<DisplayInsets>): DisplayInsets => ({
   ...DEFAULT_DISPLAY_INSETS,
   ...insetsFromProps,
 });
 
+/**
+ * Inverts the side direction for tooltip positioning
+ * @param side - Current side direction
+ * @returns Inverted side direction
+ */
 const invertSide = (
   side: 'top' | 'left' | 'bottom' | 'right' | 'center',
 ): 'top' | 'left' | 'bottom' | 'right' | 'center' => {
@@ -62,6 +74,12 @@ const invertSide = (
   }
 };
 
+/**
+ * Deep equality check for objects
+ * @param obj1 - First object to compare
+ * @param obj2 - Second object to compare
+ * @returns True if objects are deeply equal
+ */
 const isEqual = (obj1: any, obj2: any): boolean => {
   if (obj1 === obj2) return true;
   if (typeof obj1 !== 'object' || obj1 === null || typeof obj2 !== 'object' || obj2 === null) return false;
@@ -80,6 +98,7 @@ const isEqual = (obj1: any, obj2: any): boolean => {
   });
 };
 
+/** Default props for TooltipRoot component */
 const defaultProps: Required<TooltipRootProps> = {
   accessible: true,
   allowChildInteraction: true,
@@ -111,7 +130,40 @@ const defaultProps: Required<TooltipRootProps> = {
   useReactNativeModal: true,
 };
 
+/**
+ * TooltipRoot component that handles tooltip positioning, measurements, and rendering.
+ * Provides advanced tooltip functionality with automatic positioning, geometry calculations,
+ * and interaction management.
+ *
+ * @example
+ * ```tsx
+ * // Basic tooltip root usage
+ * <TooltipRoot
+ *   isVisible={isVisible}
+ *   content={<String>Tooltip content</String>}
+ *   side="bottom"
+ * >
+ *   <Button>Trigger</Button>
+ * </TooltipRoot>
+ *
+ * // Advanced tooltip with custom positioning
+ * <TooltipRoot
+ *   isVisible={isVisible}
+ *   content={<CustomContent />}
+ *   side="top"
+ *   backgroundColor="#1F2937"
+ *   arrowColor="#1F2937"
+ *   displayInsets={{ top: 50, bottom: 50 }}
+ * >
+ *   <Icon name="info" />
+ * </TooltipRoot>
+ * ```
+ *
+ * @param props - TooltipRootProps configuration object
+ * @returns TooltipRoot component with positioning and interaction logic
+ */
 export default function TooltipRoot(props: TooltipRootProps): React.ReactElement {
+  /** Merged props with defaults */
   const mergedProps = useMemo(() => ({ ...defaultProps, ...props }), [props]);
   const {
     accessible,
@@ -141,6 +193,7 @@ export default function TooltipRoot(props: TooltipRootProps): React.ReactElement
     useReactNativeModal,
   } = mergedProps;
 
+  /** Tooltip state for positioning and measurements */
   const [state, setState] = useState<TooltipState>({
     adjustedContentSize: new Size(0, 0),
     anchorPoint: new Point(0, 0),
@@ -154,11 +207,23 @@ export default function TooltipRoot(props: TooltipRootProps): React.ReactElement
     windowDims: Dimensions.get('window'),
   });
 
+  /** Reference to track if child measurement is in progress */
   const isMeasuringChild = useRef(false);
+
+  /** Reference to interaction promise for cleanup */
   const interactionPromise = useRef<{ cancel: () => void } | null>(null);
+
+  /** Reference to child wrapper view */
   const childWrapper = useRef<View | null>(null);
+
+  /** Context value for tooltip children */
   const contextValue = { tooltipDuplicate: true };
 
+  /**
+   * Computes tooltip geometry based on child rect and content size
+   * @param childRect - Rectangle of the child component
+   * @param contentSize - Size of the tooltip content
+   */
   const computeGeometry = useCallback(
     (childRect: Rect, contentSize: Size): void => {
       const options = {

@@ -19,6 +19,30 @@ type TabSwitchRenderProps = {
   translateX: SharedValue<number>;
 };
 
+/**
+ * TabSwitchRender component that handles the content rendering and scroll interactions.
+ * Manages the FlatList for horizontal scrolling between tabs and synchronizes animations.
+ *
+ * @example
+ * ```tsx
+ * <TabSwitchRender
+ *   leftRender={<ProfileContent />}
+ *   rightRender={<SettingsContent />}
+ *   screenType={screenType}
+ *   setActiveScreen={setActiveScreen}
+ *   translateX={translateX}
+ *   flatlistRef={flatlistRef}
+ * />
+ * ```
+ *
+ * @param flatlistRef - Reference to the FlatList for programmatic control
+ * @param leftRender - Content to render in the left tab
+ * @param rightRender - Content to render in the right tab
+ * @param screenType - Array of screen configurations
+ * @param setActiveScreen - Function to update active screen state
+ * @param translateX - Shared animated value for separator translation
+ * @returns FlatList component with tab content and scroll handling
+ */
 function TabSwitchRender({
   flatlistRef,
   leftRender,
@@ -27,8 +51,13 @@ function TabSwitchRender({
   setActiveScreen,
   translateX,
 }: TabSwitchRenderProps) {
+  /** Reference to the translateX shared value for scroll handling */
   const translateXRef = useRef(translateX);
 
+  /**
+   * Handles scroll momentum end to update active screen and animate separator
+   * @param event - Native scroll event from FlatList
+   */
   const onMomentumScrollEnd = useCallback(
     (event: NativeSyntheticEvent<NativeScrollEvent>) => {
       const scrollOffsetX = event.nativeEvent.contentOffset.x;

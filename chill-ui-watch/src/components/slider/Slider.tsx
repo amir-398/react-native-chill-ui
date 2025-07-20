@@ -11,6 +11,65 @@ import useSliderAnimation from './hooks/useSliderAnimation';
 import useSliderMeasurements from './hooks/useSliderMeasurements';
 import { normalizeValue, updateValues, indexOfLowest } from './utils/normalize';
 
+/**
+ * Slider component that provides a customizable range slider with smooth animations.
+ * Supports single and dual thumb sliders, custom styling, track marks, and gesture handling.
+ *
+ * @example
+ * ```tsx
+ * // Basic single slider
+ * <Slider
+ *   value={50}
+ *   minimumValue={0}
+ *   maximumValue={100}
+ *   onValueChange={(value) => console.log('Value:', value)}
+ * />
+ *
+ * // Range slider with custom styling
+ * <Slider
+ *   value={[25, 75]}
+ *   minimumValue={0}
+ *   maximumValue={100}
+ *   minimumTrackColor="#007AFF"
+ *   maximumTrackColor="#E5E5EA"
+ *   thumbColor="#007AFF"
+ *   onValueChange={(values) => setRange(values)}
+ * />
+ * ```
+ *
+ * @param animateTransitions - Whether to animate value transitions
+ * @param animationConfig - Configuration for animations
+ * @param animationType - Type of animation ('timing' | 'spring')
+ * @param containerClassName - Custom CSS classes for the container
+ * @param debugTouchArea - Show debug touch areas (development only)
+ * @param disabled - Whether the slider is disabled
+ * @param maximumTrackClassName - Custom CSS classes for maximum track
+ * @param maximumTrackColor - Color of the maximum track
+ * @param maximumValue - Maximum value of the slider
+ * @param minimumTrackClassName - Custom CSS classes for minimum track
+ * @param minimumTrackColor - Color of the minimum track
+ * @param minimumValue - Minimum value of the slider
+ * @param onSlidingComplete - Callback when sliding completes
+ * @param onSlidingStart - Callback when sliding starts
+ * @param onValueChange - Callback when value changes
+ * @param renderAboveThumbComponent - Component to render above thumb
+ * @param renderBelowThumbComponent - Component to render below thumb
+ * @param renderMaximumTrackComponent - Custom maximum track component
+ * @param renderMinimumTrackComponent - Custom minimum track component
+ * @param renderThumbComponent - Custom thumb component
+ * @param renderTrackMarkComponent - Custom track mark component
+ * @param step - Step value for discrete slider
+ * @param thumbClassName - Custom CSS classes for thumb
+ * @param thumbColor - Color of the thumb
+ * @param thumbImage - Image for the thumb
+ * @param thumbTouchSize - Touch area size for thumb
+ * @param trackClassName - Custom CSS classes for track
+ * @param trackClickable - Whether track is clickable
+ * @param trackMarks - Array of track mark values
+ * @param value - Current value(s) of the slider
+ * @param vertical - Whether slider is vertical
+ * @returns Slider component with gesture handling and animations
+ */
 function Slider(props: SliderProps) {
   const {
     animateTransitions = true,
@@ -47,24 +106,28 @@ function Slider(props: SliderProps) {
     ...restProps
   } = props;
 
+  /** Current values of the slider (supports single and dual thumb) */
   const [values, setValues] = useState(() =>
     updateValues({
       // eslint-disable-next-line
       values: normalizeValue(props, value instanceof Animated.Value ? (value as any).__getValue() : value),
     }),
   );
+  /** Track mark values for discrete slider */
   const [trackMarksValues, setTrackMarksValues] = useState(() =>
     updateValues({
       values: normalizeValue(props, trackMarks || []),
     }),
   );
 
+  /** Animation hooks for smooth value transitions */
   const { setCurrentValue, setCurrentValueAnimated } = useSliderAnimation(
     values,
     setValues,
     animationType,
     animationConfig,
   );
+  /** Measurement hooks for container, track, and thumb dimensions */
   const {
     allMeasured,
     containerSize,
@@ -115,17 +178,32 @@ function Slider(props: SliderProps) {
     // eslint-disable-next-line
   }, [props.trackMarks]);
 
+  /**
+   * Gets raw numeric values from animated values
+   * @param vals - Array of animated or numeric values
+   * @returns Array of numeric values
+   */
   const getRawValues = useCallback(
     // eslint-disable-next-line
     (vals: (number | Animated.Value)[]) => vals.map(val => (val as any).__getValue()),
     [],
   );
 
+  /**
+   * Calculates the ratio of a value within the slider range
+   * @param val - The value to calculate ratio for
+   * @returns Ratio between 0 and 1
+   */
   const getRatio = useCallback(
     (val: number) => (val - minimumValue) / (maximumValue - minimumValue),
     [minimumValue, maximumValue],
   );
 
+  /**
+   * Calculates the left position of a thumb based on its value
+   * @param val - The thumb value
+   * @returns Left position in pixels
+   */
   const getThumbLeft = useCallback(
     (val: number) => {
       const standardRatio = getRatio(val);
@@ -137,6 +215,11 @@ function Slider(props: SliderProps) {
   // eslint-disable-next-line
   const getCurrentValue = useCallback((thumbIndex = 0) => (values[thumbIndex] as any).__getValue() || 0, [values]);
 
+  /**
+   * Calculates the new value based on gesture state
+   * @param gestureState - The current gesture state
+   * @returns New calculated value
+   */
   const getValue = useCallback(
     (gestureState: { dy: number; dx: number }) => {
       const length = containerSize.width - thumbSize.width;
@@ -169,6 +252,10 @@ function Slider(props: SliderProps) {
     [containerSize, thumbSize, vertical, minimumValue, maximumValue, step, getRawValues, values],
   );
 
+  /**
+   * Calculates the touch overflow size for better touch handling
+   * @returns Object with width and height of touch area
+   */
   const getTouchOverflowSize = useCallback(() => {
     const size = { height: 40, width: 40 };
     if (allMeasured && thumbTouchSize) {
@@ -178,6 +265,10 @@ function Slider(props: SliderProps) {
     return size;
   }, [allMeasured, thumbTouchSize, thumbSize, containerSize]);
 
+  /**
+   * Gets the touch overflow style for positioning
+   * @returns Style object for touch overflow
+   */
   const getTouchOverflowStyle = useCallback(() => {
     const { height, width } = getTouchOverflowSize();
     const touchOverflowStyle: {
@@ -203,6 +294,11 @@ function Slider(props: SliderProps) {
     return touchOverflowStyle;
   }, [getTouchOverflowSize, debugTouchArea]);
 
+  /**
+   * Gets the touch rectangle for a specific thumb
+   * @param thumbIndex - Index of the thumb
+   * @returns Rectangle object for touch detection
+   */
   const getThumbTouchRect = useCallback(
     (thumbIndex = 0) => {
       const { height, width } = thumbTouchSize || { height: 40, width: 40 };
@@ -217,6 +313,11 @@ function Slider(props: SliderProps) {
     [thumbTouchSize, getTouchOverflowSize, getThumbLeft, getCurrentValue, thumbSize, containerSize],
   );
 
+  /**
+   * Tests if a touch event hits any thumb or track
+   * @param e - The gesture responder event
+   * @returns True if touch hits thumb or track
+   */
   const thumbHitTest = useCallback(
     (e: GestureResponderEvent) => {
       const { nativeEvent } = e;
@@ -255,6 +356,10 @@ function Slider(props: SliderProps) {
 
   const handleMoveShouldSetPanResponder = useCallback(() => false, []);
 
+  /**
+   * Handles the start of a pan gesture
+   * @param e - The gesture responder event
+   */
   const handlePanResponderGrant = useCallback(
     (e: GestureResponderEvent) => {
       const { nativeEvent } = e;
@@ -270,6 +375,11 @@ function Slider(props: SliderProps) {
     [trackClickable, thumbSize, getThumbLeft, getCurrentValue, getRawValues, values, onSlidingStart, thumbTouchSize],
   );
 
+  /**
+   * Handles the movement of a pan gesture
+   * @param _e - The gesture responder event
+   * @param gestureState - The current gesture state
+   */
   const handlePanResponderMove = useCallback(
     (_e: GestureResponderEvent, gestureState: { dx: number; dy: number }) => {
       if (disabled) {
@@ -284,6 +394,11 @@ function Slider(props: SliderProps) {
 
   const handlePanResponderRequestEnd = useCallback(() => false, []);
 
+  /**
+   * Handles the end of a pan gesture
+   * @param _e - The gesture responder event
+   * @param gestureState - The final gesture state
+   */
   const handlePanResponderEnd = useCallback(
     (_e: GestureResponderEvent, gestureState: { dx: number; dy: number }) => {
       if (disabled) {
@@ -300,6 +415,7 @@ function Slider(props: SliderProps) {
     [disabled, getValue, setCurrentValue, trackClickable, getRawValues, values, onValueChange, onSlidingComplete],
   );
 
+  /** PanResponder for gesture handling */
   const panResponder = useMemo(
     () =>
       PanResponder.create({
@@ -321,6 +437,12 @@ function Slider(props: SliderProps) {
     ],
   );
 
+  /**
+   * Renders debug touch rectangles for development
+   * @param _thumbLeft - Left position of thumb
+   * @param index - Index of the thumb
+   * @returns Debug view component
+   */
   const renderDebugThumbTouchRect = useCallback(
     (_thumbLeft: number, index: number) => {
       const { height, width, x, y } = getThumbTouchRect() || {};

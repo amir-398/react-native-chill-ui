@@ -14,21 +14,62 @@ import cn from '../cn';
 import { Box } from '../box';
 import { RipplePressableProps } from '../../types/ripplePressableProps';
 
+/**
+ * RipplePressable component that provides a material design ripple effect on press.
+ * Uses React Native Reanimated and Gesture Handler for smooth, native animations.
+ *
+ * @example
+ * ```tsx
+ * // Basic usage with ripple effect
+ * <RipplePressable onPress={() => console.log('Pressed!')}>
+ *   <Box className="p-4 bg-blue-500 rounded-lg">
+ *     <String color="white">Press me</String>
+ *   </Box>
+ * </RipplePressable>
+ *
+ * // With custom styling
+ * <RipplePressable
+ *   className="bg-red-500 p-6 rounded-xl"
+ *   onPress={() => handleButtonPress()}
+ * >
+ *   <String color="white" className="text-center font-bold">
+ *     Custom Button
+ *   </String>
+ * </RipplePressable>
+ *
+ * ```
+ *
+ * @param children - Child components to render with ripple effect (required)
+ * @param className - Custom CSS classes for styling the container
+ * @param onPress - Callback function called when the component is pressed
+ * @returns RipplePressable component with material design ripple animation
+ * @throws Error if no children are provided
+ */
 function RipplePressable({ children, className, onPress }: RipplePressableProps) {
   if (!children) {
     throw new Error('RipplePressable must have children');
   }
 
+  /** Shared value for the X coordinate of the ripple center */
   const centerX = useSharedValue(0);
+  /** Shared value for the Y coordinate of the ripple center */
   const centerY = useSharedValue(0);
+  /** Shared value for the scale of the ripple animation */
   const scale = useSharedValue(0);
 
+  /** Animated reference to the container view for measurements */
   const aRef = useAnimatedRef<View>();
+  /** Shared value for the width of the container */
   const width = useSharedValue(0);
+  /** Shared value for the height of the container */
   const height = useSharedValue(0);
 
+  /** Shared value for the opacity of the ripple effect */
   const rippleOpacity = useSharedValue(1);
 
+  /**
+   * Tap gesture handler that manages the ripple animation
+   */
   const tapGestureEvent = Gesture.Tap()
     .onBegin(tapEvent => {
       const layout = measure(aRef);
@@ -49,6 +90,10 @@ function RipplePressable({ children, className, onPress }: RipplePressableProps)
       rippleOpacity.value = withTiming(0);
     });
 
+  /**
+   * Animated style for the ripple effect
+   * Calculates the circle radius and positioning for the ripple animation
+   */
   const rStyle = useAnimatedStyle(() => {
     const circleRadius = Math.sqrt(width.value ** 2 + height.value ** 2);
 

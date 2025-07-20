@@ -12,10 +12,15 @@ import { ToastVariantType } from '../../types';
 
 type ToastVariant = 'success' | 'error' | 'info' | 'warning';
 type ToastPosition = 'top' | 'bottom';
+
+/**
+ * Reference type for Toast component with showToast method
+ */
 export type ToastRef = {
   showToast: (message: string, variant?: ToastVariant, position?: ToastPosition, duration?: number) => void;
 };
 
+/** Default position variants for toast styling */
 const defaultToastVariant = tv({
   variants: {
     position: {
@@ -25,6 +30,7 @@ const defaultToastVariant = tv({
   },
 });
 
+/** Default styling variants for different toast types */
 const defaultVariants: ToastVariantType = {
   error: {
     backgroundColor: '#F44336',
@@ -57,21 +63,69 @@ interface ToastProps {
   variants?: ToastVariantType;
 }
 
+/**
+ * Toast component that provides animated notification messages with progress bar.
+ * Features smooth animations, customizable styling, and automatic dismissal.
+ *
+ * @example
+ * ```tsx
+ * // Basic toast usage
+ * const toastRef = useRef<ToastRef>(null);
+ *
+ * // Show success toast
+ * toastRef.current?.showToast('Operation completed successfully!', 'success');
+ *
+ * // Show error toast with custom duration
+ * toastRef.current?.showToast('Something went wrong!', 'error', 'top', 5000);
+ *
+ * // Customized toast
+ * <Toast
+ *   ref={toastRef}
+ *   variants={{
+ *     success: {
+ *       backgroundColor: '#10B981',
+ *       icon: 'check-circle-solid',
+ *       titleColor: '#FFFFFF',
+ *       contentColor: '#FFFFFF',
+ *     }
+ *   }}
+ * />
+ * ```
+ *
+ * @param variants - Custom styling variants for different toast types
+ * @param ref - Forwarded ref with showToast method
+ * @returns Toast component with animated notifications
+ */
 const Toast = forwardRef<ToastRef, ToastProps>((props, ref) => {
   const { variants = defaultVariants } = props;
   const insets = useSafeAreaInsets();
+
+  /** Visibility state of the toast */
   const [isVisible, setIsVisible] = useState(false);
+
+  /** Current message to display */
   const [message, setMessage] = useState('');
+
+  /** Current variant type (success, error, info, warning) */
   const [variant, setVariant] = useState<ToastVariant>('success');
+
+  /** Current position of the toast (top or bottom) */
   const [toastPosition, setToastPosition] = useState<ToastPosition>('bottom');
 
   const screenWidth = Dimensions.get('window').width;
+
+  /** Shared animated value for vertical translation */
   const translateY = useSharedValue(0);
+
+  /** Shared animated value for progress bar translation */
   const progressBarX = useSharedValue(0);
+
+  /** Shared animated value to block multiple toasts */
   const isInteractionBlocked = useSharedValue(false);
 
   /**
    * Hide the toast and reset the progress bar.
+   * @param position - Position of the toast for proper animation direction
    */
   const hideToast = useCallback(
     (position: ToastPosition) => {
@@ -93,7 +147,11 @@ const Toast = forwardRef<ToastRef, ToastProps>((props, ref) => {
   );
 
   /**
-   * Affiche le toast
+   * Display the toast with specified parameters
+   * @param msg - Message to display
+   * @param variantType - Type of toast (success, error, info, warning)
+   * @param position - Position of toast (top or bottom)
+   * @param duration - Duration in milliseconds before auto-dismiss
    */
   const showToast = useCallback(
     (msg: string, variantType: ToastVariant = 'info', position: ToastPosition = 'bottom', duration: number = 3000) => {
@@ -126,22 +184,27 @@ const Toast = forwardRef<ToastRef, ToastProps>((props, ref) => {
     [screenWidth, hideToast, translateY, progressBarX, isInteractionBlocked],
   );
 
+  /** Expose showToast method through ref */
   useImperativeHandle(ref, () => ({
     showToast,
   }));
 
-  // Style animé pour la translation du toast
+  /** Animated style for toast translation */
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: translateY.value }],
   }));
 
-  // progress bar animation
+  /** Animated style for progress bar */
   const progressBarStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: progressBarX.value }],
   }));
 
   if (!isVisible) return null;
 
+  /**
+   * Get the title for the current variant
+   * @returns Title string for the toast
+   */
   const toastTitle = () => {
     if (variant === 'success') return 'Succès !';
     if (variant === 'error') return 'Erreur !';
@@ -149,6 +212,10 @@ const Toast = forwardRef<ToastRef, ToastProps>((props, ref) => {
     return 'Information !';
   };
 
+  /**
+   * Get the icon name for the current variant
+   * @returns Icon name string
+   */
   const toastIcon = () => {
     if (variant === 'success') return variants?.success?.icon || 'check-circle-solid';
     if (variant === 'error') return variants?.error?.icon || 'xmark-circle-solid';
@@ -157,6 +224,10 @@ const Toast = forwardRef<ToastRef, ToastProps>((props, ref) => {
     return variants?.warning?.icon || 'warning-solid';
   };
 
+  /**
+   * Get background color for the current variant
+   * @returns Background color string
+   */
   const getBackgroundColor = () => {
     if (variant === 'success') return variants?.success?.backgroundColor || '#4CAF50';
     if (variant === 'error') return variants?.error?.backgroundColor || '#F44336';
@@ -164,6 +235,10 @@ const Toast = forwardRef<ToastRef, ToastProps>((props, ref) => {
     return variants?.warning?.backgroundColor || '#FF9800';
   };
 
+  /**
+   * Get title color for the current variant
+   * @returns Title color string
+   */
   const getTitleColor = () => {
     if (variant === 'success') return variants?.success?.titleColor || '#fff';
     if (variant === 'error') return variants?.error?.titleColor || '#fff';
@@ -171,6 +246,10 @@ const Toast = forwardRef<ToastRef, ToastProps>((props, ref) => {
     return variants?.warning?.titleColor || '#fff';
   };
 
+  /**
+   * Get content color for the current variant
+   * @returns Content color string
+   */
   const getContentColor = () => {
     if (variant === 'success') return variants?.success?.contentColor || '#fff';
     if (variant === 'error') return variants?.error?.contentColor || '#fff';
@@ -178,6 +257,10 @@ const Toast = forwardRef<ToastRef, ToastProps>((props, ref) => {
     return variants?.warning?.contentColor || '#fff';
   };
 
+  /**
+   * Get progress bar color for the current variant
+   * @returns Progress bar color string
+   */
   const getProgressBarColor = () => {
     if (variant === 'success') return variants?.success?.progressBarColor || '#FFFFFF';
     if (variant === 'error') return variants?.error?.progressBarColor || '#FFFFFF';

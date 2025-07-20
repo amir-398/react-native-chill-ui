@@ -4,16 +4,22 @@ import type { ToggleProps } from '../../types';
 
 import { Box } from '../box';
 
+/** Available size options for the toggle component */
 export const SIZE_OPTIONS = ['small', 'large'];
 
+/** Default thumb color when toggle is on */
 const defaultThumbColorOn = '#000';
+/** Default thumb color when toggle is off */
 const defaultThumbColorOff = '#f3f3f3';
+/** Default track color when toggle is off */
 const defaultTrackColorOff = '#CBCFD3';
+/** Default track color when toggle is on */
 const defaultTrackColorOn = '#CBCFD3';
 
 /**
  * Toggle component that provides a switch-like interface for boolean values.
  * Built on top of React Native's Switch component with enhanced styling and state management.
+ * Features customizable colors, sizes, and support for loading and disabled states.
  *
  * @example
  * ```tsx
@@ -35,11 +41,18 @@ const defaultTrackColorOn = '#CBCFD3';
  *   onChange={setIsEnabled}
  *   isDisabled={true}
  * />
+ *
+ * // Loading state toggle
+ * <Toggle
+ *   value={isEnabled}
+ *   onChange={setIsEnabled}
+ *   isLoading={true}
+ * />
  * ```
  *
  * @param value - Current toggle state (true for on, false for off)
  * @param onChange - Callback function called when toggle state changes
- * @param size - Toggle size variant (default: 'large')
+ * @param size - Toggle size variant ('small' or 'large', default: 'large')
  * @param isDisabled - Whether the toggle is disabled (default: false)
  * @param isLoading - Whether the toggle is in loading state (default: false)
  * @param className - Custom CSS classes for the container
@@ -47,6 +60,7 @@ const defaultTrackColorOn = '#CBCFD3';
  * @param thumbColorOff - Color of the thumb when toggle is off
  * @param trackColorOn - Color of the track when toggle is on
  * @param trackColorOff - Color of the track when toggle is off
+ * @returns Toggle component with switch-like interface
  */
 export default function Toggle(props: ToggleProps) {
   const {
@@ -62,6 +76,7 @@ export default function Toggle(props: ToggleProps) {
     value,
   } = props;
 
+  /** Scale factor based on size variant */
   const scale = size === 'small' ? 0.7 : 1;
 
   return (
