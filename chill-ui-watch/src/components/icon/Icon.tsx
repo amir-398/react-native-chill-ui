@@ -39,6 +39,43 @@ export const IconSizeVr = tv({
   },
 });
 
+/**
+ * Icon component that displays SVG icons with customizable size, color, and press interactions.
+ * Supports both static and interactive icons with press effects.
+ *
+ * @example
+ * ```tsx
+ * // Basic icon
+ * <Icon name="bell-solid" size="md" color="#000" />
+ *
+ * // Clickable icon with press effect
+ * <Icon
+ *   name="star-solid"
+ *   size="lg"
+ *   color="#FFD700"
+ *   onPress={() => console.log('Icon pressed')}
+ *   hasPressEffect={true}
+ * />
+ *
+ * // Custom press effect
+ * <Icon
+ *   name="heart-solid"
+ *   size="md"
+ *   color="#FF6B6B"
+ *   onPress={handleLike}
+ *   pressEffectClassName="bg-red-100"
+ * />
+ * ```
+ *
+ * @param name - Icon name from the available icon set
+ * @param size - Icon size variant (default: 'md')
+ * @param color - Icon color (default: '#000')
+ * @param onPress - Callback function when icon is pressed
+ * @param hasPressEffect - Whether to show press effect (default: true)
+ * @param pressEffectClassName - Custom CSS classes for press effect
+ * @param pressEffectSize - Size of press effect padding
+ * @param className - Custom CSS classes for the icon
+ */
 export default function Icon({
   className,
   color = '#000',

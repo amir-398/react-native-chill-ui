@@ -12,12 +12,6 @@ export type AccordionType = 'single' | 'multiple';
 
 /**
  * Props for the main Accordion component
- * @example
- * ```tsx
- * <Accordion type="single" collapsible hasCollapseIcon={true}>
- *   {children}
- * </Accordion>
- * ```
  */
 export type NewAccordionProps = {
   /** Child AccordionItem components */

@@ -7,17 +7,14 @@ import ButtonIcon from '../src/components/buttonIcon/buttonIcon';
 
 const meta: Meta<typeof ButtonIcon> = {
   argTypes: {
-    accessibilityLabel: {
-      control: 'text',
-      description: 'The accessibility label of the button',
+    as: {
+      control: 'select',
+      description: 'Type of touchable component to use',
+      options: ['TouchableOpacity', 'Pressable', 'RipplePressable'],
     },
     iconColor: {
       control: 'color',
-      description: 'The color of the icon',
-    },
-    iconColorPressed: {
-      control: 'color',
-      description: 'The color of the icon when pressed',
+      description: 'Color of the icon',
     },
     iconName: {
       control: 'select',
@@ -32,6 +29,10 @@ const meta: Meta<typeof ButtonIcon> = {
         'ban-solid',
         'bank-solid',
         'bell-solid',
+        'gear-solid',
+        'heart-solid',
+        'home-solid',
+        'star-solid',
         'xmark-solid',
       ],
     },
@@ -70,8 +71,7 @@ type Story = StoryObj<typeof ButtonIcon>;
 
 export const Default: Story = {
   args: {
-    iconColor: '#000000',
-    iconColorPressed: '#666666',
+    as: 'RipplePressable',
     iconName: 'bell-solid',
     isDisabled: false,
     isLoading: false,
@@ -94,14 +94,6 @@ export const Loading: Story = {
   },
 };
 
-export const CustomColors: Story = {
-  args: {
-    ...Default.args,
-    iconColor: '#FF0000',
-    iconColorPressed: '#990000',
-  },
-};
-
 export const Small: Story = {
   args: {
     ...Default.args,
@@ -114,4 +106,96 @@ export const Large: Story = {
     ...Default.args,
     size: 'lg',
   },
+};
+
+export const ColoredIcons: Story = {
+  args: {
+    ...Default.args,
+    iconColor: '#007AFF',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'ButtonIcon with custom icon color',
+      },
+    },
+  },
+};
+
+export const IconColorVariants: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Different icon colors for various use cases',
+      },
+    },
+  },
+  render: () => (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+      <ButtonIcon iconName="bell-solid" iconColor="#007AFF" onPress={action('Blue icon pressed')} size="md" />
+      <ButtonIcon iconName="home-solid" iconColor="#34C759" onPress={action('Green icon pressed')} size="md" />
+      <ButtonIcon iconName="gear-solid" iconColor="#FF3B30" onPress={action('Red icon pressed')} size="md" />
+      <ButtonIcon iconName="star-solid" iconColor="#FF9500" onPress={action('Orange icon pressed')} size="md" />
+      <ButtonIcon iconName="heart-solid" iconColor="#AF52DE" onPress={action('Purple icon pressed')} size="md" />
+    </div>
+  ),
+};
+
+export const TouchableOpacity: Story = {
+  args: {
+    ...Default.args,
+    as: 'TouchableOpacity',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'ButtonIcon using TouchableOpacity with opacity effect on press',
+      },
+    },
+  },
+};
+
+export const Pressable: Story = {
+  args: {
+    ...Default.args,
+    as: 'Pressable',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'ButtonIcon using Pressable with native Android ripple effect',
+      },
+    },
+  },
+};
+
+export const RipplePressable: Story = {
+  args: {
+    ...Default.args,
+    as: 'RipplePressable',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'ButtonIcon using RipplePressable with custom ripple animation',
+      },
+    },
+  },
+};
+
+export const TouchableComparison: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Comparison of different touchable components - try pressing each button to see the different effects',
+      },
+    },
+  },
+  render: () => (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+      <ButtonIcon as="TouchableOpacity" iconName="bell-solid" onPress={action('TouchableOpacity pressed')} size="md" />
+      <ButtonIcon as="Pressable" iconName="bell-solid" onPress={action('Pressable pressed')} size="md" />
+      <ButtonIcon as="RipplePressable" iconName="bell-solid" onPress={action('RipplePressable pressed')} size="md" />
+    </div>
+  ),
 };

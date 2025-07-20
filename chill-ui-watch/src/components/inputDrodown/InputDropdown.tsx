@@ -1,7 +1,6 @@
-import { InputDropdownProps } from '@/types';
-
 import DropdownBase from './InputDropdownBase';
 import DropdownList from './InputDropdownList';
+import { InputDropdownProps } from '../../types';
 
 export default function InputDropdown(props: InputDropdownProps) {
   const {

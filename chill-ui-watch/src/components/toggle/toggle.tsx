@@ -11,6 +11,43 @@ const defaultThumbColorOff = '#f3f3f3';
 const defaultTrackColorOff = '#CBCFD3';
 const defaultTrackColorOn = '#CBCFD3';
 
+/**
+ * Toggle component that provides a switch-like interface for boolean values.
+ * Built on top of React Native's Switch component with enhanced styling and state management.
+ *
+ * @example
+ * ```tsx
+ * // Basic toggle
+ * <Toggle value={isEnabled} onChange={setIsEnabled} />
+ *
+ * // Small toggle with custom colors
+ * <Toggle
+ *   value={isEnabled}
+ *   onChange={setIsEnabled}
+ *   size="small"
+ *   thumbColorOn="#3B82F6"
+ *   trackColorOn="#DBEAFE"
+ * />
+ *
+ * // Disabled toggle
+ * <Toggle
+ *   value={isEnabled}
+ *   onChange={setIsEnabled}
+ *   isDisabled={true}
+ * />
+ * ```
+ *
+ * @param value - Current toggle state (true for on, false for off)
+ * @param onChange - Callback function called when toggle state changes
+ * @param size - Toggle size variant (default: 'large')
+ * @param isDisabled - Whether the toggle is disabled (default: false)
+ * @param isLoading - Whether the toggle is in loading state (default: false)
+ * @param className - Custom CSS classes for the container
+ * @param thumbColorOn - Color of the thumb when toggle is on
+ * @param thumbColorOff - Color of the thumb when toggle is off
+ * @param trackColorOn - Color of the track when toggle is on
+ * @param trackColorOff - Color of the track when toggle is off
+ */
 export default function Toggle(props: ToggleProps) {
   const {
     className,

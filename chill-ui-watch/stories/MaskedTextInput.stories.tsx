@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import UiPresentation from './storybook';
-import MaskedInput from '../src/components/inputs/MaskedInput';
+import MaskedInput from '../src/components/maskedInput/MaskedInput';
 
 const meta: Meta<typeof MaskedInput> = {
   argTypes: {

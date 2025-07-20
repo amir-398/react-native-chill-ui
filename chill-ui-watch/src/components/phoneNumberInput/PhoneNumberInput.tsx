@@ -13,6 +13,11 @@ import { countryCodes, type CountryCodesProps } from './countryCodes';
 import { useInputSelectDropdown } from '../inputSelectDropdown/hooks';
 import { applyMaskPhoneNumber, getPhoneNumberWithSuffix, isValidNumber } from './utils';
 
+/**
+ * Gets the flag image for a given country code
+ * @param code - The country code (e.g., 'US', 'FR')
+ * @returns The flag image source or undefined if not found
+ */
 function getFlag(code?: string) {
   if (!code) return undefined;
   return (flags as Record<string, any>)[code.toLowerCase()];
@@ -22,6 +27,12 @@ const DEFAULT_LANG = 'en';
 const DEFAULT_COUNTRY_CODE = 'US';
 const DEFAULT_ERROR_MESSAGE = 'the phone number is invalid';
 
+/**
+ * Gets the initial country based on default country and allowed countries
+ * @param defaultCountry - The default country code
+ * @param allowedCountries - Array of allowed country codes
+ * @returns The initial country object or undefined
+ */
 const getInitialCountry = (
   defaultCountry: string | undefined,
   allowedCountries: string[] | undefined,
@@ -33,6 +44,56 @@ const getInitialCountry = (
   return candidates.find(c => c.code === (defaultCountry || DEFAULT_COUNTRY_CODE)) || candidates[0];
 };
 
+/**
+ * PhoneNumberInput component that provides a complete phone number input experience.
+ * Features country selection with flags, phone number formatting, validation, and international support.
+ *
+ * @example
+ * ```tsx
+ * // Basic usage with default settings
+ * <PhoneNumberInput
+ *   onPhoneNumberChange={(data) => console.log(data)}
+ * />
+ *
+ * // With specific country and validation
+ * <PhoneNumberInput
+ *   defaultCountry="FR"
+ *   allowedCountries={['FR', 'US', 'GB']}
+ *   onPhoneNumberChange={(data) => {
+ *     if (data.isValid) {
+ *       console.log('Valid phone:', data.phoneNumberWithSuffix);
+ *     }
+ *   }}
+ *   onError={(error) => {
+ *     if (!error.isValid) {
+ *       console.log('Error:', error.errorMessage);
+ *     }
+ *   }}
+ * />
+ *
+ * ```
+ *
+ * @param allowedCountries - Array of allowed country codes (e.g., ['US', 'FR', 'GB'])
+ * @param defaultCountry - Default country code to select initially
+ * @param dropdownPosition - Position of the country dropdown ('auto' | 'top' | 'bottom')
+ * @param dropdownProps - Props for the dropdown component
+ * @param errorMessage - Custom error message for invalid phone numbers
+ * @param hasErrorOnChange - Whether to show error immediately on change
+ * @param inputProps - Props to pass to the underlying Input component
+ * @param language - Language for country names ('en' | 'fr')
+ * @param maxHeight - Maximum height of the dropdown
+ * @param minHeight - Minimum height of the dropdown
+ * @param offsetX - Horizontal offset for dropdown positioning
+ * @param offsetY - Vertical offset for dropdown positioning
+ * @param onBlur - Callback when input loses focus
+ * @param onCountryChange - Callback when country selection changes
+ * @param onError - Callback when validation error occurs
+ * @param onFocus - Callback when input gains focus
+ * @param onPhoneNumberChange - Callback when phone number changes
+ * @param placeholder - Placeholder text for the input
+ * @param value - Initial phone number value
+ * @returns PhoneNumberInput component with country selection and validation
+ */
 function PhoneNumberInput({
   allowedCountries,
   defaultCountry,
@@ -141,6 +202,10 @@ function PhoneNumberInput({
     [selectedCountry],
   );
 
+  /**
+   * Handles phone number text changes with formatting and validation
+   * @param raw - The raw phone number input
+   */
   const handleChangeText = useCallback(
     (raw: string) => {
       if (!selectedCountry) return;

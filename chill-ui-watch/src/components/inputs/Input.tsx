@@ -5,11 +5,14 @@ import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-na
 
 import cn from '../cn';
 import Icon from '../icon';
-import Box from '../box/Box';
+import { Box } from '../box';
 import String from '../string';
 import { InputProps } from '../../types';
 import { getStringLength, isString } from '../../utils';
 
+/**
+ * Tailwind variants for input sizing and styling
+ */
 export const inputSizeVariants = tv({
   compoundVariants: [
     // Multiline and stretchable
@@ -100,6 +103,78 @@ export const inputSizeVariants = tv({
   },
 });
 
+/**
+ * Input component with advanced features including validation, icons, animations, and accessibility support.
+ * Supports multiple input types, validation patterns, icons, error handling, and customizable styling.
+ *
+ * @example
+ * ```tsx
+ * // Basic input
+ * <Input
+ *   placeholder="Enter your name"
+ *   onChangeText={(text) => console.log(text)}
+ * />
+ *
+ * // Input with label and validation
+ * <Input
+ *   label="Email Address"
+ *   placeholder="Enter your email"
+ *   allow="all"
+ *   hasError={!!emailError}
+ *   errorMessage={emailError}
+ *   onChangeText={setEmail}
+ * />
+ *
+ * // Input with icons
+ * <Input
+ *   placeholder="Search..."
+ *   leftIconAction={{
+ *     iconName: 'search-solid',
+ *     iconSize: 'sm',
+ *     iconColor: '#666',
+ *   }}
+ *   rightIconAction={{
+ *     iconName: 'filter-solid',
+ *     iconSize: 'sm',
+ *     iconPress: handleFilter,
+ *   }}
+ *   onChangeText={setSearchQuery}
+ * />
+ *
+ * ```
+ *
+
+ * @param label - Label text for the input
+ * @param className - Custom CSS classes for the input container
+ * @param labelClassName - Custom CSS classes for the label
+ * @param wrapperRef - Reference to the wrapper component
+ * @param hasError - Whether the input has an error
+ * @param errorMessage - Error message to display
+ * @param errorClassName - Custom CSS classes for the error message
+ * @param errorIconName - Icon name to display with error
+ * @param hasClearIcon - Whether to show clear icon
+ * @param inputClassName - Custom CSS classes for the input field
+ * @param leftIconAction - Left icon configuration with iconName, iconColor, iconSize, customIcon, iconPress
+ * @param rightIconAction - Right icon configuration with iconName, iconColor, iconSize, customIcon, iconPress
+ * @param hasSecureTextEntry - Whether to show secure text entry
+ * @param clickableAs - Type of clickable interaction ('pressable' | 'scale')
+ * @param showLength - Whether to show character count
+ * @param customRegex - Custom regex pattern for validation
+ * @param allow - Allowed input types ('all' | 'numbers' | 'letters' | 'lettersWithoutSpecialCharacters')
+ * @param isDisabled - Whether the input is disabled
+ * @param isStretchable - Whether the input stretches to fill container
+ * @param size - Size variant for the input ('xs' | 'sm' | 'md' | 'lg')
+ * @param value - Current input value
+ * @param onChangeText - Callback when text changes
+ * @param placeholder - Placeholder text
+ * @param multiline - Whether input supports multiple lines
+ * @param maxLength - Maximum character length
+ * @param editable - Whether input is editable
+ * @param onPress - Callback when input is pressed
+ * @param secureTextEntry - Whether to show secure text entry (inherited from TextInputProps)
+ * @param ref - Forwarded ref to the underlying TextInput component
+ * @returns Input component with label, validation, icons, and error handling
+ */
 const Input = forwardRef<TextInput, InputProps>((props, ref) => {
   const {
     allow = 'all',
@@ -135,6 +210,11 @@ const Input = forwardRef<TextInput, InputProps>((props, ref) => {
   const [inputValue, setInputValue] = useState<string>(value || '');
   const scale = useSharedValue(1);
 
+  /**
+   * Validates input text based on allow prop or custom regex
+   * @param text - Text to validate
+   * @returns Whether the text is valid according to validation rules
+   */
   const validateInput = (text: string): boolean => {
     if (customRegex) {
       return customRegex.test(text);
@@ -153,11 +233,18 @@ const Input = forwardRef<TextInput, InputProps>((props, ref) => {
     }
   };
 
+  /**
+   * Clears the input value and calls onChangeText callback
+   */
   const handleClearInput = () => {
     setInputValue('');
     onChangeText?.('');
   };
 
+  /**
+   * Handles text changes with validation and state updates
+   * @param text - New text value to process
+   */
   const handleOnChange = (text: string) => {
     if (validateInput(text)) {
       !isString(value) && setInputValue(text);
@@ -169,10 +256,16 @@ const Input = forwardRef<TextInput, InputProps>((props, ref) => {
     transform: [{ scale: scale.value }],
   }));
 
+  /**
+   * Handles press in animation for scale effect
+   */
   const handlePressIn = () => {
     scale.value = withTiming(0.98, { duration: 100 });
   };
 
+  /**
+   * Handles press out animation to restore scale
+   */
   const handlePressOut = () => {
     scale.value = withTiming(1, { duration: 100 });
   };
@@ -181,6 +274,10 @@ const Input = forwardRef<TextInput, InputProps>((props, ref) => {
     setInputValue(value || '');
   }, [value]);
 
+  /**
+   * Renders the TextInput component with applied styles and props
+   * @returns TextInput component with proper styling and behavior
+   */
   const renderInput = () => (
     <TextInput
       onPress={onPress}
@@ -203,6 +300,10 @@ const Input = forwardRef<TextInput, InputProps>((props, ref) => {
     />
   );
 
+  /**
+   * Renders the input with optional pressable wrapper for animations
+   * @returns Input component with or without animated pressable wrapper
+   */
   const renderPressableInput = () => {
     if (clickableAs === 'scale') {
       return (

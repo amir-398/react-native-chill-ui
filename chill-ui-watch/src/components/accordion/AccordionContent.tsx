@@ -4,7 +4,8 @@ import { Animated } from 'react-native';
 import type { AccordionContentProps } from '../../types';
 
 import cn from '../cn';
-import { AnimatedBox, Box } from '../box';
+import { Box } from '../box';
+import { AnimatedBox } from '../animated-box';
 import { useAccordion } from './AccordionContext';
 import { useAccordionItem } from './AccordionItemContext';
 

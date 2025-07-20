@@ -9,6 +9,97 @@ import String from '../string';
 import { Spinner } from '../loadingIndicatorsKit';
 import { Place, Places, PlacesInputProps, PlacesResponse } from '../../types';
 
+/**
+ * PlacesInput component that provides Google Places API integration for address autocomplete.
+ * Features real-time search, debounced API calls, customizable rendering, and comprehensive place data.
+ *
+ * @example
+ * ```tsx
+ * // Basic usage with Google API key
+ * <PlacesInput
+ *   googleApiKey="your-google-api-key"
+ *   onSelect={(place) => console.log(place)}
+ * />
+ *
+ * // With custom styling and validation
+ * <PlacesInput
+ *   googleApiKey="your-google-api-key"
+ *   placeholder="Enter your address"
+ *   requiredCharactersBeforeSearch={3}
+ *   requiredTimeBeforeSearch={500}
+ *   onSelect={(place) => {
+ *     console.log('Selected place:', place.formattedAddress);
+ *   }}
+ *   onChangeText={(text) => console.log('Searching:', text)}
+ * />
+ *
+ * // With country restrictions and custom rendering
+ * <PlacesInput
+ *   googleApiKey="your-google-api-key"
+ *   queryCountries={['US', 'CA']}
+ *   selectedValue="locality"
+ *   clearQueryOnSelect={true}
+ *   renderItem={({ item }) => (
+ *     <Box className="p-3 border-b border-gray-200">
+ *       <String className="font-bold">{item.placePrediction.text.text}</String>
+ *       <String className="text-gray-500 text-sm">
+ *         {item.placePrediction.place?.formattedAddress}
+ *       </String>
+ *     </Box>
+ *   )}
+ *   onSelect={(place) => {
+ *     setSelectedCity(place.addressComponents.find(c => c.types.includes('locality'))?.longText);
+ *   }}
+ * />
+ *
+ * // With custom styling and loading states
+ * <PlacesInput
+ *   googleApiKey="your-google-api-key"
+ *   className="bg-gray-100 border-2 border-blue-500"
+ *   listClassName="shadow-lg border-2 border-blue-200"
+ *   spinnerColor="#007AFF"
+ *   spinnerSize={32}
+ *   maxListHeight={400}
+ *   listHeaderComponent={<String className="p-3 bg-gray-50">Recent searches</String>}
+ *   listFooterComponent={<String className="p-3 bg-gray-50">Powered by Google Places</String>}
+ *   onSelect={(place) => {
+ *     setAddress(place.formattedAddress);
+ *     setCoordinates(place.location);
+ *   }}
+ * />
+ * ```
+ *
+ * @param className - Custom CSS classes for the input field
+ * @param clearable - Whether to show a clear button when input has text
+ * @param clearQueryOnSelect - Whether to clear the input after selection
+ * @param containerClassName - Custom CSS classes for the container
+ * @param emptyListText - Text to show when no results are found
+ * @param flatListProps - Props to pass to the FlatList component
+ * @param googleApiKey - Google Places API key (required)
+ * @param itemTextClassName - Custom CSS classes for item text
+ * @param itemTextVariant - Text variant for item text
+ * @param listClassName - Custom CSS classes for the dropdown list
+ * @param listFooterComponent - Component to render at the bottom of the list
+ * @param listHeaderComponent - Component to render at the top of the list
+ * @param listItemClassName - Custom CSS classes for list items
+ * @param maxListHeight - Maximum height of the dropdown list
+ * @param onChangeText - Callback when input text changes
+ * @param onSelect - Callback when a place is selected
+ * @param placeHolder - Placeholder text for the input
+ * @param placeholderTextColor - Color of the placeholder text
+ * @param query - External query value to control the input
+ * @param queryCountries - Array of country codes to restrict search
+ * @param renderItem - Custom render function for list items
+ * @param requiredCharactersBeforeSearch - Minimum characters before API call
+ * @param requiredTimeBeforeSearch - Debounce delay in milliseconds
+ * @param selectedValue - Type of address component to display after selection
+ * @param showListFooterComponentWhenResults - Whether to show footer when results exist
+ * @param showListHeaderComponentWhenResults - Whether to show header when results exist
+ * @param spinnerColor - Color of the loading spinner
+ * @param spinnerSize - Size of the loading spinner
+ * @param textInputProps - Props to pass to the TextInput component
+ * @returns PlacesInput component with Google Places autocomplete
+ */
 function PlacesInput(props: PlacesInputProps) {
   const {
     className,
@@ -56,7 +147,10 @@ function PlacesInput(props: PlacesInputProps) {
     [],
   );
 
-  // Debounce fetch
+  /**
+   * Fetches places from Google Places API with debouncing
+   * @param input - The search query text
+   */
   const fetchPlaces = useCallback(
     async (input: string) => {
       if (!input || input.length < requiredCharactersBeforeSearch) {
@@ -93,6 +187,10 @@ function PlacesInput(props: PlacesInputProps) {
     [googleApiKey, queryCountries, requiredCharactersBeforeSearch],
   );
 
+  /**
+   * Debounced function to fetch places with delay
+   * @param input - The search query text
+   */
   const debouncedFetchPlaces = useCallback(
     (input: string) => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -116,6 +214,10 @@ function PlacesInput(props: PlacesInputProps) {
     if (localQuery.length === 0) setShowList(false);
   }, [localQuery]);
 
+  /**
+   * Handles text input changes with debounced search
+   * @param text - The input text value
+   */
   const handleChangeText = useCallback(
     (text: string) => {
       setLocalQuery(text);
@@ -125,6 +227,11 @@ function PlacesInput(props: PlacesInputProps) {
     [debouncedFetchPlaces, onChangeText],
   );
 
+  /**
+   * Handles place selection and fetches detailed place information
+   * @param id - The place ID from Google Places API
+   * @param passedPlace - The place prediction object
+   */
   const handlePlaceSelect = useCallback(
     async (id: string, passedPlace: Places['placePrediction']) => {
       setIsLoading(true);
@@ -192,10 +299,18 @@ function PlacesInput(props: PlacesInputProps) {
     [clearQueryOnSelect, googleApiKey, onSelect, selectedValue],
   );
 
+  /**
+   * Handles input blur with delayed list hiding
+   */
   const handleBlur = useCallback(() => {
     setTimeout(() => setShowList(false), 150);
   }, []);
 
+  /**
+   * Default render function for list items
+   * @param item - The place item to render
+   * @param index - The index of the item in the list
+   */
   const renderItem = useCallback(
     ({ index, item }: { item: Places; index: number }) => (
       <TouchableOpacity

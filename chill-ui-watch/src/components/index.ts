@@ -1,7 +1,7 @@
 export * from './box';
 export * from './toast';
 export * from './loadingIndicatorsKit';
-export { default as Accordion } from './accordion';
+export { Accordion } from './accordion';
 export { Accordion as NewAccordion, AccordionItem, AccordionTrigger, AccordionContent } from './accordion';
 export { default as ButtonIcon } from './buttonIcon';
 export { default as cn } from './cn';
@@ -17,5 +17,5 @@ export { default as SegmentedControl } from './segmented-control';
 export { default as Avatar } from './avatar';
 export { default as Separator } from './separator';
 export * from './tooltip';
-export { default as Checkbox } from './checkbox/Checkbox';
+export { default as Checkbox } from './checkbox';
 export { default as DropdownMenu } from './dropdownMenu';

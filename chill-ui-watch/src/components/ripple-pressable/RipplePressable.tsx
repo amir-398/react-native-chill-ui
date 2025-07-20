@@ -12,14 +12,9 @@ import Animated, {
 
 import cn from '../cn';
 import { Box } from '../box';
+import { RipplePressableProps } from '../../types/ripplePressableProps';
 
-interface RippleProps {
-  className?: string;
-  onPress?: () => void;
-  children: React.ReactNode;
-}
-
-function RipplePressable({ children, className, onPress }: RippleProps) {
+function RipplePressable({ children, className, onPress }: RipplePressableProps) {
   if (!children) {
     throw new Error('RipplePressable must have children');
   }

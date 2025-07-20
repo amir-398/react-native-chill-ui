@@ -6,15 +6,6 @@ import { avatarVariants, sizeVariant } from '../components/avatar/styleVariants'
 /**
  * Props for Avatar component
  *
- * @example
- * ```tsx
- * <Avatar
- *   data={{ firstname: 'John', lastname: 'Doe', image_url: 'https://...' }}
- *   size="md"
- *   variant="circle"
- *   onPress={() => console.log('Avatar pressed')}
- * />
- * ```
  */
 export type AvatarProps = {
   /** Custom CSS classes */

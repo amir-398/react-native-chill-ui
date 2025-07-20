@@ -8,19 +8,7 @@ import { InputDropdownListProps, InputDropdownProps } from './dropdown.types';
 /**
  * Ref methods for controlling AutocompleteDropdown externally
  *
- * @example
- * ```tsx
- * const dropdownRef = useRef<AutocompleteDropdownRefProps>(null);
- *
- * // Open dropdown programmatically
- * dropdownRef.current?.open();
- *
- * // Close dropdown programmatically
- * dropdownRef.current?.close();
- *
- * // Toggle dropdown visibility
- * dropdownRef.current?.toggle();
- * ```
+
  */
 export type AutocompleteDropdownRefProps = {
   /** Open the dropdown */

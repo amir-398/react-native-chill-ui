@@ -9,10 +9,6 @@ const meta: Meta<typeof Checkbox> = {
       control: 'number',
       description: 'Custom size for the checkbox',
     },
-    checked: {
-      control: 'boolean',
-      description: 'Whether the checkbox is checked',
-    },
     checkedClassName: {
       control: 'text',
       description: 'Additional CSS classes when checked',
@@ -29,10 +25,6 @@ const meta: Meta<typeof Checkbox> = {
       control: 'object',
       description: 'Custom icon component to use instead of default',
     },
-    disabled: {
-      control: 'boolean',
-      description: 'Whether the checkbox is disabled',
-    },
     iconColor: {
       control: 'color',
       description: 'Color of the check icon',
@@ -40,6 +32,14 @@ const meta: Meta<typeof Checkbox> = {
     iconName: {
       control: 'text',
       description: 'Name of the icon to use',
+    },
+    isChecked: {
+      control: 'boolean',
+      description: 'Whether the checkbox is checked',
+    },
+    isDisabled: {
+      control: 'boolean',
+      description: 'Whether the checkbox is disabled',
     },
     label: {
       control: 'text',
@@ -84,29 +84,29 @@ type Story = StoryObj<typeof Checkbox>;
 
 export const Default: Story = {
   args: {
-    checked: false,
+    isChecked: false,
     label: 'Default Checkbox',
   },
 };
 
 export const Checked: Story = {
   args: {
-    checked: true,
+    isChecked: true,
     label: 'Checked Checkbox',
   },
 };
 
 export const Disabled: Story = {
   args: {
-    disabled: true,
+    isDisabled: true,
     label: 'Disabled Checkbox',
   },
 };
 
 export const DisabledChecked: Story = {
   args: {
-    checked: true,
-    disabled: true,
+    isChecked: true,
+    isDisabled: true,
     label: 'Disabled Checked Checkbox',
   },
 };
@@ -136,6 +136,6 @@ export const Circle: Story = {
 
 export const WithoutLabel: Story = {
   args: {
-    checked: false,
+    isChecked: false,
   },
 };

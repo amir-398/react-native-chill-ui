@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Box, Button } from '@/components';
-import { ImageSliderProps } from '@/types';
 
 import Carousel from '../src/components/carousel/Carousel';
 
@@ -15,7 +14,7 @@ const meta: Meta<typeof Carousel> = {
     },
     dotGap: {
       control: 'select',
-      options: ['2xs', 'xs', 'sm', 'md', 'lg'],
+      options: ['sm', 'md', 'lg', 'xl'],
     },
     dotOffset: {
       control: 'number',
@@ -112,7 +111,7 @@ function CustomImageSlider() {
   );
 }
 
-function WithChildrenComponent(props: ImageSliderProps) {
+function WithChildrenComponent(props: any) {
   return (
     <Carousel dotOffset={30} {...props}>
       <Box className="w-full px-1">

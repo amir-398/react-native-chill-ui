@@ -3,22 +3,120 @@
 import * as React from 'react';
 import { Animated } from 'react-native';
 
+/**
+ * Interface for animation node containing animation and interpolated values
+ */
 interface AnimationNode {
+  /** The composite animation object */
   animation: Animated.CompositeAnimation;
+  /** Array of interpolated animated values */
   values: Animated.AnimatedInterpolation<string | number>[];
 }
 
+/**
+ * Props for the AnimationContainer component
+ */
 export interface Props<T extends string> {
+  /** Whether the animation is currently running */
   animating: boolean;
+  /** Function to initialize animations for each key */
   initAnimation: () => Record<T, (value: Animated.Value) => AnimationNode>;
+  /** Render function that receives interpolated values by key */
   children: (interpolationsByKey: Record<T, Animated.AnimatedInterpolation<string | number>[]>) => React.ReactNode;
 }
 
+/**
+ * AnimationContainer component that manages complex animations with multiple animated values.
+ * Provides a flexible way to create custom loading animations with React Native Animated API.
+ *
+ * @example
+ * ```tsx
+ * // Basic usage with single animation
+ * <AnimationContainer
+ *   animating={isLoading}
+ *   initAnimation={() => ({
+ *     rotation: (value) => ({
+ *       animation: Animated.loop(
+ *         Animated.timing(value, {
+ *           toValue: 1,
+ *           duration: 1000,
+ *           useNativeDriver: true,
+ *         })
+ *       ),
+ *       values: [
+ *         value.interpolate({
+ *           inputRange: [0, 1],
+ *           outputRange: ['0deg', '360deg'],
+ *         }),
+ *       ],
+ *     }),
+ *   })}
+ * >
+ *   {({ rotation }) => (
+ *     <Animated.View style={{ transform: [{ rotate: rotation[0] }] }}>
+ *       <Icon name="spinner" />
+ *     </Animated.View>
+ *   )}
+ * </AnimationContainer>
+ *
+ * // Multiple animations
+ * <AnimationContainer
+ *   animating={isLoading}
+ *   initAnimation={() => ({
+ *     scale: (value) => ({
+ *       animation: Animated.loop(
+ *         Animated.sequence([
+ *           Animated.timing(value, { toValue: 1, duration: 500 }),
+ *           Animated.timing(value, { toValue: 0.5, duration: 500 }),
+ *         ])
+ *       ),
+ *       values: [
+ *         value.interpolate({
+ *           inputRange: [0, 1],
+ *           outputRange: [0.5, 1],
+ *         }),
+ *       ],
+ *     }),
+ *     opacity: (value) => ({
+ *       animation: Animated.loop(
+ *         Animated.timing(value, { toValue: 1, duration: 1000 })
+ *       ),
+ *       values: [
+ *         value.interpolate({
+ *           inputRange: [0, 1],
+ *           outputRange: [0.3, 1],
+ *         }),
+ *       ],
+ *     }),
+ *   })}
+ * >
+ *   {({ scale, opacity }) => (
+ *     <Animated.View
+ *       style={{
+ *         transform: [{ scale: scale[0] }],
+ *         opacity: opacity[0],
+ *       }}
+ *     >
+ *       <LoadingSpinner />
+ *     </Animated.View>
+ *   )}
+ * </AnimationContainer>
+ * ```
+ *
+ * @template T - Type parameter for animation keys
+ * @param animating - Whether the animation is currently running
+ * @param initAnimation - Function that returns animation initializers for each key
+ * @param children - Render function that receives interpolated values
+ * @returns AnimationContainer component that manages complex animations
+ */
 export default class AnimationContainer<T extends string> extends React.Component<Props<T>> {
+  /** The composite animation object */
   animation: Animated.CompositeAnimation;
 
+  /** Animated values indexed by key */
   animatedValuesByKey: Record<T, Animated.Value> = {} as Record<T, Animated.Value>;
 
+  /** Interpolated values indexed by key */
   interpolationsByKey: Record<T, Animated.AnimatedInterpolation<string | number>[]> = {} as Record<
     T,
     Animated.AnimatedInterpolation<string | number>[]
@@ -69,10 +167,16 @@ export default class AnimationContainer<T extends string> extends React.Componen
     }
   }
 
+  /**
+   * Starts the animation loop
+   */
   startAnimation = () => {
     this.animation.start();
   };
 
+  /**
+   * Stops the animation and resets all values to 0
+   */
   stopAnimation = () => {
     this.animation.reset();
 
