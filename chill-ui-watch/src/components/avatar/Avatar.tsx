@@ -1,10 +1,11 @@
-import { Image, Pressable, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { Image, Pressable, TouchableOpacity, TouchableHighlight, StyleSheet } from 'react-native';
 
 import cn from '../cn';
 import { Box } from '../box';
 import String from '../string';
 import { AvatarProps } from '../../types';
 import { avatarVariants, sizeVariant } from './styleVariants';
+import { isNativeWindInstalled } from '../../utils/nativewind-detector';
 
 /**
  * Get user initials from firstname and lastname
@@ -28,8 +29,54 @@ export function getUserInitials(data: { firstname?: string; lastname?: string })
 }
 
 /**
+ * Creates StyleSheet styles equivalent to NativeWind classes
+ * Used as fallback when NativeWind is not available
+ */
+const createAvatarStyles = (size: string, variant: string, backgroundColor?: string) => {
+  // Size mappings (equivalent to Tailwind classes)
+  const sizeMap: Record<string, { height: number; width: number }> = {
+    '2xl': { height: 112, width: 112 },
+    '2xs': { height: 24, width: 24 },
+    '3xl': { height: 128, width: 128 },
+    lg: { height: 64, width: 64 },
+    md: { height: 56, width: 56 },
+    sm: { height: 48, width: 48 },
+    xl: { height: 80, width: 80 },
+    xs: { height: 36, width: 36 },
+  };
+
+  // Variant mappings
+  const variantMap: Record<string, { borderRadius: number }> = {
+    circle: { borderRadius: 9999 }, // rounded-full equivalent
+    square: { borderRadius: 8 }, // rounded-lg equivalent
+  };
+
+  const sizeStyle = sizeMap[size] || sizeMap.sm;
+  const variantStyle = variantMap[variant] || variantMap.circle;
+
+  return StyleSheet.create({
+    avatar: {
+      alignItems: 'center',
+      backgroundColor: backgroundColor || '#7DD3FC', // primary color fallback
+      borderColor: 'white',
+      borderWidth: 1,
+      justifyContent: 'center',
+      overflow: 'hidden',
+      ...sizeStyle,
+      ...variantStyle,
+    },
+    image: {
+      height: '100%',
+      position: 'absolute',
+      width: '100%',
+    },
+  });
+};
+
+/**
  * Avatar component displays user profile images with fallback to initials.
  * Supports different sizes, shapes, and touchable interactions.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
@@ -47,7 +94,7 @@ export function getUserInitials(data: { firstname?: string; lastname?: string })
  *
  * @param as - Component to use when avatar is pressable (default: 'Pressable')
  * @param backgroundColor - Custom background color
- * @param className - Custom CSS classes
+ * @param className - Custom CSS classes (only used with NativeWind)
  * @param data - User data containing firstname, lastname, and image_url
  * @param onPress - Callback when avatar is pressed
  * @param size - Avatar size variant (default: 'sm')
@@ -69,7 +116,11 @@ export default function Avatar({
   const initials = data?.firstname ? getUserInitials(data) : '';
   const image = data?.image_url;
 
-  const avatarContent = (
+  // Create styles based on whether NativeWind is available
+  const styles = createAvatarStyles(size, variant, backgroundColor);
+
+  const avatarContent = isNativeWindInstalled() ? (
+    // NativeWind approach
     <Box
       className={cn(
         'bg-primary items-center justify-center overflow-hidden border border-white',
@@ -83,6 +134,14 @@ export default function Avatar({
         {initials}
       </String>
       {image && <Image className="absolute h-full w-full" source={{ uri: image }} />}
+    </Box>
+  ) : (
+    // StyleSheet approach
+    <Box style={styles.avatar}>
+      <String size={size} {...stringProps}>
+        {initials}
+      </String>
+      {image && <Image style={styles.image} source={{ uri: image }} />}
     </Box>
   );
 

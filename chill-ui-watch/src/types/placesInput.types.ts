@@ -1,49 +1,75 @@
-import type { FlatListProps, TextInputProps } from 'react-native';
-
-import type { StringProps } from './string.types';
 import type { addressComponentsTypes, PlaceInputSelectedValue } from './common.types';
 
+import { StrictOmit } from './utils/StrictOmit.types';
+import { AutocompleteDropdownProps } from './autocompleteDropdown.type';
+
 /**
- * Place data structure
+ * Place data structure returned by Google Places API
+ * Contains detailed information about a selected place including address components,
+ * coordinates, and formatted addresses.
+ *
+ * @example
+ * ```tsx
+ * onSelect={(place: Place) => {
+ *   console.log('Full address:', place.formattedAddress);
+ *   console.log('Coordinates:', place.location);
+ *   console.log('City:', place.addressComponents.find(c => c.types.includes('locality'))?.longText);
+ * }}
+ * ```
  */
 export interface Place {
-  /** Full formatted address */
+  /** Full formatted address (e.g., "123 Main St, New York, NY 10001, USA") */
   formattedAddress: string;
-  /** Short formatted address */
+  /** Short formatted address (e.g., "123 Main St, New York") */
   shortFormattedAddress: string;
-  /** Location coordinates */
+  /** Location coordinates for mapping */
   location: {
     /** Latitude coordinate */
     latitude: number;
     /** Longitude coordinate */
     longitude: number;
   };
-  /** Address components */
+  /** Postal address details (optional, may contain additional postal information) */
+  postalAddress?: {
+    /** Postal address components */
+    [key: string]: any;
+  };
+  /** Address components with detailed information for each part of the address */
   addressComponents: {
-    /** Language code */
+    /** Language code for the component text */
     languageCode: string;
-    /** Long text description */
+    /** Long text description (e.g., "New York" for locality) */
     longText: string;
-    /** Short text description */
+    /** Short text description (e.g., "NY" for administrative_area_level_1) */
     shortText: string;
-    /** Types of address component */
+    /** Types of address component (e.g., ['locality', 'political']) */
     types: addressComponentsTypes[];
   }[];
 }
 
 /**
- * Places prediction data structure
+ * Places prediction data structure from autocomplete API
+ * Represents a place suggestion returned by the Google Places autocomplete API.
+ * This is the structure used in the dropdown list before a place is selected.
+ *
+ * @example
+ * ```tsx
+ * // In renderItem function
+ * renderItem={(item: Places) => (
+ *   <Text>{item.placePrediction.text.text}</Text>
+ * )}
+ * ```
  */
 export interface Places {
-  /** Place prediction information */
+  /** Place prediction information containing the suggestion details */
   placePrediction: {
-    /** Unique place ID */
+    /** Unique place ID used to fetch detailed place information */
     placeId: string;
-    /** Place name */
-    place: string;
-    /** Text information */
+    /** Place details (may be undefined for predictions, populated after selection) */
+    place?: Place;
+    /** Text information for display in the dropdown */
     text: {
-      /** Display text */
+      /** Display text shown in the autocomplete dropdown */
       text: string;
     };
   };
@@ -51,70 +77,65 @@ export interface Places {
 
 /**
  * Places API response structure
+ * Response format from the Google Places autocomplete API containing
+ * an array of place suggestions.
+ *
+ * @example
+ * ```tsx
+ * // API response structure
+ * {
+ *   suggestions: [
+ *     {
+ *       placePrediction: {
+ *         placeId: "ChIJ...",
+ *         text: { text: "New York, NY, USA" }
+ *       }
+ *     }
+ *   ]
+ * }
+ * ```
  */
 export interface PlacesResponse {
-  /** Array of place suggestions */
+  /** Array of place suggestions returned by the autocomplete API */
   suggestions: Places[];
 }
 
 /**
  * Props for the PlacesInput component
+ *
+ * @example
+ * ```tsx
+ * // Basic usage
+ * <PlacesInput
+ *   googleApiKey="your-api-key"
+ *   onSelect={(place) => console.log(place)}
+ * />
+ *
+ * // With country restriction and custom selection
+ * <PlacesInput
+ *   googleApiKey="your-api-key"
+ *   queryCountries={['US', 'CA']}
+ *   selectedValue="locality"
+ *   onSelect={(place) => console.log(place)}
+ *   requiredCharactersBeforeSearch={3}
+ * />
+ * ```
  */
 export type PlacesInputProps = {
-  /** Search query */
+  /** External query value to control the input */
   query?: string;
-  /** Custom CSS classes for the input */
-  className?: string;
-  /** Whether the input is clearable */
-  clearable?: boolean;
-  /** Google Places API key */
+  /** Google Places API key (required) */
   googleApiKey: string;
-  /** Placeholder text */
-  placeHolder?: string;
-  /** Size of the loading spinner */
-  spinnerSize?: number;
-  /** Color of the loading spinner */
-  spinnerColor?: string;
-  /** Custom CSS classes for the list */
-  listClassName?: string;
-  /** Maximum height of the list */
-  maxListHeight?: number;
-  /** Countries to search in */
+  /** Array of country codes to restrict search */
   queryCountries?: string[];
-  /** Custom CSS classes for list items */
-  listItemClassName?: string;
-  /** Custom CSS classes for item text */
-  itemTextClassName?: string;
-  /** Custom CSS classes for the container */
-  containerClassName?: string;
-  /** Whether to clear query on selection */
+  /** Whether to clear the input after selection */
   clearQueryOnSelect?: boolean;
-  /** Props for the text input */
-  textInputProps?: TextInputProps;
-  /** Callback when a place is selected */
-  onSelect?: (place: any) => void;
-  /** Required time before search (debounce) */
+  /** Callback when a place is selected (with error handling) */
+  onSelect?: (place: Place | Places['placePrediction']) => void;
+  /** Debounce delay in milliseconds before triggering search */
   requiredTimeBeforeSearch?: number;
-  /** Callback when text changes */
-  onChangeText?: (text: string) => void;
-  /** Header component for the list */
-  listHeaderComponent?: React.ReactNode;
-  /** Required characters before search */
+  /** Minimum number of characters before triggering search */
   requiredCharactersBeforeSearch?: number;
-  /** Currently selected value */
+  /** Type of address component to display after selection */
   selectedValue?: PlaceInputSelectedValue;
-  /** Text variant for items */
-  itemTextVariant?: StringProps['variant'];
-  /** Footer component for the list */
-  listFooterComponent?: React.ReactNode;
-  /** Whether to show header when results exist */
-  showListHeaderComponentWhenResults?: boolean;
-  /** Whether to show footer when results exist */
-  showListFooterComponentWhenResults?: boolean;
-  /** Custom render function for list items */
-  renderItem?: ({ item }: { item: Places }) => React.ReactElement;
-  /** Props for the FlatList */
-  flatListProps?: FlatListProps<Places>;
-  /** Color of placeholder text */
-  placeholderTextColor?: string;
-};
+} & StrictOmit<AutocompleteDropdownProps<Places>, 'dataSet' | 'valueField' | 'onSelectItem'>;

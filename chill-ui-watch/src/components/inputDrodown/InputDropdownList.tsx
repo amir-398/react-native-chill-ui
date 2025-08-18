@@ -23,7 +23,7 @@ export default function InputDropdownList({
   const { name = 'spinner', ...rest } = loadingIndicatorProps || {};
 
   const renderListItem = useCallback(
-    ({ index, item }: { item: any; index: number }) => {
+    ({ index, item }: { item: any; index: number }): React.ReactElement | null => {
       if (DropdownItemRender?.(item)) {
         switch (itemClickableAs) {
           case 'TouchableOpacity':
@@ -67,7 +67,7 @@ export default function InputDropdownList({
             );
 
           default:
-            return DropdownItemRender(item);
+            return <>{DropdownItemRender(item)}</>;
         }
       }
       return (

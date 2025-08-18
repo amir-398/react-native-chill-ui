@@ -64,15 +64,19 @@ export interface AutocompleteDropdownProps<T> {
   /** Field to search in (defaults to valueField) */
   searchField?: keyof T;
   /** Props to pass to the input component */
-  inputProps?: InputProps;
+  inputProps?: Omit<InputProps, 'onChangeText'>;
   /** Enable search functionality (default: true) */
   hasPerformSearch?: boolean;
   /** Require confirmation before selecting */
   confirmSelectItem?: boolean;
   /** Highlight search terms in results (default: true) */
   hasHighlightString?: boolean;
+
+  /** Callback function when the input text changes */
+  onChangeText?: (text: string) => void;
+
   /** Callback function when an item is selected */
-  onSelectItem: (item: T) => void;
+  onSelectItem?: (item: T) => void;
   /** Close dropdown after selection (default: true) */
   closeModalWhenSelectedItem?: boolean;
   /** Callback for confirmed selection */

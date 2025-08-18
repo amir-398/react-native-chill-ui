@@ -1,303 +1,274 @@
-# Avatar Component
+# Avatar
 
-A flexible and customizable avatar component for React Native applications that displays user profile images with intelligent fallback to initials. Supports different sizes, shapes, and touchable interactions.
+A React Native component that displays user profile images with fallback to initials. Supports different sizes, shapes, and touchable interactions. **Automatically detects NativeWind availability and falls back to StyleSheet when needed.**
 
 ## Features
 
-- **Image Support**: Display user profile images with automatic fallback
-- **Initials Fallback**: Intelligent initials generation from first and last names
-- **Multiple Sizes**: Various size variants from 2xs to 3xl
-- **Shape Variants**: Circle and square avatar shapes
-- **Touchable Interactions**: Support for different touchable components
-- **Custom Styling**: Full control over colors and styling
-- **TypeScript**: Complete type safety with proper interfaces
+- ✅ **Automatic NativeWind Detection**: Works with or without NativeWind installed
+- ✅ **Multiple Sizes**: 8 different size variants from 2xs to 3xl
+- ✅ **Shape Variants**: Circle and square shapes
+- ✅ **Image Support**: Displays user profile images with fallback to initials
+- ✅ **Touchable Interactions**: Supports Pressable, TouchableOpacity, and TouchableHighlight
+- ✅ **Customizable Styling**: Background colors and custom CSS classes (with NativeWind)
+- ✅ **TypeScript**: Full type safety with detailed interfaces
+- ✅ **Performance**: Optimized with proper component selection and styling
+- ✅ **Cross-Platform**: Consistent behavior across iOS and Android
 
-## Basic Usage
+## NativeWind Compatibility
+
+The Avatar component automatically detects whether NativeWind is installed and adapts accordingly:
+
+- **With NativeWind**: Uses Tailwind CSS classes via the `className` prop
+- **Without NativeWind**: Falls back to StyleSheet with equivalent styling
+
+This makes the component compatible with projects that don't use NativeWind while maintaining full functionality.
+
+## Quick Start
 
 ```tsx
-import { Avatar } from 'chill-ui';
+import Avatar from '@/components/avatar/Avatar';
 
-function Example() {
-  const userData = {
+// Basic avatar with initials
+<Avatar
+  data={{
+    firstname: 'John',
+    lastname: 'Doe'
+  }}
+/>
+
+// Avatar with image
+<Avatar
+  data={{
     firstname: 'John',
     lastname: 'Doe',
-    image_url: 'https://example.com/avatar.jpg',
-  };
+    image_url: 'https://example.com/avatar.jpg'
+  }}
+  size="lg"
+  variant="circle"
+/>
 
-  return (
-    <Box className="gap-4 p-4">
-      <Avatar data={userData} size="md" variant="circle" />
-
-      <Avatar data={{ firstname: 'Jane', lastname: 'Smith' }} size="lg" variant="square" />
-
-      <Avatar data={userData} onPress={() => console.log('Avatar pressed')} size="xl" />
-    </Box>
-  );
-}
+// Touchable avatar
+<Avatar
+  data={{ firstname: 'John', lastname: 'Doe' }}
+  onPress={() => console.log('Avatar pressed')}
+  as="TouchableOpacity"
+/>
 ```
-
-## Props
-
-| Prop              | Type                                                              | Required | Default       | Description                     |
-| ----------------- | ----------------------------------------------------------------- | -------- | ------------- | ------------------------------- |
-| `data`            | `{ firstname?: string; lastname?: string; image_url?: string }`   | ✅       | -             | User data for avatar display    |
-| `size`            | `'2xs' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| '3xl'` | ❌       | `'sm'`        | Avatar size variant             |
-| `variant`         | `'circle' \| 'square'`                                            | ❌       | `'circle'`    | Avatar shape variant            |
-| `onPress`         | `() => void`                                                      | ❌       | -             | Callback when avatar is pressed |
-| `as`              | `'Pressable' \| 'TouchableOpacity' \| 'TouchableHighlight'`       | ❌       | `'Pressable'` | Component to use when pressable |
-| `backgroundColor` | `string`                                                          | ❌       | -             | Custom background color         |
-| `className`       | `string`                                                          | ❌       | -             | Custom CSS classes              |
-| `stringProps`     | `StringProps`                                                     | ❌       | -             | Props for the String component  |
 
 ## Examples
 
-### Basic Avatar
+### Basic Usage
 
 ```tsx
-const userData = {
-  firstname: 'John',
-  lastname: 'Doe',
+import Avatar from '@/components/avatar/Avatar';
+
+const BasicAvatar = () => {
+  return (
+    <Avatar
+      data={{
+        firstname: 'John',
+        lastname: 'Doe',
+      }}
+    />
+  );
 };
 
-<Avatar data={userData} />;
-```
-
-### With Profile Image
-
-```tsx
-const userData = {
-  firstname: 'Jane',
-  lastname: 'Smith',
-  image_url: 'https://example.com/avatar.jpg',
+const ImageAvatar = () => {
+  return (
+    <Avatar
+      data={{
+        firstname: 'John',
+        lastname: 'Doe',
+        image_url: 'https://example.com/avatar.jpg',
+      }}
+      size="lg"
+      variant="circle"
+    />
+  );
 };
-
-<Avatar data={userData} size="lg" />;
 ```
 
-### Different Sizes
+### Size Variants
 
 ```tsx
-<Box className="gap-2">
-  <Avatar data={userData} size="2xs" />
-  <Avatar data={userData} size="xs" />
-  <Avatar data={userData} size="sm" />
-  <Avatar data={userData} size="md" />
-  <Avatar data={userData} size="lg" />
-  <Avatar data={userData} size="xl" />
-  <Avatar data={userData} size="2xl" />
-  <Avatar data={userData} size="3xl" />
-</Box>
+const SizeVariants = () => {
+  return (
+    <Box className="flex-row items-center space-x-4">
+      <Avatar data={{ firstname: 'J', lastname: 'D' }} size="2xs" />
+      <Avatar data={{ firstname: 'J', lastname: 'D' }} size="xs" />
+      <Avatar data={{ firstname: 'J', lastname: 'D' }} size="sm" />
+      <Avatar data={{ firstname: 'J', lastname: 'D' }} size="md" />
+      <Avatar data={{ firstname: 'J', lastname: 'D' }} size="lg" />
+      <Avatar data={{ firstname: 'J', lastname: 'D' }} size="xl" />
+      <Avatar data={{ firstname: 'J', lastname: 'D' }} size="2xl" />
+      <Avatar data={{ firstname: 'J', lastname: 'D' }} size="3xl" />
+    </Box>
+  );
+};
 ```
 
 ### Shape Variants
 
 ```tsx
-<Box className="gap-4">
-  <Avatar data={userData} variant="circle" size="lg" />
-  <Avatar data={userData} variant="square" size="lg" />
-</Box>
+const ShapeVariants = () => {
+  return (
+    <Box className="flex-row items-center space-x-4">
+      <Avatar data={{ firstname: 'John', lastname: 'Doe' }} variant="circle" size="lg" />
+      <Avatar data={{ firstname: 'John', lastname: 'Doe' }} variant="square" size="lg" />
+    </Box>
+  );
+};
 ```
 
-### Clickable Avatar
+### Touchable Interactions
 
 ```tsx
-<Avatar data={userData} onPress={() => console.log('Avatar clicked')} size="lg" />
-```
+const TouchableAvatars = () => {
+  const handlePress = () => {
+    console.log('Avatar pressed!');
+  };
 
-### Different Touchable Types
+  return (
+    <Box className="flex-row items-center space-x-4">
+      {/* Default Pressable */}
+      <Avatar data={{ firstname: 'John', lastname: 'Doe' }} onPress={handlePress} />
 
-```tsx
-<Box className="gap-4">
-  <Avatar data={userData} onPress={() => console.log('Pressed')} as="Pressable" />
+      {/* TouchableOpacity */}
+      <Avatar data={{ firstname: 'John', lastname: 'Doe' }} onPress={handlePress} as="TouchableOpacity" />
 
-  <Avatar data={userData} onPress={() => console.log('Pressed')} as="TouchableOpacity" />
-
-  <Avatar data={userData} onPress={() => console.log('Pressed')} as="TouchableHighlight" />
-</Box>
+      {/* TouchableHighlight */}
+      <Avatar data={{ firstname: 'John', lastname: 'Doe' }} onPress={handlePress} as="TouchableHighlight" />
+    </Box>
+  );
+};
 ```
 
 ### Custom Styling
 
 ```tsx
-<Avatar data={userData} backgroundColor="#3B82F6" className="border-2 border-blue-500 shadow-lg" size="lg" />
+const CustomStyledAvatars = () => {
+  return (
+    <Box className="flex-row items-center space-x-4">
+      {/* Custom background color */}
+      <Avatar data={{ firstname: 'John', lastname: 'Doe' }} backgroundColor="#FF6B6B" size="lg" />
+
+      {/* Custom CSS classes (with NativeWind) */}
+      <Avatar data={{ firstname: 'John', lastname: 'Doe' }} className="border-4 border-blue-500 shadow-lg" size="lg" />
+
+      {/* Custom string props */}
+      <Avatar
+        data={{ firstname: 'John', lastname: 'Doe' }}
+        stringProps={{
+          color: '#FFFFFF',
+          weight: 'bold',
+        }}
+        size="lg"
+      />
+    </Box>
+  );
+};
 ```
 
-### Single Initial
+## API Reference
+
+### AvatarProps
+
+| Prop              | Type                                                              | Default       | Description                                        |
+| ----------------- | ----------------------------------------------------------------- | ------------- | -------------------------------------------------- |
+| `data`            | `{ firstname?: string; lastname?: string; image_url?: string }`   | **Required**  | User data for avatar display                       |
+| `size`            | `'2xs' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| '3xl'` | `'sm'`        | Avatar size variant                                |
+| `variant`         | `'circle' \| 'square'`                                            | `'circle'`    | Avatar shape variant                               |
+| `backgroundColor` | `string`                                                          | `undefined`   | Custom background color                            |
+| `className`       | `string`                                                          | `undefined`   | Custom CSS classes (only used with NativeWind)     |
+| `onPress`         | `() => void`                                                      | `undefined`   | Callback when avatar is pressed                    |
+| `as`              | `'Pressable' \| 'TouchableOpacity' \| 'TouchableHighlight'`       | `'Pressable'` | Component to use when pressable                    |
+| `stringProps`     | `StringProps`                                                     | `undefined`   | Props for the String component displaying initials |
+
+### Size Variants
+
+| Size  | Dimensions | Use Case                       |
+| ----- | ---------- | ------------------------------ |
+| `2xs` | 24x24px    | Very small icons, badges       |
+| `xs`  | 36x36px    | Small avatars, compact layouts |
+| `sm`  | 48x48px    | Default size, most common use  |
+| `md`  | 56x56px    | Medium avatars, user lists     |
+| `lg`  | 64x64px    | Large avatars, profile headers |
+| `xl`  | 80x80px    | Extra large, prominent display |
+| `2xl` | 112x112px  | Very large, hero sections      |
+| `3xl` | 128x128px  | Maximum size, special cases    |
+
+### Shape Variants
+
+| Variant  | Description                                   | Use Case                     |
+| -------- | --------------------------------------------- | ---------------------------- |
+| `circle` | Fully rounded (border-radius: 9999px)         | Most common, modern look     |
+| `square` | Slightly rounded corners (border-radius: 8px) | Alternative, structured look |
+
+## NativeWind vs StyleSheet
+
+The component automatically adapts based on NativeWind availability:
+
+### With NativeWind
 
 ```tsx
-<Avatar data={{ firstname: 'John' }} size="lg" />
+// Uses Tailwind classes
+<Avatar data={{ firstname: 'John', lastname: 'Doe' }} className="border-4 border-blue-500 shadow-lg" size="lg" />
 ```
 
-### Custom String Props
+### Without NativeWind
 
 ```tsx
+// Uses StyleSheet with equivalent styling
 <Avatar
-  data={userData}
-  stringProps={{
-    weight: 'bold',
-    color: '#FFFFFF',
-    className: 'uppercase',
-  }}
+  data={{ firstname: 'John', lastname: 'Doe' }}
+  backgroundColor="#3B82F6" // Custom colors via props
   size="lg"
 />
 ```
 
-### Avatar Grid
+## Utility Functions
+
+### getUserInitials
+
+Extracts user initials from firstname and lastname:
 
 ```tsx
-<Box className="grid grid-cols-4 gap-4">
-  {users.map((user, index) => (
-    <Avatar key={index} data={user} size="md" onPress={() => handleUserSelect(user)} />
-  ))}
-</Box>
-```
+import { getUserInitials } from '@/components/avatar/Avatar';
 
-## Initials Generation
+const initials = getUserInitials({
+  firstname: 'John',
+  lastname: 'Doe',
+}); // Returns 'JD'
 
-The component automatically generates initials from the user data:
+const singleInitial = getUserInitials({
+  firstname: 'John',
+}); // Returns 'J'
 
-```tsx
-// Full name
-getUserInitials({ firstname: 'John', lastname: 'Doe' }); // Returns 'JD'
-
-// First name only
-getUserInitials({ firstname: 'John' }); // Returns 'J'
-
-// No name
-getUserInitials({}); // Returns ''
+const emptyInitial = getUserInitials({}); // Returns ''
 ```
 
 ## Best Practices
 
-### 1. Image Loading
+1. **Always provide user data**: Even if you have an image, provide firstname/lastname for fallback
+2. **Choose appropriate sizes**: Use smaller sizes for lists, larger for prominent displays
+3. **Handle image loading**: Images are displayed with absolute positioning over initials
+4. **Consider accessibility**: The component automatically handles text contrast and sizing
+5. **Use consistent variants**: Stick to one shape variant throughout your app for consistency
 
-```tsx
-// ✅ Good: Provide fallback data
-const userData = {
-  firstname: 'John',
-  lastname: 'Doe',
-  image_url: 'https://example.com/avatar.jpg', // Will fallback to 'JD' if image fails
-};
+## Migration Guide
 
-// ✅ Good: Handle image loading errors
-<Avatar data={userData} onPress={() => handleImageError()} />;
-```
+### From NativeWind-only to Universal
 
-### 2. Consistent Sizing
+If you're migrating from a NativeWind-only implementation:
 
-```tsx
-// ✅ Good: Use consistent sizes within a component
-<Box className="gap-2">
-  <Avatar data={user1} size="md" />
-  <Avatar data={user2} size="md" />
-  <Avatar data={user3} size="md" />
-</Box>
+1. **No changes needed**: The component automatically detects NativeWind availability
+2. **Custom styling**: Use `backgroundColor` prop instead of `className` for projects without NativeWind
+3. **Testing**: Test in both environments to ensure consistent behavior
 
-// ❌ Avoid: Inconsistent sizing
-<Box className="gap-2">
-  <Avatar data={user1} size="sm" />
-  <Avatar data={user2} size="lg" />
-  <Avatar data={user3} size="xl" />
-</Box>
-```
+### From StyleSheet-only to Universal
 
-### 3. Touchable Interactions
+If you're adding NativeWind support:
 
-```tsx
-// ✅ Good: Use appropriate touchable type
-<Avatar
-  data={userData}
-  onPress={handlePress}
-  as="TouchableOpacity" // Good for simple interactions
-/>
-
-<Avatar
-  data={userData}
-  onPress={handlePress}
-  as="TouchableHighlight" // Good for visual feedback
-/>
-```
-
-### 4. Accessibility
-
-```tsx
-// ✅ Good: Provide meaningful press handlers
-<Avatar
-  data={userData}
-  onPress={() => navigateToUserProfile(userData)}
-  size="lg"
-/>
-
-// ✅ Good: Use appropriate sizes for touch targets
-<Avatar
-  data={userData}
-  onPress={handlePress}
-  size="md" // Adequate size for mobile
-/>
-```
-
-### 5. Custom Styling
-
-```tsx
-// ✅ Good: Use custom colors for brand consistency
-<Avatar
-  data={userData}
-  backgroundColor="#007AFF"
-  className="border-2 border-blue-500"
-  size="lg"
-/>
-
-// ✅ Good: Use custom string props for typography
-<Avatar
-  data={userData}
-  stringProps={{
-    weight: 'bold',
-    color: '#FFFFFF'
-  }}
-  size="lg"
-/>
-```
-
-## TypeScript
-
-The component is fully typed with TypeScript:
-
-```tsx
-interface AvatarProps {
-  className?: string;
-  onPress?: () => void;
-  data: {
-    firstname?: string;
-    lastname?: string;
-    image_url?: string;
-  };
-  backgroundColor?: string;
-  textColor?: string;
-  size?: '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
-  stringProps?: StringProps;
-  variant?: 'circle' | 'square';
-  as?: 'Pressable' | 'TouchableOpacity' | 'TouchableHighlight';
-}
-```
-
-## Performance Considerations
-
-- **Image Loading**: Images are loaded efficiently with React Native's Image component
-- **Initials Calculation**: Initials are calculated once and memoized
-- **Touchable Components**: Appropriate touchable component is rendered based on props
-
-## Dependencies
-
-- **React Native**: Core components (Image, Pressable, TouchableOpacity, TouchableHighlight)
-- **Box**: For layout container
-- **String**: For initials display
-- **cn**: For class name utilities
-
-## Accessibility
-
-The component supports standard accessibility features:
-
-- **Touch Targets**: Adequate touch target sizes for mobile accessibility
-- **Screen Reader**: Compatible with screen readers
-- **Visual Feedback**: Proper visual feedback for touchable interactions
-- **Image Alt Text**: Consider providing alt text for profile images
+1. **Install NativeWind**: Follow the official installation guide
+2. **Update styling**: Replace `backgroundColor` props with `className` where appropriate
+3. **Gradual migration**: You can mix both approaches during transition

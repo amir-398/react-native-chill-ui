@@ -71,7 +71,6 @@
     "eslint-plugin-unused-imports": "^4.1.4",
     "jest": "^29.6.3",
     "lefthook": "^1.11.12",
-    "nativewind": "^4.1.23",
     "prettier": "^3.0.0",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "react": "19.0.0",
@@ -89,16 +88,15 @@
   },
   "peerDependencies": {
     "clsx": "*",
-    "nativewind": "*",
     "react": "*",
     "react-native": "*",
     "react-native-reanimated": "*",
     "react-native-safe-area-context": "*",
     "react-native-svg": "*",
+    "react-native-webview": "*",
     "tailwind-merge": "*",
     "tailwind-variants": "*",
-    "tailwindcss": "*",
-    "react-native-webview": "*"
+    "tailwindcss": "*"
   },
   "engines": {
     "node": ">=18"

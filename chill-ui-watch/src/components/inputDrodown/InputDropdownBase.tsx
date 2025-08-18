@@ -19,7 +19,6 @@ export default function InputDropdownBase({
   searchInputProps,
   visible,
 }: InputDropdownBaseProps) {
-  console.log('maxHeight', maxHeight);
   // Animated value for height
   const animatedHeight = useRef(new Animated.Value(minHeight ?? 0)).current;
 

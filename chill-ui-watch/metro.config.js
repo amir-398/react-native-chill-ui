@@ -1,5 +1,4 @@
 const path = require('path');
-const { withNativeWind } = require('nativewind/metro');
 const { getDefaultConfig } = require('expo/metro-config');
 const { generate } = require('@storybook/react-native/scripts/generate');
 
@@ -32,5 +31,19 @@ module.exports = (() => {
   // storybook conf
   config.transformer.unstable_allowRequireContext = true;
 
-  return withNativeWind(config, { input: './global.css' });
+  // Check if NativeWind is available and apply configuration if it is
+  try {
+    const { withNativeWind } = require('nativewind/metro');
+    return withNativeWind(config, { input: './global.css' });
+  } catch (error) {
+    // NativeWind is not available, return config without NativeWind
+    console.log('NativeWind not found, skipping NativeWind configuration');
+
+    // Add CSS handling for when NativeWind is not available
+    config.resolver.assetExts.push('css');
+    config.transformer.assetPlugins = config.transformer.assetPlugins || [];
+    config.transformer.assetPlugins.push('expo-asset/tools/hashAssetFiles');
+
+    return config;
+  }
 })();

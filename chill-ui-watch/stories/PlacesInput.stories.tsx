@@ -2,65 +2,46 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { action } from '@storybook/addon-actions';
 
-import { Box, String } from '../src/components';
+import UiPresentation from './storybook';
+import { String } from '../src/components';
 import PlacesInput from '../src/components/places-input/PlacesInput';
+import { AutocompleteDropdownContext } from '../src/components/AutocompleteDropdown';
 
 const meta: Meta<typeof PlacesInput> = {
   argTypes: {
-    className: {
-      control: 'text',
-      description: 'CSS classes for the input',
-    },
-    clearable: {
-      control: 'boolean',
-      description: 'Whether to show a clear button when there is text',
-    },
     clearQueryOnSelect: {
       control: 'boolean',
       description: 'Whether to clear the input after selecting a place',
     },
-    containerClassName: {
-      control: 'text',
-      description: 'CSS classes for the container',
+    customDropdownItem: {
+      control: 'object',
+      description: 'Custom render function for dropdown items',
     },
-    emptyListText: {
-      control: 'text',
-      description: 'Text to show when no results are found',
+    dropdownItemProps: {
+      control: 'object',
+      description: 'Props for styling dropdown items',
     },
-    flatListProps: {
+    dropdownListProps: {
       control: 'object',
       description: 'Additional props for the FlatList component',
     },
+    dropdownProps: {
+      control: 'object',
+      description: 'Props for the dropdown container',
+    },
     googleApiKey: {
       control: 'text',
-      description: 'Google Places API key',
+      description: 'Google Places API key (required)',
     },
-    itemTextClassName: {
-      control: 'text',
-      description: 'CSS classes for the item text',
-    },
-    itemTextVariant: {
-      control: 'select',
-      description: 'Text variant for items',
-      options: ['body-1', 'body-2', 'caption', 'heading-1', 'heading-2', 'heading-3', 'heading-4'],
-    },
-    listClassName: {
-      control: 'text',
-      description: 'CSS classes for the list container',
-    },
-    listFooterComponent: {
+    inputProps: {
       control: 'object',
-      description: 'Component to render at the bottom of the list',
+      description: 'Props for the input component',
     },
-    listHeaderComponent: {
-      control: 'object',
-      description: 'Component to render at the top of the list',
+    isLoading: {
+      control: 'boolean',
+      description: 'Show loading indicator',
     },
-    listItemClassName: {
-      control: 'text',
-      description: 'CSS classes for list items',
-    },
-    maxListHeight: {
+    maxHeight: {
       control: 'number',
       description: 'Maximum height of the results list',
     },
@@ -70,27 +51,15 @@ const meta: Meta<typeof PlacesInput> = {
     },
     onSelect: {
       action: 'selected',
-      description: 'Callback when a place is selected',
-    },
-    placeHolder: {
-      control: 'text',
-      description: 'Placeholder text for the input',
-    },
-    placeholderTextColor: {
-      control: 'color',
-      description: 'Color of the placeholder text',
+      description: 'Callback when a place is selected (with error handling)',
     },
     query: {
       control: 'text',
-      description: 'Initial query value',
+      description: 'External query value to control the input',
     },
     queryCountries: {
       control: 'object',
       description: 'List of country codes to restrict the search to',
-    },
-    renderItem: {
-      control: 'object',
-      description: 'Custom render function for list items',
     },
     requiredCharactersBeforeSearch: {
       control: 'number',
@@ -98,40 +67,22 @@ const meta: Meta<typeof PlacesInput> = {
     },
     requiredTimeBeforeSearch: {
       control: 'number',
-      description: 'Delay in milliseconds before triggering a search',
+      description: 'Delay in milliseconds before triggering a search (debounce)',
     },
     selectedValue: {
       control: 'select',
-      description: 'Type of value to return when a place is selected',
+      description: 'Type of address component to display after selection',
       options: ['longAddress', 'shortAddress', 'postal_code', 'locality', 'country', 'street_number', 'route'],
-    },
-    showListFooterComponentWhenResults: {
-      control: 'boolean',
-      description: 'Whether to show footer component when results are available',
-    },
-    showListHeaderComponentWhenResults: {
-      control: 'boolean',
-      description: 'Whether to show header component when results are available',
-    },
-    spinnerColor: {
-      control: 'color',
-      description: 'Color of the loading spinner',
-    },
-    spinnerSize: {
-      control: 'number',
-      description: 'Size of the loading spinner',
-    },
-    textInputProps: {
-      control: 'object',
-      description: 'Additional props for the TextInput component',
     },
   },
   component: PlacesInput,
   decorators: [
     Story => (
-      <Box className="p-4">
-        <Story />
-      </Box>
+      <AutocompleteDropdownContext>
+        <UiPresentation className="items-start justify-center px-5">
+          <Story />
+        </UiPresentation>
+      </AutocompleteDropdownContext>
     ),
   ],
   title: 'components/Inputs/PlacesInput',
@@ -142,33 +93,22 @@ type Story = StoryObj<typeof PlacesInput>;
 
 export const Default: Story = {
   args: {
-    className: 'text-black',
-    clearable: true,
     clearQueryOnSelect: false,
-    containerClassName: 'w-full',
-    emptyListText: 'No results found',
+    dropdownProps: {
+      className: 'bg-white',
+    },
     googleApiKey: 'AIzaSyCvc5-EgIoFWRGmuqrnayi8RObdJsaYJSY',
-    itemTextClassName: 'text-gray-800',
-    itemTextVariant: 'body-2',
-    listClassName: 'bg-white',
-    listFooterComponent: <String>Footer</String>,
-    listHeaderComponent: <String>Header</String>,
-    listItemClassName: 'hover:bg-gray-100',
-    maxListHeight: 300,
+    inputProps: {
+      placeholder: 'Search a place...',
+    },
+    maxHeight: 300,
     onChangeText: action('onChangeText'),
     onSelect: action('onSelect'),
-    placeHolder: 'Search a place...',
     query: '',
     queryCountries: ['FR'],
-    renderItem: undefined,
     requiredCharactersBeforeSearch: 2,
     requiredTimeBeforeSearch: 500,
     selectedValue: 'longAddress',
-    showListFooterComponentWhenResults: true,
-    showListHeaderComponentWhenResults: true,
-    spinnerColor: '#d9d9d9',
-    spinnerSize: 24,
-    textInputProps: {},
   },
 };
 
@@ -182,45 +122,63 @@ export const WithInitialQuery: Story = {
 export const DarkTheme: Story = {
   args: {
     ...Default.args,
-    className: 'bg-dark text-white border-dark',
-    containerClassName: 'w-full bg-dark',
-    itemTextClassName: 'text-white',
-    listClassName: 'bg-dark border-dark',
-    listItemClassName: 'border-gray-700 hover:bg-gray-700',
-    placeholderTextColor: 'white',
-    spinnerColor: '#ffffff',
+    dropdownItemProps: {
+      className: 'border-gray-700 hover:bg-gray-700',
+      stringItemProps: {
+        className: 'text-white',
+      },
+    },
+    dropdownProps: {
+      className: 'bg-gray-800 border-gray-600',
+    },
+    inputProps: {
+      className: 'bg-gray-800 text-white border-gray-600',
+    },
   },
 };
 
 export const RoundedStyle: Story = {
   args: {
     ...Default.args,
-    className: 'rounded-full px-6 border-2 border-blue-500 focus:border-blue-600',
-    containerClassName: 'w-full',
-    listClassName: 'rounded-2xl mt-2 border-2 border-blue-500',
-    listItemClassName: 'px-6 hover:bg-blue-50',
+    dropdownItemProps: {
+      className: 'px-6 hover:bg-blue-50',
+    },
+    dropdownProps: {
+      className: 'rounded-2xl mt-2 border-2 border-blue-500',
+    },
+    inputProps: {
+      className: 'rounded-full px-6 border-2 border-blue-500 focus:border-blue-600',
+    },
   },
 };
 
 export const ModernMinimal: Story = {
   args: {
     ...Default.args,
-    className: 'border-0 border-b-2 border-gray-200 rounded-none focus:border-purple-500 transition-colors',
-    containerClassName: 'w-full',
-    listClassName: 'shadow-xl border-0 rounded-lg mt-2',
-    listItemClassName: 'hover:bg-purple-50',
-    spinnerColor: '#9333ea',
+    dropdownItemProps: {
+      className: 'hover:bg-purple-50',
+    },
+    dropdownProps: {
+      className: 'shadow-xl border-0 rounded-lg mt-2',
+    },
+    inputProps: {
+      className: 'border-0 border-b-2 border-gray-200 rounded-none focus:border-purple-500 transition-colors',
+    },
   },
 };
 
 export const CustomColors: Story = {
   args: {
     ...Default.args,
-    className: 'bg-orange-50 border-orange-300 text-orange-800',
-    containerClassName: 'w-full',
-    listClassName: 'bg-warning border-orange-200',
-    listItemClassName: 'border-orange-100 hover:bg-orange-100',
-    spinnerColor: '#f97316',
+    dropdownItemProps: {
+      className: 'border-orange-100 hover:bg-orange-100',
+    },
+    dropdownProps: {
+      className: 'bg-orange-50 border-orange-200',
+    },
+    inputProps: {
+      className: 'bg-orange-50 border-orange-300 text-orange-800',
+    },
   },
 };
 
@@ -228,5 +186,103 @@ export const ClearOnSelect: Story = {
   args: {
     ...Default.args,
     clearQueryOnSelect: true,
+  },
+};
+
+export const CountryRestricted: Story = {
+  args: {
+    ...Default.args,
+    inputProps: {
+      placeholder: 'Search in North America...',
+    },
+    queryCountries: ['US', 'CA'],
+  },
+};
+
+export const CustomRenderItem: Story = {
+  args: {
+    ...Default.args,
+    customDropdownItem: item => (
+      <div className="border-b border-gray-200 p-4">
+        <String className="text-lg font-bold text-blue-600">{item.placePrediction.text.text}</String>
+        <String className="mt-1 text-xs text-green-500">✓ Tap to select</String>
+      </div>
+    ),
+  },
+};
+
+export const AddressComponentExtraction: Story = {
+  args: {
+    ...Default.args,
+    inputProps: {
+      placeholder: 'Search for a city...',
+    },
+    selectedValue: 'locality',
+  },
+};
+
+export const PostalCodeExtraction: Story = {
+  args: {
+    ...Default.args,
+    inputProps: {
+      placeholder: 'Search for postal code...',
+    },
+    selectedValue: 'postal_code',
+  },
+};
+
+export const StreetAddressExtraction: Story = {
+  args: {
+    ...Default.args,
+    inputProps: {
+      placeholder: 'Search for street address...',
+    },
+    selectedValue: 'street_number',
+  },
+};
+
+export const FastSearch: Story = {
+  args: {
+    ...Default.args,
+    inputProps: {
+      placeholder: 'Fast search (1 char, 200ms delay)...',
+    },
+    requiredCharactersBeforeSearch: 1,
+    requiredTimeBeforeSearch: 200,
+  },
+};
+
+export const SlowSearch: Story = {
+  args: {
+    ...Default.args,
+    inputProps: {
+      placeholder: 'Slow search (4 chars, 2s delay)...',
+    },
+    requiredCharactersBeforeSearch: 4,
+    requiredTimeBeforeSearch: 2000,
+  },
+};
+
+export const CustomHeight: Story = {
+  args: {
+    ...Default.args,
+    inputProps: {
+      placeholder: 'Limited height dropdown...',
+    },
+    maxHeight: 150,
+  },
+};
+
+export const ErrorHandlingDemo: Story = {
+  args: {
+    ...Default.args,
+    googleApiKey: 'invalid-key-for-demo',
+    inputProps: {
+      placeholder: 'Demo with error handling...',
+    },
+    onSelect: place => {
+      action('onSelect')(place);
+      console.log('Selected place (may be fallback data):', place);
+    },
   },
 };

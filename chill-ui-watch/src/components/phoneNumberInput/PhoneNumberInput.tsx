@@ -179,7 +179,7 @@ function PhoneNumberInput({
   );
 
   // Render d'un item pays dans la dropdown
-  const customDropdownItem = useCallback(
+  const DropdownItemRender = useCallback(
     (item: CountryCodesProps) => (
       <Box className="flex-row items-center gap-2 p-3">
         <Image source={getFlag(item?.code)} className="h-6 w-9 border border-[#D9D9D9]" />
@@ -277,10 +277,10 @@ function PhoneNumberInput({
           dropdownPosition={dropdownStyles}
           toggleDropdown={toggleDropdown}
           dropdownProps={{
-            customDropdownItem,
             customSearchInput: undefined,
             data: displayedCountries,
             dropdownItemProps: undefined,
+            DropdownItemRender,
             hasSearch: dropdownProps?.hasSearch ?? true,
             maxHeight,
             minHeight,
@@ -290,7 +290,6 @@ function PhoneNumberInput({
               placeholder: 'Rechercher un pays...',
               value: state.searchText,
             },
-            valueField: 'code',
             visible: state.visible,
             ...dropdownProps,
           }}

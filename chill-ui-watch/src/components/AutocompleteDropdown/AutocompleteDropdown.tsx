@@ -61,6 +61,7 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
       offsetX = 0,
       offsetY = 0,
       onBlur,
+      onChangeText,
       onConfirmSelectItem,
       onFocus,
       onSelectItem,
@@ -94,6 +95,10 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
     const instance = getInstance(instanceId);
 
     const { state, updateState } = useAutocompleteDropdownState(dataSet);
+
+    useEffect(() => {
+      updateState({ listData: dataSet });
+    }, [dataSet, updateState]);
 
     const { getDropdownPosition } = useGetDropdownPosition({
       inputContainerRef,
@@ -216,7 +221,7 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
           currentValue: text === '' ? null : state.currentValue,
           searchText: text,
         });
-
+        onChangeText?.(text);
         const showDropdown = instance?.showDropdown ?? false;
 
         if (hasPerformSearch) {
@@ -235,6 +240,7 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
         eventOpen,
         updateState,
         state.currentValue,
+        onChangeText,
         hasPerformSearch,
         setShowDropdown,
         instanceId,
