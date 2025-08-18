@@ -2,10 +2,12 @@ import type { ReactElement } from 'react';
 import type { TextProps as NativeTextProps } from 'react-native';
 
 import { createElement } from 'react';
-import { cssInterop } from 'nativewind';
 import { Animated, Text as NativeText } from 'react-native';
 
+import { isNativeWindInstalled } from '../../utils/nativewindDetector';
+
 export interface TextProps extends NativeTextProps {
+  className?: string;
   onPress?: () => void;
   useFastText?: boolean;
 }
@@ -18,11 +20,17 @@ export type FastTextProps = Omit<
 /**
  * FastText component that uses RCTText for better performance.
  * Optimized for static text content without press interactions.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
- * // Basic fast text
+ * // With NativeWind
  * <FastText className="text-lg text-gray-800">
+ *   Static content for better performance
+ * </FastText>
+ *
+ * // Without NativeWind (fallback)
+ * <FastText style={{ fontSize: 18, color: '#374151' }}>
  *   Static content for better performance
  * </FastText>
  * ```
@@ -31,39 +39,53 @@ export type FastTextProps = Omit<
  * @returns Optimized text component using RCTText
  */
 export function FastText(props: FastTextProps): ReactElement {
-  return createElement('RCTText', props);
+  if (isNativeWindInstalled()) {
+    return createElement('RCTText', props);
+  }
+
+  // Fallback to native Text when NativeWind is not available
+  const { className, ...restProps } = props;
+  return createElement(NativeText, restProps);
 }
 
 /**
  * Text component that provides optimized text rendering with optional press handling.
  * Automatically uses FastText for better performance when no press interactions are needed.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
- * // Basic text with fast rendering
+ * // With NativeWind
  * <Text className="text-base text-black">
  *   Hello World
  * </Text>
  *
- * // Pressable text
+ * // Pressable text with NativeWind
  * <Text onPress={() => console.log('Pressed!')} className="text-blue-500">
  *   Click me
  * </Text>
  *
- * // Force native text rendering
- * <Text useFastText={false} className="text-lg">
- *   Native Text Component
+ * // Without NativeWind (fallback)
+ * <Text style={{ fontSize: 16, color: '#000000' }}>
+ *   Hello World
+ * </Text>
+ *
+ * // Pressable text without NativeWind
+ * <Text onPress={() => console.log('Pressed!')} style={{ color: '#3B82F6' }}>
+ *   Click me
  * </Text>
  * ```
  *
  * @param children - Text content to display
  * @param onPress - Optional press handler function
  * @param useFastText - Whether to use FastText for optimization (default: true)
+ * @param className - Classes Tailwind CSS (with NativeWind)
+ * @param style - Styles inline React Native
  * @param props - Additional React Native Text props
  * @returns Text component with optimized rendering
  */
 export function Text(props: TextProps) {
-  const { children, onPress, useFastText = true } = props;
+  const { children, className, onPress, style, useFastText = true, ...restProps } = props;
 
   /**
    * Handles press events for the text component
@@ -75,31 +97,83 @@ export function Text(props: TextProps) {
   };
 
   if (onPress) {
+    if (isNativeWindInstalled()) {
+      return (
+        <NativeText {...props} onPress={handlePress}>
+          {children}
+        </NativeText>
+      );
+    }
+
+    // Fallback without NativeWind
     return (
-      <NativeText {...props} onPress={handlePress}>
+      <NativeText {...restProps} onPress={handlePress} style={style}>
         {children}
       </NativeText>
     );
   }
 
   if (useFastText === false) {
-    return <NativeText {...props}>{children}</NativeText>;
+    if (isNativeWindInstalled()) {
+      return <NativeText {...props}>{children}</NativeText>;
+    }
+
+    // Fallback without NativeWind
+    return (
+      <NativeText {...restProps} style={style}>
+        {children}
+      </NativeText>
+    );
   }
 
-  return <FastText {...props}>{children}</FastText>;
+  if (isNativeWindInstalled()) {
+    return <FastText {...props}>{children}</FastText>;
+  }
+
+  // Fallback to FastText without NativeWind
+  return (
+    <FastText {...restProps} style={style}>
+      {children}
+    </FastText>
+  );
 }
 
-cssInterop(Text, {
-  className: {
-    target: 'style', // map className->style
-  },
-});
-
-/** Animated version of FastText for smooth text animations */
+/**
+ * Animated version of FastText for smooth text animations.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ *
+ * @example
+ * ```tsx
+ * // With NativeWind
+ * <AnimatedText className="text-lg text-blue-500">
+ *   Animated text content
+ * </AnimatedText>
+ *
+ * // Without NativeWind (fallback)
+ * <AnimatedText style={{ fontSize: 18, color: '#3B82F6' }}>
+ *   Animated text content
+ * </AnimatedText>
+ * ```
+ */
 export const AnimatedText = Animated.createAnimatedComponent(FastText);
 
-cssInterop(AnimatedText, {
-  className: {
-    target: 'style', // map className->style
-  },
-});
+// Only apply cssInterop if NativeWind is available
+if (isNativeWindInstalled()) {
+  try {
+    const { cssInterop } = require('nativewind');
+
+    cssInterop(Text, {
+      className: {
+        target: 'style', // map className->style
+      },
+    });
+
+    cssInterop(AnimatedText, {
+      className: {
+        target: 'style', // map className->style
+      },
+    });
+  } catch {
+    // NativeWind is not available, skip cssInterop
+  }
+}

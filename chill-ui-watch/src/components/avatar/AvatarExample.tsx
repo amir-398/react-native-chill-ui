@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import { Box } from '../box';
 import Avatar from './Avatar';
 import String from '../string';
-import { isNativeWindInstalled } from '../../utils/nativewind-detector';
+import { isNativeWindInstalled } from '../../utils/nativewindDetector';
 
 /**
  * Example component demonstrating Avatar usage with and without NativeWind

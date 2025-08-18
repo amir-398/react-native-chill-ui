@@ -3,7 +3,7 @@ import { render, fireEvent } from '@testing-library/react-native';
 
 import Avatar from '../Avatar';
 import { getUserInitials } from '../Avatar';
-import { isNativeWindInstalled, resetNativeWindDetection } from '../../../utils/nativewind-detector';
+import { isNativeWindInstalled, resetNativeWindDetection } from '../../../utils/nativewindDetector';
 
 // Mock the nativewind-detector module
 jest.mock('../../../utils/nativewind-detector', () => ({
