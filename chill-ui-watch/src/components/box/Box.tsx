@@ -1,22 +1,31 @@
-import type { ViewProps } from 'react-native';
-
 import cn from '../cn';
+import styles from './Box.style';
 import { View as NativeView } from './View';
+import { BoxProps } from '../../types/box.types';
+import { isNativeWindInstalled } from '../../utils/nativewindDetector';
+import { classNamePropsHandler } from '../../utils/classNameMissingError';
 
 /**
  * Basic Box component - a flexible container with no default styling.
  *
  * Uses React Native's internal ViewNativeComponent for optimal performance
  * by bypassing some abstraction layers.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
- * <Box className="p-4 bg-gray-100">
+ * <Box>
  *   <String>Content</String>
  * </Box>
  * ```
  */
-function Box(props: ViewProps) {
+function Box(props: BoxProps) {
+  classNamePropsHandler(props, 'Box');
+
+  if (isNativeWindInstalled()) {
+    return <NativeView {...props} />;
+  }
+
   return <NativeView {...props} />;
 }
 
@@ -26,6 +35,7 @@ function Box(props: ViewProps) {
  *
  * Uses React Native's internal ViewNativeComponent for optimal performance
  * by bypassing some abstraction layers.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
@@ -35,9 +45,16 @@ function Box(props: ViewProps) {
  * </BoxRow>
  * ```
  */
-function BoxRow(props: ViewProps) {
-  const { className, ...rest } = props;
-  return <NativeView className={cn('flex flex-row', className)} {...rest} />;
+function BoxRow(props: BoxProps) {
+  const { className, style, ...rest } = props;
+
+  classNamePropsHandler(props, 'BoxRow');
+
+  if (isNativeWindInstalled()) {
+    return <NativeView className={cn('flex flex-row', className)} style={style} {...rest} />;
+  }
+
+  return <NativeView style={[styles.row, style]} {...rest} />;
 }
 
 /**
@@ -45,6 +62,7 @@ function BoxRow(props: ViewProps) {
  *
  * Uses React Native's internal ViewNativeComponent for optimal performance
  * by bypassing some abstraction layers.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
@@ -54,9 +72,16 @@ function BoxRow(props: ViewProps) {
  * </BoxRowCenter>
  * ```
  */
-function BoxRowCenter(props: ViewProps) {
-  const { className, ...rest } = props;
-  return <NativeView className={cn('flex flex-row items-center', className)} {...rest} />;
+function BoxRowCenter(props: BoxProps) {
+  const { className, style, ...rest } = props;
+
+  classNamePropsHandler(props, 'BoxRowCenter');
+
+  if (isNativeWindInstalled()) {
+    return <NativeView className={cn('flex flex-row items-center', className)} style={style} {...rest} />;
+  }
+
+  return <NativeView style={[styles.rowCenter, style]} {...rest} />;
 }
 
 /**
@@ -64,6 +89,7 @@ function BoxRowCenter(props: ViewProps) {
  *
  * Uses React Native's internal ViewNativeComponent for optimal performance
  * by bypassing some abstraction layers.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
@@ -73,9 +99,16 @@ function BoxRowCenter(props: ViewProps) {
  * </BoxRowBetween>
  * ```
  */
-function BoxRowBetween(props: ViewProps) {
-  const { className, ...rest } = props;
-  return <NativeView className={cn('flex flex-row justify-between', className)} {...rest} />;
+function BoxRowBetween(props: BoxProps) {
+  const { className, style, ...rest } = props;
+
+  classNamePropsHandler(props, 'BoxRowBetween');
+
+  if (isNativeWindInstalled()) {
+    return <NativeView className={cn('flex flex-row justify-between', className)} style={style} {...rest} />;
+  }
+
+  return <NativeView style={[styles.rowBetween, style]} {...rest} />;
 }
 
 /**
@@ -83,6 +116,7 @@ function BoxRowBetween(props: ViewProps) {
  *
  * Uses React Native's internal ViewNativeComponent for optimal performance
  * by bypassing some abstraction layers.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
@@ -95,9 +129,18 @@ function BoxRowBetween(props: ViewProps) {
  * </BoxRowCenterBetween>
  * ```
  */
-function BoxRowCenterBetween(props: ViewProps) {
-  const { className, ...rest } = props;
-  return <NativeView className={cn('flex flex-row items-center justify-between', className)} {...rest} />;
+function BoxRowCenterBetween(props: BoxProps) {
+  const { className, style, ...rest } = props;
+
+  classNamePropsHandler(props, 'BoxRowCenterBetween');
+
+  if (isNativeWindInstalled()) {
+    return (
+      <NativeView className={cn('flex flex-row items-center justify-between', className)} style={style} {...rest} />
+    );
+  }
+
+  return <NativeView style={[styles.rowCenterBetween, style]} {...rest} />;
 }
 
 // Column Variants
@@ -106,6 +149,7 @@ function BoxRowCenterBetween(props: ViewProps) {
  *
  * Uses React Native's internal ViewNativeComponent for optimal performance
  * by bypassing some abstraction layers.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
@@ -115,9 +159,16 @@ function BoxRowCenterBetween(props: ViewProps) {
  * </BoxColumn>
  * ```
  */
-function BoxColumn(props: ViewProps) {
-  const { className, ...rest } = props;
-  return <NativeView className={cn('flex flex-col', className)} {...rest} />;
+function BoxColumn(props: BoxProps) {
+  const { className, style, ...rest } = props;
+
+  classNamePropsHandler(props, 'BoxColumn');
+
+  if (isNativeWindInstalled()) {
+    return <NativeView className={cn('flex flex-col', className)} style={style} {...rest} />;
+  }
+
+  return <NativeView style={[styles.column, style]} {...rest} />;
 }
 
 /**
@@ -125,6 +176,7 @@ function BoxColumn(props: ViewProps) {
  *
  * Uses React Native's internal ViewNativeComponent for optimal performance
  * by bypassing some abstraction layers.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
@@ -134,9 +186,16 @@ function BoxColumn(props: ViewProps) {
  * </BoxColumnCenter>
  * ```
  */
-function BoxColumnCenter(props: ViewProps) {
-  const { className, ...rest } = props;
-  return <NativeView className={cn('flex flex-col items-center', className)} {...rest} />;
+function BoxColumnCenter(props: BoxProps) {
+  const { className, style, ...rest } = props;
+
+  classNamePropsHandler(props, 'BoxColumnCenter');
+
+  if (isNativeWindInstalled()) {
+    return <NativeView className={cn('flex flex-col items-center', className)} style={style} {...rest} />;
+  }
+
+  return <NativeView style={[styles.columnCenter, style]} {...rest} />;
 }
 
 /**
@@ -144,6 +203,7 @@ function BoxColumnCenter(props: ViewProps) {
  *
  * Uses React Native's internal ViewNativeComponent for optimal performance
  * by bypassing some abstraction layers.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
@@ -154,9 +214,16 @@ function BoxColumnCenter(props: ViewProps) {
  * </BoxColumnBetween>
  * ```
  */
-function BoxColumnBetween(props: ViewProps) {
-  const { className, ...rest } = props;
-  return <NativeView className={cn('flex flex-col justify-between', className)} {...rest} />;
+function BoxColumnBetween(props: BoxProps) {
+  const { className, style, ...rest } = props;
+
+  classNamePropsHandler(props, 'BoxColumnBetween');
+
+  if (isNativeWindInstalled()) {
+    return <NativeView className={cn('flex flex-col justify-between', className)} style={style} {...rest} />;
+  }
+
+  return <NativeView style={[styles.columnBetween, style]} {...rest} />;
 }
 
 /**
@@ -164,6 +231,7 @@ function BoxColumnBetween(props: ViewProps) {
  *
  * Uses React Native's internal ViewNativeComponent for optimal performance
  * by bypassing some abstraction layers.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
@@ -174,9 +242,18 @@ function BoxColumnBetween(props: ViewProps) {
  * </BoxColumnCenterBetween>
  * ```
  */
-function BoxColumnCenterBetween(props: ViewProps) {
-  const { className, ...rest } = props;
-  return <NativeView className={cn('flex flex-col items-center justify-between', className)} {...rest} />;
+function BoxColumnCenterBetween(props: BoxProps) {
+  const { className, style, ...rest } = props;
+
+  classNamePropsHandler(props, 'BoxColumnCenterBetween');
+
+  if (isNativeWindInstalled()) {
+    return (
+      <NativeView className={cn('flex flex-col items-center justify-between', className)} style={style} {...rest} />
+    );
+  }
+
+  return <NativeView style={[styles.columnCenterBetween, style]} {...rest} />;
 }
 
 // Center Variants
@@ -185,6 +262,7 @@ function BoxColumnCenterBetween(props: ViewProps) {
  *
  * Uses React Native's internal ViewNativeComponent for optimal performance
  * by bypassing some abstraction layers.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
@@ -193,9 +271,16 @@ function BoxColumnCenterBetween(props: ViewProps) {
  * </BoxCenter>
  * ```
  */
-function BoxCenter(props: ViewProps) {
-  const { className, ...rest } = props;
-  return <NativeView className={cn('flex items-center justify-center', className)} {...rest} />;
+function BoxCenter(props: BoxProps) {
+  const { className, style, ...rest } = props;
+
+  classNamePropsHandler(props, 'BoxCenter');
+
+  if (isNativeWindInstalled()) {
+    return <NativeView className={cn('flex items-center justify-center', className)} style={style} {...rest} />;
+  }
+
+  return <NativeView style={[styles.center, style]} {...rest} />;
 }
 
 // Grow Variants
@@ -204,6 +289,7 @@ function BoxCenter(props: ViewProps) {
  *
  * Uses React Native's internal ViewNativeComponent for optimal performance
  * by bypassing some abstraction layers.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
@@ -212,9 +298,16 @@ function BoxCenter(props: ViewProps) {
  * </BoxGrow>
  * ```
  */
-function BoxGrow(props: ViewProps) {
-  const { className, ...rest } = props;
-  return <NativeView className={cn('flex-1', className)} {...rest} />;
+function BoxGrow(props: BoxProps) {
+  const { className, style, ...rest } = props;
+
+  classNamePropsHandler(props, 'BoxGrow');
+
+  if (isNativeWindInstalled()) {
+    return <NativeView className={cn('flex-1', className)} style={style} {...rest} />;
+  }
+
+  return <NativeView style={[styles.grow, style]} {...rest} />;
 }
 
 /**
@@ -222,6 +315,7 @@ function BoxGrow(props: ViewProps) {
  *
  * Uses React Native's internal ViewNativeComponent for optimal performance
  * by bypassing some abstraction layers.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
@@ -231,9 +325,16 @@ function BoxGrow(props: ViewProps) {
  * </BoxRowGrow>
  * ```
  */
-function BoxRowGrow(props: ViewProps) {
-  const { className, ...rest } = props;
-  return <NativeView className={cn('flex-1 flex-row', className)} {...rest} />;
+function BoxRowGrow(props: BoxProps) {
+  const { className, style, ...rest } = props;
+
+  classNamePropsHandler(props, 'BoxRowGrow');
+
+  if (isNativeWindInstalled()) {
+    return <NativeView className={cn('flex-1 flex-row', className)} style={style} {...rest} />;
+  }
+
+  return <NativeView style={[styles.rowGrow, style]} {...rest} />;
 }
 
 /**
@@ -241,6 +342,7 @@ function BoxRowGrow(props: ViewProps) {
  *
  * Uses React Native's internal ViewNativeComponent for optimal performance
  * by bypassing some abstraction layers.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
@@ -251,9 +353,16 @@ function BoxRowGrow(props: ViewProps) {
  * </BoxColumnGrow>
  * ```
  */
-function BoxColumnGrow(props: ViewProps) {
-  const { className, ...rest } = props;
-  return <NativeView className={cn('flex-1 flex-col', className)} {...rest} />;
+function BoxColumnGrow(props: BoxProps) {
+  const { className, style, ...rest } = props;
+
+  classNamePropsHandler(props, 'BoxColumnGrow');
+
+  if (isNativeWindInstalled()) {
+    return <NativeView className={cn('flex-1 flex-col', className)} style={style} {...rest} />;
+  }
+
+  return <NativeView style={[styles.columnGrow, style]} {...rest} />;
 }
 
 // Positioning Variants
@@ -262,6 +371,7 @@ function BoxColumnGrow(props: ViewProps) {
  *
  * Uses React Native's internal ViewNativeComponent for optimal performance
  * by bypassing some abstraction layers.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
@@ -270,9 +380,16 @@ function BoxColumnGrow(props: ViewProps) {
  * </BoxAbsolute>
  * ```
  */
-function BoxAbsolute(props: ViewProps) {
-  const { className, ...rest } = props;
-  return <NativeView className={cn('absolute', className)} {...rest} />;
+function BoxAbsolute(props: BoxProps) {
+  const { className, style, ...rest } = props;
+
+  classNamePropsHandler(props, 'BoxAbsolute');
+
+  if (isNativeWindInstalled()) {
+    return <NativeView className={cn('absolute', className)} style={style} {...rest} />;
+  }
+
+  return <NativeView style={[styles.absolute, style]} {...rest} />;
 }
 
 // Stack Variants (for layered content)
@@ -281,20 +398,28 @@ function BoxAbsolute(props: ViewProps) {
  *
  * Uses React Native's internal ViewNativeComponent for optimal performance
  * by bypassing some abstraction layers.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
  * <BoxStack>
  *   <Image source={{ uri: 'image.jpg' }} />
- *   <BoxAbsolute className="top-2 right-2">
+ *   <BoxAbsolute className="top-2 right-2" {'or'} style={{ top: 8, right: 8 }}>
  *     <Badge>New</Badge>
  *   </BoxAbsolute>
  * </BoxStack>
  * ```
  */
-function BoxStack(props: ViewProps) {
-  const { className, ...rest } = props;
-  return <NativeView className={cn('relative', className)} {...rest} />;
+function BoxStack(props: BoxProps) {
+  const { className, style, ...rest } = props;
+
+  classNamePropsHandler(props, 'BoxStack');
+
+  if (isNativeWindInstalled()) {
+    return <NativeView className={cn('relative', className)} style={style} {...rest} />;
+  }
+
+  return <NativeView style={[styles.stack, style]} {...rest} />;
 }
 
 export {

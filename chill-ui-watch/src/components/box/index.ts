@@ -1,18 +1,3 @@
-/**
- * Comprehensive collection of Box components for common layout patterns.
- * Each variant is pre-configured with specific Tailwind classes for optimal developer experience.
- *
- * @example
- * ```tsx
- * import { Box, BoxRow, BoxCenter } from 'chill-ui';
- *
- * <Box>
- *   <BoxRow>
- *     <BoxCenter>Centered content</BoxCenter>
- *   </BoxRow>
- * </Box>
- * ```
- */
 export {
   // Basic
   Box,

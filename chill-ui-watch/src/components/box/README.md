@@ -1,356 +1,167 @@
-# Box Component Variants
+# Box Component
 
-A curated collection of essential Box components for common layout patterns in React Native. Each variant is pre-configured with specific Tailwind classes for optimal developer experience.
+The Box component is a flexible container that provides predefined layout variants with automatic NativeWind support and fallback to StyleSheet.
 
 ## Features
 
-- **14 Essential Variants**: Carefully selected components for the most common layout patterns
-- **Performance Optimized**: Uses React Native's internal ViewNativeComponent for optimal performance
-- **Semantic Names**: Clear, descriptive names for each variant
-- **Flexbox Power**: Leverages Flexbox for responsive layouts
-- **TypeScript**: Full type safety with ViewProps
-- **Lightweight**: Minimal overhead with optimized NativeView wrapper
-- **Consistent**: Uniform API across all variants
+- ✅ **Optional NativeWind Support** : Automatic detection and fallback to StyleSheet
+- ✅ **Layout Variants** : Row, Column, Center, Grow, etc.
+- ✅ **Optimized Performance** : Uses React Native's ViewNativeComponent
+- ✅ **TypeScript** : Complete type support
+- ✅ **Flexible** : Support for className and style props
 
-## Performance
+## Usage
 
-All Box components use React Native's internal `ViewNativeComponent` for optimal performance by bypassing some abstraction layers, providing faster rendering compared to standard View components.
-
-## Basic Usage
+### With NativeWind Installed
 
 ```tsx
-import { Box, BoxRow, BoxCenter } from 'chill-ui';
+import { Box, BoxRow, BoxColumn, BoxCenter } from '@/components/box';
 
-function Example() {
-  return (
-    <Box>
-      <BoxRow>
-        <BoxCenter>Centered content</BoxCenter>
-      </BoxRow>
-    </Box>
-  );
-}
+// Basic box with Tailwind classes
+<Box className="p-4 bg-gray-100 rounded-lg">
+  <String>Content</String>
+</Box>
+
+// Horizontal layout
+<BoxRow className="space-x-2">
+  <String>Item 1</String>
+  <String>Item 2</String>
+</BoxRow>
+
+// Centered vertical layout
+<BoxColumnCenter className="p-4">
+  <Avatar data={{ firstname: 'John', lastname: 'Doe' }} />
+  <String>John Doe</String>
+</BoxColumnCenter>
+
+// Perfect centering
+<BoxCenter className="h-full">
+  <String>Perfectly centered</String>
+</BoxCenter>
 ```
 
-## Component Categories
+### Without NativeWind (StyleSheet Fallback)
 
-### Basic Components
+```tsx
+import { Box, BoxRow, BoxColumn, BoxCenter } from '@/components/box';
 
-| Component | Classes | Description                          |
-| --------- | ------- | ------------------------------------ |
-| `Box`     | -       | Basic container (no default styling) |
+// Usage with StyleSheet (automatic fallback)
+<Box style={{ padding: 16, backgroundColor: '#f3f4f6' }}>
+  <String>Content</String>
+</Box>
 
-### Row Variants (Horizontal Layout)
+// Horizontal layout with inline styles
+<BoxRow style={{ gap: 8 }}>
+  <String>Item 1</String>
+  <String>Item 2</String>
+</BoxRow>
 
-| Component             | Classes                                      | Description                        |
-| --------------------- | -------------------------------------------- | ---------------------------------- |
-| `BoxRow`              | `flex flex-row`                              | Horizontal layout                  |
-| `BoxRowCenter`        | `flex flex-row items-center`                 | Horizontal with vertical centering |
-| `BoxRowBetween`       | `flex flex-row justify-between`              | Space between items                |
-| `BoxRowCenterBetween` | `flex flex-row items-center justify-between` | Center + space between             |
+// Centered vertical layout
+<BoxColumnCenter style={{ padding: 16 }}>
+  <Avatar data={{ firstname: 'John', lastname: 'Doe' }} />
+  <String>John Doe</String>
+</BoxColumnCenter>
+```
 
-### Column Variants (Vertical Layout)
+## Available Variants
 
-| Component                | Classes                                      | Description                        |
-| ------------------------ | -------------------------------------------- | ---------------------------------- |
-| `BoxColumn`              | `flex flex-col`                              | Vertical layout                    |
-| `BoxColumnCenter`        | `flex flex-col items-center`                 | Vertical with horizontal centering |
-| `BoxColumnBetween`       | `flex flex-col justify-between`              | Space between items                |
-| `BoxColumnCenterBetween` | `flex flex-col items-center justify-between` | Center + space between             |
+### Base Variants
 
-### Center Variants
+| Component   | Description                            | NativeWind      | StyleSheet                |
+| ----------- | -------------------------------------- | --------------- | ------------------------- |
+| `Box`       | Base container without default styling | `className`     | `style`                   |
+| `BoxRow`    | Horizontal layout (flex-row)           | `flex flex-row` | `flexDirection: 'row'`    |
+| `BoxColumn` | Vertical layout (flex-col)             | `flex flex-col` | `flexDirection: 'column'` |
 
-| Component   | Classes                            | Description       |
-| ----------- | ---------------------------------- | ----------------- |
-| `BoxCenter` | `flex items-center justify-center` | Perfect centering |
+### Centering Variants
 
-### Grow Variants (Flexible Size)
+| Component         | Description                               | NativeWind                         | StyleSheet                                       |
+| ----------------- | ----------------------------------------- | ---------------------------------- | ------------------------------------------------ |
+| `BoxCenter`       | Perfect centering (horizontal + vertical) | `flex items-center justify-center` | `alignItems: 'center', justifyContent: 'center'` |
+| `BoxRowCenter`    | Vertical centering in row                 | `flex flex-row items-center`       | `flexDirection: 'row', alignItems: 'center'`     |
+| `BoxColumnCenter` | Horizontal centering in column            | `flex flex-col items-center`       | `flexDirection: 'column', alignItems: 'center'`  |
 
-| Component       | Classes           | Description              |
-| --------------- | ----------------- | ------------------------ |
-| `BoxGrow`       | `flex-1`          | Fills available space    |
-| `BoxRowGrow`    | `flex-1 flex-row` | Growing row container    |
-| `BoxColumnGrow` | `flex-1 flex-col` | Growing column container |
+### Spacing Variants
+
+| Component                | Description                      | NativeWind                                   | StyleSheet                                                                       |
+| ------------------------ | -------------------------------- | -------------------------------------------- | -------------------------------------------------------------------------------- |
+| `BoxRowBetween`          | Space between elements in row    | `flex flex-row justify-between`              | `flexDirection: 'row', justifyContent: 'space-between'`                          |
+| `BoxRowCenterBetween`    | Vertical centering + spacing     | `flex flex-row items-center justify-between` | `flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'`    |
+| `BoxColumnBetween`       | Space between elements in column | `flex flex-col justify-between`              | `flexDirection: 'column', justifyContent: 'space-between'`                       |
+| `BoxColumnCenterBetween` | Horizontal centering + spacing   | `flex flex-col items-center justify-between` | `flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between'` |
+
+### Growth Variants
+
+| Component       | Description                 | NativeWind        | StyleSheet                         |
+| --------------- | --------------------------- | ----------------- | ---------------------------------- |
+| `BoxGrow`       | Flexible container (flex-1) | `flex-1`          | `flex: 1`                          |
+| `BoxRowGrow`    | Flexible row                | `flex-1 flex-row` | `flex: 1, flexDirection: 'row'`    |
+| `BoxColumnGrow` | Flexible column             | `flex-1 flex-col` | `flex: 1, flexDirection: 'column'` |
 
 ### Positioning Variants
 
-| Component     | Classes    | Description          |
-| ------------- | ---------- | -------------------- |
-| `BoxAbsolute` | `absolute` | Absolute positioning |
+| Component     | Description                                   | NativeWind | StyleSheet             |
+| ------------- | --------------------------------------------- | ---------- | ---------------------- |
+| `BoxAbsolute` | Absolute positioning                          | `absolute` | `position: 'absolute'` |
+| `BoxStack`    | Relative positioning (for overlapped content) | `relative` | `position: 'relative'` |
 
-### Stack Variants (Layered Content)
+## Props
 
-| Component  | Classes    | Description                   |
-| ---------- | ---------- | ----------------------------- |
-| `BoxStack` | `relative` | Container for layered content |
+### Common Props
 
-## Examples
+All Box components accept the following props:
 
-### App Layout
+| Prop           | Type                   | Description                                      |
+| -------------- | ---------------------- | ------------------------------------------------ |
+| `className`    | `string`               | Tailwind CSS classes (used only with NativeWind) |
+| `style`        | `StyleProp<ViewStyle>` | React Native inline styles                       |
+| `children`     | `ReactNode`            | Component content                                |
+| `...ViewProps` | -                      | All React Native View props                      |
 
-```tsx
-function AppLayout() {
-  return (
-    <BoxColumnGrow>
-      {/* Header */}
-      <BoxAbsolute className="left-0 right-0 top-0 z-10 bg-white p-4">
-        <BoxRowCenterBetween>
-          <String size="lg" weight="bold">
-            App Title
-          </String>
-          <Icon name="menu" />
-        </BoxRowCenterBetween>
-      </BoxAbsolute>
-
-      {/* Main Content */}
-      <BoxGrow className="pt-16">
-        <BoxCenter>
-          <String>Main Content</String>
-        </BoxCenter>
-      </BoxGrow>
-
-      {/* Footer */}
-      <BoxAbsolute className="bottom-0 left-0 right-0 bg-gray-100 p-4">
-        <BoxRowCenter>
-          <String>Footer Content</String>
-        </BoxRowCenter>
-      </BoxAbsolute>
-    </BoxColumnGrow>
-  );
-}
-```
-
-### Card Layout
+### Advanced Usage Examples
 
 ```tsx
-function Card() {
-  return (
-    <BoxStack className="rounded-lg bg-white shadow-lg">
-      <BoxColumn className="p-4">
-        <BoxRowCenterBetween className="mb-4">
-          <String size="lg" weight="bold">
-            Card Title
-          </String>
-          <Badge size="sm">New</Badge>
-        </BoxRowCenterBetween>
-
-        <BoxGrow>
-          <String>Card content goes here...</String>
-        </BoxGrow>
-
-        <BoxRow className="mt-4 justify-end">
-          <Button>Action</Button>
-        </BoxRow>
-      </BoxColumn>
-
-      <BoxAbsolute className="right-2 top-2">
-        <Icon name="heart" />
-      </BoxAbsolute>
-    </BoxStack>
-  );
-}
-```
-
-### Navigation Bar
-
-```tsx
-function NavigationBar() {
-  return (
-    <BoxRowBetween className="border-b bg-white p-4">
-      <BoxRowCenter className="gap-2">
-        <Icon name="arrow-left" />
-        <String weight="semibold">Back</String>
-      </BoxRowCenter>
-
-      <BoxCenter>
-        <String size="lg" weight="bold">
-          Page Title
-        </String>
-      </BoxCenter>
-
-      <BoxRowCenter className="gap-2">
-        <Icon name="search" />
-        <Icon name="more" />
-      </BoxRowCenter>
-    </BoxRowBetween>
-  );
-}
-```
-
-### Grid Layout
-
-```tsx
-function GridLayout() {
-  return (
-    <BoxRow className="flex-wrap gap-4 p-4">
-      {Array.from({ length: 6 }).map((_, index) => (
-        <BoxCenter key={index} className="h-32 w-1/2 rounded-lg bg-gray-200">
-          <String>Item {index + 1}</String>
-        </BoxCenter>
-      ))}
-    </BoxRow>
-  );
-}
-```
-
-### Modal Overlay
-
-```tsx
-function ModalOverlay() {
-  return (
-    <BoxAbsolute className="inset-0 bg-black/50">
-      <BoxCenter className="flex-1">
-        <BoxCenter className="m-4 rounded-lg bg-white p-6">
-          <BoxColumnCenter className="gap-4">
-            <String size="lg" weight="bold">
-              Modal Title
-            </String>
-            <String>Modal content goes here...</String>
-            <BoxRowCenter className="gap-2">
-              <Button variant="outline">Cancel</Button>
-              <Button>Confirm</Button>
-            </BoxRowCenter>
-          </BoxColumnCenter>
-        </BoxCenter>
-      </BoxCenter>
-    </BoxAbsolute>
-  );
-}
-```
-
-### Profile Header
-
-```tsx
-function ProfileHeader() {
-  return (
-    <BoxColumnCenter className="bg-gradient-to-b from-blue-500 to-blue-600 p-6">
-      <BoxStack className="mb-4">
-        <Box className="h-20 w-20 rounded-full bg-white">
-          <BoxCenter className="h-full w-full">
-            <Avatar data={{ firstname: 'John', lastname: 'Doe' }} />
-          </BoxCenter>
-        </Box>
-        <BoxAbsolute className="bottom-0 right-0">
-          <Box className="h-6 w-6 rounded-full border-2 border-white bg-green-500" />
-        </BoxAbsolute>
-      </BoxStack>
-
-      <BoxColumnCenter>
-        <String size="xl" weight="bold" className="text-white">
-          John Doe
-        </String>
-        <String className="text-blue-100">Software Engineer</String>
-      </BoxColumnCenter>
-    </BoxColumnCenter>
-  );
-}
-```
-
-## Best Practices
-
-### 1. Choose the Right Variant
-
-```tsx
-// ✅ Good: Use semantic variants
-<BoxRowCenterBetween>
-  <String>Title</String>
-  <Button>Action</Button>
+// Combining variants with custom styles
+<BoxRowCenterBetween
+  className="bg-white shadow-lg rounded-lg p-4"
+  style={{ marginHorizontal: 16 }}
+>
+  <BoxRowCenter>
+    <Icon name="user" />
+    <String>John Doe</String>
+  </BoxRowCenter>
+  <Badge>Online</Badge>
 </BoxRowCenterBetween>
 
-// ❌ Avoid: Manual styling when variant exists
-<Box className="flex flex-row items-center justify-between">
-  <String>Title</String>
-  <Button>Action</Button>
-</Box>
-```
-
-### 2. Combine Variants Effectively
-
-```tsx
-// ✅ Good: Layer variants for complex layouts
-<BoxGrow>
-  <BoxColumnBetween>
-    <BoxRowCenter>Header</BoxRowCenter>
-    <BoxCenter>Content</BoxCenter>
-    <BoxRow className="justify-end">Footer</BoxRow>
-  </BoxColumnBetween>
-</BoxGrow>
-```
-
-### 3. Use Absolute Positioning Sparingly
-
-```tsx
-// ✅ Good: Use for overlays and notifications
-<BoxStack>
-  <BoxCenter>Main Content</BoxCenter>
-  <BoxAbsolute className="right-2 top-2">
-    <Badge>Notification</Badge>
+// Complex layout with overlapped content
+<BoxStack className="relative">
+  <Image source={{ uri: 'image.jpg' }} className="w-full h-48" />
+  <BoxAbsolute className="top-2 right-2">
+    <Badge>New</Badge>
   </BoxAbsolute>
 </BoxStack>
+
+// Responsive layout with growth
+<BoxColumnGrow className="bg-gray-50">
+  <String>Header</String>
+  <BoxGrow className="p-4">
+    <String>Main content</String>
+  </BoxGrow>
+  <String>Footer</String>
+</BoxColumnGrow>
 ```
 
-### 4. Combine with Custom Classes
+## Performance
 
-```tsx
-// ✅ Good: Extend with additional styling
-<BoxRowCenter className="gap-4 bg-gray-100 p-4">
-  <Icon name="star" />
-  <String>Featured</String>
-</BoxRowCenter>
-```
+- **ViewNativeComponent** : Uses React Native's native View component for optimal performance
+- **NativeWind Detection** : Caches detection result to avoid repeated checks
+- **StyleSheet** : Uses StyleSheet.create() for optimized styles when NativeWind is not available
 
-### 5. Use Additional Classes for Missing Variants
+## Compatibility
 
-```tsx
-// For removed variants, use base component + classes
-<BoxRow className="justify-around">  {/* Instead of BoxRowAround */}
-  <Button>Button 1</Button>
-  <Button>Button 2</Button>
-</BoxRow>
-
-<BoxColumn className="items-end">  {/* Instead of BoxColumnEnd */}
-  <String>Right aligned</String>
-</BoxColumn>
-
-<BoxAbsolute className="top-0 right-0">  {/* Instead of BoxAbsoluteTopRight */}
-  <Badge>5</Badge>
-</BoxAbsolute>
-```
-
-## Performance Considerations
-
-- All variants use React Native's internal `ViewNativeComponent` for optimal performance
-- Significantly faster rendering compared to standard View components
-- No performance difference between variants
-- Consider memoization for complex layouts with many children
-- Lightweight function components with minimal overhead
-
-## File Structure
-
-```
-box/
-├── README.md      # This documentation
-├── Box.tsx        # All Box variants
-├── View.tsx       # Base View component
-└── index.ts       # Exports
-```
-
-## TypeScript
-
-All variants accept the same `ViewProps` interface:
-
-```tsx
-import type { ViewProps } from 'react-native';
-
-// All variants have the same signature
-function BoxVariant(props: ViewProps) {
-  return <NativeView {...props} />;
-}
-```
-
-## Related Components
-
-- **View**: Base view component
-- **String**: Text component often used with Box
-- **Icon**: Icon component for decorative elements
-- **Badge**: Status indicators often positioned with Box
+- ✅ React Native 0.70+
+- ✅ Expo SDK 48+
+- ✅ TypeScript 4.9+
+- ✅ NativeWind 2.0+ (optional)
+- ✅ iOS 12+
+- ✅ Android API 21+

@@ -5,7 +5,7 @@ import { Box } from '../box';
 import String from '../string';
 import { AvatarProps } from '../../types';
 import { avatarVariants, sizeVariant } from './styleVariants';
-import { isNativeWindInstalled } from '../../utils/nativewind-detector';
+import { isNativeWindInstalled } from '../../utils/nativewindDetector';
 
 /**
  * Get user initials from firstname and lastname

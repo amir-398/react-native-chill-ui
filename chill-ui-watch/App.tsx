@@ -1,4 +1,4 @@
-import { Box } from '@/components';
+import { Box, BoxRowBetween } from '@/components';
 
 // Import global.css only if NativeWind is available
 try {
@@ -20,5 +20,10 @@ export default function App() {
   //     },
   //   },
   // });
-  return <Box />;
+  return (
+    <BoxRowBetween>
+      <Box style={{ backgroundColor: 'red', height: 100, width: 100 }} className="bg-black" />
+      <Box style={{ backgroundColor: 'blue', height: 100, width: 100 }} className="bg-black" />
+    </BoxRowBetween>
+  );
 }
