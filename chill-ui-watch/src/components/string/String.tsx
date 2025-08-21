@@ -1,12 +1,16 @@
 import type { StringProps } from '../../types';
 
 import cn from '../cn';
+import styles from './String.style';
 import { Text as NativeText } from './Text';
-import { textColorVr, textFontVr, textPositionVr, textSizeVr, textVariantVr } from './styleVatiants';
+import { isNativeWindInstalled } from '../../utils/nativewindDetector';
+import { classNamePropsHandler } from '../../utils/classNameMissingError';
+import { textColorVr, textFontVr, textPositionVr, textSizeVr } from './styleVatiants';
 
 /**
  * String component that provides a high-level text component with predefined styling variants.
  * Offers consistent typography with customizable size, color, font, weight, and position options.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
@@ -37,21 +41,79 @@ import { textColorVr, textFontVr, textPositionVr, textSizeVr, textVariantVr } fr
  * @returns Styled text component with consistent typography
  */
 export default function String(props: StringProps) {
-  const { children, className, color, colorVariant = 'primary', font, position, size, style, variant, weight } = props;
-
-  /** Dynamic classes generated from props using Tailwind variants */
-  const dynamicClasses = cn(
-    'flex-shrink',
-    textSizeVr({ size }),
-    textFontVr({ font, weight }),
-    textColorVr({ color: colorVariant }),
-    textPositionVr({ position }),
-    textVariantVr({ variant }),
+  const {
+    children,
     className,
-  );
+    color,
+    colorVariant = 'primary',
+    font = 'primary',
+    position,
+    size,
+    style,
+    variant = 'body-1',
+    weight,
+  } = props;
+
+  classNamePropsHandler(props, 'String');
+
+  if (isNativeWindInstalled()) {
+    console.log('textSizeVr', textSizeVr({ size }));
+    console.log('textColorVr', textColorVr({ color: colorVariant }));
+    console.log('textPositionVr', textPositionVr({ position }));
+    console.log('textFontVr', textFontVr({ font, weight }));
+    console.log('className', className);
+
+    /** Dynamic classes generated from props using Tailwind variantsp */
+    const dynamicClasses = cn(
+      'flex-shrink',
+      textColorVr({ color: colorVariant }),
+      textPositionVr({ position }),
+      textFontVr({ font, variant, weight }),
+      textSizeVr({ size }),
+      className,
+    );
+
+    console.log('dynamicClasses', dynamicClasses);
+
+    return (
+      <NativeText {...props} className={dynamicClasses} style={[{ ...(color && { color }) }, style]}>
+        {children}
+      </NativeText>
+    );
+  }
+
+  const isTitle = variant?.startsWith('title-');
+  const finalWeight = isTitle ? 'bold' : weight || 'regular';
+
+  const getFontFamilyStyle = () => {
+    if (!font) return null;
+    const styleKey = `font${font.charAt(0).toUpperCase() + font.slice(1)}${
+      finalWeight.charAt(0).toUpperCase() + finalWeight.slice(1)
+    }` as keyof typeof styles;
+
+    return styles[styleKey];
+  };
+
+  console.log('size', styles[`size${size.charAt(0).toUpperCase() + size.slice(1)}` as keyof typeof styles]);
+
+  const fallbackStyles = [
+    styles.base,
+    size && styles[`size${size.charAt(0).toUpperCase() + size.slice(1)}` as keyof typeof styles],
+    styles[`weight${finalWeight.charAt(0).toUpperCase() + finalWeight.slice(1)}` as keyof typeof styles],
+    colorVariant &&
+      styles[`color${colorVariant.charAt(0).toUpperCase() + colorVariant.slice(1)}` as keyof typeof styles],
+    position && styles[`position${position.charAt(0).toUpperCase() + position.slice(1)}` as keyof typeof styles],
+    variant &&
+      styles[`variant${variant.charAt(0).toUpperCase() + variant.slice(1).split('-').join('')}` as keyof typeof styles],
+    getFontFamilyStyle(),
+    { ...(color && { color }) },
+    style,
+  ].filter(Boolean);
+
+  console.log('fallbackStyles', fallbackStyles);
 
   return (
-    <NativeText {...props} className={dynamicClasses} style={[{ ...(color && { color }) }, style]}>
+    <NativeText {...props} style={fallbackStyles} useFastText={false}>
       {children}
     </NativeText>
   );
