@@ -22,7 +22,7 @@ import {
   Montserrat_100Thin,
 } from '@expo-google-fonts/montserrat';
 
-import { Box, String } from '@/components';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Box } from '@/components';
 // Import global.css only if NativeWind is available
 try {
   require('nativewind');
@@ -69,7 +69,12 @@ export default function App() {
   // });
   return (
     <Box style={{ marginTop: 100 }}>
-      <String size="2xl">Hello</String>
+      <Accordion type="single" collapsible>
+        <AccordionItem value="item-1">
+          <AccordionTrigger>Is it accessible?</AccordionTrigger>
+          <AccordionContent>Yes. It adheres to the WAI-ARIA design pattern.</AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </Box>
   );
 }

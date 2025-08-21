@@ -94,4 +94,6 @@ export type AccordionContentProps = {
   children: ReactNode;
   /** Custom CSS classes */
   className?: string;
+  /** Props to pass to String component when children is a string */
+  stringProps?: StringProps;
 } & ViewProps;

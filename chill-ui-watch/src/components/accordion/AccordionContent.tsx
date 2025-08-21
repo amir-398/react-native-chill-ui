@@ -5,6 +5,7 @@ import type { AccordionContentProps } from '../../types';
 
 import cn from '../cn';
 import { Box } from '../box';
+import String from '../string';
 import { AnimatedBox } from '../animatedBox';
 import { useAccordion } from './AccordionContext';
 import { useAccordionItem } from './AccordionItemContext';
@@ -15,8 +16,8 @@ import { useAccordionItem } from './AccordionItemContext';
  *
  * @example
  * ```tsx
- * <AccordionContent>
- *   <String>This content will be shown when the accordion item is expanded.</String>
+ * <AccordionContent stringProps={{ variant: 'body-2' }}>
+ *   This content will be shown when the accordion item is expanded.
  * </AccordionContent>
  *
  * // Custom styling
@@ -29,8 +30,10 @@ import { useAccordionItem } from './AccordionItemContext';
  *
  * @param children - Content to display when expanded
  * @param className - Custom CSS classes
+ * @param stringProps - Props to pass to String component when children is a string
+ * @param ...rest - Props to pass to View props
  */
-export default function AccordionContent({ children, className, ...props }: AccordionContentProps) {
+export default function AccordionContent({ children, className, stringProps, ...props }: AccordionContentProps) {
   const { hasAnimation, isItemOpen } = useAccordion();
   const { value } = useAccordionItem();
 
@@ -49,7 +52,7 @@ export default function AccordionContent({ children, className, ...props }: Acco
       }}
     >
       <Box className={cn('border-b border-gray-100 bg-white px-4 py-3', className)} {...props}>
-        {children}
+        {typeof children === 'string' ? <String {...stringProps}>{children}</String> : children}
       </Box>
     </AnimatedBox>
   );

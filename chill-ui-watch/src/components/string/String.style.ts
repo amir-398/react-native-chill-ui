@@ -38,7 +38,7 @@ export default StyleSheet.create({
 
   // Font weight variants
   weightBold: {
-    fontFamily: '',
+    fontWeight: '700',
   },
   weightExtraBold: {
     fontWeight: '800',

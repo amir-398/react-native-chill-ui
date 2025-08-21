@@ -1,13 +1,7 @@
 import type { TextProps } from 'react-native';
 import type { VariantProps } from 'tailwind-variants';
 
-import type {
-  textColorVr,
-  textFontVr,
-  textPositionVr,
-  textSizeVr,
-  textVariantVr,
-} from '../components/string/styleVatiants';
+import type { textColorVr, textFontVr, textPositionVr, textSizeVr } from '../components/string/styleVatiants';
 
 /**
  * Props for the String component
@@ -21,8 +15,6 @@ export interface StringProps extends TextProps {
   onPress?: () => void;
   /** Whether to use fast text rendering */
   useFastText?: boolean;
-  /** Maximum number of lines to display */
-  numberOfLines?: number;
   /** Text content to display */
   children?: string | React.ReactNode;
   /** Size variant for the text */
@@ -32,7 +24,7 @@ export interface StringProps extends TextProps {
   /** Font weight variant */
   weight?: VariantProps<typeof textFontVr>['weight'];
   /** Text style variant */
-  variant?: VariantProps<typeof textVariantVr>['variant'];
+  variant?: VariantProps<typeof textFontVr>['variant'];
   /** Color variant for the text */
   colorVariant?: VariantProps<typeof textColorVr>['color'];
   /** Text alignment position */

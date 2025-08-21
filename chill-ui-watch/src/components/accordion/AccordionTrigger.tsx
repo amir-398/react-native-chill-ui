@@ -65,6 +65,8 @@ export default function AccordionTrigger({
   } = useAccordion();
   const { disabled: itemDisabled, value } = useAccordionItem();
 
+  console.log('children', typeof children === 'string');
+
   const isOpen = isItemOpen(value);
   const disabled = accordionDisabled || itemDisabled;
 
