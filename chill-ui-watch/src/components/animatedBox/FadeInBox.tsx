@@ -3,99 +3,147 @@ import { useRef, useEffect, useImperativeHandle, forwardRef, useCallback } from 
 
 import type { FadeInBoxProps, FadeInBoxRef } from '../../types/animatedBox';
 
+import cn from '../cn';
+import styles from './AnimatedBox.style';
 import { AnimatedView as AnimatedViewNative } from '../box/View';
+import { isNativeWindInstalled } from '../../utils/nativewindDetector';
+import { classNamePropsHandler } from '../../utils/classNameMissingError';
 
 /**
- * Fade in animation component.
+ * FadeInBox - Smooth fade-in animation component
  *
- * Uses React Native's internal ViewNativeComponent for optimal performance
- * by bypassing some abstraction layers.
+ * Creates a beautiful fade-in effect by animating opacity from 0 to 1. Perfect for revealing
+ * content with elegant transitions. Supports both automatic and manual control with ref methods.
  *
  * @example
  * ```tsx
- * <FadeInBox duration={1000} delay={500} autoStart infiniteLoop>
- *   <String>Fade in content</String>
+ * // Basic auto-start fade in
+ * <FadeInBox autoStart className="bg-blue-500 p-6 rounded-lg">
+ *   <String className="text-white">Fading in automatically</String>
+ * </FadeInBox>
+ *
+ * // With custom timing and delay
+ * <FadeInBox
+ *   autoStart
+ *   duration={1500}
+ *   delay={800}
+ *   className="bg-green-500 p-4 rounded-xl"
+ * >
+ *   <String className="text-white">Delayed smooth fade</String>
  * </FadeInBox>
  * ```
+ *
+ * @param autoStart - Automatically start animation when component mounts (default: false)
+ * @param duration - Animation duration in milliseconds (default: 1000)
+ * @param delay - Delay before starting animation in milliseconds (default: 0)
+ * @param infiniteLoop - Loop animation continuously (default: false)
+ * @param className - CSS classes for NativeWind styling
+ * @param style - Inline styles for traditional styling or style overrides
+ * @param children - Content to be animated
+ * @param ref - Ref for manual animation control (start, stop methods)
+ * @returns Animated component with fade-in effect
  */
-const FadeInBox = forwardRef<FadeInBoxRef, FadeInBoxProps>(
-  ({ autoStart = false, children, className, delay = 0, duration = 1000, infiniteLoop = false, ...props }, ref) => {
-    const fadeAnim = useRef(new Animated.Value(0)).current;
-    const animationRef = useRef<Animated.CompositeAnimation | null>(null);
+const FadeInBox = forwardRef<FadeInBoxRef, FadeInBoxProps>((props, ref) => {
+  const {
+    autoStart = false,
+    children,
+    className,
+    delay = 0,
+    duration = 1000,
+    infiniteLoop = false,
+    style,
+    ...rest
+  } = props;
+  classNamePropsHandler(props, 'FadeInBox');
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const animationRef = useRef<Animated.CompositeAnimation | null>(null);
+  const isRunningRef = useRef(false);
 
-    const startAnimation = useCallback(() => {
-      animationRef.current?.stop();
-      fadeAnim.setValue(0);
+  const startAnimation = useCallback(() => {
+    if (isRunningRef.current) return;
 
-      const animation = Animated.timing(fadeAnim, {
-        duration,
-        toValue: 1,
-        useNativeDriver: true,
-      });
+    isRunningRef.current = true;
+    animationRef.current?.stop();
+    fadeAnim.setValue(0);
 
-      if (infiniteLoop) {
-        animationRef.current = Animated.loop(animation);
-      } else {
-        animationRef.current = animation;
-      }
+    const animation = Animated.timing(fadeAnim, {
+      duration,
+      toValue: 1,
+      useNativeDriver: true,
+    });
 
-      animationRef.current.start();
-    }, [duration, infiniteLoop, fadeAnim]);
+    if (infiniteLoop) {
+      animationRef.current = Animated.loop(animation);
+    } else {
+      animationRef.current = animation;
+    }
 
-    const stopAnimation = useCallback(() => {
-      animationRef.current?.stop();
-    }, []);
+    animationRef.current.start();
+  }, [duration, infiniteLoop, fadeAnim]);
 
-    const loopAnimation = useCallback(() => {
-      stopAnimation();
-      fadeAnim.setValue(0);
-      animationRef.current = Animated.loop(
-        Animated.timing(fadeAnim, {
-          duration,
-          toValue: 1,
-          useNativeDriver: true,
-        }),
-      );
-      animationRef.current.start();
-    }, [duration, fadeAnim, stopAnimation]);
+  const stopAnimation = useCallback(() => {
+    isRunningRef.current = false;
+    animationRef.current?.stop();
 
-    useImperativeHandle(
-      ref,
-      () => ({
-        loop: loopAnimation,
-        start: startAnimation,
-        stop: stopAnimation,
-      }),
-      [startAnimation, stopAnimation, loopAnimation],
-    );
+    // Reset animation to initial state
+    fadeAnim.setValue(0);
+  }, [fadeAnim]);
 
-    useEffect(() => {
-      if (autoStart || infiniteLoop) {
-        const timer = setTimeout(() => {
-          startAnimation();
-        }, delay);
+  useImperativeHandle(
+    ref,
+    () => ({
+      start: startAnimation,
+      stop: stopAnimation,
+    }),
+    [startAnimation, stopAnimation],
+  );
 
-        return () => {
-          clearTimeout(timer);
-          stopAnimation();
-        };
-      }
-      return undefined;
-    }, [delay, autoStart, infiniteLoop, startAnimation, stopAnimation]);
+  useEffect(() => {
+    if (autoStart || infiniteLoop) {
+      const timer = setTimeout(() => {
+        startAnimation();
+      }, delay);
 
+      return () => {
+        clearTimeout(timer);
+        stopAnimation();
+      };
+    }
+    return undefined;
+  }, [delay, autoStart, infiniteLoop, startAnimation, stopAnimation]);
+
+  if (isNativeWindInstalled()) {
     return (
       <AnimatedViewNative
-        style={{
-          opacity: fadeAnim,
-        }}
-        className={className}
-        {...props}
+        className={cn('overflow-hidden', className)}
+        style={[
+          {
+            opacity: fadeAnim,
+          },
+          style,
+        ]}
+        {...rest}
       >
         {children}
       </AnimatedViewNative>
     );
-  },
-);
+  }
+
+  return (
+    <AnimatedViewNative
+      style={[
+        styles.fadeContainer,
+        {
+          opacity: fadeAnim,
+        },
+        style,
+      ]}
+      {...rest}
+    >
+      {children}
+    </AnimatedViewNative>
+  );
+});
 
 FadeInBox.displayName = 'FadeInBox';
 

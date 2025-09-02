@@ -7,10 +7,13 @@ import cn from '../cn';
 import Icon from '../icon';
 import { Box } from '../box';
 import String from '../string';
+import styles from './Accordion.style';
 import { AnimatedBox } from '../animatedBox';
 import RipplePressable from '../ripple-pressable';
 import { useAccordion } from './AccordionContext';
 import { useAccordionItem } from './AccordionItemContext';
+import { isNativeWindInstalled } from '../../utils/nativewindDetector';
+import { classNamePropsHandler } from '../../utils/classNameMissingError';
 
 /**
  * AccordionTrigger is the clickable header that toggles the accordion item.
@@ -45,14 +48,9 @@ import { useAccordionItem } from './AccordionItemContext';
  * @param stringProps - Props to pass to String component when children is a string
  * @param props - Additional TouchableOpacityProps
  */
-export default function AccordionTrigger({
-  as = 'TouchableOpacity',
-  asChild = false,
-  children,
-  className,
-  stringProps,
-  ...props
-}: AccordionTriggerProps) {
+export default function AccordionTrigger(props: AccordionTriggerProps) {
+  classNamePropsHandler(props, 'AccordionTrigger');
+  const { as, asChild, children, className, stringProps, style } = props;
   const {
     animationDuration,
     collapseIcon,
@@ -65,9 +63,8 @@ export default function AccordionTrigger({
   } = useAccordion();
   const { disabled: itemDisabled, value } = useAccordionItem();
 
-  console.log('children', typeof children === 'string');
-
   const isOpen = isItemOpen(value);
+
   const disabled = accordionDisabled || itemDisabled;
 
   const [animation] = useState(new Animated.Value(isOpen ? 1 : 0));
@@ -91,18 +88,26 @@ export default function AccordionTrigger({
     }
   };
 
-  const commonProps = {
-    className: cn(
-      'w-full flex-row items-center justify-between border-b border-gray-200 bg-gray-50 px-4 py-3',
-      {
-        'opacity-50': disabled,
-      },
-      className,
-    ),
-    disabled,
-    onPress: handlePress,
-    ...props,
-  };
+  const commonProps = isNativeWindInstalled()
+    ? {
+        className: cn(
+          'w-full flex-row items-center justify-between border-y border-[#E5E7EB] bg-[#F9FAFB] px-4 py-3',
+          {
+            'opacity-50': disabled,
+          },
+          className,
+        ),
+        disabled,
+        onPress: handlePress,
+        style,
+        ...props,
+      }
+    : {
+        disabled,
+        onPress: handlePress,
+        style: [styles.accordionTrigger, disabled && styles.accordionTriggerDisabled, style],
+        ...props,
+      };
 
   const renderContent = () => (
     <>
@@ -118,24 +123,43 @@ export default function AccordionTrigger({
         </AnimatedBox>
       )}
 
-      <Box className="flex-1">
+      <Box style={styles.accordionTriggerContent}>
         {typeof children === 'string' ? (
           <String
             {...stringProps}
-            className={cn('text-gray-900', {
-              'ml-3': hasCollapseIcon && iconPosition === 'left',
-              'mr-3': hasCollapseIcon && iconPosition === 'right',
-            })}
+            {...(isNativeWindInstalled()
+              ? {
+                  className: cn('text-gray-900', {
+                    'ml-3': hasCollapseIcon && iconPosition === 'left',
+                    'mr-3': hasCollapseIcon && iconPosition === 'right',
+                  }),
+                }
+              : {
+                  style: [
+                    styles.triggerText,
+                    hasCollapseIcon && iconPosition === 'left' && styles.accordionTriggerContentWithLeftIcon,
+                    hasCollapseIcon && iconPosition === 'right' && styles.accordionTriggerContentWithRightIcon,
+                  ],
+                })}
             weight="medium"
           >
             {children}
           </String>
         ) : (
           <Box
-            className={cn({
-              'ml-3': hasCollapseIcon && iconPosition === 'left',
-              'mr-3': hasCollapseIcon && iconPosition === 'right',
-            })}
+            {...(isNativeWindInstalled()
+              ? {
+                  className: cn({
+                    'ml-3': hasCollapseIcon && iconPosition === 'left',
+                    'mr-3': hasCollapseIcon && iconPosition === 'right',
+                  }),
+                }
+              : {
+                  style: [
+                    hasCollapseIcon && iconPosition === 'left' && styles.accordionTriggerContentWithLeftIcon,
+                    hasCollapseIcon && iconPosition === 'right' && styles.accordionTriggerContentWithRightIcon,
+                  ],
+                })}
           >
             {children}
           </Box>
@@ -162,14 +186,27 @@ export default function AccordionTrigger({
 
     if (isValidElement(child)) {
       const childProps = child.props as any;
+
+      if (isNativeWindInstalled()) {
+        return cloneElement(child, {
+          ...childProps,
+          className: cn(childProps.className, commonProps.className),
+          disabled: disabled || childProps.disabled,
+          onPress: (e: any) => {
+            childProps.onPress?.(e);
+            handlePress();
+          },
+          style: [childProps.style, commonProps.style],
+        });
+      }
       return cloneElement(child, {
         ...childProps,
-        className: cn(childProps.className, commonProps.className),
         disabled: disabled || childProps.disabled,
         onPress: (e: any) => {
           childProps.onPress?.(e);
           handlePress();
         },
+        style: [childProps.style, commonProps.style],
       });
     }
   }

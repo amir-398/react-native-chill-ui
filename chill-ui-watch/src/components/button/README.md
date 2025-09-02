@@ -8,12 +8,21 @@ A versatile and customizable Button component for React Native applications with
 - **Loading States**: Built-in loading indicator with customizable props
 - **Icon Support**: Flexible icon positioning with `iconAction` prop (left/right/center)
 - **Custom Icons**: Support for both system icons and custom icon components
-- **Multiple Variants**: Primary, secondary, tertiary, and semantic variants
+- **Multiple Variants**: Contained, outlined, and text variants
+- **Color Variants**: 15 color variants (requires NativeWind)
 - **Size Variants**: Multiple size options from 2xs to 2xl
 - **Custom Content**: Support for both title text and custom children
 - **TypeScript**: Complete type safety with proper interfaces
 - **Performance Optimized**: Memoized components for better performance
 - **Accessible**: Proper focus management and screen reader support
+
+## ⚠️ NativeWind Requirement for Color Variants
+
+**Important:** All color variants except `primary` require NativeWind to be installed and configured. Without NativeWind:
+
+- Only the `primary` color variant is available
+- All other color variants will fallback to `primary` with a development warning
+- You need to configure your `tailwind.config.js` with the button color tokens (see setup section below)
 
 ## Basic Usage
 
@@ -35,17 +44,18 @@ function Example() {
 
 ## Props
 
-| Prop         | Type                            | Required | Default              | Description                            |
-| ------------ | ------------------------------- | -------- | -------------------- | -------------------------------------- |
-| `title`      | `string`                        | ❌       | -                    | Button text content                    |
-| `children`   | `ReactNode`                     | ❌       | -                    | Custom content to render inside button |
-| `onPress`    | `() => void`                    | ❌       | -                    | Press callback function                |
-| `as`         | `TouchableComponentType`        | ❌       | `'TouchableOpacity'` | Type of touchable component to use     |
-| `variant`    | `ButtonVariant`                 | ❌       | `'primary'`          | Button style variant                   |
-| `size`       | `ButtonSize`                    | ❌       | `'md'`               | Button size variant                    |
-| `position`   | `'left' \| 'center' \| 'right'` | ❌       | `'center'`           | Content position within button         |
-| `isDisabled` | `boolean`                       | ❌       | `false`              | Whether button is disabled             |
-| `isLoading`  | `boolean`                       | ❌       | `false`              | Whether button is in loading state     |
+| Prop           | Type                            | Required | Default              | Description                            |
+| -------------- | ------------------------------- | -------- | -------------------- | -------------------------------------- |
+| `title`        | `string`                        | ❌       | -                    | Button text content                    |
+| `children`     | `ReactNode`                     | ❌       | -                    | Custom content to render inside button |
+| `onPress`      | `() => void`                    | ❌       | -                    | Press callback function                |
+| `as`           | `TouchableComponentType`        | ❌       | `'TouchableOpacity'` | Type of touchable component to use     |
+| `variant`      | `ButtonVariant`                 | ❌       | `'contained'`        | Button style variant                   |
+| `colorVariant` | `ButtonColorVariant`            | ❌       | `'primary'`          | Button color variant (NativeWind only) |
+| `size`         | `ButtonSize`                    | ❌       | `'md'`               | Button size variant                    |
+| `position`     | `'left' \| 'center' \| 'right'` | ❌       | `'center'`           | Content position within button         |
+| `isDisabled`   | `boolean`                       | ❌       | `false`              | Whether button is disabled             |
+| `isLoading`    | `boolean`                       | ❌       | `false`              | Whether button is in loading state     |
 
 | `iconAction` | `IconActionConfig` | ❌ | - | Icon configuration with position support |
 | `className` | `string` | ❌ | - | Custom CSS classes |
@@ -58,6 +68,29 @@ function Example() {
 type TouchableComponentType = 'TouchableOpacity' | 'Pressable' | 'RipplePressable';
 ```
 
+### ButtonColorVariant
+
+```tsx
+type ButtonColorVariant =
+  | 'primary'
+  | 'secondary'
+  | 'tertiary'
+  | 'error'
+  | 'warning'
+  | 'info'
+  | 'success'
+  | 'accent'
+  | 'dark'
+  | 'light'
+  | 'danger'
+  | 'neutral'
+  | 'muted'
+  | 'inverted'
+  | 'white';
+```
+
+**⚠️ Important:** Color variants are **only available with NativeWind**. Without NativeWind, only the `primary` variant is supported. If you try to use other color variants without NativeWind, the component will automatically fallback to `primary` and show a development warning.
+
 ### IconActionConfig
 
 ```tsx
@@ -69,15 +102,182 @@ type IconActionConfig = {
 };
 ```
 
+## Color Variants Setup (NativeWind Required)
+
+To use all available color variants, you need to configure your `tailwind.config.js` file with the button color tokens. Here's the required configuration:
+
+```javascript
+// tailwind.config.js
+module.exports = {
+  // ... other config
+  theme: {
+    extend: {
+      colors: {
+        button: {
+          // Primary colors
+          primary: {
+            background: '#7DD3FC', // Light blue
+            text: '#000',
+          },
+          secondary: {
+            background: '#CBD2D9', // Light gray
+            text: '#333',
+          },
+          tertiary: {
+            background: '#E5E7EB', // Very light gray
+            text: '#374151',
+          },
+
+          // Semantic colors
+          success: {
+            background: '#10B981', // Green
+            text: '#FFF',
+          },
+          error: {
+            background: '#EF4444', // Red
+            text: '#FFF',
+          },
+          warning: {
+            background: '#F59E0B', // Orange/Yellow
+            text: '#000',
+          },
+          info: {
+            background: '#3B82F6', // Blue
+            text: '#FFF',
+          },
+
+          // Additional variants
+          accent: {
+            background: '#8B5CF6', // Purple
+            text: '#FFF',
+          },
+          danger: {
+            background: '#DC2626', // Dark red
+            text: '#FFF',
+          },
+          dark: {
+            background: '#1F2937', // Dark gray
+            text: '#FFF',
+          },
+          light: {
+            background: '#F9FAFB', // Very light gray
+            text: '#111827',
+          },
+          neutral: {
+            background: '#6B7280', // Medium gray
+            text: '#FFF',
+          },
+          muted: {
+            background: '#9CA3AF', // Muted gray
+            text: '#374151',
+          },
+          inverted: {
+            background: '#000', // Black
+            text: '#FFF',
+          },
+          white: {
+            background: '#FFF', // White
+            text: '#000',
+          },
+
+          // Disabled state
+          disabled: {
+            background: '#E5E7EB',
+            text: '#9CA3AF',
+          },
+        },
+      },
+    },
+  },
+  // ... other config
+};
+```
+
+### Color Token Usage
+
+The button component uses these color tokens in different ways depending on the variant:
+
+- **Contained variant**: Uses `bg-button-{color}-background` and `text-button-{color}-text`
+- **Outlined variant**: Uses `border-button-{color}-background` and `text-button-{color}-background` with transparent background
+- **Text variant**: Uses `text-button-{color}-background` with transparent background
+
+### Available Color Variants
+
+| Color Variant | Description                      | Best Used For                       |
+| ------------- | -------------------------------- | ----------------------------------- |
+| `primary`     | Main brand color                 | Primary actions, CTAs               |
+| `secondary`   | Secondary brand color            | Secondary actions                   |
+| `tertiary`    | Tertiary color                   | Less important actions              |
+| `success`     | Green, indicates success         | Success messages, confirmations     |
+| `error`       | Red, indicates error             | Error actions, destructive actions  |
+| `warning`     | Orange/Yellow, indicates warning | Warning actions, cautions           |
+| `info`        | Blue, indicates information      | Informational actions               |
+| `accent`      | Purple, accent color             | Highlight actions, special features |
+| `danger`      | Dark red, indicates danger       | Critical destructive actions        |
+| `dark`        | Dark gray/black                  | Dark theme contexts                 |
+| `light`       | Light gray/white                 | Light theme contexts                |
+| `neutral`     | Medium gray                      | Neutral actions                     |
+| `muted`       | Muted gray                       | Subtle actions                      |
+| `inverted`    | Black/white inverted             | High contrast needs                 |
+| `white`       | White background                 | Over dark backgrounds               |
+
 ## Examples
 
 ### Basic Buttons
 
 ```tsx
 <Box className="gap-4">
-  <Button title="Primary Button" variant="primary" />
-  <Button title="Secondary Button" variant="secondary" />
-  <Button title="Tertiary Button" variant="tertiary" />
+  <Button title="Primary Button" colorVariant="primary" />
+  <Button title="Secondary Button" colorVariant="secondary" />
+  <Button title="Tertiary Button" colorVariant="tertiary" />
+</Box>
+```
+
+### Color Variants (NativeWind Only)
+
+```tsx
+<Box className="gap-4">
+  {/* Primary colors */}
+  <Button title="Primary" colorVariant="primary" />
+  <Button title="Secondary" colorVariant="secondary" />
+  <Button title="Tertiary" colorVariant="tertiary" />
+
+  {/* Semantic colors */}
+  <Button title="Success" colorVariant="success" />
+  <Button title="Error" colorVariant="error" />
+  <Button title="Warning" colorVariant="warning" />
+  <Button title="Info" colorVariant="info" />
+
+  {/* Additional variants */}
+  <Button title="Accent" colorVariant="accent" />
+  <Button title="Danger" colorVariant="danger" />
+  <Button title="Dark" colorVariant="dark" />
+  <Button title="Light" colorVariant="light" />
+  <Button title="Neutral" colorVariant="neutral" />
+  <Button title="Muted" colorVariant="muted" />
+  <Button title="Inverted" colorVariant="inverted" />
+  <Button title="White" colorVariant="white" />
+</Box>
+```
+
+### Button Variants with Colors
+
+```tsx
+<Box className="gap-4">
+  {/* Contained variants */}
+  <Button variant="contained" colorVariant="primary" title="Contained Primary" />
+  <Button variant="contained" colorVariant="success" title="Contained Success" />
+  <Button variant="contained" colorVariant="error" title="Contained Error" />
+
+  {/* Outlined variants */}
+  <Button variant="outlined" colorVariant="primary" title="Outlined Primary" />
+  <Button variant="outlined" colorVariant="warning" title="Outlined Warning" />
+  <Button variant="outlined" colorVariant="info" title="Outlined Info" />
+
+  {/* Text variants */}
+  <Button variant="text" colorVariant="primary" title="Text Primary" />
+  <Button variant="text" colorVariant="accent" title="Text Accent" />
+  <Button variant="text" colorVariant="danger" title="Text Danger" />
 </Box>
 ```
 
@@ -196,17 +396,17 @@ type IconActionConfig = {
 </Box>
 ```
 
-### Semantic Variants
+### Semantic Variants (NativeWind Only)
 
 ```tsx
 <Box className="gap-4">
-  <Button variant="success" title="Success" />
-  <Button variant="error" title="Error" />
-  <Button variant="warning" title="Warning" />
-  <Button variant="info" title="Info" />
-  <Button variant="accent" title="Accent" />
-  <Button variant="light" title="Light" />
-  <Button variant="dark" title="Dark" />
+  <Button colorVariant="success" title="Success" />
+  <Button colorVariant="error" title="Error" />
+  <Button colorVariant="warning" title="Warning" />
+  <Button colorVariant="info" title="Info" />
+  <Button colorVariant="accent" title="Accent" />
+  <Button colorVariant="light" title="Light" />
+  <Button colorVariant="dark" title="Dark" />
 </Box>
 ```
 
@@ -421,13 +621,15 @@ function CartButton({ itemCount, onPress }) {
 />
 ```
 
-### 3. Use Semantic Variants
+### 3. Use Semantic Color Variants (NativeWind Only)
 
 ```tsx
-// ✅ Good: Use semantic variants for meaning
-<Button variant="success" title="Save Changes" />
-<Button variant="error" title="Delete Item" />
-<Button variant="warning" title="Discard Changes" />
+// ✅ Good: Use semantic color variants for meaning
+<Button colorVariant="success" title="Save Changes" />
+<Button colorVariant="error" title="Delete Item" />
+<Button colorVariant="warning" title="Discard Changes" />
+
+// ⚠️ Note: These require NativeWind setup in tailwind.config.js
 ```
 
 ### 4. Provide Accessible Labels

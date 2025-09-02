@@ -8,32 +8,43 @@ export default StyleSheet.create({
 
   // Size variants
   size2xl: {
-    fontSize: 30,
-  },
-  size2xs: {
-    fontSize: 12,
-  },
-  size3xl: {
-    fontSize: 36,
-  },
-  size4xl: {
-    fontSize: 48,
-    lineHeight: 66,
-  },
-  sizeLg: {
-    fontSize: 20,
-  },
-  sizeMd: {
-    fontSize: 18,
-  },
-  sizeSm: {
-    fontSize: 16,
-  },
-  sizeXl: {
     fontSize: 24,
   },
-  sizeXs: {
+  size3xl: {
+    fontSize: 30,
+  },
+  size4xl: {
+    fontSize: 36,
+  },
+  size5xl: {
+    fontSize: 48,
+  },
+  size6xl: {
+    fontSize: 60,
+  },
+  size7xl: {
+    fontSize: 72,
+  },
+  size8xl: {
+    fontSize: 96,
+  },
+  size9xl: {
+    fontSize: 128,
+  },
+  sizeLg: {
+    fontSize: 18,
+  },
+  sizeMd: {
+    fontSize: 16,
+  },
+  sizeSm: {
     fontSize: 14,
+  },
+  sizeXl: {
+    fontSize: 20,
+  },
+  sizeXs: {
+    fontSize: 12,
   },
 
   // Font weight variants

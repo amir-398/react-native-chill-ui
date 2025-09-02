@@ -13,9 +13,6 @@ export interface ScaleInBoxProps extends AnimatedViewProps {
   /** Delay before starting the scale-in animation in milliseconds. @default 0 */
   delay?: number;
 
-  /** Duration of the scale-in animation in milliseconds. @default 800 */
-  duration?: number;
-
   /** Content to be animated inside the scale-in box */
   children: ReactNode;
 
@@ -41,20 +38,14 @@ export interface ScaleInBoxProps extends AnimatedViewProps {
  * // Start animation
  * scaleRef.current?.start();
  *
- * // Stop animation
+ * // Stop animation and reset to initial state
  * scaleRef.current?.stop();
- *
- * // Loop animation
- * scaleRef.current?.loop();
  * ```
  */
 export interface ScaleInBoxRef {
   /** Starts the scale-in animation */
   start: () => void;
 
-  /** Stops the scale-in animation */
+  /** Stops the scale-in animation and resets to initial state */
   stop: () => void;
-
-  /** Loops the scale-in animation infinitely */
-  loop: () => void;
 }

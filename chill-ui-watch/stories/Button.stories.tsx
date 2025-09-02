@@ -10,6 +10,27 @@ const meta = {
       description: 'Type of touchable component to use',
       options: ['TouchableOpacity', 'Pressable', 'RipplePressable'],
     },
+    colorVariant: {
+      control: 'select',
+      description: 'The color variant of the button (NativeWind only)',
+      options: [
+        'primary',
+        'secondary',
+        'tertiary',
+        'success',
+        'error',
+        'warning',
+        'info',
+        'accent',
+        'danger',
+        'dark',
+        'light',
+        'neutral',
+        'muted',
+        'inverted',
+        'white',
+      ],
+    },
     iconAction: {
       control: 'object',
       description: 'Icon configuration with position support',
@@ -47,7 +68,7 @@ const meta = {
     variant: {
       control: 'select',
       description: 'The visual style of the button',
-      options: ['primary', 'secondary', 'tertiary'],
+      options: ['contained', 'outlined', 'text'],
     },
   },
   component: Button,
@@ -65,98 +86,65 @@ export default meta;
 
 type Story = StoryObj<typeof Button>;
 
-export const Primary: Story = {
+// Default Example
+export const Default: Story = {
   args: {
-    className: 'rounded-lg',
-    iconAction: {
-      name: 'home-solid',
-      position: 'left',
-      size: 'md',
-    },
+    colorVariant: 'primary',
     position: 'center',
     size: 'md',
-    stringProps: {
-      position: 'right',
-    },
-    title: 'Primary Button',
-    variant: 'primary',
+    title: 'Button',
+    variant: 'contained',
   },
 };
 
-export const Secondary: Story = {
+// Button Variants
+export const Outlined: Story = {
   args: {
+    colorVariant: 'primary',
     position: 'center',
     size: 'md',
-    title: 'Secondary Button',
-    variant: 'secondary',
+    title: 'Outlined Button',
+    variant: 'outlined',
   },
 };
 
-export const Error: Story = {
+export const TextButton: Story = {
   args: {
+    colorVariant: 'primary',
     position: 'center',
     size: 'md',
-    title: 'Tertiary Button',
-    variant: 'error',
+    title: 'Text Button',
+    variant: 'text',
   },
 };
 
-export const Accent: Story = {
+// States
+export const Loading: Story = {
   args: {
+    colorVariant: 'primary',
+    isLoading: true,
     position: 'center',
     size: 'md',
-    title: 'Accent Button',
-    variant: 'accent',
+    title: 'Loading Button',
+    variant: 'contained',
   },
 };
 
-export const Info: Story = {
+export const Disabled: Story = {
   args: {
+    colorVariant: 'primary',
+    isDisabled: true,
     position: 'center',
     size: 'md',
-    title: 'Info Button',
-    variant: 'info',
+    title: 'Disabled Button',
+    variant: 'contained',
   },
 };
 
-export const Success: Story = {
-  args: {
-    position: 'center',
-    size: 'md',
-    title: 'Success Button',
-    variant: 'success',
-  },
-};
-
-export const Warning: Story = {
-  args: {
-    position: 'center',
-    size: 'md',
-    title: 'Warning Button',
-    variant: 'warning',
-  },
-};
-
-export const Light: Story = {
-  args: {
-    position: 'center',
-    size: 'md',
-    title: 'Light Button',
-    variant: 'light',
-  },
-};
-
-export const Dark: Story = {
-  args: {
-    position: 'center',
-    size: 'md',
-    title: 'Dark Button',
-    variant: 'dark',
-  },
-};
-
+// With Icon
 export const WithIcon: Story = {
   args: {
+    colorVariant: 'primary',
     iconAction: {
       name: 'home-solid',
       position: 'left',
@@ -165,106 +153,96 @@ export const WithIcon: Story = {
     position: 'center',
     size: 'md',
     title: 'Button with Icon',
-    variant: 'primary',
+    variant: 'contained',
   },
 };
 
-export const Loading: Story = {
-  args: {
-    isLoading: true,
-    position: 'center',
-    size: 'md',
-    title: 'Loading Button',
-    variant: 'primary',
-  },
-};
-
-export const Disabled: Story = {
-  args: {
-    isDisabled: true,
-    position: 'center',
-    size: 'md',
-    title: 'Disabled Button',
-    variant: 'primary',
-  },
-};
-
-export const Small: Story = {
-  args: {
-    position: 'center',
-    size: 'sm',
-    title: 'Small Button',
-    variant: 'primary',
-  },
-};
-
-export const Large: Story = {
-  args: {
-    position: 'center',
-    size: 'lg',
-    title: 'Large Button',
-    variant: 'primary',
-  },
-};
-
-export const TouchableOpacity: Story = {
-  args: {
-    as: 'TouchableOpacity',
-    position: 'center',
-    size: 'md',
-    title: 'TouchableOpacity Button',
-    variant: 'primary',
-  },
+// Sizes
+export const SizeVariants: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Button using TouchableOpacity with opacity effect on press',
+        story: 'Different button sizes from 2xs to 2xl',
       },
     },
   },
+  render: () => (
+    <Box className="items-center gap-4">
+      <Button size="2xs" title="2XS" colorVariant="primary" variant="contained" />
+      <Button size="xs" title="XS" colorVariant="primary" variant="contained" />
+      <Button size="sm" title="Small" colorVariant="primary" variant="contained" />
+      <Button size="md" title="Medium" colorVariant="primary" variant="contained" />
+      <Button size="lg" title="Large" colorVariant="primary" variant="contained" />
+      <Button size="xl" title="XL" colorVariant="primary" variant="contained" />
+      <Button size="2xl" title="2XL" colorVariant="primary" variant="contained" />
+    </Box>
+  ),
 };
 
-export const Pressable: Story = {
-  args: {
-    as: 'Pressable',
-    position: 'center',
-    size: 'md',
-    title: 'Pressable Button',
-    variant: 'primary',
-  },
+// Touchable Types
+export const TouchableTypes: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Button using Pressable with native Android ripple effect',
+        story: 'Different touchable components with different interaction effects',
       },
     },
   },
+  render: () => (
+    <Box className="gap-4">
+      <Button as="TouchableOpacity" title="TouchableOpacity" colorVariant="primary" variant="contained" />
+      <Button as="Pressable" title="Pressable" colorVariant="secondary" variant="contained" />
+      <Button as="RipplePressable" title="RipplePressable" colorVariant="success" variant="contained" />
+    </Box>
+  ),
 };
 
-export const RipplePressable: Story = {
-  args: {
-    as: 'RipplePressable',
-    position: 'center',
-    size: 'md',
-    title: 'RipplePressable Button',
-    variant: 'primary',
-  },
+// Button Variants Overview
+export const VariantsOverview: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Button using RipplePressable with custom ripple animation',
+        story: 'Overview of all button variants (contained, outlined, text) with different colors',
       },
     },
   },
+  render: () => (
+    <Box className="gap-4">
+      {/* Contained */}
+      <Box className="gap-2">
+        <String weight="bold">Contained</String>
+        <Box className="flex-row flex-wrap gap-2">
+          <Button variant="contained" colorVariant="primary" title="Primary" />
+          <Button variant="contained" colorVariant="success" title="Success" />
+          <Button variant="contained" colorVariant="error" title="Error" />
+        </Box>
+      </Box>
+
+      {/* Outlined */}
+      <Box className="gap-2">
+        <String weight="bold">Outlined</String>
+        <Box className="flex-row flex-wrap gap-2">
+          <Button variant="outlined" colorVariant="primary" title="Primary" />
+          <Button variant="outlined" colorVariant="success" title="Success" />
+          <Button variant="outlined" colorVariant="error" title="Error" />
+        </Box>
+      </Box>
+
+      {/* Text */}
+      <Box className="gap-2">
+        <String weight="bold">Text</String>
+        <Box className="flex-row flex-wrap gap-2">
+          <Button variant="text" colorVariant="primary" title="Primary" />
+          <Button variant="text" colorVariant="success" title="Success" />
+          <Button variant="text" colorVariant="error" title="Error" />
+        </Box>
+      </Box>
+    </Box>
+  ),
 };
 
+// Custom Content
 export const CustomContent: Story = {
-  args: {
-    as: 'RipplePressable',
-    position: 'center',
-    size: 'md',
-    variant: 'primary',
-  },
   parameters: {
     docs: {
       description: {
@@ -272,8 +250,8 @@ export const CustomContent: Story = {
       },
     },
   },
-  render: args => (
-    <Button {...args}>
+  render: () => (
+    <Button colorVariant="primary" variant="contained">
       <Box className="flex-row items-center gap-2">
         <String weight="bold" color="white">
           Custom Content
@@ -281,110 +259,5 @@ export const CustomContent: Story = {
         <String color="white">→</String>
       </Box>
     </Button>
-  ),
-};
-
-export const TouchableComparison: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Comparison of different touchable components - try pressing each button to see the different effects',
-      },
-    },
-  },
-  render: () => (
-    <Box className="gap-4">
-      <Button as="TouchableOpacity" title="TouchableOpacity" variant="primary" />
-      <Button as="Pressable" title="Pressable" variant="accent" />
-      <Button as="RipplePressable" title="RipplePressable" variant="success" />
-    </Box>
-  ),
-};
-
-export const IconPositioning: Story = {
-  args: {
-    position: 'center',
-    size: 'md',
-    title: 'Icon Positioning Examples',
-    variant: 'primary',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Examples of different icon positioning with text alignment',
-      },
-    },
-  },
-  render: () => (
-    <Box className="gap-4">
-      {/* Icon à gauche */}
-      <Button iconAction={{ name: 'home-solid', position: 'left', size: 'md' }} title="Icon Left" variant="primary" />
-
-      {/* Icon à droite */}
-      <Button
-        iconAction={{ name: 'angle-right-solid', position: 'right', size: 'md' }}
-        title="Icon Right"
-        variant="accent"
-      />
-
-      {/* Texte aligné à gauche avec icône */}
-      <Button
-        iconAction={{ name: 'check-solid', position: 'left', size: 'md' }}
-        stringProps={{ position: 'left' }}
-        title="Left Aligned with Icon"
-        variant="success"
-      />
-
-      {/* Texte aligné à droite avec icône */}
-      <Button
-        iconAction={{ name: 'angle-right-solid', position: 'right', size: 'md' }}
-        stringProps={{ position: 'right' }}
-        title="Right Aligned with Icon"
-        variant="info"
-      />
-    </Box>
-  ),
-};
-
-export const CustomIcon: Story = {
-  args: {
-    position: 'center',
-    size: 'md',
-    title: 'Custom Icon Examples',
-    variant: 'primary',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Examples of custom icon components',
-      },
-    },
-  },
-  render: () => (
-    <Box className="gap-4">
-      {/* Custom icon à gauche */}
-      <Button
-        iconAction={{
-          customIcon: <Box className="h-6 w-6 rounded-full bg-white" />,
-          name: 'home-solid',
-          position: 'left',
-          size: 'md',
-        }}
-        title="Custom Icon Left"
-        variant="primary"
-      />
-
-      {/* Custom icon à droite */}
-      <Button
-        iconAction={{
-          customIcon: <Box className="h-6 w-6 rounded-full bg-white" />,
-          name: 'home-solid',
-          position: 'right',
-          size: 'md',
-        }}
-        title="Custom Icon Right"
-        variant="accent"
-      />
-    </Box>
   ),
 };

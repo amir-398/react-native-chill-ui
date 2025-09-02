@@ -88,6 +88,7 @@ export default function String(props: StringProps) {
 
   const fontFamilyStyle = getFontFamilyStyle();
 
+  console.log('position', position);
   const fallbackStyles = [
     styles.base,
     styles[`weight${finalWeight.charAt(0).toUpperCase() + finalWeight.slice(1)}` as keyof typeof styles],
@@ -101,6 +102,8 @@ export default function String(props: StringProps) {
     { ...(color && { color }) },
     style,
   ].filter(Boolean);
+
+  console.log('fallbackStyles', fallbackStyles);
 
   return (
     <NativeText {...props} style={fallbackStyles} useFastText={false}>

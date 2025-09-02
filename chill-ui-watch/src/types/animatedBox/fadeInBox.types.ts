@@ -34,15 +34,21 @@ export interface FadeInBoxProps extends AnimatedViewProps {
  *
  * Provides methods to control the fade-in animation programmatically.
  *
-
+ * @example
+ * ```tsx
+ * const fadeRef = useRef<FadeInBoxRef>(null);
+ *
+ * // Start animation
+ * fadeRef.current?.start();
+ *
+ * // Stop animation and reset to initial state
+ * fadeRef.current?.stop();
+ * ```
  */
 export interface FadeInBoxRef {
   /** Starts the fade-in animation */
   start: () => void;
 
-  /** Stops the fade-in animation */
+  /** Stops the fade-in animation and resets to initial state */
   stop: () => void;
-
-  /** Loops the fade-in animation infinitely */
-  loop: () => void;
 }

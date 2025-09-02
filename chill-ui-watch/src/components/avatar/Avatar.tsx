@@ -4,7 +4,7 @@ import cn from '../cn';
 import { Box } from '../box';
 import String from '../string';
 import { AvatarProps } from '../../types';
-import { avatarVariants, sizeVariant } from './styleVariants';
+import { avatarVariants, sizeVariant } from './Avatar.variants';
 import { isNativeWindInstalled } from '../../utils/nativewindDetector';
 
 /**
@@ -130,15 +130,16 @@ export default function Avatar({
       )}
       style={{ ...(backgroundColor && { backgroundColor }) }}
     >
-      <String size={size} {...stringProps}>
+      <String size={size as any} {...stringProps}>
         {initials}
       </String>
+      {/* @ts-ignore */}
       {image && <Image className="absolute h-full w-full" source={{ uri: image }} />}
     </Box>
   ) : (
     // StyleSheet approach
     <Box style={styles.avatar}>
-      <String size={size} {...stringProps}>
+      <String size={size as any} {...stringProps}>
         {initials}
       </String>
       {image && <Image style={styles.image} source={{ uri: image }} />}

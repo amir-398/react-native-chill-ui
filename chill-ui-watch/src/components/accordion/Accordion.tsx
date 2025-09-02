@@ -1,8 +1,11 @@
-import type { NewAccordionProps } from '../../types';
+import type { AccordionProps } from '../../types';
 
 import cn from '../cn';
 import { Box } from '../box';
+import styles from './Accordion.style';
 import { AccordionProvider } from './AccordionContext';
+import { isNativeWindInstalled } from '../../utils/nativewindDetector';
+import { classNamePropsHandler } from '../../utils/classNameMissingError';
 
 /**
  * Accordion component provides a collapsible content area with support for single or multiple items.
@@ -32,20 +35,23 @@ import { AccordionProvider } from './AccordionContext';
  *
  * @see {@link https://github.com/your-repo/chill-ui/tree/main/src/components/accordion/README.md Documentation}
  */
-export default function Accordion({
-  children,
-  className,
-  collapseIcon = 'angle-down-solid',
-  collapsible = false,
-  defaultValue,
-  disabled = false,
-  expandIcon = 'angle-down-solid',
-  hasCollapseIcon = true,
-  iconPosition = 'right',
-  onValueChange,
-  type,
-  ...props
-}: NewAccordionProps) {
+export default function Accordion(props: AccordionProps) {
+  classNamePropsHandler(props, 'Accordion');
+  const {
+    children,
+    className,
+    collapseIcon = 'angle-down-solid',
+    collapsible = false,
+    defaultValue,
+    disabled = false,
+    expandIcon = 'angle-down-solid',
+    hasCollapseIcon = true,
+    iconPosition = 'right',
+    onValueChange,
+    style,
+    type,
+  } = props;
+
   return (
     <AccordionProvider
       type={type}
@@ -60,9 +66,13 @@ export default function Accordion({
       collapseIcon={collapseIcon}
       onValueChange={onValueChange}
     >
-      <Box className={cn('w-full overflow-hidden rounded-lg border border-gray-200', className)} {...props}>
-        {children}
-      </Box>
+      {isNativeWindInstalled() ? (
+        <Box className={cn('w-full overflow-hidden rounded-lg', className)} style={style}>
+          {children}
+        </Box>
+      ) : (
+        <Box style={[styles.accordion, style]}>{children}</Box>
+      )}
     </AccordionProvider>
   );
 }

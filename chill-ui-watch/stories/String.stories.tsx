@@ -7,20 +7,24 @@ import UiPresentation from './storybook/UiPresentation';
 
 const meta: Meta<typeof String> = {
   argTypes: {
-    color: {
+    colorVariant: {
       control: 'select',
       options: [
         'primary',
         'secondary',
-        'light',
         'tertiary',
-        'danger',
-        'dark',
-        'error',
-        'info',
         'success',
         'warning',
+        'error',
+        'danger',
+        'info',
+        'dark',
+        'light',
         'white',
+        'disabled',
+        'inverted',
+        'muted',
+        'neutral',
       ],
     },
     font: {
@@ -36,7 +40,7 @@ const meta: Meta<typeof String> = {
     },
     size: {
       control: 'select',
-      options: ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'],
+      options: ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl', '8xl', '9xl'],
     },
     useFastText: {
       control: 'boolean',
@@ -48,21 +52,21 @@ const meta: Meta<typeof String> = {
         'body-1',
         'body-2',
         'body-3',
-        'body-4',
-        'body-xl',
-        'subtitle-1',
-        'subtitle-2',
-        'subtitle-3',
-        'subtitle-4',
+        'body-sm',
+        'body-xs',
         'title-1',
         'title-2',
         'title-3',
         'title-4',
+        'title-5',
+        'title-6',
+        'title-7',
+        'title-8',
       ],
     },
     weight: {
       control: 'select',
-      options: ['regular', 'bold', 'light', 'medium', 'semiBold'],
+      options: ['regular', 'light', 'medium', 'semiBold', 'bold', 'extraLight', 'extraBold', 'thin', 'italic'],
     },
   },
   component: String,
@@ -82,7 +86,7 @@ type Story = StoryObj<typeof String>;
 export const Default: Story = {
   args: {
     children: 'Default Text',
-    color: 'primary',
+    colorVariant: 'primary',
     font: 'primary',
     position: 'left',
     size: 'md',
@@ -92,155 +96,10 @@ export const Default: Story = {
   },
 };
 
-export const title1: Story = {
-  args: {
-    children: 'title-1 Text',
-    color: 'primary',
-    font: 'primary',
-    position: 'left',
-    size: 'xl',
-    useFastText: true,
-    variant: 'title-1',
-    weight: 'bold',
-  },
-};
-
-export const title2: Story = {
-  args: {
-    children: 'title-2 Text',
-    color: 'primary',
-    font: 'primary',
-    position: 'left',
-    size: 'xl',
-    useFastText: true,
-    variant: 'title-2',
-    weight: 'bold',
-  },
-};
-
-export const title3: Story = {
-  args: {
-    children: 'title-3 Text',
-    color: 'primary',
-    font: 'primary',
-    position: 'left',
-    size: 'xl',
-    useFastText: true,
-    variant: 'title-3',
-    weight: 'bold',
-  },
-};
-
-export const title4: Story = {
-  args: {
-    children: 'title-4 Text',
-    color: 'primary',
-    font: 'primary',
-    position: 'left',
-    size: 'xl',
-    useFastText: true,
-    variant: 'title-4',
-    weight: 'bold',
-  },
-};
-
-export const body1: Story = {
-  args: {
-    children: 'body-1 Text',
-    color: 'primary',
-    font: 'primary',
-    position: 'left',
-    useFastText: true,
-    variant: 'body-1',
-    weight: 'regular',
-  },
-};
-
-export const body2: Story = {
-  args: {
-    children: 'body-2 Text',
-    color: 'primary',
-    font: 'primary',
-    position: 'left',
-
-    useFastText: true,
-    variant: 'body-2',
-    weight: 'regular',
-  },
-};
-
-export const body3: Story = {
-  args: {
-    children: 'body-3 Text',
-    color: 'primary',
-    font: 'primary',
-    position: 'left',
-    useFastText: true,
-    variant: 'body-3',
-    weight: 'regular',
-  },
-};
-
-export const body4: Story = {
-  args: {
-    children: 'body-4 Text',
-    color: 'primary',
-    font: 'primary',
-    position: 'left',
-    useFastText: true,
-    variant: 'body-4',
-    weight: 'regular',
-  },
-};
-
-export const subtitle1: Story = {
-  args: {
-    children: 'subtitle-1 Text',
-    color: 'primary',
-    position: 'left',
-    useFastText: true,
-    variant: 'subtitle-1',
-    weight: 'bold',
-  },
-};
-
-export const subtitle2: Story = {
-  args: {
-    children: 'subtitle-2 Text',
-    color: 'primary',
-    position: 'left',
-    useFastText: true,
-    variant: 'subtitle-2',
-    weight: 'bold',
-  },
-};
-
-export const subtitle3: Story = {
-  args: {
-    children: 'subtitle-3 Text',
-    color: 'primary',
-    position: 'left',
-    useFastText: true,
-    variant: 'subtitle-3',
-    weight: 'bold',
-  },
-};
-
-export const subtitle4: Story = {
-  args: {
-    children: 'subtitle-4 Text',
-    color: 'primary',
-    position: 'left',
-    useFastText: true,
-    variant: 'subtitle-4',
-    weight: 'bold',
-  },
-};
-
 export const Clickable: Story = {
   args: {
     children: 'Click me!',
-    color: 'primary',
+    colorVariant: 'primary',
     font: 'primary',
     onPress: action('onPress'),
     position: 'left',
@@ -254,7 +113,7 @@ export const Clickable: Story = {
 export const ClickableTitle: Story = {
   args: {
     children: 'Clickable Title',
-    color: 'primary',
+    colorVariant: 'primary',
     font: 'primary',
     onPress: action('onPress'),
     position: 'left',

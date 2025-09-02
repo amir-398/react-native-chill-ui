@@ -1,9 +1,8 @@
 import type { ReactNode } from 'react';
-import type { ViewProps, TouchableOpacityProps } from 'react-native';
+import type { ViewProps, TouchableOpacityProps, StyleProp, ViewStyle } from 'react-native';
 
 import type { TIcons } from '../constants/ICONS';
-
-import { StringProps } from './string.types';
+import type { StringProps } from './string.types';
 
 // Accordion types
 
@@ -13,7 +12,7 @@ export type AccordionType = 'single' | 'multiple';
 /**
  * Props for the main Accordion component
  */
-export type NewAccordionProps = {
+export type AccordionProps = {
   /** Child AccordionItem components */
   children: ReactNode;
   /** Whether single or multiple items can be open at once */
@@ -36,7 +35,9 @@ export type NewAccordionProps = {
   onValueChange?: (value: string | string[]) => void;
   /** Custom CSS classes */
   className?: string;
-} & ViewProps;
+  /** Custom inline styles */
+  style?: StyleProp<ViewStyle>;
+};
 
 /**
  * Props for AccordionItem component
@@ -90,8 +91,6 @@ export type AccordionTriggerProps = {
  * ```
  */
 export type AccordionContentProps = {
-  /** Content to display when accordion item is expanded */
-  children: ReactNode;
   /** Custom CSS classes */
   className?: string;
   /** Props to pass to String component when children is a string */

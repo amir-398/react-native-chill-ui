@@ -52,21 +52,15 @@ export interface BounceBoxProps extends AnimatedViewProps {
  *
  * // Stop animation
  * bounceRef.current?.stop();
- *
- * // Loop animation
- * bounceRef.current?.loop();
  * ```
  */
-export interface BounceBoxRefProps {
+export interface BounceBoxRef {
   /** Triggers the bounce animation manually */
   bounce: () => void;
 
   /** Starts the bounce animation */
   start: () => void;
 
-  /** Stops the bounce animation */
+  /** Stops the bounce animation and resets to initial state */
   stop: () => void;
-
-  /** Loops the bounce animation infinitely */
-  loop: () => void;
 }

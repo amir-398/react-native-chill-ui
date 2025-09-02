@@ -8,20 +8,137 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Couleurs principales
-        accent: '#B399FF', // Lavande pastel
-        primary: '#7DD3FC', // Bleu ciel doux
-        secondary: '#CBD2D9', // Gris bleuté léger
-
-        // Couleurs d'état
-        error: '#FF0000', // Rouge pour les erreurs
-        info: '#6EE7B7', // Turquoise clair
-        success: '#86EFAC', // Vert menthe doux
-        warning: '#FCD34D', // Jaune pâle
-
-        // Neutres
-        dark: '#323F4B', // Gris ardoise foncé
-        light: '#F5F7FA', // Blanc bleuté très clair
+        button: {
+          accent: {
+            background: '#CBD2D9',
+            text: '#FF0000',
+          },
+          danger: {
+            background: '#FF0000',
+            text: '#FFF',
+          },
+          dark: {
+            background: '#323F4B',
+            text: '#FFF',
+          },
+          disabled: {
+            background: '#CBD2D9',
+            text: '#666',
+          },
+          error: {
+            background: '#FF0000',
+            text: '#FFF',
+          },
+          info: {
+            background: '#6EE7B7',
+            text: '#000',
+          },
+          inverted: {
+            background: '#F5F7FA',
+            text: '#000',
+          },
+          light: {
+            background: '#F5F7FA',
+            text: '#000',
+          },
+          muted: {
+            background: '#CBD2D9',
+            text: '#666',
+          },
+          neutral: {
+            background: '#CBD2D9',
+            text: '#333',
+          },
+          primary: {
+            background: '#7DD3FC',
+            text: '#000',
+          },
+          secondary: {
+            background: '#CBD2D9',
+            text: '#333',
+          },
+          warning: {
+            background: '#FCD34D',
+            text: '#000',
+          },
+          white: {
+            background: '#F5F7FA',
+            text: '#000',
+          },
+        },
+        chip: {
+          accent: {
+            background: '#CBD2D9',
+            text: '#FF0000',
+          },
+          danger: {
+            background: '#FF0000',
+            text: '#FFF',
+          },
+          dark: {
+            background: '#323F4B',
+            text: '#FFF',
+          },
+          disabled: {
+            background: '#CBD2D9',
+            text: '#666',
+          },
+          error: {
+            background: '#FF0000',
+            text: '#FFF',
+          },
+          info: {
+            background: '#6EE7B7',
+            text: '#000',
+          },
+          inverted: {
+            background: '#F5F7FA',
+            text: '#000',
+          },
+          light: {
+            background: '#F5F7FA',
+            text: '#000',
+          },
+          muted: {
+            background: '#CBD2D9',
+            text: '#666',
+          },
+          neutral: {
+            background: '#CBD2D9',
+            text: '#333',
+          },
+          primary: {
+            background: '#7DD3FC',
+            text: '#000',
+          },
+          secondary: {
+            background: '#CBD2D9',
+            text: '#333',
+          },
+          warning: {
+            background: '#FCD34D',
+            text: '#000',
+          },
+          white: {
+            background: '#F5F7FA',
+            text: '#000',
+          },
+        },
+        danger: '#FF0000',
+        dark: '#323F4B',
+        disabled: '#CBD2D9',
+        error: '#FF0000',
+        info: '#6EE7B7',
+        inverted: '#F5F7FA',
+        light: '#F5F7FA',
+        muted: '#CBD2D9',
+        neutral: '#CBD2D9',
+        primary: '#7DD3FC',
+        secondary: '#CBD2D9',
+        success: '#86EFAC',
+        tertiary: '#CBD2D9',
+        warning: '#FCD34D',
+        white: '#F5F7FA',
       },
       fontFamily: {
         primary_bold_font: ['primary_bold_font'],

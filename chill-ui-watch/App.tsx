@@ -1,14 +1,15 @@
+import { useRef } from 'react';
+import { useFonts } from 'expo-font';
 import {
-  Poppins_200ExtraLight,
-  Poppins_300Light,
-  Poppins_400Regular,
-  Poppins_500Medium,
-  Poppins_600SemiBold,
   Poppins_700Bold,
-  Poppins_400Regular_Italic,
   Poppins_800ExtraBold,
+  Poppins_200ExtraLight,
+  Poppins_400Regular_Italic,
+  Poppins_300Light,
+  Poppins_500Medium,
+  Poppins_400Regular,
+  Poppins_600SemiBold,
   Poppins_100Thin,
-  useFonts,
 } from '@expo-google-fonts/poppins';
 import {
   Montserrat_700Bold,
@@ -22,7 +23,8 @@ import {
   Montserrat_100Thin,
 } from '@expo-google-fonts/montserrat';
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Box } from '@/components';
+import { Box, Chip } from '@/components';
+import { BounceBoxRef, RotatingBoxRef } from '@/types';
 // Import global.css only if NativeWind is available
 try {
   require('nativewind');
@@ -33,6 +35,8 @@ try {
 }
 
 export default function App() {
+  const rotateRef = useRef<RotatingBoxRef>(null);
+  const bounceRef = useRef<BounceBoxRef>(null);
   const [fontsLoaded] = useFonts({
     primary_bold_font: Poppins_700Bold,
     primary_extra_bold_font: Poppins_800ExtraBold,
@@ -67,14 +71,17 @@ export default function App() {
   //     },
   //   },
   // });
+
   return (
-    <Box style={{ marginTop: 100 }}>
-      <Accordion type="single" collapsible>
-        <AccordionItem value="item-1">
-          <AccordionTrigger>Is it accessible?</AccordionTrigger>
-          <AccordionContent>Yes. It adheres to the WAI-ARIA design pattern.</AccordionContent>
-        </AccordionItem>
-      </Accordion>
+    <Box style={{ flexDirection: 'row', gap: 10, marginTop: 100 }}>
+      <Chip
+        variant="contained"
+        colorVariant="danger"
+        iconActions={[{ iconColor: '#FFD700', iconName: 'star-solid', position: 'left' }]}
+        size="xs"
+      >
+        sss,pk
+      </Chip>
     </Box>
   );
 }

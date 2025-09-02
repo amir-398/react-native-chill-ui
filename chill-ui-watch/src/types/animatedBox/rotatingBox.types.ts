@@ -25,6 +25,9 @@ export interface RotatingBoxProps extends AnimatedViewProps {
   /** Whether to loop the animation infinitely. @default false */
   infiniteLoop?: boolean;
 
+  /** Whether to make the rotation continuous without pauses between loops. @default false */
+  continuous?: boolean;
+
   /** Additional className for the rotating box */
   className?: string;
 }
@@ -44,8 +47,7 @@ export interface RotatingBoxProps extends AnimatedViewProps {
  * // Stop animation
  * rotateRef.current?.stop();
  *
- * // Loop animation
- * rotateRef.current?.loop();
+
  * ```
  */
 export interface RotatingBoxRef {
@@ -54,7 +56,4 @@ export interface RotatingBoxRef {
 
   /** Stops the rotation animation */
   stop: () => void;
-
-  /** Loops the rotation animation infinitely */
-  loop: () => void;
 }

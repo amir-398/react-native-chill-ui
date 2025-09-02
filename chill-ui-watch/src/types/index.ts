@@ -6,7 +6,7 @@ export * from './string.types';
 export * from './icon.types';
 export * from './button.types';
 export * from './toggle.types';
-export * from './badge.types';
+export * from './chip.types';
 export * from './tabSwitch.types';
 export * from './toast.types';
 export * from './timePicker.types';

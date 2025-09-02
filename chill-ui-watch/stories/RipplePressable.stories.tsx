@@ -12,9 +12,17 @@ const meta: Meta<typeof RipplePressable> = {
       control: 'text',
       description: 'Additional CSS classes',
     },
+    effectColor: {
+      control: 'color',
+      description: 'Color of the ripple effect',
+    },
     onPress: {
       action: 'text',
       description: 'Callback when pressed',
+    },
+    speed: {
+      control: { max: 2000, min: 100, step: 50, type: 'range' },
+      description: 'Speed of the ripple effect animation in milliseconds',
     },
   },
   component: RipplePressable,
@@ -84,6 +92,85 @@ export const LargeButton: Story = {
     docs: {
       description: {
         story: 'Large RipplePressable button with text',
+      },
+    },
+  },
+};
+
+export const CustomRippleColor: Story = {
+  args: {
+    children: (
+      <Box className="rounded-lg p-4" style={{ backgroundColor: '#3b82f6' }}>
+        <String style={{ color: 'white' }}>Blue Button</String>
+      </Box>
+    ),
+    effectColor: 'rgba(255, 255, 255, 0.8)',
+    onPress: action('onPress'),
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'RipplePressable with custom white ripple effect on blue background',
+      },
+    },
+  },
+};
+
+export const FastRipple: Story = {
+  args: {
+    children: (
+      <Box className="rounded-lg p-4" style={{ backgroundColor: '#ef4444' }}>
+        <String style={{ color: 'white' }}>Fast Ripple</String>
+      </Box>
+    ),
+    effectColor: 'rgba(255, 255, 255, 0.6)',
+    onPress: action('onPress'),
+    speed: 200,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'RipplePressable with fast ripple animation (200ms)',
+      },
+    },
+  },
+};
+
+export const SlowRipple: Story = {
+  args: {
+    children: (
+      <Box className="rounded-lg p-4" style={{ backgroundColor: '#10b981' }}>
+        <String style={{ color: 'white' }}>Slow Ripple</String>
+      </Box>
+    ),
+    effectColor: 'rgba(255, 255, 255, 0.4)',
+    onPress: action('onPress'),
+    speed: 1000,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'RipplePressable with slow ripple animation (1000ms)',
+      },
+    },
+  },
+};
+
+export const DarkRipple: Story = {
+  args: {
+    children: (
+      <Box className="rounded-lg p-4" style={{ backgroundColor: '#f3f4f6', borderWidth: 1, borderColor: '#d1d5db' }}>
+        <String style={{ color: '#374151' }}>Light Button</String>
+      </Box>
+    ),
+    effectColor: 'rgba(0, 0, 0, 0.1)',
+    onPress: action('onPress'),
+    speed: 400,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'RipplePressable with dark ripple effect on light background',
       },
     },
   },

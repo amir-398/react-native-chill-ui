@@ -1,22 +1,106 @@
-import { View } from 'react-native';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, {
-  measure,
-  runOnJS,
-  useAnimatedRef,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
+import { View, Animated, Pressable } from 'react-native';
+import { useState, useRef, useEffect, PropsWithChildren, Children, isValidElement } from 'react';
+
+import { isNativeWindInstalled } from '@/utils';
+import { classNamePropsHandler } from '@/utils/classNameMissingError';
 
 import cn from '../cn';
-import { Box } from '../box';
+import styles from './RipplePressable.style';
+import { AnimatedBox } from '../animatedBox';
 import { RipplePressableProps } from '../../types/ripplePressableProps';
 
 /**
- * RipplePressable component that provides a material design ripple effect on press.
- * Uses React Native Reanimated and Gesture Handler for smooth, native animations.
+ * Individual ripple effect component using native Animated API
+ */
+interface RippleEffectProps {
+  x: number;
+  y: number;
+  duration: number;
+  effectColor: string;
+  containerWidth: number;
+  containerHeight: number;
+}
+
+function RippleEffect({ containerHeight, containerWidth, duration, effectColor, x, y }: RippleEffectProps) {
+  const scaleAnim = useRef(new Animated.Value(0)).current;
+  const opacityAnim = useRef(new Animated.Value(0.6)).current;
+
+  // Calculate the distance from touch point to furthest corner
+  const distanceToCorners = [
+    Math.sqrt(x * x + y * y), // Top-left
+    Math.sqrt((containerWidth - x) * (containerWidth - x) + y * y), // Top-right
+    Math.sqrt(x * x + (containerHeight - y) * (containerHeight - y)), // Bottom-left
+    Math.sqrt((containerWidth - x) * (containerWidth - x) + (containerHeight - y) * (containerHeight - y)), // Bottom-right
+  ];
+
+  // Use the maximum distance to ensure ripple covers entire container
+  const maxDistance = Math.max(...distanceToCorners);
+
+  // Start with a smaller base size and scale it up
+  const baseSize = 20;
+  const finalScale = (maxDistance * 2.2) / baseSize; // Add some extra coverage with 2.2 multiplier
+
+  useEffect(() => {
+    // Start the ripple animation when component mounts
+    Animated.parallel([
+      Animated.timing(scaleAnim, {
+        duration,
+        toValue: finalScale,
+        useNativeDriver: true,
+      }),
+      Animated.timing(opacityAnim, {
+        delay: Math.round(duration * 0.3), // 30% of duration for delay
+        duration: Math.round(duration * 0.9), // 90% of duration for fade out
+        toValue: 0,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, [scaleAnim, opacityAnim, finalScale, duration]);
+
+  return (
+    <AnimatedBox
+      style={{
+        backgroundColor: effectColor,
+        borderRadius: baseSize / 2,
+        height: baseSize,
+        left: x - baseSize / 2,
+        opacity: opacityAnim,
+        pointerEvents: 'none',
+        position: 'absolute',
+        top: y - baseSize / 2,
+        transform: [{ scale: scaleAnim }],
+        width: baseSize,
+      }}
+    />
+  );
+}
+
+/**
+ * Utility function to extract borderRadius from children styles
+ */
+function extractBorderRadius(children: React.ReactNode): number {
+  if (!children) return 0;
+
+  const firstChild = Children.toArray(children)[0];
+  if (!isValidElement(firstChild)) return 0;
+
+  const { style } = firstChild.props as { style?: any };
+  if (!style) return 0;
+
+  // Handle array of styles
+  if (Array.isArray(style)) {
+    const styleWithBorderRadius = style.find(styleObj => styleObj?.borderRadius);
+    return styleWithBorderRadius?.borderRadius || 0;
+  }
+
+  // Handle single style object
+  return style.borderRadius || 0;
+}
+
+/**
+ * RipplePressable component that provides a ripple effect on press.
+ *
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
@@ -27,120 +111,139 @@ import { RipplePressableProps } from '../../types/ripplePressableProps';
  *   </Box>
  * </RipplePressable>
  *
- * // With custom styling
+ * // With custom styling and speed
  * <RipplePressable
  *   className="bg-red-500 p-6 rounded-xl"
+ *   effectColor="rgba(255, 255, 255, 0.8)"
+ *   speed={300}
  *   onPress={() => handleButtonPress()}
  * >
  *   <String color="white" className="text-center font-bold">
- *     Custom Button
+ *     Fast Ripple Button
  *   </String>
  * </RipplePressable>
- *
  * ```
  *
  * @param children - Child components to render with ripple effect (required)
- * @param className - Custom CSS classes for styling the container
- * @param onPress - Callback function called when the component is pressed
- * @returns RipplePressable component with material design ripple animation
+ * @param className - Custom CSS classes for styling the container (NativeWind)
+ * @param disabled - Whether the component is disabled (default: false)
+ * @param style - Style object for the pressable container
+ * @param effectColor - Color of the ripple effect (default: 'rgba(255, 255, 255, 0.6)')
+ * @param speed - Animation duration in milliseconds (default: 500)
+ * @param onPress - Callback function called when the component is pressed, receives press event
+ * @returns RipplePressable component with ripple animation
  * @throws Error if no children are provided
  */
-function RipplePressable({ children, className, onPress }: RipplePressableProps) {
+function RipplePressable(props: PropsWithChildren<RipplePressableProps>) {
+  classNamePropsHandler(props, 'RipplePressable');
+  const {
+    children,
+    className,
+    disabled = false,
+    effectColor = 'rgba(255, 255, 255, 0.6)',
+    onPress,
+    speed = 500,
+    style,
+    ...rest
+  } = props;
+
   if (!children) {
     throw new Error('RipplePressable must have children');
   }
 
-  /** Shared value for the X coordinate of the ripple center */
-  const centerX = useSharedValue(0);
-  /** Shared value for the Y coordinate of the ripple center */
-  const centerY = useSharedValue(0);
-  /** Shared value for the scale of the ripple animation */
-  const scale = useSharedValue(0);
+  const [ripples, setRipples] = useState<
+    { id: number; x: number; y: number; timestamp: number; width: number; height: number }[]
+  >([]);
+  const containerRef = useRef<View>(null);
+  const rippleIdCounter = useRef(0);
 
-  /** Animated reference to the container view for measurements */
-  const aRef = useAnimatedRef<View>();
-  /** Shared value for the width of the container */
-  const width = useSharedValue(0);
-  /** Shared value for the height of the container */
-  const height = useSharedValue(0);
-
-  /** Shared value for the opacity of the ripple effect */
-  const rippleOpacity = useSharedValue(1);
+  // Extract borderRadius from children
+  const childBorderRadius = extractBorderRadius(children);
 
   /**
-   * Tap gesture handler that manages the ripple animation
+   * Handles press event and creates ripple animation
    */
-  const tapGestureEvent = Gesture.Tap()
-    .onBegin(tapEvent => {
-      const layout = measure(aRef);
-      width.value = layout?.width ?? 0;
-      height.value = layout?.height ?? 0;
+  const handlePress = (event: any) => {
+    if (disabled) {
+      return; // Don't handle press if disabled
+    }
 
-      centerX.value = tapEvent.x;
-      centerY.value = tapEvent.y;
+    if (containerRef.current) {
+      containerRef.current.measure((_x, _y, width, height) => {
+        const touchX = event.nativeEvent.locationX;
+        const touchY = event.nativeEvent.locationY;
 
-      rippleOpacity.value = 1;
-      scale.value = 0;
-      scale.value = withTiming(1, { duration: 400 });
-    })
-    .onStart(() => {
-      if (onPress) runOnJS(onPress)();
-    })
-    .onFinalize(() => {
-      rippleOpacity.value = withTiming(0);
-    });
+        rippleIdCounter.current += 1;
+        const rippleId = rippleIdCounter.current;
+        const newRipple = {
+          height,
+          id: rippleId,
+          timestamp: Date.now(),
+          width,
+          x: touchX,
+          y: touchY,
+        };
 
-  /**
-   * Animated style for the ripple effect
-   * Calculates the circle radius and positioning for the ripple animation
-   */
-  const rStyle = useAnimatedStyle(() => {
-    const circleRadius = Math.sqrt(width.value ** 2 + height.value ** 2);
+        setRipples(prevRipples => [...prevRipples, newRipple]);
 
-    const translateX = centerX.value - circleRadius;
-    const translateY = centerY.value - circleRadius;
+        // Remove ripple after animation completes
+        setTimeout(() => {
+          setRipples(prevRipples => prevRipples.filter(ripple => ripple.id !== rippleId));
+        }, speed + 150); // Add 150ms buffer to ensure animation completes
+      });
+    }
 
-    return {
-      backgroundColor: 'rgba(0,0,0,0.2)',
-      borderRadius: circleRadius,
-      height: circleRadius * 2,
-      left: 0,
-      opacity: rippleOpacity.value,
-      position: 'absolute',
-      top: 0,
-      transform: [
-        { translateX },
-        { translateY },
-        {
-          scale: scale.value,
-        },
-      ],
-      width: circleRadius * 2,
-    };
-  });
+    if (onPress) {
+      onPress(event);
+    }
+  };
 
-  return (
-    <View
-      ref={aRef}
-      style={{
-        borderRadius: 5,
-        shadowOffset: { height: 0, width: 0 },
-        shadowOpacity: 0.2,
-        shadowRadius: 20,
-      }}
+  return isNativeWindInstalled() ? (
+    <Pressable
+      ref={containerRef}
+      onPress={handlePress}
+      disabled={disabled}
+      // @ts-ignore
+      className={cn('self-start overflow-hidden', disabled && 'opacity-50', className)}
+      style={[{ borderRadius: childBorderRadius }, style]}
+      {...rest}
     >
-      <GestureDetector gesture={tapGestureEvent}>
-        <Animated.View
-          className="overflow-hidden"
-          style={{
-            borderRadius: 5,
-          }}
-        >
-          <Box className={cn('rounded-full', className)}>{children}</Box>
-          <Animated.View style={rStyle} />
-        </Animated.View>
-      </GestureDetector>
-    </View>
+      {children}
+      {!disabled &&
+        ripples.map(ripple => (
+          <RippleEffect
+            key={ripple.id}
+            x={ripple.x}
+            y={ripple.y}
+            containerWidth={ripple.width}
+            containerHeight={ripple.height}
+            duration={speed}
+            effectColor={effectColor}
+          />
+        ))}
+    </Pressable>
+  ) : (
+    <Pressable
+      ref={containerRef}
+      onPress={handlePress}
+      disabled={disabled}
+      style={[styles.container, { borderRadius: childBorderRadius }, disabled && styles.disabled, style]}
+      {...rest}
+    >
+      {children}
+      {!disabled &&
+        ripples.map(ripple => (
+          <RippleEffect
+            key={ripple.id}
+            x={ripple.x}
+            y={ripple.y}
+            containerWidth={ripple.width}
+            containerHeight={ripple.height}
+            duration={speed}
+            effectColor={effectColor}
+          />
+        ))}
+    </Pressable>
   );
 }
 

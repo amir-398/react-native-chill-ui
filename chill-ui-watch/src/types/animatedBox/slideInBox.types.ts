@@ -47,20 +47,14 @@ export interface SlideInBoxProps extends AnimatedViewProps {
  * // Start animation
  * slideRef.current?.start();
  *
- * // Stop animation
+ * // Stop animation and reset to initial state
  * slideRef.current?.stop();
- *
- * // Loop animation
- * slideRef.current?.loop();
  * ```
  */
 export interface SlideInBoxRef {
   /** Starts the slide-in animation */
   start: () => void;
 
-  /** Stops the slide-in animation */
+  /** Stops the slide-in animation and resets to initial state */
   stop: () => void;
-
-  /** Loops the slide-in animation infinitely */
-  loop: () => void;
 }

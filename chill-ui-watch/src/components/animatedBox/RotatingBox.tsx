@@ -1,106 +1,210 @@
-import { Animated } from 'react-native';
+import { Animated, Easing } from 'react-native';
 import { useRef, useEffect, useImperativeHandle, forwardRef, useCallback } from 'react';
 
 import type { RotatingBoxProps, RotatingBoxRef } from '../../types/animatedBox';
 
+import cn from '../cn';
+import styles from './AnimatedBox.style';
 import { AnimatedView as AnimatedViewNative } from '../box/View';
+import { isNativeWindInstalled } from '../../utils/nativewindDetector';
+import { classNamePropsHandler } from '../../utils/classNameMissingError';
 
 /**
- * Rotating animation component.
+ * RotatingBox - Smooth rotation animation component
  *
- * Uses React Native's internal ViewNativeComponent for optimal performance
- * by bypassing some abstraction layers.
+ * Creates continuous 360-degree rotation effects. Perfect for loading spinners, icons,
+ * decorative elements, or any content that benefits from rotational motion. Provides
+ * smooth, customizable rotation with infinite loop capabilities.
  *
  * @example
  * ```tsx
- * <RotatingBox duration={2000} loop autoStart infiniteLoop>
- *   <String>Rotating content</String>
+ * // Loading spinner
+ * <RotatingBox autoStart infiniteLoop duration={1000} className="w-8 h-8">
+ *   <Icon name="spinner" className="text-blue-500" />
+ * </RotatingBox>
+ *
+ * // Slow decorative rotation
+ * <RotatingBox
+ *   autoStart
+ *   infiniteLoop
+ *   duration={8000}
+ *   className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"
+ * >
+ *   <Icon name="star" className="text-white" />
+ * </RotatingBox>
+ *
+ * // Manual control with ref
+ * const rotateRef = useRef<RotatingBoxRef>(null);
+ *
+ * <RotatingBox ref={rotateRef} className="w-12 h-12">
+ *   <Icon name="refresh" className="text-gray-600" />
  * </RotatingBox>
  * ```
+ *
+ * @param autoStart - Automatically start animation when component mounts (default: false)
+ * @param duration - One complete rotation duration in milliseconds (default: 2000)
+ * @param delay - Delay before starting animation in milliseconds (default: 0)
+ * @param infiniteLoop - Loop animation continuously (default: false)
+ * @param continuous - Make rotation continuous without pauses between loops (default: false)
+ * @param className - CSS classes for NativeWind styling
+ * @param style - Inline styles for traditional styling or style overrides
+ * @param children - Content to be rotated
+ * @param ref - Ref for manual animation control (start, stop)
+ * @returns Animated component with rotation effect
  */
-const RotatingBox = forwardRef<RotatingBoxRef, RotatingBoxProps>(
-  ({ autoStart = false, children, className, delay = 0, duration = 2000, infiniteLoop = false, ...props }, ref) => {
-    const rotateAnim = useRef(new Animated.Value(0)).current;
-    const animationRef = useRef<Animated.CompositeAnimation | null>(null);
+const RotatingBox = forwardRef<RotatingBoxRef, RotatingBoxProps>((props, ref) => {
+  const {
+    autoStart = false,
+    children,
+    className,
+    continuous = false,
+    delay = 0,
+    duration = 2000,
+    infiniteLoop = false,
+    style,
+    ...rest
+  } = props;
+  classNamePropsHandler(props, 'RotatingBox');
+  const rotateAnim = useRef(new Animated.Value(0)).current;
+  const animationRef = useRef<Animated.CompositeAnimation | null>(null);
+  const rotationCount = useRef(0);
+  const isStopped = useRef(false);
 
-    const spin = rotateAnim.interpolate({
-      inputRange: [0, 1],
-      outputRange: ['0deg', '360deg'],
-    });
+  const spin = rotateAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg'],
+  });
 
-    const startAnimation = useCallback(() => {
-      animationRef.current?.stop();
+  const startAnimation = useCallback(() => {
+    isStopped.current = false;
+    animationRef.current?.stop();
+
+    if (!continuous) {
       rotateAnim.setValue(0);
+    }
 
+    if (infiniteLoop) {
+      if (continuous) {
+        const animation = Animated.timing(rotateAnim, {
+          duration,
+          easing: Easing.linear,
+          toValue: 1,
+          useNativeDriver: true,
+        });
+        animationRef.current = animation;
+        const runContinuousLoop = () => {
+          if (animationRef.current !== animation || isStopped.current) {
+            // Animation was stopped, don't continue
+            return;
+          }
+          rotateAnim.setValue(0);
+          animation.start(() => {
+            runContinuousLoop();
+          });
+        };
+
+        runContinuousLoop();
+      } else {
+        const animation = Animated.timing(rotateAnim, {
+          duration,
+          toValue: 1,
+          useNativeDriver: true,
+        });
+
+        animationRef.current = animation;
+
+        const runAnimation = () => {
+          if (animationRef.current !== animation || isStopped.current) {
+            // Animation was stopped, don't continue
+            return;
+          }
+          rotateAnim.setValue(0);
+          animation.start(() => {
+            runAnimation();
+          });
+        };
+        runAnimation();
+      }
+    } else {
       const animation = Animated.timing(rotateAnim, {
         duration,
         toValue: 1,
         useNativeDriver: true,
       });
-
-      if (infiniteLoop) {
-        animationRef.current = Animated.loop(animation);
-      } else {
-        animationRef.current = animation;
-      }
-
+      animationRef.current = animation;
       animationRef.current.start();
-    }, [duration, infiniteLoop, rotateAnim]);
+    }
+  }, [duration, infiniteLoop, continuous, rotateAnim]);
 
-    const stopAnimation = useCallback(() => {
-      animationRef.current?.stop();
-    }, []);
+  const stopAnimation = useCallback(() => {
+    isStopped.current = true;
+    if (animationRef.current) {
+      animationRef.current.stop();
+      animationRef.current = null;
+    }
+    rotateAnim.setValue(0);
+    if (!continuous) {
+      rotationCount.current = 0;
+    }
+  }, [continuous, rotateAnim]);
 
-    const loopAnimation = useCallback(() => {
-      stopAnimation();
-      rotateAnim.setValue(0);
-      animationRef.current = Animated.loop(
-        Animated.timing(rotateAnim, {
-          duration,
-          toValue: 1,
-          useNativeDriver: true,
-        }),
-      );
-      animationRef.current.start();
-    }, [duration, rotateAnim, stopAnimation]);
+  useImperativeHandle(
+    ref,
+    () => ({
+      start: startAnimation,
+      stop: stopAnimation,
+    }),
+    [startAnimation, stopAnimation],
+  );
 
-    useImperativeHandle(
-      ref,
-      () => ({
-        loop: loopAnimation,
-        start: startAnimation,
-        stop: stopAnimation,
-      }),
-      [startAnimation, stopAnimation, loopAnimation],
-    );
+  useEffect(() => {
+    if (autoStart) {
+      const timer = setTimeout(() => {
+        startAnimation();
+      }, delay);
 
-    useEffect(() => {
-      if (autoStart || infiniteLoop) {
-        const timer = setTimeout(() => {
-          startAnimation();
-        }, delay);
+      return () => {
+        clearTimeout(timer);
+        stopAnimation();
+      };
+    }
+    return undefined;
+  }, [delay, autoStart, startAnimation, stopAnimation]);
 
-        return () => {
-          clearTimeout(timer);
-          stopAnimation();
-        };
-      }
-      return undefined;
-    }, [delay, duration, autoStart, infiniteLoop, startAnimation, stopAnimation]);
-
+  if (isNativeWindInstalled()) {
     return (
       <AnimatedViewNative
-        style={{
-          transform: [{ rotate: spin }],
-        }}
-        className={className}
-        {...props}
+        className={cn('items-center justify-center overflow-hidden', className)}
+        style={[
+          {
+            transform: [{ rotate: spin }],
+            transformOrigin: 'center',
+          },
+          style,
+        ]}
+        {...rest}
       >
         {children}
       </AnimatedViewNative>
     );
-  },
-);
+  }
+
+  return (
+    <AnimatedViewNative
+      style={[
+        styles.rotationContainer,
+        {
+          transform: [{ rotate: spin }],
+          transformOrigin: 'center',
+        },
+        style,
+      ]}
+      {...rest}
+    >
+      {children}
+    </AnimatedViewNative>
+  );
+});
 
 RotatingBox.displayName = 'RotatingBox';
 

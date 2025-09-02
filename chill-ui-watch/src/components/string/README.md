@@ -2,6 +2,8 @@
 
 A flexible and performant text component for React Native that provides consistent typography and styling options.
 
+> **Note**: There is a typo in the filename `styleVatiants.ts` which should be `styleVariants.ts`. This will be corrected in a future version to avoid breaking changes.
+
 ## Features
 
 - **Consistent Typography**: Predefined variants for size, weight, and color.
@@ -76,7 +78,7 @@ The `String` component combines the `font` and `weight` props to select the corr
 
 For example, if you want to use `<String font="primary" weight="bold">`, you must load a font with the key `primary_bold_font`.
 
-The available `weight` options are: `'normal'`, `'medium'`, `'semibold'`, `'bold'`, `'light'`, `'thin'`, `'extraLight'`, `'extraBold'`, `'italic'`, and `'regular'`.
+The available `weight` options are: `'regular'`, `'light'`, `'medium'`, `'semiBold'`, `'bold'`, `'extraLight'`, `'extraBold'`, `'thin'`, and `'italic'`.
 
 Here is an example of how to load fonts in your `App.tsx`:
 
@@ -144,32 +146,63 @@ module.exports = {
 
 If you are not using NativeWind, the `String` component falls back to a predefined set of colors. The following table lists the available `colorVariant` options and their default hex color codes:
 
-| Variant     | Color     |
-| ----------- | --------- |
-| `primary`   | `#000000` |
-| `secondary` | `#CBD2D9` |
-| `success`   | `#86EFAC` |
-| `warning`   | `#FCD34D` |
-| `error`     | `#FF0000` |
-| `danger`    | `#FF0000` |
-| `info`      | `#6EE7B7` |
-| `tertiary`  | `#8B5CF6` |
-| `dark`      | `#323F4B` |
-| `light`     | `#F5F7FA` |
-| `white`     | `#FFFFFF` |
+| Variant     | Color            |
+| ----------- | ---------------- |
+| `primary`   | `#000000`        |
+| `secondary` | `#CBD2D9`        |
+| `tertiary`  | `#8B5CF6`        |
+| `success`   | `#86EFAC`        |
+| `warning`   | `#FCD34D`        |
+| `error`     | `#FF0000`        |
+| `danger`    | `#FF0000`        |
+| `info`      | `#6EE7B7`        |
+| `dark`      | `#323F4B`        |
+| `light`     | `#F5F7FA`        |
+| `white`     | `#FFFFFF`        |
+| `disabled`  | Defined in theme |
+| `inverted`  | Defined in theme |
+| `muted`     | Defined in theme |
+| `neutral`   | Defined in theme |
+
+**Note**: For `disabled`, `inverted`, `muted`, and `neutral` variants, the actual colors depend on your Tailwind configuration when using NativeWind, or fallback to theme colors when using StyleSheet.
+
+## Text Variants and Sizes
+
+The String component supports two types of variants: **body** and **title** variants. Each variant has predefined font sizes:
+
+### Body Variants
+
+- `body-xs`: 12px
+- `body-sm`: 14px
+- `body-1`: 16px (default)
+- `body-2`: 18px
+- `body-3`: 20px
+
+### Title Variants
+
+- `title-1`: 24px
+- `title-2`: 30px
+- `title-3`: 36px
+- `title-4`: 48px
+- `title-5`: 60px
+- `title-6`: 72px
+- `title-7`: 96px
+- `title-8`: 128px
+
+Title variants automatically use bold font weight, while body variants use regular weight by default (unless overridden with the `weight` prop).
 
 ## Props
 
-| Prop           | Type                                                            | Default     | Description                                              |
-| -------------- | --------------------------------------------------------------- | ----------- | -------------------------------------------------------- |
-| `children`     | `ReactNode`                                                     | -           | Text content to display.                                 |
-| `className`    | `string`                                                        | -           | Custom CSS classes (used with NativeWind).               |
-| `color`        | `string`                                                        | -           | Custom text color (e.g., hex, rgb).                      |
-| `colorVariant` | `'primary' \| 'secondary' \| 'success' \| 'warning' \| 'error'` | `'primary'` | Predefined color variant.                                |
-| `font`         | `'primary' \| 'secondary' \| 'tertiary'`                        | `'primary'` | Font family to use.                                      |
-| `position`     | `'left' \| 'center' \| 'right' \| 'justify'`                    | `'left'`    | Text alignment.                                          |
-| `size`         | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| '3xl'`        | `'sm'`      | Text size variant.                                       |
-| `style`        | `StyleProp<TextStyle>`                                          | -           | Additional inline styles.                                |
-| `variant`      | `string`                                                        | `'body-1'`  | Predefined text variant for special styling.             |
-| `weight`       | `'normal' \| 'medium' \| 'semibold' \| 'bold'`                  | -           | Font weight.                                             |
-| `...rest`      | `TextProps`                                                     | -           | Any other props accepted by the native `Text` component. |
+| Prop           | Type                                                                                                                                                                                    | Default     | Description                                              |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- | -------------------------------------------------------- |
+| `children`     | `ReactNode`                                                                                                                                                                             | -           | Text content to display.                                 |
+| `className`    | `string`                                                                                                                                                                                | -           | Custom CSS classes (used with NativeWind).               |
+| `color`        | `string`                                                                                                                                                                                | -           | Custom text color (e.g., hex, rgb).                      |
+| `colorVariant` | `'primary' \| 'secondary' \| 'tertiary' \| 'success' \| 'warning' \| 'error' \| 'danger' \| 'info' \| 'dark' \| 'light' \| 'white' \| 'disabled' \| 'inverted' \| 'muted' \| 'neutral'` | `'primary'` | Predefined color variant.                                |
+| `font`         | `'primary' \| 'secondary' \| 'tertiary'`                                                                                                                                                | `'primary'` | Font family to use.                                      |
+| `position`     | `'left' \| 'center' \| 'right'`                                                                                                                                                         | `'left'`    | Text alignment.                                          |
+| `size`         | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| '3xl' \| '4xl' \| '5xl' \| '6xl' \| '7xl' \| '8xl' \| '9xl'`                                                                          | `'md'`      | Text size variant.                                       |
+| `style`        | `StyleProp<TextStyle>`                                                                                                                                                                  | -           | Additional inline styles.                                |
+| `variant`      | `'body-1' \| 'body-2' \| 'body-3' \| 'body-sm' \| 'body-xs' \| 'title-1' \| 'title-2' \| 'title-3' \| 'title-4' \| 'title-5' \| 'title-6' \| 'title-7' \| 'title-8'`                    | `'body-1'`  | Predefined text variant for special styling.             |
+| `weight`       | `'regular' \| 'light' \| 'medium' \| 'semiBold' \| 'bold' \| 'extraLight' \| 'extraBold' \| 'thin' \| 'italic'`                                                                         | `'regular'` | Font weight.                                             |
+| `...rest`      | `TextProps`                                                                                                                                                                             | -           | Any other props accepted by the native `Text` component. |

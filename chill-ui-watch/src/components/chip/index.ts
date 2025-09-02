@@ -26,6 +26,6 @@
  *
  * @see {@link https://github.com/your-repo/chill-ui/tree/main/src/components/badge/README.md Documentation}
  */
-import Badge from './Badge';
+import Chip from './Chip';
 
-export default Badge;
+export default Chip;

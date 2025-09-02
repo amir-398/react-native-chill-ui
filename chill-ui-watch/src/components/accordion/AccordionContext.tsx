@@ -65,7 +65,7 @@ export function AccordionProvider({
 
         if (newOpenItems.has(value)) {
           // Item is open, close it
-          if (type === 'single' && !collapsible && newOpenItems.size === 1) {
+          if (type === 'single' && !collapsible) {
             // Can't close the only open item in single non-collapsible mode
             return prev;
           }

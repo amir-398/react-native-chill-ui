@@ -1,8 +1,10 @@
 import type { AccordionItemProps } from '../../types';
 
-import cn from '../cn';
 import { Box } from '../box';
+import styles from './Accordion.style';
 import { AccordionItemProvider } from './AccordionItemContext';
+import { isNativeWindInstalled } from '../../utils/nativewindDetector';
+import { classNamePropsHandler } from '../../utils/classNameMissingError';
 
 /**
  * AccordionItem wraps a single accordion item with its trigger and content.
@@ -19,12 +21,21 @@ import { AccordionItemProvider } from './AccordionItemContext';
  * @param disabled - Whether this specific item is disabled
  * @param className - Custom CSS classes
  */
-export default function AccordionItem({ children, className, disabled, value, ...props }: AccordionItemProps) {
+export default function AccordionItem(props: AccordionItemProps) {
+  const { children, className, disabled, style, value, ...rest } = props;
+  classNamePropsHandler(props, 'AccordionItem');
+
   return (
     <AccordionItemProvider value={value} disabled={disabled}>
-      <Box className={cn('border-b border-gray-100 last:border-b-0', className)} {...props}>
-        {children}
-      </Box>
+      {isNativeWindInstalled() ? (
+        <Box className={className} style={style} {...rest}>
+          {children}
+        </Box>
+      ) : (
+        <Box style={[styles.accordionItem, style]} {...rest}>
+          {children}
+        </Box>
+      )}
     </AccordionItemProvider>
   );
 }

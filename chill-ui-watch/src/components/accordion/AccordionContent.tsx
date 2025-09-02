@@ -1,12 +1,12 @@
-import { useRef } from 'react';
-import { Animated } from 'react-native';
+import { isNativeWindInstalled } from '@/utils';
+import { classNamePropsHandler } from '@/utils/classNameMissingError';
 
 import type { AccordionContentProps } from '../../types';
 
 import cn from '../cn';
 import { Box } from '../box';
 import String from '../string';
-import { AnimatedBox } from '../animatedBox';
+import styles from './Accordion.style';
 import { useAccordion } from './AccordionContext';
 import { useAccordionItem } from './AccordionItemContext';
 
@@ -33,27 +33,34 @@ import { useAccordionItem } from './AccordionItemContext';
  * @param stringProps - Props to pass to String component when children is a string
  * @param ...rest - Props to pass to View props
  */
-export default function AccordionContent({ children, className, stringProps, ...props }: AccordionContentProps) {
-  const { hasAnimation, isItemOpen } = useAccordion();
+export default function AccordionContent(props: AccordionContentProps) {
+  classNamePropsHandler(props, 'AccordionContent');
+  const { children, className, stringProps, style, ...rest } = props;
+  const { isItemOpen } = useAccordion();
   const { value } = useAccordionItem();
 
   const isOpen = isItemOpen(value);
 
-  const animatedHeight = useRef(new Animated.Value(0)).current;
-
   const staticHeight = isOpen ? 'auto' : 0;
-  const finalHeight = hasAnimation ? animatedHeight : staticHeight;
+
+  const contentStyle = isOpen ? undefined : styles.accordionContentHidden;
 
   return (
-    <AnimatedBox
+    <Box
       style={{
-        height: finalHeight,
+        height: staticHeight,
         overflow: 'hidden',
       }}
     >
-      <Box className={cn('border-b border-gray-100 bg-white px-4 py-3', className)} {...props}>
-        {typeof children === 'string' ? <String {...stringProps}>{children}</String> : children}
-      </Box>
-    </AnimatedBox>
+      {isNativeWindInstalled() ? (
+        <Box className={cn('bg-[#ebebeb] px-4 py-3', className)} style={style} {...rest}>
+          {typeof children === 'string' ? <String {...stringProps}>{children}</String> : children}
+        </Box>
+      ) : (
+        <Box style={[styles.accordionContent, contentStyle, style]} {...rest}>
+          {typeof children === 'string' ? <String {...stringProps}>{children}</String> : children}
+        </Box>
+      )}
+    </Box>
   );
 }

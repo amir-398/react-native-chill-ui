@@ -1,7 +1,7 @@
 import type { VariantProps } from 'tailwind-variants';
 
-import { StringProps } from './string.types';
-import { avatarVariants, sizeVariant } from '../components/avatar/styleVariants';
+import type { StringProps } from './string.types';
+import type { avatarVariants, sizeVariant } from '../components/avatar/Avatar.variants';
 
 /**
  * Props for Avatar component

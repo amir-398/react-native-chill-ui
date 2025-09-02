@@ -1,5 +1,7 @@
 import type { VariantProps } from 'tailwind-variants';
 
+import { StyleProp, ViewStyle } from 'react-native';
+
 import type { TIcons } from '../constants/ICONS';
 import type { IconSizeVr, paddingVr } from '../components/icon/Icon';
 
@@ -25,4 +27,9 @@ export type IconProps = {
   size?: VariantProps<typeof IconSizeVr>['size'];
   /** Padding size for the icon (deprecated, use pressEffectSize instead) */
   padding?: VariantProps<typeof paddingVr>['size'];
+  /** Inline styles for the icon */
+  style?: StyleProp<ViewStyle>;
+
+  /** Custom component to render instead of the default icon */
+  as?: 'Pressable' | 'TouchableOpacity' | 'RipplePressable';
 };
