@@ -1,16 +1,11 @@
 import { Image, Pressable, TouchableOpacity } from 'react-native';
 
-import { classNamePropsHandler } from '@/utils/classNameMissingError';
-import { classNameHandler, styleHandler } from '@/utils/propsHandlers';
-
-import cn from '../../cn';
 import { Box } from '../../box';
 import String from '../../string';
-import { AvatarProps } from '../../../types';
+import { AvatarSsProps } from '../../../types';
 import RipplePressable from '../../ripple-pressable';
 import getUserInitials from '../utils/getUsersInititials';
 import { AvatarSv, styles } from '../styles/Avatar.styles';
-import { avatarVariants, sizeVariant } from '../styles/Avatar.variants';
 
 /**
  * Avatar component displays user profile images with fallback to initials.
@@ -33,7 +28,6 @@ import { avatarVariants, sizeVariant } from '../styles/Avatar.variants';
  *
  * @param as - Component to use when avatar is pressable (default: 'Pressable') - 'pressable' | 'touchable-opacity' | 'ripple-pressable'
  * @param color - Custom background color
- * @param className - Custom CSS classes (only used with NativeWind)
  * @param data - User data containing firstname, lastname, and image_url
  * @param onPress - Callback when avatar is pressed
  * @param size - Avatar size variant (default: 'md')
@@ -43,19 +37,8 @@ import { avatarVariants, sizeVariant } from '../styles/Avatar.variants';
  *
  * @see {@link https://github.com/your-repo/chill-ui/tree/main/src/components/avatar/README.md Documentation}
  */
-export default function Avatar(props: AvatarProps) {
-  classNamePropsHandler(props, 'Avatar');
-  const {
-    as = 'pressable',
-    className,
-    color,
-    data,
-    onPress,
-    size = 'md',
-    stringProps,
-    style,
-    variant = 'circle',
-  } = props;
+export default function Avatar(props: AvatarSsProps) {
+  const { as = 'pressable', color, data, onPress, size = 'md', stringProps, style, variant = 'circle' } = props;
 
   const initials = data?.firstname ? getUserInitials(data) : '';
   const image = data?.image_url;
@@ -63,22 +46,11 @@ export default function Avatar(props: AvatarProps) {
   const avaratStyle = AvatarSv({ size, variant });
 
   const avatarContent = (
-    <Box
-      {...classNameHandler(
-        cn('bg-[#7DD3FC] items-center justify-center', sizeVariant({ size }), avatarVariants({ variant }), className),
-      )}
-      {...styleHandler({ defaultStyle: avaratStyle, style: [{ ...(color && { backgroundColor: color }) }, style] })}
-    >
+    <Box style={[{ ...(color && { backgroundColor: color }) }, avaratStyle, style]}>
       <String size={size as any} weight="semiBold" {...stringProps}>
         {initials}
       </String>
-      {image && (
-        <Image
-          {...classNameHandler('absolute h-full w-full')}
-          {...styleHandler({ defaultStyle: styles.image })}
-          source={{ uri: image }}
-        />
-      )}
+      {image && <Image style={styles.image} source={{ uri: image }} />}
     </Box>
   );
 

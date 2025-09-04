@@ -1,15 +1,11 @@
 import { Image, Pressable, TouchableOpacity } from 'react-native';
 
-import { classNamePropsHandler } from '@/utils/classNameMissingError';
-import { classNameHandler, styleHandler } from '@/utils/propsHandlers';
-
 import cn from '../../cn';
 import { Box } from '../../box';
 import String from '../../string';
-import { AvatarProps } from '../../../types';
+import { AvatarTwProps } from '../../../types';
 import RipplePressable from '../../ripple-pressable';
 import getUserInitials from '../utils/getUsersInititials';
-import { AvatarSv, styles } from '../styles/Avatar.styles';
 import { avatarVariants, sizeVariant } from '../styles/Avatar.variants';
 
 /**
@@ -43,8 +39,7 @@ import { avatarVariants, sizeVariant } from '../styles/Avatar.variants';
  *
  * @see {@link https://github.com/your-repo/chill-ui/tree/main/src/components/avatar/README.md Documentation}
  */
-export default function Avatar(props: AvatarProps) {
-  classNamePropsHandler(props, 'Avatar');
+export default function Avatar(props: AvatarTwProps) {
   const {
     as = 'pressable',
     className,
@@ -60,25 +55,20 @@ export default function Avatar(props: AvatarProps) {
   const initials = data?.firstname ? getUserInitials(data) : '';
   const image = data?.image_url;
 
-  const avaratStyle = AvatarSv({ size, variant });
-
   const avatarContent = (
     <Box
-      {...classNameHandler(
-        cn('bg-[#7DD3FC] items-center justify-center', sizeVariant({ size }), avatarVariants({ variant }), className),
+      style={[{ ...(color && { backgroundColor: color }) }, style]}
+      className={cn(
+        'items-center justify-center bg-[#7DD3FC]',
+        sizeVariant({ size }),
+        avatarVariants({ variant }),
+        className,
       )}
-      {...styleHandler({ defaultStyle: avaratStyle, style: [{ ...(color && { backgroundColor: color }) }, style] })}
     >
       <String size={size as any} weight="semiBold" {...stringProps}>
         {initials}
       </String>
-      {image && (
-        <Image
-          {...classNameHandler('absolute h-full w-full')}
-          {...styleHandler({ defaultStyle: styles.image })}
-          source={{ uri: image }}
-        />
-      )}
+      {image && <Image className="absolute h-full w-full" source={{ uri: image }} />}
     </Box>
   );
 

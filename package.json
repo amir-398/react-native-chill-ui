@@ -38,6 +38,9 @@
     "lint": "eslint .",
     "release": "release-it",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "test:cli": "node scripts/test-cli-local.js",
+    "cli:config": "node cli/index.js",
+    "cli:install": "node packages/installer/bin/installer.js",
     "tsc": "tsc --noEmit",
     "typecheck": "tsc --noEmit"
   },

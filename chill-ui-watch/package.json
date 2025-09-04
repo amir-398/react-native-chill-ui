@@ -27,6 +27,7 @@
     "install": "^0.13.0",
     "libphonenumber-js": "^1.12.9",
     "lodash": "^4.17.21",
+    "nativewind": "^4.1.23",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-native": "0.79.5",

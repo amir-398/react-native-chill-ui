@@ -4,6 +4,7 @@ export * from './loadingIndicatorsKit';
 export * from './accordion';
 export * from './dialog';
 export * from './tooltip';
+export { Avatar } from './avatar';
 export { default as Chip } from './chip';
 export { default as ButtonIcon } from './buttonIcon';
 export { default as cn } from './cn';
@@ -17,8 +18,6 @@ export { default as RipplePressable } from './ripple-pressable';
 export { default as Skeleton } from './skeletons';
 export { default as PlacesInput } from './places-input';
 export { default as SegmentedControl } from './segmented-control';
-export { default as Avatar } from './avatar';
 export { default as Separator } from './separator';
-
 export { default as Checkbox } from './checkbox';
 export { default as DropdownMenu } from './dropdownMenu';

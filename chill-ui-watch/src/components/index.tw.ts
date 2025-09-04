@@ -1,0 +1,1 @@
+export { AvatarTw } from './avatar';

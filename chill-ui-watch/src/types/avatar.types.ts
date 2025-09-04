@@ -2,6 +2,9 @@ import type { VariantProps } from 'tailwind-variants';
 
 import { StyleProp, ViewStyle } from 'react-native';
 
+import type { SvVariantProps } from '@/utils/styleSheetVariants';
+import type { AvatarSv } from '@/components/avatar/styles/Avatar.styles';
+
 import type { StringProps } from './string.types';
 import type { avatarVariants, sizeVariant } from '../components/avatar/styles/Avatar.variants';
 
@@ -9,7 +12,7 @@ import type { avatarVariants, sizeVariant } from '../components/avatar/styles/Av
  * Props for Avatar component
  *
  */
-export interface AvatarProps {
+export interface AvatarBaseProps {
   /** Custom CSS classes */
   className?: string;
   /** Callback when avatar is pressed */
@@ -25,16 +28,22 @@ export interface AvatarProps {
   };
   /** Custom background color */
   color?: string;
-  /** Custom text color */
-  textColor?: string;
-  /** Avatar size variant */
-  size?: VariantProps<typeof sizeVariant>['size'];
   /** Props for the String component displaying initials */
   stringProps?: StringProps;
-  /** Avatar shape variant */
-  variant?: VariantProps<typeof avatarVariants>['variant'];
   /** Component to use when avatar is pressable - default: 'Pressable' */
   as?: 'pressable' | 'touchable-opacity' | 'ripple-pressable';
   // Style
   style?: StyleProp<ViewStyle>;
 }
+
+export interface AvatarTwProps extends AvatarBaseProps {
+  className?: string;
+  /** Avatar size variant */
+  size?: VariantProps<typeof sizeVariant>['size'];
+  /** Avatar shape variant */
+  variant?: VariantProps<typeof avatarVariants>['variant'];
+}
+
+export type AvatarSsProps = AvatarBaseProps & SvVariantProps<typeof AvatarSv>;
+
+export type AvatarProps = AvatarTwProps | AvatarSsProps;
