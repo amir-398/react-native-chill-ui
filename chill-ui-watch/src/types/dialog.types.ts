@@ -1,6 +1,10 @@
+import type { ViewProps } from 'react-native';
 import type { VariantProps } from 'tailwind-variants';
 
-import type { IconSizeVr } from '../components/icon/Icon';
+import type { IconProps } from './icon.types';
+import type dialogVariants from '../components/dialog/Dialog.variants';
+
+import { StrictOmit } from './utils/StrictOmit.types';
 
 /**
  * Props for the root Dialog component
@@ -42,8 +46,6 @@ export type DialogCloseProps = {
 export type DialogBackdropProps = {
   /** Whether to close dialog when backdrop is pressed */
   closeOnBackdropPress: boolean;
-  /** Custom CSS classes for the backdrop */
-  backdropClassName?: string;
   /** Custom backdrop color */
   backdropColor?: string;
 };
@@ -51,7 +53,7 @@ export type DialogBackdropProps = {
 /**
  * Props for the DialogContent component
  */
-export interface DialogContentProps {
+export type DialogContentProps = ViewProps & {
   /** Custom CSS classes for dialog content */
   className?: string;
   /** Callback when dialog is shown */
@@ -66,16 +68,11 @@ export interface DialogContentProps {
   backdropColor?: string;
   /** Close when back button is pressed */
   closeOnGoBack?: boolean;
-  /** Color of the close mark */
-  closeMarkColor?: string;
   /** Dialog content */
   children: React.ReactNode;
-  /** Custom backdrop CSS classes */
-  backdropClassName?: string;
   /** Callback when dialog is requested to close */
   onRequestClose?: () => void;
-  /** Custom close mark CSS classes */
-  closeMarkClassName?: string;
+
   /** Use default white container */
   useDefaultContainer?: boolean;
   /** Close when backdrop is pressed */
@@ -86,6 +83,10 @@ export interface DialogContentProps {
   animation?: 'fade' | 'slide' | 'none';
   /** Callback when open state changes */
   onOpenChange?: (open: boolean) => void;
-  /** Size of the close mark */
-  closeMarkSize?: VariantProps<typeof IconSizeVr>['size'];
-}
+  /** Size variant for the dialog */
+  size?: VariantProps<typeof dialogVariants>['size'];
+  /** Border radius variant for the dialog */
+  rounded?: VariantProps<typeof dialogVariants>['rounded'];
+  /** Custom close mark props */
+  closeMarkProps?: StrictOmit<IconProps, 'name' | 'onPress'>;
+};

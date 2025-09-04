@@ -22,10 +22,6 @@ import { classNamePropsHandler } from '../../utils/classNameMissingError';
 function Box(props: BoxProps) {
   classNamePropsHandler(props, 'Box');
 
-  if (isNativeWindInstalled()) {
-    return <NativeView {...props} />;
-  }
-
   return <NativeView {...props} />;
 }
 

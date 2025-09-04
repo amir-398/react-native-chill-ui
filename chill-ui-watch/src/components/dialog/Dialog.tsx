@@ -2,11 +2,16 @@ import { tv } from 'tailwind-variants';
 import { Modal, Pressable, TouchableOpacity } from 'react-native';
 import React, { useEffect, cloneElement, useImperativeHandle } from 'react';
 
+import { classNamePropsHandler } from '@/utils/classNameMissingError';
+
 import cn from '../cn';
 import Icon from '../icon';
 import { Box } from '../box';
+import dialogVariants from './Dialog.variants';
 import RipplePressable from '../ripple-pressable';
 import { ToastProvider, useToast } from '../toast';
+import { isNativeWindInstalled } from '../../utils';
+import createDialogStyles from './utils/createStyles';
 import { DialogProvider, useDialog } from './DialogContext';
 import {
   DialogBackdropProps,
@@ -30,6 +35,7 @@ export interface DialogToasterRef {
 /**
  * DialogToaster component that provides toast functionality within a dialog.
  * Must be used inside a DialogContent component to work properly.
+ * Integrates seamlessly with the Toast system for consistent user experience.
  *
  * @example
  * ```tsx
@@ -58,6 +64,8 @@ export interface DialogToasterRef {
  *   );
  * }
  * ```
+ *
+ * @returns Toast functionality component for dialogs
  */
 export const DialogToaster = React.forwardRef<DialogToasterRef>((_, ref) => {
   const { toast } = useToast();
@@ -76,6 +84,7 @@ DialogToaster.displayName = 'DialogToaster';
 /**
  * Root Dialog component that provides context for all dialog sub-components.
  * Must wrap all dialog-related components.
+ * Automatically manages dialog state and provides context for all sub-components.
  *
  * @example
  * ```tsx
@@ -90,6 +99,7 @@ DialogToaster.displayName = 'DialogToaster';
  * ```
  *
  * @param children - Dialog content and triggers
+ * @returns Dialog context provider component
  */
 export function Dialog({ children }: DialogProps) {
   return <DialogProvider>{children}</DialogProvider>;
@@ -98,9 +108,9 @@ export function Dialog({ children }: DialogProps) {
 /**
  * DialogTrigger component that opens the dialog when pressed.
  * Supports different touchable types and can clone child elements.
+ * Automatically detects NativeWind availability and adapts styling accordingly.
  *
  * @example
- * ```tsx
  * // Basic usage
  * <DialogTrigger>
  *   <Button title="Open Dialog" />
@@ -119,13 +129,21 @@ export function Dialog({ children }: DialogProps) {
  * <DialogTrigger asChild>
  *   <Button title="Cloned Trigger" />
  * </DialogTrigger>
- * ```
+ *
+ * // With NativeWind styling
+ * <DialogTrigger className="bg-blue-500 hover:bg-blue-600">
+ *   <Button title="Styled Trigger" />
+ * </DialogTrigger>
  *
  * @param as - Type of touchable component to use (default: 'pressable')
  * @param asChild - Whether to clone the child element
  * @param children - Trigger element that will open the dialog
+ * @param className - Custom CSS classes (NativeWind only)
+ * @returns Touchable trigger component with proper event handling
  */
-export function DialogTrigger({ as, asChild, children }: DialogTriggerProps) {
+export function DialogTrigger(props: DialogTriggerProps) {
+  classNamePropsHandler(props, 'DialogTrigger');
+  const { as, asChild, children, className } = props;
   const { open } = useDialog();
   const handlePress = () => {
     open();
@@ -138,7 +156,11 @@ export function DialogTrigger({ as, asChild, children }: DialogTriggerProps) {
 
   if (as === 'ripple-pressable') {
     return (
-      <RipplePressable onPress={handlePress} className="bg-white">
+      <RipplePressable
+        onPress={handlePress}
+        className={isNativeWindInstalled() ? cn('bg-white', className) : undefined}
+        style={!isNativeWindInstalled() ? { backgroundColor: 'white' } : undefined}
+      >
         {children}
       </RipplePressable>
     );
@@ -146,14 +168,24 @@ export function DialogTrigger({ as, asChild, children }: DialogTriggerProps) {
 
   if (as === 'touchable-opacity') {
     return (
-      <TouchableOpacity onPress={handlePress} className="relative z-50">
+      <TouchableOpacity
+        onPress={handlePress}
+        // @ts-ignore
+        className={isNativeWindInstalled() ? cn('relative z-50', className) : undefined}
+        style={!isNativeWindInstalled() ? { position: 'relative', zIndex: 50 } : undefined}
+      >
         {children}
       </TouchableOpacity>
     );
   }
 
   return (
-    <Pressable onPress={handlePress} className="relative z-50">
+    <Pressable
+      onPress={handlePress}
+      // @ts-ignore
+      className={isNativeWindInstalled() ? cn('relative z-50', className) : undefined}
+      style={!isNativeWindInstalled() ? { position: 'relative', zIndex: 50 } : undefined}
+    >
       {children}
     </Pressable>
   );
@@ -164,12 +196,12 @@ DialogTrigger.displayName = 'DialogTrigger';
 /**
  * Internal DialogBackdrop component that handles backdrop interactions.
  * Automatically closes the dialog when backdrop is pressed if enabled.
+ * Automatically detects NativeWind availability and adapts styling accordingly.
  *
- * @param backdropClassName - Custom CSS classes for the backdrop
  * @param backdropColor - Custom backdrop color
  * @param closeOnBackdropPress - Whether to close dialog when backdrop is pressed
  */
-function DialogBackdrop({ backdropClassName, backdropColor, closeOnBackdropPress }: DialogBackdropProps) {
+function DialogBackdrop({ backdropColor, closeOnBackdropPress }: DialogBackdropProps) {
   const { close } = useDialog();
   const handlePress = () => {
     if (closeOnBackdropPress) {
@@ -179,8 +211,26 @@ function DialogBackdrop({ backdropClassName, backdropColor, closeOnBackdropPress
 
   return (
     <Pressable
-      className={cn('absolute inset-0 flex-1 items-center justify-center bg-black/50', backdropClassName)}
-      style={{ ...(backdropColor && { backgroundColor: backdropColor }) }}
+      // @ts-ignore
+      className={
+        isNativeWindInstalled() ? cn('absolute inset-0 flex-1 items-center justify-center bg-black/50') : undefined
+      }
+      style={
+        [
+          !isNativeWindInstalled() && {
+            alignItems: 'center' as const,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            bottom: 0,
+            flex: 1,
+            justifyContent: 'center' as const,
+            left: 0,
+            position: 'absolute' as const,
+            right: 0,
+            top: 0,
+          },
+          backdropColor && { backgroundColor: backdropColor },
+        ].filter(Boolean) as any
+      }
       onPress={handlePress}
     />
   );
@@ -198,6 +248,7 @@ const closeMarkPositionVariants = tv({
 /**
  * DialogContent component that renders the modal content with customizable options.
  * Supports animations, backdrop customization, close marks, and toast integration.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
@@ -214,17 +265,33 @@ const closeMarkPositionVariants = tv({
  * >
  *   <String>Dialog with close button</String>
  * </DialogContent>
+ *
+ * // With NativeWind styling
+ * <DialogContent
+ *   className="mx-auto max-w-md bg-white rounded-lg shadow-lg"
+ * >
+ *   <String>Styled with Tailwind classes</String>
+ * </DialogContent>
+ *
+ * // With StyleSheet styling (fallback)
+ * <DialogContent
+ *   style={{
+ *     marginHorizontal: 'auto',
+ *     maxWidth: 400,
+ *     backgroundColor: 'white',
+ *     borderRadius: 8,
+ *   }}
+ * >
+ *   <String>Styled with StyleSheet</String>
+ * </DialogContent>
  * ```
  *
  * @param animation - Animation type for the dialog (default: 'fade')
- * @param backdropClassName - Custom CSS classes for the backdrop
  * @param backdropColor - Custom backdrop color
  * @param children - Dialog content
- * @param className - Custom CSS classes for dialog content
- * @param closeMarkClassName - Custom CSS classes for close mark
- * @param closeMarkColor - Color of the close mark
+ * @param className - Custom CSS classes for dialog content (NativeWind only)
  * @param closeMarkPosition - Position of the close mark (default: 'right')
- * @param closeMarkSize - Size of the close mark (default: 'sm')
+ * @param closeMarkProps - Custom close mark props
  * @param closeOnBackdropPress - Close when backdrop is pressed (default: true)
  * @param closeOnGoBack - Close when back button is pressed (default: true)
  * @param defaultOpen - Initial open state
@@ -233,29 +300,38 @@ const closeMarkPositionVariants = tv({
  * @param onOpenChange - Callback when open state changes
  * @param onRequestClose - Callback when dialog is requested to close
  * @param onShow - Callback when dialog is shown
+ * @param rounded - Border radius variant for the dialog (default: 'lg')
+ * @param size - Size variant for the dialog (default: 'md')
+ * @param style - Additional inline styles (StyleSheet only)
  * @param useDefaultContainer - Use default white container (default: true)
+ * @returns Styled dialog content with consistent layout and behavior
  */
-export function DialogContent({
-  animation = 'fade',
-  backdropClassName,
-  backdropColor,
-  children,
-  className,
-  closeMarkClassName,
-  closeMarkColor,
-  closeMarkPosition = 'right',
-  closeMarkSize = 'sm',
-  closeOnBackdropPress = true,
-  closeOnGoBack = true,
-  defaultOpen,
-  hasCloseMark,
-  hasOverlay = true,
-  onOpenChange,
-  onRequestClose,
-  onShow,
-  useDefaultContainer = true,
-}: DialogContentProps) {
+export function DialogContent(props: DialogContentProps) {
+  classNamePropsHandler(props, 'DialogContent');
+  const {
+    animation = 'fade',
+    backdropColor,
+    children,
+    className,
+    closeMarkPosition = 'right',
+    closeMarkProps,
+    closeOnBackdropPress = true,
+    closeOnGoBack = true,
+    defaultOpen,
+    hasCloseMark,
+    hasOverlay = true,
+    onOpenChange,
+    onRequestClose,
+    onShow,
+    rounded = 'lg',
+    size = 'md',
+    style,
+    useDefaultContainer = true,
+    ...rest
+  } = props;
   const { close, isOpen, open } = useDialog();
+  const isNativeWind = isNativeWindInstalled();
+  const dialogStyles = !isNativeWind ? createDialogStyles(size, rounded) : null;
 
   const handleClose = () => {
     onRequestClose?.();
@@ -281,6 +357,43 @@ export function DialogContent({
     onOpenChange?.(isOpen);
   }, [isOpen, onOpenChange]);
 
+  const getCloseMarkStyle = () => {
+    if (isNativeWind) return undefined;
+    return closeMarkPosition === 'left' ? dialogStyles?.closeMarkLeft : dialogStyles?.closeMarkRight;
+  };
+
+  const renderDialogBox = () => (
+    <Box
+      className={isNativeWind ? cn(dialogVariants({ rounded, size }), className) : undefined}
+      style={isNativeWind ? undefined : [dialogStyles?.dialog, style]}
+      {...rest}
+    >
+      {hasCloseMark && (
+        <Box
+          className={
+            isNativeWind
+              ? cn(closeMarkPositionVariants({ position: closeMarkPosition }), 'absolute top-2 z-10')
+              : undefined
+          }
+          style={getCloseMarkStyle()}
+        >
+          <Icon name="xmark-solid" hasPressEffect onPress={handleClose} {...closeMarkProps} />
+        </Box>
+      )}
+      {children}
+    </Box>
+  );
+
+  const renderContainer = () => (
+    <Box
+      className={isNativeWind ? 'flex-1 items-center justify-center' : undefined}
+      style={isNativeWind ? undefined : dialogStyles?.container}
+    >
+      {hasOverlay && <DialogBackdrop closeOnBackdropPress={closeOnBackdropPress} backdropColor={backdropColor} />}
+      {renderDialogBox()}
+    </Box>
+  );
+
   return (
     <Modal
       visible={isOpen}
@@ -289,92 +402,16 @@ export function DialogContent({
       animationType={animation}
       onShow={onShow}
     >
-      {useDefaultContainer &&
-        (hasToaster ? (
-          <ToastProvider>
-            <Box className="flex-1 items-center justify-center">
-              {hasOverlay && (
-                <DialogBackdrop
-                  closeOnBackdropPress={closeOnBackdropPress}
-                  backdropColor={backdropColor}
-                  backdropClassName={backdropClassName}
-                />
-              )}
-              <Box className={cn('relative w-5/6 rounded-xl border bg-white', className)}>
-                {hasCloseMark && (
-                  <Box
-                    className={cn(
-                      closeMarkPositionVariants({ position: closeMarkPosition }),
-                      'absolute top-2 z-10',
-                      closeMarkClassName,
-                    )}
-                  >
-                    <Icon
-                      name="xmark-solid"
-                      hasPressEffect
-                      onPress={handleClose}
-                      color={closeMarkColor}
-                      size={closeMarkSize}
-                    />
-                  </Box>
-                )}
-
-                {children}
-              </Box>
-            </Box>
-          </ToastProvider>
-        ) : (
-          <Box className="flex-1 items-center justify-center">
-            {hasOverlay && (
-              <DialogBackdrop
-                closeOnBackdropPress={closeOnBackdropPress}
-                backdropColor={backdropColor}
-                backdropClassName={backdropClassName}
-              />
-            )}
-            <Box className={cn('relative w-5/6 rounded-xl border bg-white', className)}>
-              {hasCloseMark && (
-                <Box
-                  className={cn(
-                    closeMarkPositionVariants({ position: closeMarkPosition }),
-                    'absolute top-2 z-10',
-                    closeMarkClassName,
-                  )}
-                >
-                  <Icon
-                    name="xmark-solid"
-                    hasPressEffect
-                    onPress={handleClose}
-                    color={closeMarkColor}
-                    size={closeMarkSize}
-                  />
-                </Box>
-              )}
-              {children}
-            </Box>
-          </Box>
-        ))}
+      {useDefaultContainer && (hasToaster ? <ToastProvider>{renderContainer()}</ToastProvider> : renderContainer())}
       {!useDefaultContainer &&
         (hasToaster ? (
           <ToastProvider>
-            {hasOverlay && (
-              <DialogBackdrop
-                closeOnBackdropPress={closeOnBackdropPress}
-                backdropColor={backdropColor}
-                backdropClassName={backdropClassName}
-              />
-            )}
+            {hasOverlay && <DialogBackdrop closeOnBackdropPress={closeOnBackdropPress} backdropColor={backdropColor} />}
             {children}
           </ToastProvider>
         ) : (
           <>
-            {hasOverlay && (
-              <DialogBackdrop
-                closeOnBackdropPress={closeOnBackdropPress}
-                backdropColor={backdropColor}
-                backdropClassName={backdropClassName}
-              />
-            )}
+            {hasOverlay && <DialogBackdrop closeOnBackdropPress={closeOnBackdropPress} backdropColor={backdropColor} />}
             {children}
           </>
         ))}
@@ -387,6 +424,7 @@ DialogContent.displayName = 'DialogContent';
 /**
  * DialogClose component that closes the dialog when pressed.
  * Supports different touchable types and can clone child elements.
+ * Automatically detects NativeWind availability and adapts styling accordingly.
  *
  * @example
  * ```tsx
@@ -409,6 +447,7 @@ DialogContent.displayName = 'DialogContent';
  * @param as - Type of touchable component to use (default: 'pressable')
  * @param asChild - Whether to clone the child element
  * @param children - Close trigger element
+ * @returns Touchable close component with proper event handling
  */
 export function DialogClose({ as, asChild, children }: DialogCloseProps) {
   const { close } = useDialog();

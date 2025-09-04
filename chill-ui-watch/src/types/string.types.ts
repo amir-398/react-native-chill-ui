@@ -1,7 +1,7 @@
 import type { TextProps } from 'react-native';
 import type { VariantProps } from 'tailwind-variants';
 
-import type { textColorVr, textFontVr, textPositionVr, textSizeVr } from '../components/string/styleVatiants';
+import type { textColorVr, textFontVr, textPositionVr, textSizeVr } from '../components/string/styleVariants';
 
 /**
  * Props for the String component

@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 
-import Avatar from '../Avatar';
-import { getUserInitials } from '../Avatar';
+import Avatar from '../components/Avatar';
+import { getUserInitials } from '../components/Avatar';
 import { isNativeWindInstalled, resetNativeWindDetection } from '../../../utils/nativewindDetector';
 
 // Mock the nativewind-detector module

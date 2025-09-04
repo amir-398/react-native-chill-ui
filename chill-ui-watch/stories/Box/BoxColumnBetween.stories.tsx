@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import UiPresentation from 'stories/storybook';
-
+import UiPresentation from '../storybook';
 import String from '../../src/components/string';
 import { BoxColumnBetween } from '../../src/components';
 

@@ -19,7 +19,7 @@ export interface HighlightStringProps {
   /** Custom styles for the highlighted text */
   highlightStyle?: StyleProp<TextStyle>;
   /** Props for the main string component */
-  stringProps: Omit<StringProps, 'children' | 'style' | 'className'>;
+  stringProps?: Omit<StringProps, 'children' | 'style' | 'className'>;
   /** Props for the highlighted string component */
   highlightStringProps?: Omit<StringProps, 'children' | 'style' | 'className'>;
 }

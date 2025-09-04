@@ -78,7 +78,7 @@ const chipVariants = tv({
   defaultVariants: {
     colorVariant: 'primary',
     padding: false,
-    rounded: 'md',
+    rounded: 'full',
     size: 'md',
     variant: 'contained',
   },
@@ -138,6 +138,79 @@ export const chipPositionVariants = tv({
 // Variantes de texte séparées pour appliquer sur le composant String
 export const chipTextVariants = tv({
   base: '',
+  compoundVariants: [
+    // Pour outlined, utilise la couleur de fond (même que la bordure)
+    {
+      className: 'text-chip-accent-background',
+      colorVariant: 'accent',
+      variant: 'outlined',
+    },
+    {
+      className: 'text-chip-danger-background',
+      colorVariant: 'danger',
+      variant: 'outlined',
+    },
+    {
+      className: 'text-chip-dark-background',
+      colorVariant: 'dark',
+      variant: 'outlined',
+    },
+    {
+      className: 'text-chip-disabled-background',
+      colorVariant: 'disabled',
+      variant: 'outlined',
+    },
+    {
+      className: 'text-chip-error-background',
+      colorVariant: 'error',
+      variant: 'outlined',
+    },
+    {
+      className: 'text-chip-info-background',
+      colorVariant: 'info',
+      variant: 'outlined',
+    },
+    {
+      className: 'text-chip-inverted-background',
+      colorVariant: 'inverted',
+      variant: 'outlined',
+    },
+    {
+      className: 'text-chip-light-background',
+      colorVariant: 'light',
+      variant: 'outlined',
+    },
+    {
+      className: 'text-chip-muted-background',
+      colorVariant: 'muted',
+      variant: 'outlined',
+    },
+    {
+      className: 'text-chip-neutral-background',
+      colorVariant: 'neutral',
+      variant: 'outlined',
+    },
+    {
+      className: 'text-chip-primary-background',
+      colorVariant: 'primary',
+      variant: 'outlined',
+    },
+    {
+      className: 'text-chip-secondary-background',
+      colorVariant: 'secondary',
+      variant: 'outlined',
+    },
+    {
+      className: 'text-chip-warning-background',
+      colorVariant: 'warning',
+      variant: 'outlined',
+    },
+    {
+      className: 'text-chip-white-background',
+      colorVariant: 'white',
+      variant: 'outlined',
+    },
+  ],
   variants: {
     colorVariant: {
       accent: 'text-chip-accent-text',
@@ -154,6 +227,10 @@ export const chipTextVariants = tv({
       secondary: 'text-chip-secondary-text',
       warning: 'text-chip-warning-text',
       white: 'text-chip-white-text',
+    },
+    variant: {
+      contained: '',
+      outlined: '',
     },
   },
 });

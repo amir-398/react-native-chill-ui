@@ -1,5 +1,6 @@
-import { useRef } from 'react';
+import { View } from 'react-native';
 import { useFonts } from 'expo-font';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   Poppins_700Bold,
   Poppins_800ExtraBold,
@@ -23,8 +24,10 @@ import {
   Montserrat_100Thin,
 } from '@expo-google-fonts/montserrat';
 
-import { Box, Chip } from '@/components';
-import { BounceBoxRef, RotatingBoxRef } from '@/types';
+import { Avatar } from '@/components';
+
+import { view } from './.storybook/storybook.requires';
+
 // Import global.css only if NativeWind is available
 try {
   require('nativewind');
@@ -35,8 +38,6 @@ try {
 }
 
 export default function App() {
-  const rotateRef = useRef<RotatingBoxRef>(null);
-  const bounceRef = useRef<BounceBoxRef>(null);
   const [fontsLoaded] = useFonts({
     primary_bold_font: Poppins_700Bold,
     primary_extra_bold_font: Poppins_800ExtraBold,
@@ -61,27 +62,27 @@ export default function App() {
   if (!fontsLoaded) {
     return null; // ou un composant de chargement
   }
-  // const StorybookUIRoot = view.getStorybookUI({
-  //   storage: {
-  //     getItem(key: string) {
-  //       return AsyncStorage.getItem(key);
-  //     },
-  //     setItem(key: string, value: string) {
-  //       return AsyncStorage.setItem(key, value);
-  //     },
-  //   },
-  // });
+  const StorybookUIRoot = view.getStorybookUI({
+    storage: {
+      getItem(key: string) {
+        return AsyncStorage.getItem(key);
+      },
+      setItem(key: string, value: string) {
+        return AsyncStorage.setItem(key, value);
+      },
+    },
+  });
 
   return (
-    <Box style={{ flexDirection: 'row', gap: 10, marginTop: 100 }}>
-      <Chip
-        variant="contained"
-        colorVariant="danger"
-        iconActions={[{ iconColor: '#FFD700', iconName: 'star-solid', position: 'left' }]}
-        size="xs"
-      >
-        sss,pk
-      </Chip>
-    </Box>
+    <View style={{ marginTop: 100 }}>
+      <Avatar
+        variant="square"
+        data={{
+          firstname: 'JRohn',
+          image_url: 'https://picsum.photos/200/300',
+          lastname: 'Doe',
+        }}
+      />
+    </View>
   );
 }

@@ -1,5 +1,7 @@
 import type { VariantProps } from 'tailwind-variants';
 
+import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils';
+
 import { TIcons } from '@/constants/ICONS';
 
 import type { IconProps } from './icon.types';
@@ -27,15 +29,13 @@ interface ChipIconAction {
  * Props for the Chip component
  *
  */
-export interface ChipProps {
+export type ChipProps = ViewProps & {
   /** Custom CSS classes to apply to the chip */
   className?: string;
   /** Custom background color (CSS color value) */
   color?: string;
   /** Color variant for the chip - default: 'primary' */
   colorVariant?: VariantProps<typeof chipVariants>['colorVariant'];
-  /** Props for the icon component (when displaying icon instead of text) */
-  iconProps?: IconProps;
   /** Icon actions configuration */
   iconActions?: ChipIconAction[];
   /** Props for the string/text component */
@@ -52,4 +52,4 @@ export interface ChipProps {
   variant?: VariantProps<typeof chipVariants>['variant'];
 
   position?: VariantProps<typeof chipPositionVariants>['position'];
-}
+};

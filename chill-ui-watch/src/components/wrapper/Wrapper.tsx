@@ -1,9 +1,12 @@
-import { Platform, ScrollView } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
+
+import { classNameHandler, styleHandler } from '@/utils/propsHandlers';
 
 import cn from '../cn';
 import { Box } from '../box';
 import { WrapperProps } from '../../types';
-import WrapperVariants from './styleVariants';
+import { isNativeWindInstalled } from '../../utils/nativewindDetector';
+import { classNamePropsHandler } from '../../utils/classNameMissingError';
 
 // Optional imports with error handling
 let KeyboardAvoidingView: any;
@@ -11,7 +14,6 @@ let KeyboardAwareScrollView: any;
 let SafeAreaView: any;
 
 try {
-  // @ts-ignore
   const keyboardController = require('react-native-keyboard-controller');
   if (keyboardController) {
     KeyboardAvoidingView = keyboardController.KeyboardAvoidingView;
@@ -19,7 +21,7 @@ try {
   }
 } catch {
   console.warn(
-    'react-native-keyboard-controller is not installed. To use keyboardAwareScrollView, please install it: npm install react-native-keyboard-controller',
+    'react-native-keyboard-controller is not installed. To use hasKeyboardAwareScrollView, please install it: npm install react-native-keyboard-controller',
   );
 }
 
@@ -30,18 +32,18 @@ try {
   }
 } catch {
   console.warn(
-    'react-native-safe-area-context is not installed. To use SafeAreaView or edges, please install it: npm install react-native-safe-area-context',
+    'react-native-safe-area-context is not installed. To use hasSafeAreaView or edges, please install it: npm install react-native-safe-area-context',
   );
 }
 
 /**
- * Generates container className by merging wrapper variants with custom className
+ * Generates container className by merging custom className
  * @param props - WrapperProps object containing styling and behavior props
  * @returns Merged className string
  */
 const containerClassName = (props: WrapperProps) => {
-  const { className, ...rest } = props;
-  return cn(WrapperVariants({ ...rest }), className);
+  const { className } = props;
+  return cn('flex-grow', className);
 };
 
 /**
@@ -51,7 +53,11 @@ const containerClassName = (props: WrapperProps) => {
  * @returns Box component with wrapper styling
  */
 function ViewComponent(props: WrapperProps, children: React.ReactNode) {
-  return <Box className={containerClassName(props)}>{children}</Box>;
+  return (
+    <Box {...classNameHandler(containerClassName(props))} style={{ flexGrow: 1 }}>
+      {children}
+    </Box>
+  );
 }
 
 /**
@@ -62,9 +68,10 @@ function ViewComponent(props: WrapperProps, children: React.ReactNode) {
  */
 function ScrollViewComponent(props: WrapperProps, children: React.ReactNode) {
   const { nestedScrollEnabled } = props;
+
   return (
     <ScrollView
-      contentContainerClassName={containerClassName(props)}
+      contentContainerStyle={{ flexGrow: 1 }}
       keyboardShouldPersistTaps="always"
       nestedScrollEnabled={nestedScrollEnabled ?? false}
     >
@@ -82,14 +89,28 @@ function ScrollViewComponent(props: WrapperProps, children: React.ReactNode) {
 function KeyboardAwareScrollViewComponent(props: WrapperProps, children: React.ReactNode) {
   if (!KeyboardAwareScrollView) {
     console.error(
-      'react-native-keyboard-controller is not installed. To use keyboardAwareScrollView, please install it: npm install react-native-keyboard-controller',
+      'react-native-keyboard-controller is not installed. To use hasKeyboardAwareScrollView, please install it: npm install react-native-keyboard-controller',
     );
     return ScrollViewComponent(props, children);
   }
 
+  const isNativeWind = isNativeWindInstalled();
+
+  if (isNativeWind) {
+    return (
+      <KeyboardAwareScrollView
+        contentContainerClassName={containerClassName(props)}
+        keyboardShouldPersistTaps="handled"
+        bottomOffset={20}
+      >
+        {children}
+      </KeyboardAwareScrollView>
+    );
+  }
+
   return (
     <KeyboardAwareScrollView
-      contentContainerClassName={containerClassName(props)}
+      contentContainerStyle={{ flexGrow: 1 }}
       keyboardShouldPersistTaps="handled"
       bottomOffset={20}
     >
@@ -107,15 +128,20 @@ function KeyboardAwareScrollViewComponent(props: WrapperProps, children: React.R
 function KeyboardAvoidingViewComponent(props: WrapperProps, children: React.ReactNode) {
   if (!KeyboardAvoidingView) {
     console.error(
-      'react-native-keyboard-controller is not installed. To use keyboardAvoidingView, please install it: npm install react-native-keyboard-controller',
+      'react-native-keyboard-controller is not installed. To use hasKeyboardAvoidingView, please install it: npm install react-native-keyboard-controller',
     );
     return ViewComponent(props, children);
   }
 
-  const { scrollView } = props;
+  const { hasScrollView } = props;
+
   return (
-    <KeyboardAvoidingView className={containerClassName(props)} behavior="padding" keyboardVerticalOffset={10}>
-      {scrollView ? ScrollViewComponent(props, children) : children}
+    <KeyboardAvoidingView
+      {...classNameHandler(containerClassName(props))}
+      behavior="padding"
+      keyboardVerticalOffset={10}
+    >
+      {hasScrollView ? ScrollViewComponent(props, children) : children}
     </KeyboardAvoidingView>
   );
 }
@@ -127,13 +153,13 @@ function KeyboardAvoidingViewComponent(props: WrapperProps, children: React.Reac
  * @returns Appropriate scroll component based on props
  */
 const IsScrollComponent = (props: WrapperProps, children: React.ReactNode) => {
-  if (props.keyboardAwareScrollView) {
+  if (props.hasKeyboardAwareScrollView) {
     return KeyboardAwareScrollViewComponent(props, children);
   }
-  if (props.keyboardAvoidingView) {
+  if (props.hasKeyboardAvoidingView) {
     return KeyboardAvoidingViewComponent(props, children);
   }
-  if (props.scrollView) {
+  if (props.hasScrollView) {
     return ScrollViewComponent(props, children);
   }
   return ViewComponent(props, children);
@@ -148,14 +174,27 @@ const IsScrollComponent = (props: WrapperProps, children: React.ReactNode) => {
 const safeAreaViewComponents = (props: WrapperProps, children: React.ReactNode) => {
   if (!SafeAreaView) {
     console.error(
-      'react-native-safe-area-context is not installed. To use safeAreaView or edges, please install it: npm install react-native-safe-area-context',
+      'react-native-safe-area-context is not installed. To use hasSafeAreaView or edges, please install it: npm install react-native-safe-area-context',
     );
     return IsScrollComponent(props, children);
   }
 
   const { edges } = props;
+
+  const safeAreaStyle = StyleSheet.create({
+    container: {
+      flex: 1,
+      paddingHorizontal: 16,
+      zIndex: 50,
+      ...(props.style ?? {}),
+    },
+  });
   return (
-    <SafeAreaView className={cn('z-50 flex-1', Platform.OS === 'android' && 'mb-2 mt-2')} edges={edges || undefined}>
+    <SafeAreaView
+      {...classNameHandler(cn('z-50 flex-1 px-3'))}
+      {...styleHandler({ defaultStyle: safeAreaStyle.container })}
+      edges={edges ?? ['top', 'bottom', 'left', 'right']}
+    >
       {IsScrollComponent(props, children)}
     </SafeAreaView>
   );
@@ -168,38 +207,46 @@ const safeAreaViewComponents = (props: WrapperProps, children: React.ReactNode) 
  * @returns SafeAreaView component or scroll component
  */
 const IsSafeAreaViewComponent = (props: WrapperProps, children: React.ReactNode) => {
-  const { edges, safeAreaView = false } = props;
-  return safeAreaView || edges ? safeAreaViewComponents(props, children) : IsScrollComponent(props, children);
+  const { edges, hasSafeAreaView = false } = props;
+  return hasSafeAreaView || edges ? safeAreaViewComponents(props, children) : IsScrollComponent(props, children);
 };
 
 /**
  * Wrapper component that provides flexible container functionality with multiple behavior options.
  * Supports safe area handling, keyboard avoidance, scrolling, and customizable styling.
- * Automatically handles optional dependencies with graceful fallbacks.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
+ * // With NativeWind
+ * <Wrapper className="bg-gray-100">
+ *   <String>Content with NativeWind</String>
+ * </Wrapper>
+ *
+ * // Without NativeWind (fallback)
+ * <Wrapper>
+ *   <String>Content with StyleSheet fallback</String>
+ * </Wrapper>
+ *
  * // Basic wrapper with default styling
  * <Wrapper>
  *   <String>Content</String>
  * </Wrapper>
  *
- * // Scrollable wrapper with custom padding
- * <Wrapper scrollView px={6} py={4}>
+ * // Scrollable wrapper
+ * <Wrapper hasScrollView>
  *   <String>Scrollable content</String>
  * </Wrapper>
  *
  * // Safe area wrapper with keyboard avoidance
- * <Wrapper safeAreaView keyboardAvoidingView>
+ * <Wrapper hasSafeAreaView hasKeyboardAvoidingView>
  *   <Input placeholder="Type here" />
  * </Wrapper>
  *
  * // Advanced wrapper with all features
  * <Wrapper
- *   safeAreaView
- *   keyboardAwareScrollView
- *   px={4}
- *   py={6}
+ *   hasSafeAreaView
+ *   hasKeyboardAwareScrollView
  *   className="bg-gray-100"
  * >
  *   <String>Advanced content</String>
@@ -211,6 +258,8 @@ const IsSafeAreaViewComponent = (props: WrapperProps, children: React.ReactNode)
  * @returns Wrapper component with appropriate behavior and styling
  */
 export default function Wrapper(props: WrapperProps) {
+  classNamePropsHandler(props, 'Wrapper');
+
   const { children } = props;
 
   return IsSafeAreaViewComponent(props, children);

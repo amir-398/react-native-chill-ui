@@ -4,28 +4,25 @@ const styles = StyleSheet.create({
   // Base chip styles
   chipBase: {
     alignItems: 'center',
+
     justifyContent: 'center',
   },
 
   // Variant styles
+  padding: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
   variantContained: {
     backgroundColor: '#7C9CBF', // primary color fallback
     borderColor: 'transparent',
     borderWidth: 0,
   },
+
   variantOutlined: {
     backgroundColor: 'transparent',
     borderColor: '#7C9CBF', // primary color fallback
     borderWidth: 1,
-  },
-
-  // Padding variants
-  paddingFalse: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-  },
-  paddingTrue: {
-    padding: 8,
   },
 
   // Border radius variants

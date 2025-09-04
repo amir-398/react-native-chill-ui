@@ -11,36 +11,19 @@ const meta: Meta<typeof Wrapper> = {
       description: 'Safe area edges',
       options: ['top', 'right', 'bottom', 'left'],
     },
-    keyboardAvoidingView: {
+    hasKeyboardAvoidingView: {
       control: 'boolean',
       description: 'Enable keyboard avoiding view',
     },
-    keyboardAwareScrollView: {
+    hasKeyboardAwareScrollView: {
       control: 'boolean',
       description: 'Enable keyboard aware scroll view',
     },
-    my: {
-      control: 'boolean',
-      description: 'Add vertical margin',
-    },
-    pt: {
-      control: 'select',
-      description: 'Top padding size',
-      options: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    },
-    px: {
-      control: 'boolean',
-      description: 'Add horizontal padding',
-    },
-    py: {
-      control: 'boolean',
-      description: 'Add vertical padding',
-    },
-    safeAreaView: {
+    hasSafeAreaView: {
       control: 'boolean',
       description: 'Enable safe area view',
     },
-    scrollView: {
+    hasScrollView: {
       control: 'boolean',
       description: 'Enable scroll view behavior',
     },
@@ -99,20 +82,13 @@ export const Default: Story = {
   },
 };
 
-export const WithPadding: Story = {
-  args: {
-    children: <SampleContent />,
-    px: true,
-    py: true,
-  },
-};
-
 export const WithSafeArea: Story = {
   args: {
     children: <SampleContent />,
-    safeAreaView: true,
+    hasSafeAreaView: true,
   },
 };
+
 export const WithSafeAreaAndEdges: Story = {
   args: {
     children: <SampleContent />,
@@ -120,29 +96,17 @@ export const WithSafeAreaAndEdges: Story = {
   },
 };
 
-export const ScrollableWithPadding: Story = {
+export const Scrollable: Story = {
   args: {
     children: <ScrollableContent />,
-    px: true,
-    py: true,
-    scrollView: true,
+    hasScrollView: true,
   },
 };
 
 export const KeyboardAware: Story = {
   args: {
     children: <SampleContent />,
-    keyboardAwareScrollView: true,
-    px: true,
-    py: true,
-  },
-};
-
-export const WithCustomPadding: Story = {
-  args: {
-    children: <SampleContent />,
-    pt: 10,
-    px: true,
+    hasKeyboardAwareScrollView: true,
   },
 };
 

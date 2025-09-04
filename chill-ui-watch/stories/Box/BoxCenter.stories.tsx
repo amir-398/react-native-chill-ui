@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import UiPresentation from 'stories/storybook';
-
+import UiPresentation from '../storybook';
 import { Box, BoxCenter } from '../../src/components';
 
 const meta: Meta<typeof BoxCenter> = {

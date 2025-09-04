@@ -1,61 +1,52 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import UiPresentation from './storybook';
-import HighlightString from '../src/components/highlightString/HighlightString';
+import HighlightString from '../src/components/highlightString';
 
 const meta: Meta<typeof HighlightString> = {
   argTypes: {
-    // Basic configuration
-    highlightTerm: {
-      control: 'text',
-      description: 'The term to highlight in the text',
-    },
     text: {
       control: 'text',
-      description: 'The text to display',
+      description: 'The full text to display',
     },
-
-    // Styling
+    highlightTerm: {
+      control: 'text',
+      description: 'The term to highlight within the text',
+    },
     className: {
       control: 'text',
-      description: 'CSS class for the main text',
+      description: 'Custom CSS classes for the container (NativeWind only)',
     },
     highlightClassName: {
       control: 'text',
-      description: 'CSS class for the highlighted text',
-    },
-    highlightStyle: {
-      control: 'object',
-      description: 'Style for the highlighted text',
+      description: 'Custom CSS classes for highlighted text (NativeWind only)',
     },
     style: {
       control: 'object',
-      description: 'Style for the main text',
+      description: 'Custom styles for the container (StyleSheet only)',
     },
-
-    // String Props
+    highlightStyle: {
+      control: 'object',
+      description: 'Custom styles for highlighted text (StyleSheet only)',
+    },
     stringProps: {
       control: 'object',
-      description:
-        'Props passed to the main String component (size, font, weight, variant, colorVariant, position, numberOfLines, useFastText)',
+      description: 'Props for the main string component',
     },
-
-    // Highlight String Props
     highlightStringProps: {
       control: 'object',
-      description:
-        'Props passed to the highlighted String component (size, font, weight, variant, colorVariant, position)',
+      description: 'Props for the highlighted string component',
     },
   },
   component: HighlightString,
   decorators: [
     Story => (
-      <UiPresentation className="flex-1 items-center justify-center px-3">
+      <UiPresentation>
         <Story />
       </UiPresentation>
     ),
   ],
-  title: 'Components/Text/HighlightString',
+  title: 'Components/HighlightString',
 };
 
 export default meta;
@@ -63,167 +54,169 @@ type Story = StoryObj<typeof HighlightString>;
 
 export const Default: Story = {
   args: {
-    highlightTerm: 'sample',
-    stringProps: {},
+    text: 'Hello world, welcome to the world of programming',
+    highlightTerm: 'world',
+    className: 'text-base text-gray-800',
+    highlightClassName: 'bg-yellow-200 font-bold',
+  },
+};
+
+export const CustomHighlightStyle: Story = {
+  args: {
+    text: 'Search results for "react native" development',
+    highlightTerm: 'react native',
+    className: 'text-lg text-gray-900',
+    highlightClassName: 'bg-blue-100 text-blue-800 underline',
+  },
+};
+
+export const MultipleOccurrences: Story = {
+  args: {
+    text: 'The quick brown fox jumps over the lazy fox. Another fox appears.',
+    highlightTerm: 'fox',
+    className: 'text-base text-gray-700',
+    highlightClassName: 'bg-orange-200 text-orange-800 font-semibold',
+  },
+};
+
+export const CaseInsensitive: Story = {
+  args: {
+    text: 'React Native, react native, REACT NATIVE - all the same!',
+    highlightTerm: 'react native',
+    className: 'text-base text-gray-800',
+    highlightClassName: 'bg-green-200 text-green-800 font-medium',
+  },
+};
+
+export const WithSpecialCharacters: Story = {
+  args: {
+    text: 'Search for "user@example.com" or "john.doe@company.org"',
+    highlightTerm: 'user@example.com',
+    className: 'text-sm text-gray-700 font-mono',
+    highlightClassName: 'bg-purple-100 text-purple-800 font-bold',
+  },
+};
+
+export const LongText: Story = {
+  args: {
+    text: 'This is a very long text that demonstrates how the HighlightString component handles longer content. It will highlight the specified term wherever it appears in the text, making it easy for users to find relevant information.',
+    highlightTerm: 'HighlightString',
+    className: 'text-sm text-gray-600 leading-relaxed max-w-md',
+    highlightClassName: 'bg-yellow-200 text-yellow-900 font-semibold',
+  },
+};
+
+export const CodeExample: Story = {
+  args: {
+    text: 'Use the useState hook to manage component state and useEffect for side effects',
+    highlightTerm: 'useState',
+    className: 'text-sm text-gray-700 font-mono bg-gray-100 p-3 rounded',
+    highlightClassName: 'bg-blue-200 text-blue-800 font-bold',
+  },
+};
+
+export const SearchResults: Story = {
+  args: {
+    text: 'Found 15 results for "mobile development"',
+    highlightTerm: 'mobile development',
+    className: 'text-sm text-gray-600',
+    highlightClassName: 'bg-blue-100 text-blue-800 font-medium',
+  },
+};
+
+export const FormValidation: Story = {
+  args: {
+    text: 'Please enter a valid email address and password',
+    highlightTerm: 'valid email address',
+    className: 'text-sm text-red-600',
+    highlightClassName: 'bg-red-100 text-red-800 font-semibold',
+  },
+};
+
+export const UserNotification: Story = {
+  args: {
+    text: 'User John Doe has joined the channel #general',
+    highlightTerm: 'John Doe',
+    className: 'text-sm text-gray-600',
+    highlightClassName: 'bg-green-100 text-green-800 font-medium',
+  },
+};
+
+export const OrderConfirmation: Story = {
+  args: {
+    text: 'Your order #12345 has been shipped and will arrive on Monday',
+    highlightTerm: '#12345',
+    className: 'text-base text-gray-800',
+    highlightClassName: 'bg-green-100 text-green-800 font-mono font-semibold',
+  },
+};
+
+export const WithoutNativeWind: Story = {
+  args: {
+    text: 'This example uses StyleSheet styles instead of NativeWind classes',
+    highlightTerm: 'StyleSheet',
     style: {
-      color: 'black',
+      fontSize: 16,
+      color: '#374151',
+      lineHeight: 24,
     },
-    text: 'This is a sample text with some words to highlight',
+    highlightStyle: {
+      backgroundColor: '#FEF3C7',
+      color: '#92400E',
+      fontWeight: '600',
+      paddingHorizontal: 4,
+      borderRadius: 4,
+    },
   },
 };
 
-export const MultipleMatches: Story = {
+export const WithCustomStringProps: Story = {
   args: {
-    highlightTerm: 'the',
-    stringProps: {},
-    text: 'The quick brown fox jumps over the lazy dog. The fox is quick and the dog is lazy.',
-  },
-};
-
-export const NoMatch: Story = {
-  args: {
-    highlightTerm: 'xyz',
-    stringProps: {},
-    text: 'This text does not contain the search term',
+    text: 'Click here to learn more about our services',
+    highlightTerm: 'click here',
+    className: 'text-base text-gray-700',
+    highlightClassName: 'bg-green-100 text-green-800 cursor-pointer',
+    stringProps: {
+      selectable: true,
+    },
+    highlightStringProps: {
+      selectable: true,
+    },
   },
 };
 
 export const EmptyHighlightTerm: Story = {
   args: {
+    text: 'This text has no highlight term specified',
     highlightTerm: '',
-    stringProps: {},
-    text: 'This text will not be highlighted',
+    className: 'text-base text-gray-800',
+    highlightClassName: 'bg-yellow-200 font-bold',
   },
 };
 
-export const WithCustomStyles: Story = {
+export const WhitespaceHighlightTerm: Story = {
   args: {
-    highlightStyle: {
-      backgroundColor: '#FFD700',
-      borderRadius: 3,
-      color: '#000',
-      fontWeight: 'bold',
-      padding: 2,
-    },
-    highlightTerm: 'custom',
-    stringProps: {},
-    style: {
-      color: '#333',
-      fontFamily: 'Arial',
-      fontSize: 16,
-    },
-    text: 'This text has custom styling for both normal and highlighted text',
+    text: 'This text has whitespace in the highlight term',
+    highlightTerm: '   ',
+    className: 'text-base text-gray-800',
+    highlightClassName: 'bg-yellow-200 font-bold',
   },
 };
 
-export const WithTailwindClasses: Story = {
+export const RegexSpecialCharacters: Story = {
   args: {
-    className: 'text-gray-700',
-    highlightClassName: 'bg-yellow-300 text-black font-bold px-1 rounded',
-    highlightTerm: 'Tailwind',
-    stringProps: {},
-    text: 'This example uses Tailwind CSS classes for styling',
+    text: 'Search for patterns like (a+b)* or [0-9]+ in regex',
+    highlightTerm: '(a+b)*',
+    className: 'text-sm text-gray-700 font-mono',
+    highlightClassName: 'bg-purple-100 text-purple-800 font-bold',
   },
 };
 
-export const WithStringProps: Story = {
+export const MixedContent: Story = {
   args: {
-    highlightTerm: 'important',
-    stringProps: {
-      colorVariant: 'primary',
-      font: 'primary',
-      position: 'center',
-      size: 'lg',
-      weight: 'medium',
-    },
-    text: 'This is an important message with string props',
-  },
-};
-
-export const WithHighlightStringProps: Story = {
-  args: {
-    highlightStringProps: {
-      colorVariant: 'danger',
-      font: 'secondary',
-      size: 'xl',
-      weight: 'bold',
-    },
-    highlightTerm: 'error',
-    stringProps: {
-      colorVariant: 'dark',
-      font: 'primary',
-      size: 'md',
-      weight: 'regular',
-    },
-    text: 'This is an error message that needs attention',
-  },
-};
-
-export const VariantStyles: Story = {
-  args: {
-    highlightTerm: 'title',
-    stringProps: {
-      position: 'center',
-      variant: 'title-2',
-    },
-    text: 'This is a title with highlight',
-  },
-};
-
-export const ColorVariants: Story = {
-  args: {
-    highlightStringProps: {
-      colorVariant: 'success',
-      weight: 'bold',
-    },
-    highlightTerm: 'success',
-    stringProps: {
-      colorVariant: 'dark',
-    },
-    text: 'This is a success message with color variants',
-  },
-};
-
-export const SpecialCharacters: Story = {
-  args: {
-    highlightTerm: '$100',
-    stringProps: {},
-    text: 'Testing special characters: $100, (parentheses), [brackets], {braces}, *asterisk*, +plus+',
-  },
-};
-
-export const AllPropsExample: Story = {
-  args: {
-    className: 'text-purple-700',
-    highlightClassName: 'bg-yellow-400 text-black font-bold px-1 rounded',
-    highlightStringProps: {
-      colorVariant: 'danger',
-      font: 'secondary',
-      size: 'xl',
-      weight: 'bold',
-    },
-    highlightStyle: {
-      elevation: 2,
-      shadowColor: '#000',
-      shadowOffset: { height: 1, width: 1 },
-      shadowOpacity: 0.3,
-      shadowRadius: 2,
-    },
-    highlightTerm: 'comprehensive',
-    stringProps: {
-      colorVariant: 'primary',
-      font: 'primary',
-      numberOfLines: 3,
-      position: 'center',
-      size: 'lg',
-      useFastText: false,
-      variant: 'body-xl',
-      weight: 'medium',
-    },
-    style: {
-      letterSpacing: 0.5,
-      lineHeight: 24,
-    },
-    text: 'This is a comprehensive example that demonstrates all available props and their combinations working together',
+    text: 'Welcome to our platform! 🚀 Learn about React Native 📱 and mobile development 📱',
+    highlightTerm: 'mobile development',
+    className: 'text-base text-gray-800',
+    highlightClassName: 'bg-blue-100 text-blue-800 font-semibold',
   },
 };

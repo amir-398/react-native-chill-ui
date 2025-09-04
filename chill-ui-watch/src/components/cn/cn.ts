@@ -1,9 +1,8 @@
-import { twMerge } from 'tailwind-merge';
-import { type ClassValue, clsx } from 'clsx';
+import { isNativeWindInstalled } from '@/utils';
 
 /**
- * Utility function for combining and merging CSS class names with intelligent conflict resolution.
- * Combines the functionality of `clsx` for conditional class logic and `tailwind-merge` for conflict resolution.
+ * Custom utility function for combining CSS class names without external dependencies.
+ * Supports strings, arrays, objects, and conditional logic.
  *
  * @example
  * ```tsx
@@ -34,14 +33,138 @@ import { type ClassValue, clsx } from 'clsx';
  *   ['px-4', 'py-2'],
  *   isLarge && 'max-w-4xl'
  * ]);
- *
- * // Tailwind CSS conflict resolution
- * const resolvedClass = cn('p-4', 'p-8'); // Result: "p-8" (last wins)
  * ```
  *
  * @param inputs - Variable number of class name inputs
- * @returns Combined and resolved class name string
+ * @returns Combined class name string
  */
-const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
+type ClassValue =
+  | string
+  | number
+  | boolean
+  | undefined
+  | null
+  | { [key: string]: boolean | undefined | null }
+  | ClassValue[];
+
+// Common Tailwind CSS class prefixes that can conflict
+const CONFLICT_GROUPS = {
+  // Spacing
+  m: /^m-/,
+  mb: /^mb-/,
+  ml: /^ml-/,
+  mr: /^mr-/,
+  mt: /^mt-/,
+  mx: /^mx-/,
+  my: /^my-/,
+  p: /^p-/,
+  pb: /^pb-/,
+  pl: /^pl-/,
+  pr: /^pr-/,
+  pt: /^pt-/,
+  px: /^px-/,
+  py: /^py-/,
+
+  // Sizing
+  h: /^h-/,
+  'max-h': /^max-h-/,
+  'max-w': /^max-w-/,
+  'min-h': /^min-h-/,
+  'min-w': /^min-w-/,
+  size: /^size-/,
+  w: /^w-/,
+
+  // Colors
+  bg: /^bg-/,
+  border: /^border-(?![\d])/,
+  text: /^text-/,
+
+  // Layout
+  display: /^(block|inline|flex|grid|hidden)$/,
+  position: /^(static|fixed|absolute|relative|sticky)$/,
+
+  // Flexbox
+  'align-items': /^items-/,
+  'align-self': /^self-/,
+  flex: /^flex-/,
+  'justify-content': /^justify-/,
+
+  // Border
+  'border-w': /^border-[\d]/,
+  rounded: /^rounded/,
+
+  // Typography
+  'font-size': /^text-(xs|sm|base|lg|xl|2xl|3xl|4xl|5xl|6xl|7xl|8xl|9xl)$/,
+  'font-weight': /^font-/,
+  'line-height': /^leading-/,
+
+  // Effects
+  opacity: /^opacity-/,
+  shadow: /^shadow/,
+
+  // Transforms
+  rotate: /^rotate-/,
+  scale: /^scale-/,
+  translate: /^translate-/,
+
+  // Z-index
+  z: /^z-/,
+};
+
+const resolveConflicts = (classes: string[]): string[] => {
+  const resolved = new Map<string, string>();
+
+  classes.forEach(cls => {
+    let conflictKey: string | null = null;
+
+    conflictKey =
+      Object.keys(CONFLICT_GROUPS).find(group => CONFLICT_GROUPS[group as keyof typeof CONFLICT_GROUPS].test(cls)) ||
+      null;
+
+    if (conflictKey) {
+      resolved.set(conflictKey, cls);
+    } else {
+      resolved.set(cls, cls);
+    }
+  });
+
+  return Array.from(resolved.values());
+};
+
+// Cache the NativeWind check result at module load time
+const HAS_NATIVEWIND = isNativeWindInstalled();
+
+const cn = (...inputs: ClassValue[]): string => {
+  // Early return if NativeWind is not available
+  if (!HAS_NATIVEWIND) return '';
+
+  const classes: string[] = [];
+
+  const processInput = (input: ClassValue): void => {
+    if (!input) return;
+
+    if (typeof input === 'string') {
+      input.split(/\s+/).forEach(cls => {
+        if (cls) classes.push(cls);
+      });
+    } else if (typeof input === 'number') {
+      classes.push(String(input));
+    } else if (Array.isArray(input)) {
+      input.forEach(processInput);
+    } else if (typeof input === 'object') {
+      Object.entries(input).forEach(([key, value]) => {
+        if (value) {
+          key.split(/\s+/).forEach(cls => {
+            if (cls) classes.push(cls);
+          });
+        }
+      });
+    }
+  };
+
+  inputs.forEach(processInput);
+
+  return resolveConflicts(classes.filter(Boolean)).join(' ').trim();
+};
 
 export default cn;

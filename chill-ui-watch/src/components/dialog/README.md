@@ -1,6 +1,6 @@
 # Dialog Component
 
-A comprehensive and flexible dialog/modal component for React Native applications with support for multiple trigger types, custom animations, backdrop customization, and integrated toast functionality.
+A comprehensive and flexible dialog/modal component for React Native applications with support for multiple trigger types, custom animations, backdrop customization, and integrated toast functionality. **Automatically detects NativeWind availability and falls back to StyleSheet if needed.**
 
 ## Features
 
@@ -12,6 +12,17 @@ A comprehensive and flexible dialog/modal component for React Native application
 - **Flexible Layout**: Default container or custom layout options
 - **TypeScript**: Complete type safety with proper interfaces
 - **Accessibility**: Proper focus management and screen reader support
+- **NativeWind Compatible**: Automatically adapts to NativeWind or StyleSheet environments
+- **Smart Styling**: Uses Tailwind classes when NativeWind is available, falls back to StyleSheet otherwise
+
+## NativeWind Compatibility
+
+The Dialog component automatically detects whether NativeWind is installed in your project:
+
+- **With NativeWind**: Uses Tailwind CSS classes via the `className` prop for styling
+- **Without NativeWind**: Falls back to StyleSheet-based styling with the `style` prop
+
+**Note**: The `className` prop is only available when NativeWind is installed. When using StyleSheet, use the `style` prop instead.
 
 ## Basic Usage
 
@@ -52,35 +63,36 @@ The Dialog component consists of several sub-components:
 
 ### DialogTriggerProps
 
-| Prop        | Type                                                       | Required | Default       | Description                        |
-| ----------- | ---------------------------------------------------------- | -------- | ------------- | ---------------------------------- |
-| `children`  | `React.ReactElement<{ onPress?: () => void }>`             | ✅       | -             | Trigger element                    |
-| `as`        | `'pressable' \| 'touchable-opacity' \| 'ripple-pressable'` | ❌       | `'pressable'` | Type of touchable component        |
-| `asChild`   | `boolean`                                                  | ❌       | `false`       | Whether to clone the child element |
-| `className` | `string`                                                   | ❌       | -             | Custom CSS classes                 |
+| Prop        | Type                                                       | Required | Default       | Description                          |
+| ----------- | ---------------------------------------------------------- | -------- | ------------- | ------------------------------------ |
+| `children`  | `React.ReactElement<{ onPress?: () => void }>`             | ✅       | -             | Trigger element                      |
+| `as`        | `'pressable' \| 'touchable-opacity' \| 'ripple-pressable'` | ❌       | `'pressable'` | Type of touchable component          |
+| `asChild`   | `boolean`                                                  | ❌       | `false`       | Whether to clone the child element   |
+| `className` | `string`                                                   | ❌       | -             | Custom CSS classes (NativeWind only) |
 
 ### DialogContentProps
 
-| Prop                   | Type                          | Required | Default   | Description                                |
-| ---------------------- | ----------------------------- | -------- | --------- | ------------------------------------------ |
-| `children`             | `React.ReactNode`             | ✅       | -         | Dialog content                             |
-| `animation`            | `'fade' \| 'slide' \| 'none'` | ❌       | `'fade'`  | Animation type for the dialog              |
-| `hasOverlay`           | `boolean`                     | ❌       | `true`    | Show overlay behind the dialog             |
-| `hasCloseMark`         | `boolean`                     | ❌       | `false`   | Show close button in top corner            |
-| `useDefaultContainer`  | `boolean`                     | ❌       | `true`    | Use default white container                |
-| `defaultOpen`          | `boolean`                     | ❌       | -         | Initial open state                         |
-| `closeOnBackdropPress` | `boolean`                     | ❌       | `true`    | Close when backdrop is pressed             |
-| `closeOnGoBack`        | `boolean`                     | ❌       | `true`    | Close when back button is pressed          |
-| `backdropColor`        | `string`                      | ❌       | -         | Custom backdrop color                      |
-| `backdropClassName`    | `string`                      | ❌       | -         | Custom backdrop CSS classes                |
-| `closeMarkColor`       | `string`                      | ❌       | -         | Color of the close mark                    |
-| `closeMarkSize`        | `IconSizeVr['size']`          | ❌       | `'sm'`    | Size of the close mark                     |
-| `closeMarkPosition`    | `'right' \| 'left'`           | ❌       | `'right'` | Position of the close mark                 |
-| `closeMarkClassName`   | `string`                      | ❌       | -         | Custom close mark CSS classes              |
-| `className`            | `string`                      | ❌       | -         | Custom dialog content CSS classes          |
-| `onOpenChange`         | `(open: boolean) => void`     | ❌       | -         | Callback when open state changes           |
-| `onRequestClose`       | `() => void`                  | ❌       | -         | Callback when dialog is requested to close |
-| `onShow`               | `() => void`                  | ❌       | -         | Callback when dialog is shown              |
+| Prop                   | Type                          | Required | Default  | Description                       |
+| ---------------------- | ----------------------------- | -------- | -------- | --------------------------------- |
+| `children`             | `React.ReactNode`             | ✅       | -        | Dialog content                    |
+| `animation`            | `'fade' \| 'slide' \| 'none'` | ❌       | `'fade'` | Animation type for the dialog     |
+| `hasOverlay`           | `boolean`                     | ❌       | `true`   | Show overlay behind the dialog    |
+| `hasCloseMark`         | `boolean`                     | ❌       | `false`  | Show close button in top corner   |
+| `useDefaultContainer`  | `boolean`                     | ❌       | `true`   | Use default white container       |
+| `defaultOpen`          | `boolean`                     | ❌       | -        | Initial open state                |
+| `closeOnBackdropPress` | `boolean`                     | ❌       | `true`   | Close when backdrop is pressed    |
+| `closeOnGoBack`        | `boolean`                     | ❌       | `true`   | Close when back button is pressed |
+| `backdropColor`        | `string`                      | ❌       | -        | Custom backdrop color             |
+
+| `closeMarkPosition` | `'right' \| 'left'` | ❌ | `'right'` | Position of the close mark |
+| `className` | `string` | ❌ | - | Custom dialog content CSS classes (NativeWind only) |
+| `onOpenChange` | `(open: boolean) => void` | ❌ | - | Callback when open state changes |
+| `onRequestClose` | `() => void` | ❌ | - | Callback when dialog is requested to close |
+| `onShow` | `() => void` | ❌ | - | Callback when dialog is shown |
+| `rounded` | `'sm' \| 'md' \| 'lg' \| 'xl'` | ❌ | `'lg'` | Border radius variant for the dialog |
+| `size` | `'sm' \| 'md' \| 'lg' \| 'xl'` | ❌ | `'md'` | Size variant for the dialog |
+| `style` | `StyleProp<ViewStyle>` | ❌ | - | Additional inline styles (StyleSheet only) |
+| `closeMarkProps` | `IconProps` | ❌ | - | Custom close mark props |
 
 ### DialogCloseProps
 
@@ -138,7 +150,7 @@ The Dialog component consists of several sub-components:
   <DialogTrigger>
     <Button title="Custom Backdrop" />
   </DialogTrigger>
-  <DialogContent backdropColor="rgba(0, 0, 0, 0.8)" backdropClassName="custom-backdrop">
+  <DialogContent backdropColor="rgba(0, 0, 0, 0.8)">
     <String>Dialog with custom backdrop</String>
   </DialogContent>
 </Dialog>
@@ -218,7 +230,7 @@ function DialogWithToast() {
 ### Custom Close Button
 
 ```tsx
-<DialogContent hasCloseMark closeMarkPosition="left" closeMarkSize="lg">
+<DialogContent hasCloseMark closeMarkPosition="left">
   <String>Dialog with custom close mark</String>
 </DialogContent>
 
@@ -226,6 +238,36 @@ function DialogWithToast() {
 <DialogClose asChild>
   <Button title="Custom Close" variant="danger" />
 </DialogClose>
+```
+
+## Styling with NativeWind vs StyleSheet
+
+### With NativeWind (Recommended)
+
+```tsx
+<DialogContent className="mx-auto max-w-md rounded-lg bg-white shadow-lg">
+  <String>Styled with Tailwind classes</String>
+</DialogContent>
+```
+
+### Without NativeWind (Fallback)
+
+```tsx
+<DialogContent
+  style={{
+    marginHorizontal: 'auto',
+    maxWidth: 400,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  }}
+>
+  <String>Styled with StyleSheet</String>
+</DialogContent>
 ```
 
 ## Best Practices
@@ -272,16 +314,26 @@ const [isOpen, setIsOpen] = useState(false);
 </DialogContent>;
 ```
 
-### 4. Custom Styling
+### 4. Styling Strategy
 
 ```tsx
-// ✅ Good: Use custom classes for specific styling
+// ✅ Good: Use className when NativeWind is available
 <DialogContent
-  className="mx-auto max-w-md"
-  backdropClassName="bg-black/75"
-  closeMarkClassName="bg-white rounded-full p-1"
+  className="mx-auto max-w-md bg-white rounded-lg shadow-lg"
 >
-  <String>Custom styled dialog</String>
+  <String>NativeWind styling</String>
+</DialogContent>
+
+// ✅ Good: Use style when NativeWind is not available
+<DialogContent
+  style={{
+    marginHorizontal: 'auto',
+    maxWidth: 400,
+    backgroundColor: 'white',
+    borderRadius: 8,
+  }}
+>
+  <String>StyleSheet styling</String>
 </DialogContent>
 ```
 
@@ -295,24 +347,24 @@ interface DialogProps {
 }
 
 interface DialogContentProps {
-  className?: string;
+  className?: string; // NativeWind only
   onShow?: () => void;
   hasOverlay?: boolean;
   defaultOpen?: boolean;
   hasCloseMark?: boolean;
   backdropColor?: string;
   closeOnGoBack?: boolean;
-  closeMarkColor?: string;
   children: React.ReactNode;
-  backdropClassName?: string;
   onRequestClose?: () => void;
-  closeMarkClassName?: string;
   useDefaultContainer?: boolean;
   closeOnBackdropPress?: boolean;
   closeMarkPosition?: 'right' | 'left';
   animation?: 'fade' | 'slide' | 'none';
   onOpenChange?: (open: boolean) => void;
-  closeMarkSize?: IconSizeVr['size'];
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  rounded?: 'sm' | 'md' | 'lg' | 'xl';
+  style?: StyleProp<ViewStyle>; // StyleSheet only
+  closeMarkProps?: IconProps;
 }
 ```
 
@@ -321,6 +373,7 @@ interface DialogContentProps {
 - **Modal Rendering**: The Modal component is only rendered when visible
 - **Context Optimization**: Dialog state is optimized with useMemo and useCallback
 - **Toast Integration**: ToastProvider is conditionally rendered only when needed
+- **Styling Detection**: NativeWind detection is memoized for performance
 
 ## Dependencies
 
@@ -329,6 +382,7 @@ interface DialogContentProps {
 - **Box**: For layout containers
 - **Toast**: For integrated toast functionality
 - **RipplePressable**: For ripple effect triggers
+- **NativeWind**: For Tailwind CSS support (optional)
 
 ## Accessibility
 
@@ -339,3 +393,12 @@ The component supports standard accessibility features:
 - **Touch Targets**: Adequate touch target sizes for mobile accessibility
 - **Back Button**: Proper handling of device back button
 - **Backdrop Interaction**: Configurable backdrop press behavior
+
+## Migration Notes
+
+If you're upgrading from a previous version:
+
+- **Removed props**: `closeMarkColor`, `closeMarkSize`, `closeMarkClassName` have been removed
+- **Added props**: `rounded` and `size` variants for better styling control
+- **Styling**: The component now automatically detects NativeWind and adapts accordingly
+- **Performance**: Improved performance with better memoization and conditional rendering

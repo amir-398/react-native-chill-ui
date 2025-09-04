@@ -26,6 +26,10 @@ const meta: Meta<typeof Chip> = {
         'disabled',
       ],
     },
+    position: {
+      control: { type: 'select' },
+      options: ['left', 'center', 'right'],
+    },
     rounded: {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg', 'xl', '2xl', '3xl', 'full'],
@@ -54,7 +58,7 @@ export const Default: Story = {
   args: {
     children: 'Default Chip',
     colorVariant: 'primary',
-    rounded: 'md',
+    rounded: 'full',
     size: 'md',
     variant: 'contained',
   },
@@ -190,7 +194,7 @@ export const BorderRadius: Story = {
       <Chip rounded="md">Medium Radius</Chip>
       <Chip rounded="lg">Large Radius</Chip>
       <Chip rounded="xl">Extra Large Radius</Chip>
-      <Chip rounded="full">Full Radius</Chip>
+      <Chip rounded="full">Full Radius (default)</Chip>
     </View>
   ),
 };
@@ -319,6 +323,56 @@ export const StatusIndicators: Story = {
       </Chip>
       <Chip variant="outlined" color="#F59E0B" size="sm">
         Warning
+      </Chip>
+    </View>
+  ),
+};
+
+export const WithPosition: Story = {
+  render: () => (
+    <View style={{ alignItems: 'center', gap: 16 }}>
+      <View
+        style={{ alignItems: 'center', flexDirection: 'row', gap: 12, justifyContent: 'space-between', width: 300 }}
+      >
+        <Chip position="left" colorVariant="primary">
+          Gauche
+        </Chip>
+        <Chip position="center" colorVariant="secondary">
+          Centre
+        </Chip>
+        <Chip position="right" colorVariant="accent">
+          Droite
+        </Chip>
+      </View>
+
+      <View
+        style={{ alignItems: 'center', flexDirection: 'row', gap: 12, justifyContent: 'space-between', width: 300 }}
+      >
+        <Chip variant="outlined" position="left" colorVariant="danger">
+          Gauche
+        </Chip>
+        <Chip variant="outlined" position="center" colorVariant="warning">
+          Centre
+        </Chip>
+        <Chip variant="outlined" position="right" colorVariant="info">
+          Droite
+        </Chip>
+      </View>
+    </View>
+  ),
+};
+
+export const WithTitle: Story = {
+  render: () => (
+    <View style={{ alignItems: 'center', gap: 16 }}>
+      <Chip title="Titre prioritaire" colorVariant="primary">
+        Contenu ignoré
+      </Chip>
+      <Chip variant="outlined" title="Titre outlined" colorVariant="danger">
+        Contenu ignoré
+      </Chip>
+      <Chip title="Titre avec icône" iconActions={[{ iconName: 'star-solid', position: 'left' }]}>
+        Contenu ignoré
       </Chip>
     </View>
   ),

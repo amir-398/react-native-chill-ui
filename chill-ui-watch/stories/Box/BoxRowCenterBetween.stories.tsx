@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import UiPresentation from 'stories/storybook';
-
-import Badge from '../../src/components/badge';
+import UiPresentation from '../storybook';
+import Chip from '../../src/components/chip';
 import String from '../../src/components/string';
 import { BoxRowCenterBetween, BoxRowCenter } from '../../src/components';
 
@@ -32,7 +31,7 @@ export const Default: Story = {
         <String>👤</String>
         <String>John Doe</String>
       </BoxRowCenter>
-      <Badge>Online</Badge>
+      <Chip>Online</Chip>
     </BoxRowCenterBetween>
   ),
 };

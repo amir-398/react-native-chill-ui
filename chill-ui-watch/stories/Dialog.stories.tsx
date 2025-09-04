@@ -3,14 +3,13 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useRef } from 'react';
 import { SafeAreaView } from 'react-native';
 
-import Badge from '@/components/badge';
-import Button from '@/components/button';
-import { DialogClose, DialogToaster, DialogToasterRef } from '@/components/dialog/Dialog';
-
 import UiPresentation from './storybook';
+import Chip from '../src/components/chip';
 import { Box } from '../src/components/box';
+import Button from '../src/components/button';
 import String from '../src/components/string';
 import { Dialog, DialogContent, DialogTrigger } from '../src/components/dialog';
+import { DialogClose, DialogToaster, DialogToasterRef } from '../src/components/dialog/Dialog';
 
 const meta: Meta<typeof DialogContent> = {
   argTypes: {
@@ -19,39 +18,23 @@ const meta: Meta<typeof DialogContent> = {
       description: 'Animation type for the dialog',
       options: ['fade', 'slide', 'none'],
     },
-    backdropClassName: {
-      control: 'text',
-      description: 'Class name for the backdrop',
-    },
+
     backdropColor: {
       control: 'text',
-      description: 'Color for the backdrop',
+      description: 'Custom backdrop color',
     },
     children: {
       control: 'text',
-      description: 'Close the dialog when the backdrop is pressed',
+      description: 'Dialog content',
     },
     className: {
       control: 'text',
-      description: 'Class name for the dialog content',
-    },
-    closeMarkClassName: {
-      control: 'text',
-      description: 'Class name for the close mark',
-    },
-    closeMarkColor: {
-      control: 'color',
-      description: 'Color of the close mark',
+      description: 'Custom CSS classes for dialog content (NativeWind only)',
     },
     closeMarkPosition: {
       control: 'select',
       description: 'Position of the close mark',
       options: ['right', 'left'],
-    },
-    closeMarkSize: {
-      control: 'select',
-      description: 'Size of the close mark',
-      options: ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'],
     },
     closeOnBackdropPress: {
       control: 'boolean',
@@ -85,6 +68,20 @@ const meta: Meta<typeof DialogContent> = {
       action: 'text',
       description: 'Function to show the dialog',
     },
+    rounded: {
+      control: 'select',
+      description: 'Border radius variant for the dialog',
+      options: ['sm', 'md', 'lg', 'xl'],
+    },
+    size: {
+      control: 'select',
+      description: 'Size variant for the dialog',
+      options: ['sm', 'md', 'lg', 'xl'],
+    },
+    style: {
+      control: 'object',
+      description: 'Additional inline styles (StyleSheet only)',
+    },
     useDefaultContainer: {
       control: 'boolean',
       description: 'Wrap content in a default container with white background and padding',
@@ -108,7 +105,7 @@ function DialogExample(props: any) {
   return (
     <Dialog>
       <DialogTrigger>
-        <Badge>Open Dialog</Badge>
+        <Chip>Open Dialog</Chip>
       </DialogTrigger>
       <DialogContent {...props}>
         <String>This is a dialog content</String>
@@ -121,7 +118,7 @@ function DialogWithoutDefaultContainer(props: any) {
   return (
     <Dialog>
       <DialogTrigger>
-        <Badge>Open Dialog</Badge>
+        <Chip>Open Dialog</Chip>
       </DialogTrigger>
       <DialogContent {...props}>
         <SafeAreaView className="bg-primary flex-1 items-center justify-center">
@@ -130,7 +127,7 @@ function DialogWithoutDefaultContainer(props: any) {
           </Box>
           <Box className="w-full p-3">
             <DialogClose asChild>
-              <Button title="Close" variant="info" />
+              <Button title="Close" variant="contained" />
             </DialogClose>
           </Box>
         </SafeAreaView>
@@ -153,7 +150,7 @@ function DialogWithToaster(props: any) {
   return (
     <Dialog>
       <DialogTrigger>
-        <Badge>Open Dialog</Badge>
+        <Chip>Open Dialog</Chip>
       </DialogTrigger>
       <DialogContent {...props}>
         <DialogToaster ref={toasterRef} />
@@ -162,11 +159,11 @@ function DialogWithToaster(props: any) {
             <String>This is a dialog content with toaster</String>
           </Box>
           <Box className="w-full p-3">
-            <Button title="show toast" variant="warning" onPress={handleShowToast} />
+            <Button title="show toast" colorVariant="warning" onPress={handleShowToast} />
           </Box>
           <Box className="w-full p-3">
             <DialogClose asChild>
-              <Button title="Close" variant="info" />
+              <Button title="Close" colorVariant="info" />
             </DialogClose>
           </Box>
         </SafeAreaView>
@@ -179,7 +176,7 @@ function DialogWithCustomBackdrop(props: any) {
   return (
     <Dialog>
       <DialogTrigger>
-        <Badge>Open Dialog</Badge>
+        <Chip>Open Dialog</Chip>
       </DialogTrigger>
       <DialogContent {...props}>
         <String>This is a dialog content</String>
@@ -196,6 +193,8 @@ export const Default: Story = {
     closeOnGoBack: true,
     hasCloseMark: false,
     hasOverlay: true,
+    rounded: 'lg',
+    size: 'md',
     useDefaultContainer: true,
   },
   render: args => <DialogExample {...args} />,
@@ -207,6 +206,8 @@ export const WithCloseMark: Story = {
     className: 'h-48 items-center justify-center bg-white',
     hasCloseMark: true,
     hasOverlay: true,
+    rounded: 'lg',
+    size: 'md',
     useDefaultContainer: true,
   },
   render: args => <DialogExample {...args} />,
@@ -217,6 +218,8 @@ export const WithoutDefaultContainer: Story = {
     animation: 'fade',
     hasCloseMark: false,
     hasOverlay: true,
+    rounded: 'lg',
+    size: 'md',
     useDefaultContainer: false,
   },
   render: args => <DialogWithoutDefaultContainer {...args} />,
@@ -228,6 +231,8 @@ export const WithoutBackdrop: Story = {
     className: 'h-48 items-center justify-center bg-white',
     hasCloseMark: true,
     hasOverlay: false,
+    rounded: 'lg',
+    size: 'md',
     useDefaultContainer: true,
   },
   render: args => <DialogExample {...args} />,
@@ -236,6 +241,8 @@ export const WithoutBackdrop: Story = {
 export const WithAnimation: Story = {
   args: {
     animation: 'slide',
+    rounded: 'lg',
+    size: 'md',
     useDefaultContainer: false,
   },
   render: args => <DialogWithoutDefaultContainer {...args} />,
@@ -244,6 +251,8 @@ export const WithAnimation: Story = {
 export const WithToaster: Story = {
   args: {
     animation: 'fade',
+    rounded: 'lg',
+    size: 'md',
     useDefaultContainer: false,
   },
   render: args => <DialogWithToaster {...args} />,
@@ -258,7 +267,35 @@ export const WithCustomBackdrop: Story = {
     closeOnGoBack: true,
     hasCloseMark: true,
     hasOverlay: true,
+    rounded: 'lg',
+    size: 'md',
     useDefaultContainer: true,
   },
   render: args => <DialogWithCustomBackdrop {...args} />,
+};
+
+export const WithSizeVariants: Story = {
+  args: {
+    animation: 'fade',
+    className: 'items-center justify-center bg-white',
+    hasCloseMark: true,
+    hasOverlay: true,
+    rounded: 'lg',
+    size: 'lg',
+    useDefaultContainer: true,
+  },
+  render: args => <DialogExample {...args} />,
+};
+
+export const WithRoundedVariants: Story = {
+  args: {
+    animation: 'fade',
+    className: 'h-48 items-center justify-center bg-white',
+    hasCloseMark: true,
+    hasOverlay: true,
+    rounded: 'xl',
+    size: 'md',
+    useDefaultContainer: true,
+  },
+  render: args => <DialogExample {...args} />,
 };

@@ -52,19 +52,19 @@ Le composant Chip supporte plusieurs variantes de couleurs prédéfinies :
 
 ## Props
 
-| Prop            | Type                                                                                                                                                                     | Défaut        | Description                                        |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------- | -------------------------------------------------- |
-| `variant`       | `'contained' \| 'outlined'`                                                                                                                                              | `'contained'` | Style du chip                                      |
-| `colorVariant`  | `'primary' \| 'secondary' \| 'accent' \| 'danger' \| 'error' \| 'warning' \| 'info' \| 'neutral' \| 'muted' \| 'light' \| 'dark' \| 'inverted' \| 'white' \| 'disabled'` | `'primary'`   | Variante de couleur du chip                        |
-| `size`          | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| '2xs' \| '3xl'`                                                                                                        | `'md'`        | Taille du chip                                     |
-| `rounded`       | `'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| '3xl' \| 'full'`                                                                                                               | `'md'`        | Rayon de bordure                                   |
-| `color`         | `string`                                                                                                                                                                 | -             | Couleur personnalisée du fond/bordure              |
-| `iconActions`   | `ChipIconAction[]`                                                                                                                                                       | `[]`          | Configuration des icônes avec position             |
-| `iconProps`     | `IconProps`                                                                                                                                                              | -             | Props pour l'icône (obsolète, utilisez iconActions) |
-| `stringProps`   | `StringProps`                                                                                                                                                            | -             | Props pour le composant string/text                |
-| `children`      | `ReactNode`                                                                                                                                                              | -             | Contenu du chip                                    |
-| `title`         | `string`                                                                                                                                                                 | -             | Titre à afficher dans le chip                      |
-| `className`     | `string`                                                                                                                                                                 | -             | Classes CSS personnalisées (NativeWind uniquement) |
+| Prop           | Type                                                                                                                                                                     | Défaut        | Description                                           |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------- | ----------------------------------------------------- |
+| `variant`      | `'contained' \| 'outlined'`                                                                                                                                              | `'contained'` | Style du chip                                         |
+| `colorVariant` | `'primary' \| 'secondary' \| 'accent' \| 'danger' \| 'error' \| 'warning' \| 'info' \| 'neutral' \| 'muted' \| 'light' \| 'dark' \| 'inverted' \| 'white' \| 'disabled'` | `'primary'`   | Variante de couleur du chip                           |
+| `size`         | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| '2xs' \| '3xl'`                                                                                                        | `'md'`        | Taille du chip                                        |
+| `rounded`      | `'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| '3xl' \| 'full'`                                                                                                               | `'full'`      | Rayon de bordure                                      |
+| `color`        | `string`                                                                                                                                                                 | -             | Couleur personnalisée du fond/bordure                 |
+| `iconActions`  | `ChipIconAction[]`                                                                                                                                                       | `[]`          | Configuration des icônes avec position                |
+| `stringProps`  | `StringProps`                                                                                                                                                            | -             | Props pour le composant string/text                   |
+| `children`     | `ReactNode`                                                                                                                                                              | -             | Contenu du chip                                       |
+| `title`        | `string`                                                                                                                                                                 | -             | Titre à afficher dans le chip (priorité sur children) |
+| `position`     | `'left' \| 'center' \| 'right'`                                                                                                                                          | `'left'`      | Position du chip dans son conteneur                   |
+| `className`    | `string`                                                                                                                                                                 | -             | Classes CSS personnalisées (NativeWind uniquement)    |
 
 ## Icon Actions
 
@@ -72,7 +72,7 @@ Le composant Chip supporte maintenant les icônes avec une configuration flexibl
 
 ```tsx
 // Icône gauche
-<Chip 
+<Chip
   iconActions={[{
     iconName: 'star-solid',
     iconColor: '#FFD700',
@@ -84,7 +84,7 @@ Le composant Chip supporte maintenant les icônes avec une configuration flexibl
 </Chip>
 
 // Icône droite personnalisée
-<Chip 
+<Chip
   iconActions={[{
     customIcon: <CustomIconComponent />,
     position: 'right'
@@ -94,7 +94,7 @@ Le composant Chip supporte maintenant les icônes avec une configuration flexibl
 </Chip>
 
 // Plusieurs icônes
-<Chip 
+<Chip
   iconActions={[
     {
       iconName: 'check-solid',
@@ -112,7 +112,7 @@ Le composant Chip supporte maintenant les icônes avec une configuration flexibl
 </Chip>
 
 // Icône au centre
-<Chip 
+<Chip
   iconActions={[{
     iconName: 'info-solid',
     iconColor: '#6366F1',
@@ -140,13 +140,15 @@ Le composant Chip supporte maintenant les icônes avec une configuration flexibl
 ### Chip avec icônes
 
 ```tsx
-<Chip 
-  iconActions={[{
-    iconName: 'star-solid', 
-    iconColor: '#FFD700',
-    position: 'left'
-  }]}
-  size="lg" 
+<Chip
+  iconActions={[
+    {
+      iconName: 'star-solid',
+      iconColor: '#FFD700',
+      position: 'left',
+    },
+  ]}
+  size="lg"
   rounded="full"
 >
   Favori
@@ -169,6 +171,16 @@ Le composant Chip supporte maintenant les icônes avec une configuration flexibl
   <Chip size="md">Medium</Chip>
   <Chip size="lg">Large</Chip>
 </Stack>
+```
+
+### Chip avec position
+
+```tsx
+<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+  <Chip position="left">Gauche</Chip>
+  <Chip position="center">Centre</Chip>
+  <Chip position="right">Droite</Chip>
+</View>
 ```
 
 ## Support NativeWind

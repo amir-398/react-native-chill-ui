@@ -33,18 +33,23 @@ export default StyleSheet.create({
   },
   sizeLg: {
     fontSize: 18,
+    lineHeight: 24,
   },
   sizeMd: {
     fontSize: 16,
+    lineHeight: 24,
   },
   sizeSm: {
     fontSize: 14,
+    lineHeight: 21,
   },
   sizeXl: {
     fontSize: 20,
+    lineHeight: 28,
   },
   sizeXs: {
     fontSize: 12,
+    lineHeight: 14,
   },
 
   // Font weight variants
@@ -154,41 +159,54 @@ export default StyleSheet.create({
   // Text variant styles
   variantBody1: {
     fontSize: 16,
+    lineHeight: 24,
   },
   variantBody2: {
     fontSize: 18,
+    lineHeight: 26,
   },
   variantBody3: {
     fontSize: 20,
+    lineHeight: 28,
   },
   variantBodysm: {
     fontSize: 14,
+    lineHeight: 20,
   },
   variantBodyxs: {
     fontSize: 12,
+    lineHeight: 16,
   },
   variantTitle1: {
     fontSize: 24,
+    lineHeight: 32,
   },
   variantTitle2: {
     fontSize: 30,
+    lineHeight: 38,
   },
   variantTitle3: {
     fontSize: 36,
+    lineHeight: 44,
   },
   variantTitle4: {
     fontSize: 48,
+    lineHeight: 56,
   },
   variantTitle5: {
     fontSize: 60,
+    lineHeight: 68,
   },
   variantTitle6: {
     fontSize: 72,
+    lineHeight: 84,
   },
   variantTitle7: {
     fontSize: 96,
+    lineHeight: 112,
   },
   variantTitle8: {
     fontSize: 128,
+    lineHeight: 144,
   },
 });

@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import UiPresentation from 'stories/storybook';
-
-import Badge from '../../src/components/badge';
+import UiPresentation from '../storybook';
+import Chip from '../../src/components/chip';
 import { BoxAbsolute, BoxStack } from '../../src/components';
 
 const meta: Meta<typeof BoxAbsolute> = {
@@ -28,7 +27,7 @@ export const Default: Story = {
   render: () => (
     <BoxStack className="h-32 w-32 rounded border bg-gray-100">
       <BoxAbsolute className="left-2 top-2">
-        <Badge>New</Badge>
+        <Chip>New</Chip>
       </BoxAbsolute>
     </BoxStack>
   ),

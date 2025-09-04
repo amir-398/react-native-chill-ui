@@ -1,11 +1,14 @@
+import { classNameHandler, styleHandler } from '@/utils/propsHandlers';
+import colorVariantPropsHandler from '@/utils/colorVariantPropsHandler';
+
 import type { StringProps } from '../../types';
 
 import cn from '../cn';
 import styles from './String.style';
 import { Text as NativeText } from './Text';
-import { isNativeWindInstalled } from '../../utils/nativewindDetector';
+import createStringStyles from './utils/createStyles';
 import { classNamePropsHandler } from '../../utils/classNameMissingError';
-import { textColorVr, textFontVr, textPositionVr, textSizeVr } from './styleVatiants';
+import { textColorVr, textFontVr, textPositionVr, textSizeVr } from './styleVariants';
 
 /**
  * String component that provides a high-level text component with predefined styling variants.
@@ -52,27 +55,20 @@ export default function String(props: StringProps) {
     style,
     variant = 'body-1',
     weight,
+    ...rest
   } = props;
 
   classNamePropsHandler(props, 'String');
+  colorVariantPropsHandler(props, 'String');
 
-  if (isNativeWindInstalled()) {
-    /** Dynamic classes generated from props using Tailwind variantsp */
-    const dynamicClasses = cn(
-      'flex-shrink',
-      textColorVr({ color: colorVariant }),
-      textPositionVr({ position }),
-      textFontVr({ font, variant, weight }),
-      textSizeVr({ size }),
-      className,
-    );
-
-    return (
-      <NativeText {...props} className={dynamicClasses} style={[{ ...(color && { color }) }, style]}>
-        {children}
-      </NativeText>
-    );
-  }
+  const dynamicClasses = cn(
+    'flex-shrink',
+    textColorVr({ color: colorVariant }),
+    textPositionVr({ position }),
+    textFontVr({ font, variant, weight }),
+    textSizeVr({ size }),
+    className,
+  );
 
   const isTitle = variant?.startsWith('title-');
   const finalWeight = weight || (isTitle ? 'bold' : 'regular');
@@ -88,25 +84,15 @@ export default function String(props: StringProps) {
 
   const fontFamilyStyle = getFontFamilyStyle();
 
-  console.log('position', position);
   const fallbackStyles = [
     styles.base,
-    styles[`weight${finalWeight.charAt(0).toUpperCase() + finalWeight.slice(1)}` as keyof typeof styles],
-    colorVariant &&
-      styles[`color${colorVariant.charAt(0).toUpperCase() + colorVariant.slice(1)}` as keyof typeof styles],
-    position && styles[`position${position.charAt(0).toUpperCase() + position.slice(1)}` as keyof typeof styles],
-    variant &&
-      styles[`variant${variant.charAt(0).toUpperCase() + variant.slice(1).split('-').join('')}` as keyof typeof styles],
-    size && styles[`size${size.charAt(0).toUpperCase() + size.slice(1)}` as keyof typeof styles],
+    createStringStyles({ colorVariant, position, size, variant, weight: finalWeight }),
     fontFamilyStyle,
-    { ...(color && { color }) },
     style,
   ].filter(Boolean);
 
-  console.log('fallbackStyles', fallbackStyles);
-
   return (
-    <NativeText {...props} style={fallbackStyles} useFastText={false}>
+    <NativeText {...classNameHandler(dynamicClasses)} {...styleHandler({ defaultStyle: fallbackStyles })} {...rest}>
       {children}
     </NativeText>
   );
