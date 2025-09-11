@@ -1,13 +1,14 @@
 import { Image, Pressable, TouchableOpacity } from 'react-native';
 
+import type { AvatarProps } from '../../../types/avatar/avatar.tw.types';
+
 import { Box } from '../../box';
 import { String } from '../../string';
 import cn from '../../../utils/hybrid/cn';
 import avatarTv from '../styles/Avatar.variants';
-import RipplePressable from '../../ripplePressable';
 import getUserInitials from '../utils/getUsersInititials';
 import { AvatarSv, styles } from '../styles/Avatar.styles';
-import { AvatarProps } from '../../../types/avatar/avatar.tw.types';
+import RipplePressable from '../../ripplePressable/components/RipplePressable';
 import { classNamePropsHandler } from '../../../utils/hybrid/classNameMissingError';
 import { classNameHandler, styleHandler } from '../../../utils/hybrid/propsHandlers';
 

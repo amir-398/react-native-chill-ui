@@ -15,13 +15,13 @@ A React Native component that provides a ripple effect on touch interactions. Bu
 
 ```bash
 # The component is included in the chill-ui package
-import RipplePressable from '@/components/ripple-pressable/RipplePressable';
+import { RipplePressable } from 'react-native-chill-ui';
 ```
 
 ## Basic Usage
 
 ```tsx
-import RipplePressable from '@/components/ripple-pressable/RipplePressable';
+import { RipplePressable } from 'react-native-chill-ui';
 
 // Basic ripple button
 <RipplePressable onPress={() => console.log('Pressed')}>
@@ -59,7 +59,7 @@ import RipplePressable from '@/components/ripple-pressable/RipplePressable';
 | ------------- | ---------------------------------------- | ---------------------------- | ------------------------------------------- |
 | `children`    | `React.ReactNode`                        | -                            | **Required.** Child components to render    |
 | `className`   | `string`                                 | -                            | CSS classes for styling (NativeWind)        |
-| `style`       | `StyleProp<ViewStyle>`                   | -                            | Style object for the pressable container    |
+| `style`       | `ViewStyle`                              | -                            | Style object for the pressable container    |
 | `effectColor` | `string`                                 | `'rgba(255, 255, 255, 0.6)'` | Color of the ripple effect                  |
 | `speed`       | `number`                                 | `500`                        | Animation duration in milliseconds          |
 | `onPress`     | `(event: GestureResponderEvent) => void` | -                            | Callback function when component is pressed |

@@ -1,7 +1,7 @@
 import { Animated } from 'react-native';
 import { useRef, useEffect, useImperativeHandle, forwardRef, useCallback, PropsWithChildren } from 'react';
 
-import type { FadeInBoxProps, FadeInBoxRef } from '../../../../types/animatedBox';
+import type { FadeInBoxProps, FadeInBoxRef } from '../../../../types/animatedBox/fadeInBox.tw.types';
 
 import AnimatedBox from '../animatedBox/AnimatedBox';
 import { classNameHandler } from '../../../../utils/hybrid/propsHandlers';

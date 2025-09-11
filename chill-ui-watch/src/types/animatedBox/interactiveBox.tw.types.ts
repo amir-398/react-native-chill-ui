@@ -1,20 +1,15 @@
-import { ReactNode } from 'react';
-
-import type { AnimatedViewProps } from '../index';
+import { AnimatedBoxProps } from './animatedBox.tw.types';
 
 /**
- * Props for the InteractiveBox component.
+ * Props for the InteractiveBox component (Tailwind version).
  *
  * Creates an interactive pressable container with scale and opacity animations.
  * Responds to press events with smooth visual feedback.
  *
  */
-export interface InteractiveBoxProps extends AnimatedViewProps {
+export interface InteractiveBoxProps extends AnimatedBoxProps {
   /** Duration of the press animation in milliseconds. @default 200 */
   duration?: number;
-
-  /** Content to be animated inside the interactive box */
-  children: ReactNode;
 
   /** Scale value when pressed. @default 1.1 */
   scaleValue?: number;
@@ -27,7 +22,4 @@ export interface InteractiveBoxProps extends AnimatedViewProps {
 
   /** Callback function called when pressing out */
   onPressOut?: () => void;
-
-  /** Additional className for the interactive box */
-  className?: string;
 }

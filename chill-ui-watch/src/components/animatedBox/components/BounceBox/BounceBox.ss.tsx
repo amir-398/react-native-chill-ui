@@ -1,7 +1,7 @@
 import { Animated } from 'react-native';
-import { useRef, useEffect, useCallback, useImperativeHandle, forwardRef } from 'react';
+import { useRef, useEffect, useCallback, useImperativeHandle, forwardRef, PropsWithChildren } from 'react';
 
-import type { BounceBoxProps, BounceBoxRef } from '../../../../types/animatedBox';
+import type { BounceBoxProps, BounceBoxRef } from '../../../../types/animatedBox/bounceBox.ss.types';
 
 import AnimatedBox from '../animatedBox/AnimatedBox.ss';
 
@@ -41,7 +41,7 @@ import AnimatedBox from '../animatedBox/AnimatedBox.ss';
  * @param ref - Ref for manual animation control (bounce, start, stop methods)
  * @returns Animated component with bouncing effect
  */
-const BounceBox = forwardRef<BounceBoxRef, Omit<BounceBoxProps, 'className'>>((props, ref) => {
+const BounceBox = forwardRef<BounceBoxRef, PropsWithChildren<BounceBoxProps>>((props, ref) => {
   const {
     autoStart = false,
     bounceHeight = 20,

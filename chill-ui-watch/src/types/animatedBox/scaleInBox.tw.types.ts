@@ -1,29 +1,21 @@
-import { ReactNode } from 'react';
-
-import { AnimatedViewProps } from '@/components/box/components/View';
+import { AnimatedBoxProps } from './animatedBox.tw.types';
 
 /**
- * Props for the ScaleInBox component.
+ * Props for the ScaleInBox component (Tailwind version).
  *
  * Creates a scale-in animation that smoothly transitions the content from small to normal size.
  * Uses a spring animation for a natural, bouncy effect.
  *
  */
-export interface ScaleInBoxProps extends AnimatedViewProps {
+export interface ScaleInBoxProps extends AnimatedBoxProps {
   /** Delay before starting the scale-in animation in milliseconds. @default 0 */
   delay?: number;
-
-  /** Content to be animated inside the scale-in box */
-  children: ReactNode;
 
   /** Whether to start the animation automatically. @default false */
   autoStart?: boolean;
 
   /** Whether to loop the animation infinitely. @default false */
   infiniteLoop?: boolean;
-
-  /** Additional className for the scale-in box */
-  className?: string;
 }
 
 /**

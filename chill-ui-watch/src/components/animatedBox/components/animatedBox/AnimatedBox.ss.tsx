@@ -1,5 +1,6 @@
 import styles from '../../styles/AnimatedBox.styles';
-import { AnimatedViewProps, AnimatedView as AnimatedViewNative } from '../../../box/components/View.ss';
+import { AnimatedView as AnimatedViewNative } from '../../../box/components/View.ss';
+import { AnimatedBoxProps } from '../../../../types/animatedBox/animatedBox.ss.types';
 
 /**
  * AnimatedBox - Base animated container component
@@ -20,6 +21,6 @@ import { AnimatedViewProps, AnimatedView as AnimatedViewNative } from '../../../
  * @param props - All other View props are supported
  * @returns Optimized animated view component ready for custom animations
  */
-export default function AnimatedBox(props: AnimatedViewProps) {
+export default function AnimatedBox(props: AnimatedBoxProps) {
   return <AnimatedViewNative style={[styles.baseAnimated]} {...props} />;
 }

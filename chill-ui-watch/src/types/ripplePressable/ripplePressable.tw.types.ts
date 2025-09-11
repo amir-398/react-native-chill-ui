@@ -1,4 +1,4 @@
-import { PressableProps, StyleProp } from 'react-native';
+import { PressableProps, ViewStyle } from 'react-native';
 
 /**
  * Props for the RipplePressable component
@@ -14,5 +14,5 @@ export type RipplePressableProps = Omit<PressableProps, 'style'> & {
   speed?: number;
 
   /** Style of the pressable component */
-  style?: StyleProp<PressableProps>;
+  style?: ViewStyle;
 };

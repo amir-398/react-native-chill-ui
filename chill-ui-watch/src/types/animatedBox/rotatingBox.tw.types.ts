@@ -1,23 +1,18 @@
-import { ReactNode } from 'react';
-
-import { AnimatedViewProps } from '../../components/box/components/View';
+import { AnimatedBoxProps } from './animatedBox.tw.types';
 
 /**
- * Props for the RotatingBox component.
+ * Props for the RotatingBox component (Tailwind version).
  *
  * Creates a rotation animation that spins the content 360 degrees.
  * Can be set to loop continuously or run only once.
  *
  */
-export interface RotatingBoxProps extends AnimatedViewProps {
+export interface RotatingBoxProps extends AnimatedBoxProps {
   /** Delay before starting the rotation animation in milliseconds. @default 0 */
   delay?: number;
 
   /** Duration of one complete rotation in milliseconds. @default 2000 */
   duration?: number;
-
-  /** Content to be animated inside the rotating box */
-  children: ReactNode;
 
   /** Whether to start the animation automatically. @default false */
   autoStart?: boolean;
@@ -27,9 +22,6 @@ export interface RotatingBoxProps extends AnimatedViewProps {
 
   /** Whether to make the rotation continuous without pauses between loops. @default false */
   continuous?: boolean;
-
-  /** Additional className for the rotating box */
-  className?: string;
 }
 
 /**
@@ -46,8 +38,6 @@ export interface RotatingBoxProps extends AnimatedViewProps {
  *
  * // Stop animation
  * rotateRef.current?.stop();
- *
-
  * ```
  */
 export interface RotatingBoxRef {

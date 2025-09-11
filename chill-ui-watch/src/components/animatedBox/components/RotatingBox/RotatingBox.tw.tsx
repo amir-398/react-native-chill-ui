@@ -1,7 +1,7 @@
 import { Animated, Easing } from 'react-native';
-import { useRef, useEffect, useImperativeHandle, forwardRef, useCallback } from 'react';
+import { useRef, useEffect, useImperativeHandle, forwardRef, useCallback, PropsWithChildren } from 'react';
 
-import type { RotatingBoxProps, RotatingBoxRef } from '../../../../types/animatedBox';
+import type { RotatingBoxProps, RotatingBoxRef } from '../../../../types/animatedBox/rotatingBox.tw.types';
 
 import cn from '../../../../utils/tw/cn';
 import AnimatedBox from '../animatedBox/AnimatedBox.tw';
@@ -42,7 +42,7 @@ import AnimatedBox from '../animatedBox/AnimatedBox.tw';
  * @param ref - Ref for manual animation control (start, stop)
  * @returns Animated component with rotation effect
  */
-const RotatingBox = forwardRef<RotatingBoxRef, RotatingBoxProps>((props, ref) => {
+const RotatingBox = forwardRef<RotatingBoxRef, PropsWithChildren<RotatingBoxProps>>((props, ref) => {
   const {
     autoStart = false,
     children,

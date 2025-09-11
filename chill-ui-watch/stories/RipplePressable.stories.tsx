@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions';
 
 import { Box, String } from '../src/components';
 import UiPresentation from './storybook/UiPresentation';
-import RipplePressable from '../src/components/ripple-pressable/components/RipplePressable';
+import RipplePressable from '../src/components/ripplePressable/components/RipplePressable';
 
 const meta: Meta<typeof RipplePressable> = {
   argTypes: {

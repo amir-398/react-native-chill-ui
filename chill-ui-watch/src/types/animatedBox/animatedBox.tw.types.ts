@@ -1,5 +1,4 @@
-import type { AnimatedViewProps } from '../index';
-
+import { Animated } from 'react-native';
 /**
  * Props for the basic AnimatedBox component.
  *
@@ -7,6 +6,9 @@ import type { AnimatedViewProps } from '../index';
  * without adding any additional animation-specific properties.
  * ```
  */
+
+export type AnimatedViewProps = React.ComponentProps<typeof Animated.View>;
+
 export interface AnimatedBoxProps extends AnimatedViewProps {
   /** Additional className for the animated box */
   className?: string;

@@ -1,8 +1,9 @@
 import cn from '../../../../utils/hybrid/cn';
 import styles from '../../styles/AnimatedBox.styles';
+import { AnimatedView as AnimatedViewNative } from '../../../box/components/View';
+import { AnimatedBoxProps } from '../../../../types/animatedBox/animatedBox.tw.types';
 import { classNamePropsHandler } from '../../../../utils/hybrid/classNameMissingError';
 import { classNameHandler, styleHandler } from '../../../../utils/hybrid/propsHandlers';
-import { AnimatedView as AnimatedViewNative, AnimatedViewPropsWithClassName } from '../../../box/components/View';
 
 /**
  * AnimatedBox - Base animated container component
@@ -37,7 +38,7 @@ import { AnimatedView as AnimatedViewNative, AnimatedViewPropsWithClassName } fr
  * @param props - All other View props are supported
  * @returns Optimized animated view component ready for custom animations
  */
-export default function AnimatedBox(props: AnimatedViewPropsWithClassName) {
+export default function AnimatedBox(props: AnimatedBoxProps) {
   classNamePropsHandler(props, 'AnimatedBox');
   const { className, ...rest } = props;
 

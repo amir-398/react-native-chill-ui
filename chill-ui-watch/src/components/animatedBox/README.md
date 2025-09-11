@@ -167,7 +167,7 @@ fadeRef.current?.stop(); // Stop animation
 Animates scale from 0.8 to 1.0 with spring physics for natural feel.
 
 ```tsx
-<ScaleInBox autoStart duration={800} delay={200} className="rounded-xl bg-green-500 p-6">
+<ScaleInBox autoStart delay={200} className="rounded-xl bg-green-500 p-6">
   <String className="text-white">Scaling in content</String>
 </ScaleInBox>
 ```
@@ -177,7 +177,6 @@ Animates scale from 0.8 to 1.0 with spring physics for natural feel.
 | Prop           | Type        | Required | Default | Description                           |
 | -------------- | ----------- | -------- | ------- | ------------------------------------- |
 | `autoStart`    | `boolean`   | ❌       | `false` | Start animation automatically         |
-| `duration`     | `number`    | ❌       | `800`   | Animation duration in milliseconds    |
 | `delay`        | `number`    | ❌       | `0`     | Delay before starting in milliseconds |
 | `infiniteLoop` | `boolean`   | ❌       | `false` | Loop animation infinitely             |
 | `className`    | `string`    | ❌       | -       | CSS classes (NativeWind)              |
@@ -313,13 +312,14 @@ All animated components share common props and extend them with specific animati
 | Prop           | Type        | Required | Default | Description                           |
 | -------------- | ----------- | -------- | ------- | ------------------------------------- |
 | `autoStart`    | `boolean`   | ❌       | `false` | Start animation automatically         |
-| `duration`     | `number`    | ❌       | varies  | Animation duration in milliseconds    |
 | `delay`        | `number`    | ❌       | `0`     | Delay before starting in milliseconds |
 | `infiniteLoop` | `boolean`   | ❌       | `false` | Loop animation infinitely             |
 | `className`    | `string`    | ❌       | -       | CSS classes (NativeWind)              |
 | `style`        | `ViewStyle` | ❌       | -       | Inline styles                         |
 | `children`     | `ReactNode` | ✅       | -       | Content to animate                    |
 | `...rest`      | `ViewProps` | ❌       | -       | Any other props accepted by View      |
+
+**Note:** `duration` is only available for components that use timing-based animations (FadeInBox, SlideInBox, RotatingBox, BounceBox). ScaleInBox uses spring physics and doesn't accept a duration prop.
 
 ### Component-Specific Props
 
@@ -359,9 +359,9 @@ const BasicAnimations = () => {
         <String>This content fades in</String>
       </FadeInBox>
 
-      {/* Scale animation with custom duration */}
-      <ScaleInBox autoStart duration={1200}>
-        <String>This content scales in slowly</String>
+      {/* Scale animation with delay */}
+      <ScaleInBox autoStart delay={300}>
+        <String>This content scales in with delay</String>
       </ScaleInBox>
 
       {/* Slide from right */}
@@ -416,9 +416,9 @@ const LoadingExample = () => {
           <Icon name="spinner" />
         </RotatingBox>
       ) : (
-        <FadeInBox autoStart className="rounded-lg bg-green-500 p-4">
+        <ScaleInBox autoStart className="rounded-lg bg-green-500 p-4">
           <String className="text-white">Content loaded!</String>
-        </FadeInBox>
+        </ScaleInBox>
       )}
     </Box>
   );
@@ -503,9 +503,9 @@ function LoadingExample() {
         <Icon name="spinner" />
       </RotatingBox>
 
-      <FadeInBox autoStart={!isLoading} className="rounded-lg bg-green-500 p-4">
+      <ScaleInBox autoStart={!isLoading} className="rounded-lg bg-green-500 p-4">
         <String className="text-white">Content loaded!</String>
-      </FadeInBox>
+      </ScaleInBox>
     </Box>
   );
 }
@@ -519,7 +519,7 @@ Combine multiple animations:
 function CombinedAnimation() {
   return (
     <FadeInBox autoStart duration={1000}>
-      <ScaleInBox autoStart delay={200} duration={800}>
+      <ScaleInBox autoStart delay={200}>
         <SlideInBox autoStart delay={400} direction="up" distance={50}>
           <Box className="rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 p-6">
             <String className="text-center font-bold text-white">Triple Animation!</String>
@@ -592,7 +592,7 @@ import type {
   ScaleInBoxRef,
   SlideInBoxRef,
   RotatingBoxRef,
-  BounceBoxRefProps,
+  BounceBoxRef,
 } from '@/components/animatedBox';
 ```
 
@@ -663,7 +663,7 @@ test('FadeInBox renders children', () => {
 
 If upgrading from previous versions:
 
-1. **InteractiveBox removed**: Use `Pressable` with `ScaleInBox` for similar functionality
+1. **Improved animation performance**: All components now use native driver by default
 2. **New NativeWind support**: Add `className` props alongside existing `style` props
 3. **Improved TypeScript**: Update ref types to use new interfaces
 

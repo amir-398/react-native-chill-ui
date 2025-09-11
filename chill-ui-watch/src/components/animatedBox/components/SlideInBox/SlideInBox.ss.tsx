@@ -1,7 +1,7 @@
 import { Animated } from 'react-native';
-import { useRef, useEffect, useImperativeHandle, forwardRef, useCallback } from 'react';
+import { useRef, useEffect, useImperativeHandle, forwardRef, useCallback, PropsWithChildren } from 'react';
 
-import type { SlideInBoxProps, SlideInBoxRef } from '../../../../types/animatedBox';
+import type { SlideInBoxProps, SlideInBoxRef } from '../../../../types/animatedBox/slideInBox.ss.types';
 
 import AnimatedBox from '../animatedBox/AnimatedBox.ss';
 
@@ -42,7 +42,7 @@ import AnimatedBox from '../animatedBox/AnimatedBox.ss';
  * @param ref - Ref for manual animation control (start, stop methods)
  * @returns Animated component with slide-in effect
  */
-const SlideInBox = forwardRef<SlideInBoxRef, Omit<SlideInBoxProps, 'className'>>((props, ref) => {
+const SlideInBox = forwardRef<SlideInBoxRef, PropsWithChildren<SlideInBoxProps>>((props, ref) => {
   const {
     autoStart = false,
     children,

@@ -1,13 +1,13 @@
-import { AnimatedViewProps } from '@/components/box/components/View';
+import { AnimatedBoxProps } from './animatedBox.tw.types';
 
 /**
- * Props for the FadeInBox component.
+ * Props for the FadeInBox component (Tailwind version).
  *
  * Creates a fade-in animation that smoothly transitions the content from transparent to opaque.
  * Perfect for revealing content with a subtle entrance effect.
  *
  */
-export interface FadeInBoxProps extends AnimatedViewProps {
+export interface FadeInBoxProps extends AnimatedBoxProps {
   /** Delay before starting the fade-in animation in milliseconds. @default 0 */
   delay?: number;
 
@@ -19,9 +19,6 @@ export interface FadeInBoxProps extends AnimatedViewProps {
 
   /** Whether to loop the animation infinitely. @default false */
   infiniteLoop?: boolean;
-
-  /** Whether to use native driver for the animation. @default true */
-  className?: string;
 }
 
 /**

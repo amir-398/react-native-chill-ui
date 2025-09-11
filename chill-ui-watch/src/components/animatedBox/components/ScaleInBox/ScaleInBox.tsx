@@ -1,7 +1,7 @@
 import { Animated } from 'react-native';
-import { useRef, useEffect, useImperativeHandle, forwardRef, useCallback } from 'react';
+import { useRef, useEffect, useImperativeHandle, forwardRef, useCallback, PropsWithChildren } from 'react';
 
-import type { ScaleInBoxProps, ScaleInBoxRef } from '../../../../types/animatedBox';
+import type { ScaleInBoxProps, ScaleInBoxRef } from '../../../../types/animatedBox/scaleInBox.tw.types';
 
 import AnimatedBox from '../animatedBox/AnimatedBox';
 import { classNameHandler } from '../../../../utils/hybrid/propsHandlers';
@@ -22,19 +22,26 @@ import { classNamePropsHandler } from '../../../../utils/hybrid/classNameMissing
  *   <String className="text-white font-bold">Scaling in smoothly</String>
  * </ScaleInBox>
  *
- * // With custom timing and delay
+ * // With delay
  * <ScaleInBox
  *   autoStart
- *   duration={1200}
  *   delay={500}
  *   className="bg-purple-500 p-4 rounded-lg shadow-lg"
  * >
  *   <String className="text-white">Delayed spring entrance</String>
  * </ScaleInBox>
+ *
+ * // Infinite loop animation
+ * <ScaleInBox
+ *   autoStart
+ *   infiniteLoop
+ *   className="bg-blue-500 p-3 rounded-full"
+ * >
+ *   <Icon name="pulse" className="text-white" />
+ * </ScaleInBox>
  * ```
  *
  * @param autoStart - Automatically start animation when component mounts (default: false)
- * @param duration - Animation duration in milliseconds (default: 800)
  * @param delay - Delay before starting animation in milliseconds (default: 0)
  * @param infiniteLoop - Loop animation continuously (default: false)
  * @param className - CSS classes for NativeWind styling
@@ -43,7 +50,7 @@ import { classNamePropsHandler } from '../../../../utils/hybrid/classNameMissing
  * @param ref - Ref for manual animation control (start, stop methods)
  * @returns Animated component with scale-in effect using spring physics
  */
-const ScaleInBox = forwardRef<ScaleInBoxRef, ScaleInBoxProps>((props, ref) => {
+const ScaleInBox = forwardRef<ScaleInBoxRef, PropsWithChildren<ScaleInBoxProps>>((props, ref) => {
   const { autoStart = false, children, className, delay = 0, infiniteLoop = false, style, ...rest } = props;
   classNamePropsHandler(props, 'ScaleInBox');
   const scaleAnim = useRef(new Animated.Value(0.8)).current;

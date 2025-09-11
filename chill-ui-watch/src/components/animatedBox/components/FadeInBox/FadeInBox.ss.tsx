@@ -1,7 +1,7 @@
 import { Animated } from 'react-native';
-import { useRef, useEffect, useImperativeHandle, forwardRef, useCallback } from 'react';
+import { useRef, useEffect, useImperativeHandle, forwardRef, useCallback, PropsWithChildren } from 'react';
 
-import type { FadeInBoxProps, FadeInBoxRef } from '../../../../types/animatedBox';
+import type { FadeInBoxProps, FadeInBoxRef } from '../../../../types/animatedBox/fadeInBox.ss.types';
 
 import AnimatedBox from '../animatedBox/AnimatedBox.ss';
 
@@ -38,7 +38,7 @@ import AnimatedBox from '../animatedBox/AnimatedBox.ss';
  * @param ref - Ref for manual animation control (start, stop methods)
  * @returns Animated component with fade-in effect
  */
-const FadeInBox = forwardRef<FadeInBoxRef, Omit<FadeInBoxProps, 'className'>>((props, ref) => {
+const FadeInBox = forwardRef<FadeInBoxRef, PropsWithChildren<FadeInBoxProps>>((props, ref) => {
   const { autoStart = false, children, delay = 0, duration = 1000, infiniteLoop = false, style, ...rest } = props;
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const animationRef = useRef<Animated.CompositeAnimation | null>(null);

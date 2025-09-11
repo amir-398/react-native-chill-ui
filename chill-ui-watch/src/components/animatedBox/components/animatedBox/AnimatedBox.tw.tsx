@@ -1,5 +1,6 @@
 import cn from '../../../../utils/tw/cn';
-import { AnimatedViewPropsWithClassName, AnimatedView as AnimatedViewNative } from '../../../box/components/View.tw';
+import { AnimatedView as AnimatedViewNative } from '../../../box/components/View.tw';
+import { AnimatedBoxProps } from '../../../../types/animatedBox/animatedBox.tw.types';
 
 /**
  * AnimatedBox - Base animated container component
@@ -22,7 +23,7 @@ import { AnimatedViewPropsWithClassName, AnimatedView as AnimatedViewNative } fr
  * @param props - All other View props are supported
  * @returns Optimized animated view component ready for custom animations
  */
-export default function AnimatedBox(props: AnimatedViewPropsWithClassName) {
+export default function AnimatedBox(props: AnimatedBoxProps) {
   const { className, ...rest } = props;
 
   return <AnimatedViewNative className={cn('overflow-hidden', className)} {...rest} />;

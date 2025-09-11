@@ -1,7 +1,7 @@
 import { Animated } from 'react-native';
-import { useRef, useEffect, useImperativeHandle, forwardRef, useCallback } from 'react';
+import { useRef, useEffect, useImperativeHandle, forwardRef, useCallback, PropsWithChildren } from 'react';
 
-import type { ScaleInBoxProps, ScaleInBoxRef } from '../../../../types/animatedBox';
+import type { ScaleInBoxProps, ScaleInBoxRef } from '../../../../types/animatedBox/scaleInBox.ss.types';
 
 import AnimatedBox from '../animatedBox/AnimatedBox.ss';
 
@@ -39,7 +39,7 @@ import AnimatedBox from '../animatedBox/AnimatedBox.ss';
  * @param ref - Ref for manual animation control (start, stop methods)
  * @returns Animated component with scale-in effect using spring physics
  */
-const ScaleInBox = forwardRef<ScaleInBoxRef, Omit<ScaleInBoxProps, 'className'>>((props, ref) => {
+const ScaleInBox = forwardRef<ScaleInBoxRef, PropsWithChildren<ScaleInBoxProps>>((props, ref) => {
   const { autoStart = false, children, delay = 0, infiniteLoop = false, style, ...rest } = props;
   const scaleAnim = useRef(new Animated.Value(0.8)).current;
   const animationRef = useRef<Animated.CompositeAnimation | null>(null);

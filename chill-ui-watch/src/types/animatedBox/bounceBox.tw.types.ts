@@ -1,6 +1,4 @@
-import { ReactNode } from 'react';
-
-import { AnimatedViewProps } from '@/components/box/components/View';
+import { AnimatedBoxProps } from './animatedBox.tw.types';
 
 /**
  * Props for the BounceBox component.
@@ -9,12 +7,9 @@ import { AnimatedViewProps } from '@/components/box/components/View';
  * Can be triggered manually or automatically at specified intervals.
  *
  */
-export interface BounceBoxProps extends AnimatedViewProps {
+export interface BounceBoxProps extends AnimatedBoxProps {
   /** Duration of the bounce animation in milliseconds. @default 400 */
   duration?: number;
-
-  /** Content to be animated inside the bounce box */
-  children: ReactNode;
 
   /** Whether to start the bounce animation automatically. @default false */
   autoStart?: boolean;
@@ -30,9 +25,6 @@ export interface BounceBoxProps extends AnimatedViewProps {
 
   /** Whether to loop the animation infinitely. @default false */
   infiniteLoop?: boolean;
-
-  /** Additional className for the bounce box */
-  className?: string;
 }
 
 /**
@@ -42,7 +34,7 @@ export interface BounceBoxProps extends AnimatedViewProps {
  *
  * @example
  * ```tsx
- * const bounceRef = useRef<BounceBoxRefProps>(null);
+ * const bounceRef = useRef<BounceBoxRef>(null);
  *
  * // Trigger bounce manually
  * bounceRef.current?.bounce();

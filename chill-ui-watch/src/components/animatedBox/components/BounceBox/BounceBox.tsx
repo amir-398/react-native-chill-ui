@@ -1,7 +1,7 @@
 import { Animated } from 'react-native';
 import { useRef, useEffect, useCallback, useImperativeHandle, forwardRef, PropsWithChildren } from 'react';
 
-import type { BounceBoxProps, BounceBoxRef } from '../../../../types/animatedBox';
+import type { BounceBoxProps, BounceBoxRef } from '../../../../types/animatedBox/bounceBox.tw.types';
 
 import AnimatedBox from '../animatedBox/AnimatedBox';
 import { classNameHandler } from '../../../../utils/hybrid/propsHandlers';

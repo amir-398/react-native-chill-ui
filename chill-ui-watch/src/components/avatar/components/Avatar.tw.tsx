@@ -1,12 +1,13 @@
 import { Image, Pressable, TouchableOpacity } from 'react-native';
 
+import type { AvatarProps } from '../../../types/avatar/avatar.tw.types';
+
 import { Box } from '../../box';
 import cn from '../../../utils/tw/cn';
 import { String } from '../../string';
 import avatarTv from '../styles/Avatar.variants';
-import RipplePressable from '../../ripplePressable';
 import getUserInitials from '../utils/getUsersInititials';
-import { AvatarProps } from '../../../types/avatar/avatar.tw.types';
+import RipplePressable from '../../ripplePressable/components/RipplePressable.tw';
 
 /**
  * Avatar component displays user profile images with fallback to initials.

@@ -1,15 +1,13 @@
-import { ReactNode } from 'react';
-
-import { AnimatedViewProps } from '@/components/box/components/View';
+import { AnimatedBoxProps } from './animatedBox.ss.types';
 
 /**
- * Props for the SlideInBox component.
+ * Props for the SlideInBox component (StyleSheet version).
  *
  * Creates a slide-in animation that moves the content from a specified direction.
  * Supports sliding from left, right, up, or down directions.
  *
  */
-export interface SlideInBoxProps extends AnimatedViewProps {
+export interface SlideInBoxProps extends AnimatedBoxProps {
   /** Delay before starting the slide-in animation in milliseconds. @default 0 */
   delay?: number;
 
@@ -19,9 +17,6 @@ export interface SlideInBoxProps extends AnimatedViewProps {
   /** Distance to slide from in pixels. @default 100 */
   distance?: number;
 
-  /** Content to be animated inside the slide-in box */
-  children: ReactNode;
-
   /** Direction from which to slide in. @default 'left' */
   direction?: 'left' | 'right' | 'up' | 'down';
 
@@ -30,9 +25,6 @@ export interface SlideInBoxProps extends AnimatedViewProps {
 
   /** Whether to loop the animation infinitely. @default false */
   infiniteLoop?: boolean;
-
-  /** Additional className for the slide-in box */
-  className?: string;
 }
 
 /**
