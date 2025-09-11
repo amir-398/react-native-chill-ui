@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Pressable } from 'react-native';
 
 import { Box } from '../box';
-import String from '../string';
+import { String } from '../string';
 import { TooltipProps } from '../../types';
 import TooltipRoot from './core/TooltipRoot';
 

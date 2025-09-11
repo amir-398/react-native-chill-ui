@@ -3,16 +3,16 @@ import { forwardRef, PropsWithChildren, useMemo } from 'react';
 import { Pressable, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { isNativeWindInstalled } from '@/utils';
-import { classNamePropsHandler } from '@/utils/classNameMissingError';
+import { classNamePropsHandler } from '@/utils/hybrid/classNameMissingError';
 
 import cn from '../cn';
 import { Box } from '../box';
-import String from '../string';
+import { String } from '../string';
 import Icon from '../icon/Icon';
 import styles from './Button.style';
 import { BtnProps } from '../../types';
 import ScalePressable from '../scale-pressable';
-import RipplePressable from '../ripple-pressable';
+import RipplePressable from '../ripplePressable';
 import LoadingIndicator from '../loadingIndicatorsKit/LoadingIndicator';
 import { btnVariant, btnColorVariant, heightVr, opacityVariant, positionVr } from './Button.variants';
 

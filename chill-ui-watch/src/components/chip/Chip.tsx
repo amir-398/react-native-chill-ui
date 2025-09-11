@@ -1,15 +1,15 @@
-import { classNamePropsHandler } from '@/utils/classNameMissingError';
-import { classNameHandler, styleHandler } from '@/utils/propsHandlers';
-import colorVariantPropsHandler from '@/utils/colorVariantPropsHandler';
+import { classNamePropsHandler } from '@/utils/hybrid/classNameMissingError';
+import { classNameHandler, styleHandler } from '@/utils/hybrid/propsHandlers';
+import colorVariantPropsHandler from '@/utils/hybrid/colorVariantPropsHandler';
 
 import type { ChipProps } from '../../types';
 
 import cn from '../cn';
 import Icon from '../icon';
 import { Box } from '../box';
-import String from '../string';
+import { String } from '../string';
 import createChipStyles from './utils/createStyles';
-import { isNativeWindInstalled } from '../../utils/nativewindDetector';
+import { isNativeWindInstalled } from '../../utils/hybrid/nativewindDetector';
 import chipVariants, { chipPositionVariants, chipTextVariants } from './Chip.variants';
 
 /**

@@ -2,13 +2,13 @@ import { tv } from 'tailwind-variants';
 import { Modal, Pressable, TouchableOpacity } from 'react-native';
 import React, { useEffect, cloneElement, useImperativeHandle } from 'react';
 
-import { classNamePropsHandler } from '@/utils/classNameMissingError';
+import { classNamePropsHandler } from '@/utils/hybrid/classNameMissingError';
 
 import cn from '../cn';
 import Icon from '../icon';
 import { Box } from '../box';
 import dialogVariants from './Dialog.variants';
-import RipplePressable from '../ripple-pressable';
+import RipplePressable from '../ripplePressable';
 import { ToastProvider, useToast } from '../toast';
 import { isNativeWindInstalled } from '../../utils';
 import createDialogStyles from './utils/createStyles';

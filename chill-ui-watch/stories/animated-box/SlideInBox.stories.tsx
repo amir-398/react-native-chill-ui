@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { String } from '../../src/components';
 import UiPresentation from '../storybook/UiPresentation';
-import SlideInBox from '../../src/components/animatedBox/SlideInBox';
+import SlideInBox from '../../src/components/animatedBox/components/SlideInBox/SlideInBox';
 
 const meta = {
   argTypes: {
@@ -62,7 +62,7 @@ export const FromLeft: Story = {
   args: {
     autoStart: true,
     children: (
-      <String size="lg" weight="bold" className="text-center" color="black">
+      <String size="lg" className="text-center" color="black">
         Slide from Left
       </String>
     ),
@@ -75,7 +75,7 @@ export const FromRight: Story = {
   args: {
     autoStart: true,
     children: (
-      <String size="lg" weight="bold" className="text-center" color="black">
+      <String size="lg" className="text-center" color="black">
         Slide from Right
       </String>
     ),
@@ -88,7 +88,7 @@ export const FromTop: Story = {
   args: {
     autoStart: true,
     children: (
-      <String size="lg" weight="bold" className="text-center" color="black">
+      <String size="lg" className="text-center" color="black">
         Slide from Top
       </String>
     ),
@@ -101,7 +101,7 @@ export const FromBottom: Story = {
   args: {
     autoStart: true,
     children: (
-      <String size="lg" weight="bold" className="text-center" color="black">
+      <String size="lg" className="text-center" color="black">
         Slide from Bottom
       </String>
     ),
@@ -114,7 +114,7 @@ export const CustomDistance: Story = {
   args: {
     autoStart: true,
     children: (
-      <String size="lg" weight="bold" className="text-center" color="black">
+      <String size="lg" className="text-center" color="black">
         Long Distance Slide
       </String>
     ),
@@ -128,7 +128,7 @@ export const Fast: Story = {
   args: {
     autoStart: true,
     children: (
-      <String size="lg" weight="bold" className="text-center" color="black">
+      <String size="lg" className="text-center" color="black">
         Fast Slide
       </String>
     ),
@@ -142,7 +142,7 @@ export const InfiniteLoop: Story = {
   args: {
     autoStart: true,
     children: (
-      <String size="lg" weight="bold" className="text-center" color="black">
+      <String size="lg" className="text-center" color="black">
         Infinite Slide Loop
       </String>
     ),

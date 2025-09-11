@@ -2,8 +2,8 @@ import { useCallback } from 'react';
 import { FlatList, TouchableOpacity, Pressable, TouchableHighlight } from 'react-native';
 
 import { Box } from '../box';
-import String from '../string';
-import RipplePressable from '../ripple-pressable';
+import { String } from '../string';
+import RipplePressable from '../ripplePressable';
 import { InputDropdownListProps } from '../../types';
 import LoadingIndicator from '../loadingIndicatorsKit/LoadingIndicator';
 

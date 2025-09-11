@@ -4,7 +4,7 @@ import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated'
 
 import cn from '../cn';
 import { Box } from '../box';
-import String from '../string';
+import { String } from '../string';
 import { SegmentedControlProps } from '../../types';
 
 const { width: windowWidth } = Dimensions.get('window');

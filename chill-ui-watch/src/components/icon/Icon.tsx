@@ -7,9 +7,9 @@ import type { IconProps } from '../../types';
 import cn from '../cn';
 import styles from './Icon.style';
 import CustomIcon from './CustomIcon';
-import RipplePressable from '../ripple-pressable';
-import { isNativeWindInstalled } from '../../utils/nativewindDetector';
-import { classNamePropsHandler } from '../../utils/classNameMissingError';
+import RipplePressable from '../ripplePressable';
+import { isNativeWindInstalled } from '../../utils/hybrid/nativewindDetector';
+import { classNamePropsHandler } from '../../utils/hybrid/classNameMissingError';
 
 // padding  variant
 export const paddingVr = tv({

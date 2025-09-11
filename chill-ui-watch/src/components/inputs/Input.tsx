@@ -5,7 +5,7 @@ import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-na
 import cn from '../cn';
 import Icon from '../icon';
 import { Box } from '../box';
-import String from '../string';
+import { String } from '../string';
 import { InputProps } from '../../types';
 import inputSizeVariants from './styleVariants';
 import { getStringLength, isString } from '../../utils';

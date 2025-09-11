@@ -1,12 +1,12 @@
 import { memo } from 'react';
 
-import { classNamePropsHandler } from '@/utils/classNameMissingError';
-import { classNameHandler, styleHandler } from '@/utils/propsHandlers';
+import { classNamePropsHandler } from '@/utils/hybrid/classNameMissingError';
+import { classNameHandler, styleHandler } from '@/utils/hybrid/propsHandlers';
 
 import cn from '../cn';
-import String from '../string';
+import { String } from '../string';
 import { HighlightStringProps } from '../../types';
-import { isNativeWindInstalled } from '../../utils/nativewindDetector';
+import { isNativeWindInstalled } from '../../utils/hybrid/nativewindDetector';
 
 /**
  * HighlightString component that highlights specific terms within text.

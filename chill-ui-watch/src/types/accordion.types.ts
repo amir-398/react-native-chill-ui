@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import type { ViewProps, TouchableOpacityProps, StyleProp, ViewStyle } from 'react-native';
 
 import type { TIcons } from '../constants/ICONS';
-import type { StringProps } from './string.types';
+import type { StringProps } from './string/string.types';
 
 // Accordion types
 

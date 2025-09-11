@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useImperativeHandle, useRef, memo, useMe
 
 import cn from '../cn';
 import { Box } from '../box';
-import String from '../string';
+import { String } from '../string';
 import { Input } from '../inputs';
 import { DEFAULT_CONFIG } from './types';
 import HighlightString from '../highlightString';

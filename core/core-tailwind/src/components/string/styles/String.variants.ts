@@ -1,0 +1,100 @@
+import { tv } from 'tailwind-variants';
+
+import { twTextSize } from '../utils/sizes';
+
+const stringTv = tv({
+  base: 'flex-shrink font-primary_regular_font',
+  defaultVariants: {
+    position: 'left',
+    variant: 'body-1',
+  },
+  variants: {
+    color: {
+      danger: 'text-danger',
+      dark: 'text-black',
+      disabled: 'text-disabled',
+      error: 'text-error',
+      info: 'text-info',
+      inverted: 'text-inverted',
+      light: 'text-light',
+      muted: 'text-muted',
+      neutral: 'text-neutral',
+      primary: 'text-primary',
+      secondary: 'text-secondary',
+      success: 'text-success',
+      tertiary: 'text-tertiary',
+      warning: 'text-warning',
+      white: 'text-white',
+    },
+
+    position: {
+      center: 'text-center',
+      left: 'text-left',
+      right: 'text-right',
+    },
+
+    variant: {
+      'body-1': twTextSize.md,
+      'body-2': twTextSize.lg,
+      'body-3': twTextSize.xl,
+      'body-sm': twTextSize.sm,
+      'body-xs': twTextSize.xs,
+      'title-1': `${twTextSize['2xl']} font-primary_bold_font`,
+      'title-2': `${twTextSize['3xl']} font-primary_bold_font`,
+      'title-3': `${twTextSize['4xl']} font-primary_bold_font`,
+      'title-4': `${twTextSize['5xl']} font-primary_bold_font`,
+      'title-5': `${twTextSize['6xl']} font-primary_bold_font`,
+      'title-6': `${twTextSize['7xl']} font-primary_bold_font`,
+      'title-7': `${twTextSize['8xl']} font-primary_bold_font`,
+      'title-8': `${twTextSize['9xl']} font-primary_bold_font`,
+    },
+    //
+    size: {
+      '2xl': twTextSize['2xl'],
+      '3xl': twTextSize['3xl'],
+      '4xl': twTextSize['4xl'],
+      '5xl': twTextSize['5xl'],
+      '6xl': twTextSize['6xl'],
+      '7xl': twTextSize['7xl'],
+      '8xl': twTextSize['8xl'],
+      '9xl': twTextSize['9xl'],
+      lg: twTextSize.lg,
+      md: twTextSize.md,
+      sm: twTextSize.sm,
+      xl: twTextSize.xl,
+      xs: twTextSize.xs,
+    },
+    //
+    font: {
+      primaryBold: 'font-primary_bold_font',
+      primaryExtraBold: 'font-primary_extra_bold_font',
+      primaryExtraLight: 'font-primary_extra_light_font',
+      primaryItalic: 'font-primary_italic_font',
+      primaryLight: 'font-primary_light_font',
+      primaryMedium: 'font-primary_medium_font',
+      primaryRegular: 'font-primary_regular_font',
+      primarySemiBold: 'font-primary_semi_bold_font',
+      primaryThin: 'font-primary_thin_font',
+      secondaryBold: 'font-secondary_bold_font',
+      secondaryExtraBold: 'font-secondary_extra_bold_font',
+      secondaryExtraLight: 'font-secondary_extra_light_font',
+      secondaryItalic: 'font-secondary_italic_font',
+      secondaryLight: 'font-secondary_light_font',
+      secondaryMedium: 'font-secondary_medium_font',
+      secondaryRegular: 'font-secondary_regular_font',
+      secondarySemiBold: 'font-secondary_semi_bold_font',
+      secondaryThin: 'font-secondary_thin_font',
+      tertiaryBold: 'font-tertiary_bold_font',
+      tertiaryExtraBold: 'font-tertiary_extra_bold_font',
+      tertiaryExtraLight: 'font-tertiary_extra_light_font',
+      tertiaryItalic: 'font-tertiary_italic_font',
+      tertiaryLight: 'font-tertiary_light_font',
+      tertiaryMedium: 'font-tertiary_medium_font',
+      tertiaryRegular: 'font-tertiary_regular_font',
+      tertiarySemiBold: 'font-tertiary_semi_bold_font',
+      tertiaryThin: 'font-tertiary_thin_font',
+    },
+  },
+});
+
+export default stringTv;

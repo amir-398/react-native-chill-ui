@@ -1,6 +1,6 @@
 import type { Modal, TextProps } from 'react-native';
 
-import type { StringProps } from './string.types';
+import type { StringProps } from './string/string.types';
 import type { Size, DisplayInsets, Side, Orientation } from './common.types';
 
 export type WindowDimensions = {

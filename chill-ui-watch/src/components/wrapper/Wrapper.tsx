@@ -1,12 +1,12 @@
 import { ScrollView, StyleSheet } from 'react-native';
 
-import { classNameHandler, styleHandler } from '@/utils/propsHandlers';
+import { classNameHandler, styleHandler } from '@/utils/hybrid/propsHandlers';
 
 import cn from '../cn';
 import { Box } from '../box';
 import { WrapperProps } from '../../types';
-import { isNativeWindInstalled } from '../../utils/nativewindDetector';
-import { classNamePropsHandler } from '../../utils/classNameMissingError';
+import { isNativeWindInstalled } from '../../utils/hybrid/nativewindDetector';
+import { classNamePropsHandler } from '../../utils/hybrid/classNameMissingError';
 
 // Optional imports with error handling
 let KeyboardAvoidingView: any;

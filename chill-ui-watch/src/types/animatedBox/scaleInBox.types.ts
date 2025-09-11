@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import type { AnimatedViewProps } from '../index';
+import { AnimatedViewProps } from '@/components/box/components/View';
 
 /**
  * Props for the ScaleInBox component.

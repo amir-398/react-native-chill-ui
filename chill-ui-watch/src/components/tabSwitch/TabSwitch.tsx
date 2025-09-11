@@ -4,7 +4,7 @@ import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reani
 
 import cn from '../cn';
 import { Box } from '../box';
-import String from '../string';
+import { String } from '../string';
 import { AnimatedBox } from '../animatedBox';
 import { TabSwitchProps } from '../../types';
 import TabSwitchRender from './TabSwitchRender';

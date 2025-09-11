@@ -24,7 +24,13 @@ import {
   Montserrat_100Thin,
 } from '@expo-google-fonts/montserrat';
 
-import { Avatar } from '@/components';
+import { Button } from '@/components';
+import String from '@/components/string/components/String';
+import StringTw from '@/components/string/components/String.tw';
+import StringSs from '@/components/string/components/String.ss';
+import { Avatar, AvatarSs, AvatarTw } from '@/components/avatar';
+import { BounceBox, FadeInBox, SlideInBox } from '@/components/animatedBox';
+import SlideInBoxSs from '@/components/animatedBox/components/SlideInBox/SlideInBox.ss';
 
 import { view } from './.storybook/storybook.requires';
 
@@ -76,13 +82,59 @@ export default function App() {
   return (
     <View style={{ marginTop: 100 }}>
       <Avatar
-        variant="square"
+        variant="circle"
+        data={{
+          firstname: 'John',
+          lastname: 'Doe',
+        }}
+      />
+
+      <AvatarSs
+        variant="circle"
         data={{
           firstname: 'JRohn',
           image_url: 'https://picsum.photos/200/300',
           lastname: 'Doe',
         }}
       />
+      <AvatarTw
+        variant="circle"
+        className="rounded-full"
+        data={{
+          firstname: 'JRohn',
+          image_url: 'https://picsum.photos/200/300',
+          lastname: 'Doe',
+        }}
+      />
+      <String position="right" variant="title-1" font="primaryItalic">
+        Hybrid
+      </String>
+      <StringTw position="right" size="2xl">
+        Tailwind
+      </StringTw>
+      <FadeInBox autoStart infiniteLoop>
+        <StringSs position="center" variant="title-1" font="primaryItalic">
+          StyleSheetss
+        </StringSs>
+      </FadeInBox>
+      <BounceBox autoStart infiniteLoop>
+        <StringSs position="center" variant="title-1" font="primaryItalic">
+          StyleSheetss
+        </StringSs>
+        <Button title="lol" onPress={() => console.log('lol')} />
+      </BounceBox>
+      <SlideInBoxSs autoStart infiniteLoop>
+        <StringSs position="center" variant="title-1" font="primaryItalic">
+          StyleSheetss
+        </StringSs>
+        <Button title="lol" onPress={() => console.log('lol')} />
+      </SlideInBoxSs>
+      <SlideInBox autoStart infiniteLoop>
+        <StringSs position="center" variant="title-1" font="primaryItalic">
+          StyleSheetss
+        </StringSs>
+        <Button title="lol" onPress={() => console.log('lol')} />
+      </SlideInBox>
     </View>
   );
 }

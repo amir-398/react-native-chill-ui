@@ -3,8 +3,8 @@ import type { AccordionItemProps } from '../../types';
 import { Box } from '../box';
 import styles from './Accordion.style';
 import { AccordionItemProvider } from './AccordionItemContext';
-import { isNativeWindInstalled } from '../../utils/nativewindDetector';
-import { classNamePropsHandler } from '../../utils/classNameMissingError';
+import { isNativeWindInstalled } from '../../utils/hybrid/nativewindDetector';
+import { classNamePropsHandler } from '../../utils/hybrid/classNameMissingError';
 
 /**
  * AccordionItem wraps a single accordion item with its trigger and content.

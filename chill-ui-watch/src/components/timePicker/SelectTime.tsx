@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Animated, FlatList, ListRenderItem } from 'react-native';
 
 import { Box } from '../box';
-import String from '../string';
+import { String } from '../string';
 import { TimePickerOptionsProps, TimeScrollerProps } from '../../types';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList) as unknown as typeof FlatList;

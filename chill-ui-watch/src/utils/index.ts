@@ -1,3 +1,3 @@
 export * from './string';
 export * from './utils';
-export * from './nativewindDetector';
+export * from './hybrid/nativewindDetector';
