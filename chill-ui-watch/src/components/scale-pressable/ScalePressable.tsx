@@ -2,7 +2,7 @@ import { useRef, PropsWithChildren } from 'react';
 import { Animated, Pressable, PressableProps } from 'react-native';
 
 import { isNativeWindInstalled } from '@/utils';
-import { classNamePropsHandler } from '@/utils/classNameMissingError';
+import { classNamePropsHandler } from '@/utils/hybrid/classNameMissingError';
 
 import cn from '../cn';
 import { AnimatedBox } from '../animatedBox';

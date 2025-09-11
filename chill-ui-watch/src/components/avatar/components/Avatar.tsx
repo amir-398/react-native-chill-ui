@@ -1,16 +1,15 @@
 import { Image, Pressable, TouchableOpacity } from 'react-native';
 
-import { classNamePropsHandler } from '@/utils/classNameMissingError';
-import { classNameHandler, styleHandler } from '@/utils/propsHandlers';
-
-import cn from '../../cn';
 import { Box } from '../../box';
-import String from '../../string';
-import { AvatarProps } from '../../../types';
-import RipplePressable from '../../ripple-pressable';
+import { String } from '../../string';
+import cn from '../../../utils/hybrid/cn';
+import avatarTv from '../styles/Avatar.variants';
+import RipplePressable from '../../ripplePressable';
 import getUserInitials from '../utils/getUsersInititials';
 import { AvatarSv, styles } from '../styles/Avatar.styles';
-import { avatarVariants, sizeVariant } from '../styles/Avatar.variants';
+import { AvatarProps } from '../../../types/avatar/avatar.tw.types';
+import { classNamePropsHandler } from '../../../utils/hybrid/classNameMissingError';
+import { classNameHandler, styleHandler } from '../../../utils/hybrid/propsHandlers';
 
 /**
  * Avatar component displays user profile images with fallback to initials.
@@ -28,7 +27,6 @@ import { avatarVariants, sizeVariant } from '../styles/Avatar.variants';
  *   size="lg"
  *   variant="square"
  * />
- *
  * ```
  *
  * @param as - Component to use when avatar is pressable (default: 'Pressable') - 'pressable' | 'touchable-opacity' | 'ripple-pressable'
@@ -57,19 +55,17 @@ export default function Avatar(props: AvatarProps) {
     variant = 'circle',
   } = props;
 
-  const initials = data?.firstname ? getUserInitials(data) : '';
+  const initials = getUserInitials(data);
   const image = data?.image_url;
 
   const avaratStyle = AvatarSv({ size, variant });
 
   const avatarContent = (
     <Box
-      {...classNameHandler(
-        cn('bg-[#7DD3FC] items-center justify-center', sizeVariant({ size }), avatarVariants({ variant }), className),
-      )}
+      {...classNameHandler(cn(avatarTv({ size, variant }), className))}
       {...styleHandler({ defaultStyle: avaratStyle, style: [{ ...(color && { backgroundColor: color }) }, style] })}
     >
-      <String size={size as any} weight="semiBold" {...stringProps}>
+      <String size={size as any} font="primarySemiBold" {...stringProps}>
         {initials}
       </String>
       {image && (

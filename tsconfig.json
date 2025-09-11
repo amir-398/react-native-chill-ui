@@ -34,18 +34,11 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-    },
+    }
 
     /* Types */
-    "types": ["nativewind/types"]
+    // "types": ["nativewind/types"]
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "nativewind-env.d.ts",
-    "global.d.ts",
-    "chill-ui-watch/src/components/select/react-native-element-dropdown/src/components/Dropdown",
-    "chill-ui-watch/src/components/select/react-native-element-dropdown/src/components/InputSelectDropdown"
-  ],
+  "include": ["**/*.ts", "**/*.tsx", "nativewind-env.d.ts", "global.d.ts"],
   "exclude": ["node_modules"]
 }

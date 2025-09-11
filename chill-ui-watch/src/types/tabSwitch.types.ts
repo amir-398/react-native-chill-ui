@@ -1,4 +1,4 @@
-import type { StringProps } from './string.types';
+import type { StringProps } from './string/string.types';
 
 /**
  * Props for the TabSwitch component

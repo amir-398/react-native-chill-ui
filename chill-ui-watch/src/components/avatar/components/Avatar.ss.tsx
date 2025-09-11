@@ -1,16 +1,15 @@
 import { Image, Pressable, TouchableOpacity } from 'react-native';
 
 import { Box } from '../../box';
-import String from '../../string';
-import { AvatarSsProps } from '../../../types';
-import RipplePressable from '../../ripple-pressable';
+import RipplePressable from '../../ripplePressable';
+import String from '../../string/components/String.ss';
 import getUserInitials from '../utils/getUsersInititials';
 import { AvatarSv, styles } from '../styles/Avatar.styles';
+import { AvatarProps } from '../../../types/avatar/avatar.ss.types';
 
 /**
  * Avatar component displays user profile images with fallback to initials.
  * Supports different sizes, shapes, and touchable interactions.
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
@@ -23,7 +22,6 @@ import { AvatarSv, styles } from '../styles/Avatar.styles';
  *   size="lg"
  *   variant="square"
  * />
- *
  * ```
  *
  * @param as - Component to use when avatar is pressable (default: 'Pressable') - 'pressable' | 'touchable-opacity' | 'ripple-pressable'
@@ -37,7 +35,7 @@ import { AvatarSv, styles } from '../styles/Avatar.styles';
  *
  * @see {@link https://github.com/your-repo/chill-ui/tree/main/src/components/avatar/README.md Documentation}
  */
-export default function Avatar(props: AvatarSsProps) {
+export default function Avatar(props: AvatarProps) {
   const { as = 'pressable', color, data, onPress, size = 'md', stringProps, style, variant = 'circle' } = props;
 
   const initials = data?.firstname ? getUserInitials(data) : '';
@@ -47,7 +45,7 @@ export default function Avatar(props: AvatarSsProps) {
 
   const avatarContent = (
     <Box style={[{ ...(color && { backgroundColor: color }) }, avaratStyle, style]}>
-      <String size={size as any} weight="semiBold" {...stringProps}>
+      <String size={size as any} font="primarySemiBold" {...stringProps}>
         {initials}
       </String>
       {image && <Image style={styles.image} source={{ uri: image }} />}

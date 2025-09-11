@@ -1,14 +1,13 @@
-import { isNativeWindInstalled } from '@/utils';
-import { classNamePropsHandler } from '@/utils/classNameMissingError';
-
 import type { AccordionContentProps } from '../../types';
 
 import cn from '../cn';
 import { Box } from '../box';
-import String from '../string';
+import { String } from '../string';
 import styles from './Accordion.style';
 import { useAccordion } from './AccordionContext';
+import { isNativeWindInstalled } from '../../utils';
 import { useAccordionItem } from './AccordionItemContext';
+import { classNamePropsHandler } from '../../utils/hybrid/classNameMissingError';
 
 /**
  * AccordionContent is the collapsible content area that shows/hides based on the accordion state.

@@ -25,24 +25,58 @@
   "source": "src/index",
   "react-native": "src/index",
   "types": "lib/typescript/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./lib/module/index.js",
+      "require": "./lib/commonjs/index.js",
+      "types": "./lib/typescript/index.d.ts"
+    },
+    "./tailwind": {
+      "import": "./lib-tw/module/index.js",
+      "require": "./lib-tw/commonjs/index.js",
+      "types": "./lib-tw/typescript/index.d.ts"
+    },
+    "./stylesheet": {
+      "import": "./lib-ss/module/index.js",
+      "require": "./lib-ss/commonjs/index.js",
+      "types": "./lib-ss/typescript/index.d.ts"
+    },
+    "./lib/*": "./lib/*",
+    "./lib-tw/*": "./lib-tw/*",
+    "./lib-ss/*": "./lib-ss/*"
+  },
+  "bin": {
+    "chill-ui": "./cli/index.js"
+  },
   "files": [
     "lib",
-    "src"
+    "lib-tw",
+    "lib-ss",
+    "src",
+    "cli",
+    "registry",
+    "packages"
   ],
   "scripts": {
-    "build": "bob build",
-    "clean": "del-cli lib",
+    "build": "bun run scripts/build-all.js",
+    "build:hybrid": "BUILD_TYPE=hybrid bunx bob build",
+    "build:tailwind": "BUILD_TYPE=tailwind bunx bob build",
+    "build:stylesheet": "BUILD_TYPE=stylesheet bunx bob build",
+    "clean": "rm -rf lib lib-tw lib-ss",
     "prepack": "cp -r chill-ui-watch/src src",
     "postpack": "rm -rf src",
-    "example": "yarn workspace react-native-awesome-library-example",
-    "lint": "eslint .",
-    "release": "release-it",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "test:cli": "node scripts/test-cli-local.js",
-    "cli:config": "node cli/index.js",
-    "cli:install": "node packages/installer/bin/installer.js",
-    "tsc": "tsc --noEmit",
-    "typecheck": "tsc --noEmit"
+    "separate": "node scripts/separate-components.js",
+    "separate:all": "node scripts/separate-components.js all",
+    "example": "bun workspace react-native-awesome-library-example",
+    "lint": "bunx eslint .",
+    "release": "bunx release-it",
+    "test": "bunx jest",
+    "test:build": "bunx scripts/test-build.js",
+    "test:cli": "bunx scripts/test-cli-local.js",
+    "cli:config": "bun run cli/index.js",
+    "cli:install": "bun run packages/installer/bin/installer.js",
+    "tsc": "bunx tsc --noEmit",
+    "typecheck": "bunx tsc --noEmit"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -108,7 +142,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "react-native-builder-bob": {
-    "source": "chill-ui-watch/src",
+    "source": "chill-ui-core/core-stylesheet/src",
     "output": "lib",
     "exclude": [
       "example/**",
@@ -148,6 +182,8 @@
     }
   },
   "dependencies": {
-    "react-native-gesture-handler": "^2.25.0"
+    "react-native-gesture-handler": "^2.25.0",
+    "commander": "^12.0.0",
+    "chalk": "^4.1.2"
   }
 }

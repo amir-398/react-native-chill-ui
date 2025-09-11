@@ -1,7 +1,7 @@
 import { FlatListProps } from 'react-native';
 
 import { InputProps } from './input.types';
-import { StringProps } from './string.types';
+import { StringProps } from './string/string.types';
 import { HighlightStringProps } from './highlightString.types';
 import { InputDropdownListProps, InputDropdownProps } from './dropdown.types';
 

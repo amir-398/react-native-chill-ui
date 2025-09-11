@@ -3,7 +3,7 @@ import type { StyleProp, ViewStyle } from 'react-native';
 
 import type { IconProps } from './icon.types';
 import type { TIcons } from '../constants/ICONS';
-import type { StringProps } from './string.types';
+import type { StringProps } from './string/string.types';
 import type { LoadingIndicatorProps } from './loadingIndicator.types';
 import type { btnVariant, btnColorVariant, heightVr, positionVr } from '../components/button/Button.variants';
 

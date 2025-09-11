@@ -1,17 +1,16 @@
 import { Image, Pressable, TouchableOpacity } from 'react-native';
 
-import cn from '../../cn';
 import { Box } from '../../box';
-import String from '../../string';
-import { AvatarTwProps } from '../../../types';
-import RipplePressable from '../../ripple-pressable';
+import cn from '../../../utils/tw/cn';
+import { String } from '../../string';
+import avatarTv from '../styles/Avatar.variants';
+import RipplePressable from '../../ripplePressable';
 import getUserInitials from '../utils/getUsersInititials';
-import { avatarVariants, sizeVariant } from '../styles/Avatar.variants';
+import { AvatarProps } from '../../../types/avatar/avatar.tw.types';
 
 /**
  * Avatar component displays user profile images with fallback to initials.
  * Supports different sizes, shapes, and touchable interactions.
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
@@ -24,7 +23,6 @@ import { avatarVariants, sizeVariant } from '../styles/Avatar.variants';
  *   size="lg"
  *   variant="square"
  * />
- *
  * ```
  *
  * @param as - Component to use when avatar is pressable (default: 'Pressable') - 'pressable' | 'touchable-opacity' | 'ripple-pressable'
@@ -39,7 +37,7 @@ import { avatarVariants, sizeVariant } from '../styles/Avatar.variants';
  *
  * @see {@link https://github.com/your-repo/chill-ui/tree/main/src/components/avatar/README.md Documentation}
  */
-export default function Avatar(props: AvatarTwProps) {
+export default function Avatar(props: AvatarProps) {
   const {
     as = 'pressable',
     className,
@@ -58,14 +56,9 @@ export default function Avatar(props: AvatarTwProps) {
   const avatarContent = (
     <Box
       style={[{ ...(color && { backgroundColor: color }) }, style]}
-      className={cn(
-        'items-center justify-center bg-[#7DD3FC]',
-        sizeVariant({ size }),
-        avatarVariants({ variant }),
-        className,
-      )}
+      className={cn(avatarTv({ size, variant }), className)}
     >
-      <String size={size as any} weight="semiBold" {...stringProps}>
+      <String size={size as any} font="primarySemiBold" {...stringProps}>
         {initials}
       </String>
       {image && <Image className="absolute h-full w-full" source={{ uri: image }} />}

@@ -1,6 +1,6 @@
 import { StyleProp, TextStyle } from 'react-native';
 
-import { StringProps } from './string.types';
+import { StringProps } from './string/string.types';
 
 /**
  * Props for the HighlightString component

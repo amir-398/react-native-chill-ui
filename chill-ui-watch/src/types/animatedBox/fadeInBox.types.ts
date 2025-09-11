@@ -1,6 +1,4 @@
-import { ReactNode } from 'react';
-
-import type { AnimatedViewProps } from '../index';
+import { AnimatedViewProps } from '@/components/box/components/View';
 
 /**
  * Props for the FadeInBox component.
@@ -15,9 +13,6 @@ export interface FadeInBoxProps extends AnimatedViewProps {
 
   /** Duration of the fade-in animation in milliseconds. @default 1000 */
   duration?: number;
-
-  /** Content to be animated inside the fade-in box */
-  children: ReactNode;
 
   /** Whether to start the animation automatically. @default false */
   autoStart?: boolean;

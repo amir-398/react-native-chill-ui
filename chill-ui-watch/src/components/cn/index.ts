@@ -1,3 +1,3 @@
-import cn from './cn';
+import cn from '../../utils/tw/cn';
 
 export default cn;

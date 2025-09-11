@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { String } from '../../src/components';
 import UiPresentation from '../storybook/UiPresentation';
-import FadeInBox from '../../src/components/animatedBox/FadeInBox';
+import FadeInBox from '../../src/components/animatedBox/components/FadeInBox/FadeInBox';
 
 const meta = {
   argTypes: {
@@ -53,7 +53,7 @@ export const Default: Story = {
   args: {
     autoStart: true,
     children: (
-      <String size="lg" weight="bold" className="text-center" color="black">
+      <String size="lg" className="text-center" color="black">
         Fade In
       </String>
     ),
@@ -65,7 +65,7 @@ export const Fast: Story = {
   args: {
     autoStart: true,
     children: (
-      <String size="lg" weight="bold" className="text-center" color="black">
+      <String size="lg" className="text-center" color="black">
         Fast Fade In
       </String>
     ),
@@ -78,7 +78,7 @@ export const Slow: Story = {
   args: {
     autoStart: true,
     children: (
-      <String size="lg" weight="bold" className="text-center" color="black">
+      <String size="lg" className="text-center" color="black">
         Slow Fade In
       </String>
     ),
@@ -91,7 +91,7 @@ export const WithDelay: Story = {
   args: {
     autoStart: true,
     children: (
-      <String size="lg" weight="bold" className="text-center" color="black">
+      <String size="lg" className="text-center" color="black">
         Fade In with Delay
       </String>
     ),
@@ -104,7 +104,7 @@ export const InfiniteLoop: Story = {
   args: {
     autoStart: true,
     children: (
-      <String size="lg" weight="bold" className="text-center" color="black">
+      <String size="lg" className="text-center" color="black">
         Infinite Fade Loop
       </String>
     ),

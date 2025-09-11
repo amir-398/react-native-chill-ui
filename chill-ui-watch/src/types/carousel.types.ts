@@ -2,7 +2,7 @@ import type { VariantProps } from 'tailwind-variants';
 import type { ImageSourcePropType } from 'react-native';
 
 import type { IconProps } from './icon.types';
-import type { StringProps } from './string.types';
+import type { StringProps } from './string/string.types';
 
 import { dotPositionVariants, dotVariant } from '../components/carousel/styleVariants';
 

@@ -4,8 +4,8 @@ import cn from '../cn';
 import { Box } from '../box';
 import styles from './Accordion.style';
 import { AccordionProvider } from './AccordionContext';
-import { isNativeWindInstalled } from '../../utils/nativewindDetector';
-import { classNamePropsHandler } from '../../utils/classNameMissingError';
+import { isNativeWindInstalled } from '../../utils/hybrid/nativewindDetector';
+import { classNamePropsHandler } from '../../utils/hybrid/classNameMissingError';
 
 /**
  * Accordion component provides a collapsible content area with support for single or multiple items.

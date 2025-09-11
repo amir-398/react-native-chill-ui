@@ -1,32 +1,47 @@
-# Avatar
+# Avatar Component
 
-A React Native component that displays user profile images with fallback to initials. Supports different sizes, shapes, and touchable interactions. **Automatically detects NativeWind availability and falls back to StyleSheet when needed.**
+A flexible and performant avatar component for React Native that displays user profile images with fallback to initials across three different styling approaches.
+
+## Available Versions
+
+This component comes in three versions to match your project's styling approach. You choose the version during installation, but the import statement remains consistent across all versions:
+
+### 1. **StyleSheet Version**
+
+- Uses React Native's built-in StyleSheet API
+- Perfect for projects that don't use CSS-in-JS libraries
+- Lightweight and performant
+- Install: `npm install react-native-chill-ui@stylesheet`
+
+### 2. **Tailwind Version**
+
+- Uses NativeWind/Tailwind CSS classes
+- Ideal for projects already using Tailwind CSS
+- Requires NativeWind setup and Tailwind configuration
+- Install: `npm install react-native-chill-ui@tailwind`
+
+### 3. **Hybrid Version**
+
+- Automatically detects if NativeWind is available
+- Falls back to StyleSheet if NativeWind is not installed
+- Best for component libraries or projects that need flexibility
+- Install: `npm install react-native-chill-ui@hybrid`
+
+**Note**: Regardless of the version you choose, the import statement remains the same: `import { Avatar } from 'react-native-chill-ui'`
 
 ## Features
 
-- ✅ **Automatic NativeWind Detection**: Works with or without NativeWind installed
-- ✅ **Multiple Sizes**: 8 different size variants from 2xs to 3xl
-- ✅ **Shape Variants**: Circle and square shapes
-- ✅ **Image Support**: Displays user profile images with fallback to initials
-- ✅ **Touchable Interactions**: Supports Pressable, TouchableOpacity, and TouchableHighlight
-- ✅ **Customizable Styling**: Background colors and custom CSS classes (with NativeWind)
-- ✅ **TypeScript**: Full type safety with detailed interfaces
-- ✅ **Performance**: Optimized with proper component selection and styling
-- ✅ **Cross-Platform**: Consistent behavior across iOS and Android
-
-## NativeWind Compatibility
-
-The Avatar component automatically detects whether NativeWind is installed and adapts accordingly:
-
-- **With NativeWind**: Uses Tailwind CSS classes via the `className` prop
-- **Without NativeWind**: Falls back to StyleSheet with equivalent styling
-
-This makes the component compatible with projects that don't use NativeWind while maintaining full functionality.
+- **Multiple Sizes**: 8 different size variants from 2xs to 3xl
+- **Shape Variants**: Circle and square shapes
+- **Image Support**: Displays user profile images with fallback to initials
+- **Touchable Interactions**: Supports Pressable, TouchableOpacity, and TouchableHighlight
+- **Customizable Styling**: Background colors and custom CSS classes
+- **TypeScript Support**: Fully typed for a better development experience
 
 ## Quick Start
 
 ```tsx
-import Avatar from '@/components/avatar/Avatar';
+import { Avatar } from 'react-native-chill-ui';
 
 // Basic avatar with initials
 <Avatar
@@ -51,9 +66,60 @@ import Avatar from '@/components/avatar/Avatar';
 <Avatar
   data={{ firstname: 'John', lastname: 'Doe' }}
   onPress={() => console.log('Avatar pressed')}
-  as="TouchableOpacity"
+  as="touchable-opacity"
 />
 ```
+
+## Choosing the Right Version
+
+Select the appropriate version during installation based on your project's needs:
+
+| Version        | Installation Command                           | Use When                                                                                             | Pros                                                                            | Cons                                                  |
+| -------------- | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| **StyleSheet** | `npm install react-native-chill-ui@stylesheet` | • No CSS-in-JS dependencies<br/>• Maximum performance needed<br/>• Simple styling requirements       | • Lightweight<br/>• Fast performance<br/>• No external dependencies             | • Less flexible<br/>• Manual theme management         |
+| **Tailwind**   | `npm install react-native-chill-ui@tailwind`   | • Already using NativeWind<br/>• Team familiar with Tailwind<br/>• Design system based on utilities  | • Consistent with web Tailwind<br/>• Powerful utility system<br/>• Easy theming | • Requires NativeWind setup<br/>• Larger bundle size  |
+| **Hybrid**     | `npm install react-native-chill-ui@hybrid`     | • Building component library<br/>• Uncertain about styling approach<br/>• Want maximum compatibility | • Works in any environment<br/>• Future-proof<br/>• Automatic detection         | • Slightly larger bundle<br/>• More complex internals |
+
+## Configuration
+
+### For Tailwind and Hybrid Versions
+
+When using the Tailwind or Hybrid versions, you must define your application's color palette in your `tailwind.config.js` file.
+
+### Colors
+
+The `colorVariant` prop is only available for **Tailwind** and **Hybrid** versions when NativeWind is installed:
+
+`primary`, `secondary`, `tertiary`, `success`, `warning`, `error`, `danger`, `info`, `dark`, `light`, `white`, `disabled`, `inverted`, `muted`, `neutral`
+
+These must be defined in your `tailwind.config.js` file.
+
+### For All Versions
+
+All versions support the `color` prop to set custom colors directly:
+
+```tsx
+<Avatar color="#FF0000" data={{ firstname: 'John', lastname: 'Doe' }} />
+<Avatar color="rgb(255, 0, 0)" data={{ firstname: 'John', lastname: 'Doe' }} />
+```
+
+## Size Variants
+
+The Avatar component supports the following size options:
+
+- `2xs`: 20px
+- `xs`: 24px
+- `sm`: 32px
+- `md`: 40px (default)
+- `lg`: 48px
+- `xl`: 56px
+- `2xl`: 64px
+- `3xl`: 80px
+
+## Shape Variants
+
+- `circle`: Circular avatar (default)
+- `square`: Square avatar with rounded corners
 
 ## Examples
 
@@ -134,10 +200,10 @@ const TouchableAvatars = () => {
       <Avatar data={{ firstname: 'John', lastname: 'Doe' }} onPress={handlePress} />
 
       {/* TouchableOpacity */}
-      <Avatar data={{ firstname: 'John', lastname: 'Doe' }} onPress={handlePress} as="TouchableOpacity" />
+      <Avatar data={{ firstname: 'John', lastname: 'Doe' }} onPress={handlePress} as="touchable-opacity" />
 
-      {/* TouchableHighlight */}
-      <Avatar data={{ firstname: 'John', lastname: 'Doe' }} onPress={handlePress} as="TouchableHighlight" />
+      {/* RipplePressable */}
+      <Avatar data={{ firstname: 'John', lastname: 'Doe' }} onPress={handlePress} as="ripple-pressable" />
     </Box>
   );
 };
@@ -150,7 +216,7 @@ const CustomStyledAvatars = () => {
   return (
     <Box className="flex-row items-center space-x-4">
       {/* Custom background color */}
-      <Avatar data={{ firstname: 'John', lastname: 'Doe' }} backgroundColor="#FF6B6B" size="lg" />
+      <Avatar data={{ firstname: 'John', lastname: 'Doe' }} color="#FF6B6B" size="lg" />
 
       {/* Custom CSS classes (with NativeWind) */}
       <Avatar data={{ firstname: 'John', lastname: 'Doe' }} className="border-4 border-blue-500 shadow-lg" size="lg" />
@@ -173,16 +239,17 @@ const CustomStyledAvatars = () => {
 
 ### AvatarProps
 
-| Prop              | Type                                                              | Default       | Description                                        |
-| ----------------- | ----------------------------------------------------------------- | ------------- | -------------------------------------------------- |
-| `data`            | `{ firstname?: string; lastname?: string; image_url?: string }`   | **Required**  | User data for avatar display                       |
-| `size`            | `'2xs' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| '3xl'` | `'sm'`        | Avatar size variant                                |
-| `variant`         | `'circle' \| 'square'`                                            | `'circle'`    | Avatar shape variant                               |
-| `backgroundColor` | `string`                                                          | `undefined`   | Custom background color                            |
-| `className`       | `string`                                                          | `undefined`   | Custom CSS classes (only used with NativeWind)     |
-| `onPress`         | `() => void`                                                      | `undefined`   | Callback when avatar is pressed                    |
-| `as`              | `'Pressable' \| 'TouchableOpacity' \| 'TouchableHighlight'`       | `'Pressable'` | Component to use when pressable                    |
-| `stringProps`     | `StringProps`                                                     | `undefined`   | Props for the String component displaying initials |
+| Prop          | Type                                                              | Default       | Description                                        |
+| ------------- | ----------------------------------------------------------------- | ------------- | -------------------------------------------------- |
+| `data`        | `{ firstname?: string; lastname?: string; image_url?: string }`   | **Required**  | User data for avatar display                       |
+| `size`        | `'2xs' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| '3xl'` | `'md'`        | Avatar size variant                                |
+| `variant`     | `'circle' \| 'square'`                                            | `'circle'`    | Avatar shape variant                               |
+| `color`       | `string`                                                          | `undefined`   | Custom background color                            |
+| `className`   | `string`                                                          | `undefined`   | Custom CSS classes (only used with NativeWind)     |
+| `onPress`     | `() => void`                                                      | `undefined`   | Callback when avatar is pressed                    |
+| `as`          | `'pressable' \| 'touchable-opacity' \| 'ripple-pressable'`        | `'pressable'` | Component to use when pressable                    |
+| `stringProps` | `StringProps`                                                     | `undefined`   | Props for the String component displaying initials |
+| `style`       | `StyleProp<ViewStyle>`                                            | `undefined`   | Custom inline styles                               |
 
 ### Size Variants
 
@@ -190,8 +257,8 @@ const CustomStyledAvatars = () => {
 | ----- | ---------- | ------------------------------ |
 | `2xs` | 24x24px    | Very small icons, badges       |
 | `xs`  | 36x36px    | Small avatars, compact layouts |
-| `sm`  | 48x48px    | Default size, most common use  |
-| `md`  | 56x56px    | Medium avatars, user lists     |
+| `sm`  | 48x48px    | Small avatars, user lists      |
+| `md`  | 56x56px    | Default size, most common use  |
 | `lg`  | 64x64px    | Large avatars, profile headers |
 | `xl`  | 80x80px    | Extra large, prominent display |
 | `2xl` | 112x112px  | Very large, hero sections      |
@@ -204,71 +271,16 @@ const CustomStyledAvatars = () => {
 | `circle` | Fully rounded (border-radius: 9999px)         | Most common, modern look     |
 | `square` | Slightly rounded corners (border-radius: 8px) | Alternative, structured look |
 
-## NativeWind vs StyleSheet
+## Props
 
-The component automatically adapts based on NativeWind availability:
-
-### With NativeWind
-
-```tsx
-// Uses Tailwind classes
-<Avatar data={{ firstname: 'John', lastname: 'Doe' }} className="border-4 border-blue-500 shadow-lg" size="lg" />
-```
-
-### Without NativeWind
-
-```tsx
-// Uses StyleSheet with equivalent styling
-<Avatar
-  data={{ firstname: 'John', lastname: 'Doe' }}
-  backgroundColor="#3B82F6" // Custom colors via props
-  size="lg"
-/>
-```
-
-## Utility Functions
-
-### getUserInitials
-
-Extracts user initials from firstname and lastname:
-
-```tsx
-import { getUserInitials } from '@/components/avatar/Avatar';
-
-const initials = getUserInitials({
-  firstname: 'John',
-  lastname: 'Doe',
-}); // Returns 'JD'
-
-const singleInitial = getUserInitials({
-  firstname: 'John',
-}); // Returns 'J'
-
-const emptyInitial = getUserInitials({}); // Returns ''
-```
-
-## Best Practices
-
-1. **Always provide user data**: Even if you have an image, provide firstname/lastname for fallback
-2. **Choose appropriate sizes**: Use smaller sizes for lists, larger for prominent displays
-3. **Handle image loading**: Images are displayed with absolute positioning over initials
-4. **Consider accessibility**: The component automatically handles text contrast and sizing
-5. **Use consistent variants**: Stick to one shape variant throughout your app for consistency
-
-## Migration Guide
-
-### From NativeWind-only to Universal
-
-If you're migrating from a NativeWind-only implementation:
-
-1. **No changes needed**: The component automatically detects NativeWind availability
-2. **Custom styling**: Use `backgroundColor` prop instead of `className` for projects without NativeWind
-3. **Testing**: Test in both environments to ensure consistent behavior
-
-### From StyleSheet-only to Universal
-
-If you're adding NativeWind support:
-
-1. **Install NativeWind**: Follow the official installation guide
-2. **Update styling**: Replace `backgroundColor` props with `className` where appropriate
-3. **Gradual migration**: You can mix both approaches during transition
+| Prop          | Type                                                              | Default       | Description                                         |
+| ------------- | ----------------------------------------------------------------- | ------------- | --------------------------------------------------- |
+| `data`        | `{ firstname?: string; lastname?: string; image_url?: string }`   | **Required**  | User data containing name and optional image URL.   |
+| `size`        | `'2xs' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| '3xl'` | `'md'`        | Size variant for the avatar.                        |
+| `variant`     | `'circle' \| 'square'`                                            | `'circle'`    | Shape variant for the avatar.                       |
+| `color`       | `string`                                                          | -             | Custom background color (e.g., hex, rgb).           |
+| `className`   | `string`                                                          | -             | Custom CSS classes (used with NativeWind).          |
+| `as`          | `'pressable' \| 'touchable-opacity' \| 'ripple-pressable'`        | `'pressable'` | Touchable component type.                           |
+| `onPress`     | `() => void`                                                      | -             | Callback when avatar is pressed.                    |
+| `stringProps` | `StringProps`                                                     | -             | Props for the String component displaying initials. |
+| `style`       | `StyleProp<ViewStyle>`                                            | -             | Additional inline styles.                           |

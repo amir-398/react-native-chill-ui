@@ -9,8 +9,8 @@
     "chill-ui-watch/assets",
     "chill-ui-watch/.expo"
   ],
-  "include": ["chill-ui-watch/src/**/*"],
-  "compilerOptions": {
-    "types": ["nativewind/types"]
-  }
+  "include": ["chill-ui-core/core-stylesheet/**/*"]
+  // "compilerOptions": {
+  //   "types": ["nativewind/types"]
+  // }
 }

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Icon from '../icon';
 import { Box } from '../box';
-import String from '../string';
+import { String } from '../string';
 import * as flags from './flags';
 import Input from '../inputs/Input';
 import { PhoneNumberInputProps } from '../../types';

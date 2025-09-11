@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { action } from '@storybook/addon-actions';
 
-import String from '../src/components/string/String';
+import { String } from '../src/components/string';
 import UiPresentation from './storybook/UiPresentation';
 
 const meta: Meta<typeof String> = {

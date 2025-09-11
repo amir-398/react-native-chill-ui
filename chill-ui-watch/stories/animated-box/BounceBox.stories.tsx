@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { String } from '../../src/components';
 import UiPresentation from '../storybook/UiPresentation';
-import BounceBox from '../../src/components/animatedBox/BounceBox';
+import BounceBox from '../../src/components/animatedBox/components/BounceBox/BounceBox';
 
 const meta = {
   argTypes: {
@@ -61,7 +61,7 @@ export const Default: Story = {
   args: {
     autoStart: true,
     children: (
-      <String size="lg" weight="bold" className="text-center">
+      <String size="lg" className="text-center">
         Default Bounce
       </String>
     ),
@@ -75,7 +75,7 @@ export const AutoBounce: Story = {
     autoStart: true,
     bounceInterval: 2000,
     children: (
-      <String size="lg" weight="bold" className="text-center">
+      <String size="lg" className="text-center">
         Auto Bounce Every 2s
       </String>
     ),
@@ -88,7 +88,7 @@ export const HighBounce: Story = {
     autoStart: true,
     bounceHeight: 40,
     children: (
-      <String size="lg" weight="bold" className="text-center">
+      <String size="lg" className="text-center">
         High Bounce (40px)
       </String>
     ),
@@ -99,7 +99,7 @@ export const HighBounce: Story = {
 export const FastBounce: Story = {
   args: {
     children: (
-      <String size="lg" weight="bold" className="text-center text-black">
+      <String size="lg" className="text-center text-black">
         Fast Bounce
       </String>
     ),
@@ -113,7 +113,7 @@ export const FrequentBounce: Story = {
     autoStart: true,
     bounceInterval: 800,
     children: (
-      <String size="lg" weight="bold" className="text-center text-black">
+      <String size="lg" className="text-center text-black">
         Frequent Bounce
       </String>
     ),
@@ -126,7 +126,7 @@ export const InfiniteLoop: Story = {
   args: {
     bounceInterval: 1500,
     children: (
-      <String size="lg" weight="bold" className="text-center text-black">
+      <String size="lg" className="text-center text-black">
         Infinite Bounce Loop
       </String>
     ),

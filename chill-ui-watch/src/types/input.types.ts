@@ -1,10 +1,10 @@
 import type { VariantProps } from 'tailwind-variants';
 import type { TextInputProps, View } from 'react-native';
 
-import inputSizeVariants from '@/components/inputs/styleVariants';
-
 import type { IconProps } from './icon.types';
 import type { TIcons } from '../constants/ICONS';
+
+import inputSizeVariants from '../components/inputs/styleVariants';
 
 /**
  * Props for the Input component

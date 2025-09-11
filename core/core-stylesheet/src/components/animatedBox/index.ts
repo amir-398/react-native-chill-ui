@@ -1,0 +1,1 @@
+export { default as AnimatedBox } from './components/animatedBox/AnimatedBox';

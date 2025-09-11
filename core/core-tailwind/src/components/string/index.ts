@@ -1,0 +1,1 @@
+export { default as String } from './components/String';

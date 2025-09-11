@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { String } from '../../src/components';
 import UiPresentation from '../storybook/UiPresentation';
-import RotatingBox from '../../src/components/animatedBox/RotatingBox';
+import RotatingBox from '../../src/components/animatedBox/components/RotatingBox/RotatingBox';
 
 const meta = {
   argTypes: {
@@ -53,7 +53,7 @@ export const Default: Story = {
   args: {
     autoStart: true,
     children: (
-      <String size="lg" weight="bold" className="text-center" color="black">
+      <String size="lg" className="text-center" color="black">
         Rotating Box
       </String>
     ),
@@ -65,7 +65,7 @@ export const Fast: Story = {
   args: {
     autoStart: true,
     children: (
-      <String size="lg" weight="bold" className="text-center">
+      <String size="lg" className="text-center">
         Fast Rotation
       </String>
     ),
@@ -78,7 +78,7 @@ export const Slow: Story = {
   args: {
     autoStart: true,
     children: (
-      <String size="lg" weight="bold" className="text-center">
+      <String size="lg" className="text-center">
         Slow Rotation
       </String>
     ),
@@ -91,7 +91,7 @@ export const Single: Story = {
   args: {
     autoStart: true,
     children: (
-      <String size="lg" weight="bold" className="text-center">
+      <String size="lg" className="text-center">
         Single Rotation
       </String>
     ),
@@ -103,7 +103,7 @@ export const WithDelay: Story = {
   args: {
     autoStart: true,
     children: (
-      <String size="lg" weight="bold" className="text-center">
+      <String size="lg" className="text-center">
         Delayed Rotation
       </String>
     ),
@@ -116,7 +116,7 @@ export const InfiniteLoop: Story = {
   args: {
     autoStart: true,
     children: (
-      <String size="lg" weight="bold" className="text-center">
+      <String size="lg" className="text-center">
         Infinite Rotation Loop
       </String>
     ),

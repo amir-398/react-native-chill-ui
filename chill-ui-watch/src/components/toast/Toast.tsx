@@ -7,7 +7,7 @@ import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 
 import cn from '../cn';
 import Icon from '../icon';
 import { Box } from '../box';
-import String from '../string';
+import { String } from '../string';
 import { ToastVariantType } from '../../types';
 
 type ToastVariant = 'success' | 'error' | 'info' | 'warning';

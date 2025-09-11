@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import sv from '@/utils/styleSheetVariants';
+import sv from '../../../utils/ss/styleSheetVariants';
 
 const AvatarSv = sv({
   base: {

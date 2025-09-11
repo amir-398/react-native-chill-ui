@@ -2,12 +2,12 @@ import type { VariantProps } from 'tailwind-variants';
 
 import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils';
 
-import { TIcons } from '@/constants/ICONS';
-
 import type { IconProps } from './icon.types';
-import type { StringProps } from './string.types';
+import type { StringProps } from './string/string.types';
 import type chipVariants from '../components/chip/Chip.variants';
 import type { chipPositionVariants } from '../components/chip/Chip.variants';
+
+import { TIcons } from '../constants/ICONS';
 
 /**
  * Configuration for icon in Chip component

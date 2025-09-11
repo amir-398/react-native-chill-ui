@@ -3,7 +3,7 @@ import type { SvgProps } from 'react-native-svg';
 import Svg, { Path } from 'react-native-svg';
 
 import { ICONS, type TIcons } from '../../constants/ICONS';
-import { isNativeWindInstalled } from '../../utils/nativewindDetector';
+import { isNativeWindInstalled } from '../../utils/hybrid/nativewindDetector';
 
 type CustomIconProps = {
   name: keyof TIcons;

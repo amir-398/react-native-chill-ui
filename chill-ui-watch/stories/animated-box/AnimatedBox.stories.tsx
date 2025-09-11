@@ -4,7 +4,7 @@ import { Animated } from 'react-native';
 import { useRef, useEffect } from 'react';
 
 import { String } from '../../src/components';
-import AnimatedBox from '../../src/components/animatedBox/AnimatedBox';
+import AnimatedBox from '../../src/components/animatedBox/components/animatedBox/AnimatedBox';
 
 const meta = {
   component: AnimatedBox,
@@ -39,7 +39,7 @@ export const Default: Story = {
         }}
         className="rounded-lg bg-blue-100 p-6"
       >
-        <String size="lg" weight="bold" className="text-center">
+        <String size="lg" className="text-center">
           Fade In Animation
         </String>
       </AnimatedBox>

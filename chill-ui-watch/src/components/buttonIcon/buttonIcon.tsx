@@ -4,7 +4,7 @@ import type { ButtonIconProps } from '../../types';
 
 import cn from '../cn';
 import Icon from '../icon';
-import RipplePressable from '../ripple-pressable';
+import RipplePressable from '../ripplePressable';
 import LoadingIndicator from '../loadingIndicatorsKit/LoadingIndicator';
 
 /**

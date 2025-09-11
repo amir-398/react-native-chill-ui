@@ -3,7 +3,7 @@ import { View, FlatListProps, ModalProps } from 'react-native';
 import type { InputProps } from './input.types';
 import type { LoadingIndicatorProps } from './loadingIndicator.types';
 
-import { StringProps } from './string.types';
+import { StringProps } from './string/string.types';
 
 /**
  * Props for dropdown items

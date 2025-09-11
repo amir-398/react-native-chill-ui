@@ -1,8 +1,12 @@
 // Export des types communs
 export * from './common.types';
 
+// Export des utilitaires de types conditionnels
+export * from './utils/conditional.types';
+export * from './helpers/component-props.helper';
+
 // Export des types par composant
-export * from './string.types';
+export * from './string/string.types';
 export * from './icon.types';
 export * from './button.types';
 export * from './toggle.types';
@@ -15,7 +19,7 @@ export * from './loadingIndicator.types';
 export * from './placesInput.types';
 export * from './separator.types';
 export * from './segmentedControl.types';
-export * from './avatar.types';
+export * from './avatar/avatar.types';
 export * from './tooltip.types';
 export * from './checkbox.types';
 export * from './wrapper.types';
