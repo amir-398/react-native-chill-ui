@@ -124,7 +124,6 @@ function extractBorderRadius(children: React.ReactNode): number {
 function RipplePressable(props: PropsWithChildren<RipplePressableProps>) {
   const {
     children,
-    className,
     disabled = false,
     effectColor = 'rgba(255, 255, 255, 0.6)',
     onPress,

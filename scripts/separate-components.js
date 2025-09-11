@@ -81,17 +81,23 @@ function copyFileWithImportFix(sourcePath, destPath, variant) {
     content = content.replace(/from\s+['"](.+?)\.ss['"]/g, "from '$1'");
   }
 
+  // Fix imports from nested component folders (like BounceBox/) to types FIRST
+  // e.g., '../../../../types/animatedBox/bounceBox.types' -> '../../../../types/bounceBox.types'
+  // This removes only the intermediate component folder name, preserving the relative path depth
+  content = content.replace(/(['"])((?:\.\.\/)+)types\/([^\/]+)\/([^\/]+)\.types(['"])/g, '$1$2types/$4.types$5');
+
+  // Fix .tw.types and .ss.types imports to just .types (for all variants)
+  content = content.replace(/(['"])(.+?\/types\/)([^\/]+)\/\3\.tw\.types(['"])/g, '$1$2$3.types$4');
+  content = content.replace(/(['"])(.+?\/types\/)([^\/]+)\/\3\.ss\.types(['"])/g, '$1$2$3.types$4');
+
   // Fix types import paths to remove duplicate component name and intermediate folder
   // This applies to ALL variants, not just stylesheet
   // This handles all cases: import, import type, export, etc.
   // e.g., '../../../types/box/box.types' -> '../../../types/box.types'
   // e.g., './string/string.types' -> './string.types'
+  // BUT ONLY when the folder name and file name are actually the same
   content = content.replace(/(['"])(.+?\/types\/)([^\/]+)\/\3\.types(['"])/g, '$1$2$3.types$4');
   content = content.replace(/(['"])\.\/([^\/]+)\/\2\.types(['"])/g, '$1./$2.types$3');
-
-  // Fix .tw.types and .ss.types imports to just .types (for all variants)
-  content = content.replace(/(['"])(.+?\/types\/)([^\/]+)\/\3\.tw\.types(['"])/g, '$1$2$3.types$4');
-  content = content.replace(/(['"])(.+?\/types\/)([^\/]+)\/\3\.ss\.types(['"])/g, '$1$2$3.types$4');
 
   ensureDir(path.dirname(destPath));
   fs.writeFileSync(destPath, content);
@@ -133,41 +139,97 @@ function processComponentTypes(componentName, variantName, coreDir) {
 
   ensureDir(typesDestDir);
 
+  const typeFiles = fs.readdirSync(typesSourceDir);
+  const copiedFiles = new Set();
+
+  // Helper function to copy a type file with fallback logic
+  function copyTypeFile(baseFileName, variantSuffix, targetFileName) {
+    const variantFile = baseFileName.replace('.types.ts', `${variantSuffix}.types.ts`);
+    const baseFile = baseFileName;
+
+    let sourceFile = null;
+
+    // Try variant-specific file first
+    if (typeFiles.includes(variantFile)) {
+      sourceFile = variantFile;
+      console.log(`📄 Using variant-specific type: ${variantFile}`);
+    } else if (typeFiles.includes(baseFile)) {
+      sourceFile = baseFile;
+      console.log(`📄 Using base type (fallback): ${baseFile}`);
+    }
+
+    if (sourceFile) {
+      const sourcePath = path.join(typesSourceDir, sourceFile);
+      const destPath = path.join(typesDestDir, targetFileName);
+      copyFileWithImportFix(sourcePath, destPath, variantName);
+      copiedFiles.add(sourceFile);
+      return true;
+    }
+
+    return false;
+  }
+
   if (variantName === 'hybrid') {
-    // For hybrid, copy only the tailwind types directly to the root types directory (like tailwind variant)
-    const typeFiles = fs.readdirSync(typesSourceDir);
-
+    // For hybrid, use tailwind types with fallback to base types
     for (const file of typeFiles) {
-      const sourcePath = path.join(typesSourceDir, file);
-
-      // Copy .tw.types.ts and rename to .types.ts (same as tailwind)
-      if (file.endsWith('.tw.types.ts')) {
-        const destPath = path.join(typesDestDir, `${componentName}.types.ts`);
-        copyFileWithImportFix(sourcePath, destPath, variantName);
+      if (file.endsWith('.types.ts') && !file.includes('.tw.') && !file.includes('.ss.')) {
+        const targetFileName = file === 'index.ts' ? 'index.ts' : file;
+        copyTypeFile(file, '.tw', targetFileName);
       }
     }
-    console.log(`📁 Copied tailwind types to hybrid variant (direct to root)`);
+
+    // Special handling for components that only have variant-specific types (like animatedBox)
+    if (copiedFiles.size === 0) {
+      console.log(`📄 No base types found, trying variant-specific types for hybrid...`);
+      for (const file of typeFiles) {
+        if (file.endsWith('.tw.types.ts')) {
+          const baseFileName = file.replace('.tw.types.ts', '.types.ts');
+          const sourcePath = path.join(typesSourceDir, file);
+          const destPath = path.join(typesDestDir, baseFileName);
+          copyFileWithImportFix(sourcePath, destPath, variantName);
+          copiedFiles.add(file);
+          console.log(`📄 Used tailwind variant for hybrid: ${file} → ${baseFileName}`);
+        }
+      }
+    }
+
+    console.log(`📁 Processed hybrid types with fallback logic`);
     return;
   }
 
-  const typeFiles = fs.readdirSync(typesSourceDir);
+  // For tailwind and stylesheet variants
+  const variantSuffix = variantName === 'tailwind' ? '.tw' : '.ss';
 
   for (const file of typeFiles) {
-    const sourcePath = path.join(typesSourceDir, file);
+    if (file.endsWith('.types.ts') && !file.includes('.tw.') && !file.includes('.ss.')) {
+      const targetFileName = file === 'index.ts' ? 'index.ts' : file;
+      copyTypeFile(file, variantSuffix, targetFileName);
+    }
+  }
 
-    if (variantName === 'tailwind') {
-      // For tailwind, copy .tw.types.ts and rename to .types.ts
-      if (file.endsWith('.tw.types.ts')) {
-        const destPath = path.join(typesDestDir, `${componentName}.types.ts`);
+  // Special handling for components that only have variant-specific types (like animatedBox)
+  if (copiedFiles.size === 0) {
+    console.log(`📄 No base types found, trying variant-specific types for ${variantName}...`);
+    const targetSuffix = `${variantSuffix}.types.ts`;
+
+    for (const file of typeFiles) {
+      if (file.endsWith(targetSuffix)) {
+        const baseFileName = file.replace(targetSuffix, '.types.ts');
+        const sourcePath = path.join(typesSourceDir, file);
+        const destPath = path.join(typesDestDir, baseFileName);
         copyFileWithImportFix(sourcePath, destPath, variantName);
-      }
-    } else if (variantName === 'stylesheet') {
-      // For stylesheet, copy .ss.types.ts and rename to .types.ts
-      if (file.endsWith('.ss.types.ts')) {
-        const destPath = path.join(typesDestDir, `${componentName}.types.ts`);
-        copyFileWithImportFix(sourcePath, destPath, variantName);
+        copiedFiles.add(file);
+        console.log(`📄 Used ${variantName} variant: ${file} → ${baseFileName}`);
       }
     }
+  }
+
+  // Copy index.ts if it exists and wasn't copied yet
+  if (typeFiles.includes('index.ts') && !copiedFiles.has('index.ts')) {
+    const sourcePath = path.join(typesSourceDir, 'index.ts');
+    const destPath = path.join(typesDestDir, 'index.ts');
+    copyFileWithImportFix(sourcePath, destPath, variantName);
+    console.log(`📄 Copied index.ts`);
   }
 }
 
@@ -249,33 +311,66 @@ function processComponent(componentName) {
       }
     }
 
-    // Process components directory
+    // Process components directory (handles both files and subdirectories)
     const componentsDir = path.join(componentPath, 'components');
     if (fs.existsSync(componentsDir)) {
-      const componentFiles = fs.readdirSync(componentsDir);
+      const componentItems = fs.readdirSync(componentsDir);
       const destComponentsDir = path.join(coreComponentPath, 'components');
       ensureDir(destComponentsDir);
 
-      for (const file of componentFiles) {
-        const sourceFile = path.join(componentsDir, file);
+      for (const item of componentItems) {
+        const sourceItem = path.join(componentsDir, item);
+        const itemStat = fs.statSync(sourceItem);
 
-        if (variantName === 'hybrid') {
-          // For hybrid, only copy base .tsx files
-          if (file.endsWith('.tsx') && !file.includes('.tw.') && !file.includes('.ss.')) {
-            const destFile = path.join(destComponentsDir, file);
-            copyFileWithImportFix(sourceFile, destFile, variantName);
+        if (itemStat.isDirectory()) {
+          // Handle subdirectories (like FadeInBox, ScaleInBox, etc.)
+          const subDirFiles = fs.readdirSync(sourceItem);
+          const destSubDir = path.join(destComponentsDir, item);
+          ensureDir(destSubDir);
+
+          for (const file of subDirFiles) {
+            const sourceFile = path.join(sourceItem, file);
+
+            if (variantName === 'hybrid') {
+              // For hybrid, only copy base .tsx files
+              if (file.endsWith('.tsx') && !file.includes('.tw.') && !file.includes('.ss.')) {
+                const destFile = path.join(destSubDir, file);
+                copyFileWithImportFix(sourceFile, destFile, variantName);
+              }
+            } else if (variantName === 'tailwind') {
+              // For tailwind, copy .tw.tsx files and rename them to .tsx
+              if (file.endsWith('.tw.tsx')) {
+                const destFile = path.join(destSubDir, file.replace('.tw.tsx', '.tsx'));
+                copyFileWithImportFix(sourceFile, destFile, variantName);
+              }
+            } else if (variantName === 'stylesheet') {
+              // For stylesheet, copy .ss.tsx files and rename them to .tsx
+              if (file.endsWith('.ss.tsx')) {
+                const destFile = path.join(destSubDir, file.replace('.ss.tsx', '.tsx'));
+                copyFileWithImportFix(sourceFile, destFile, variantName);
+              }
+            }
           }
-        } else if (variantName === 'tailwind') {
-          // For tailwind, copy .tw.tsx files and rename them to .tsx
-          if (file.endsWith('.tw.tsx')) {
-            const destFile = path.join(destComponentsDir, file.replace('.tw.tsx', '.tsx'));
-            copyFileWithImportFix(sourceFile, destFile, variantName);
-          }
-        } else if (variantName === 'stylesheet') {
-          // For stylesheet, copy .ss.tsx files and rename them to .tsx
-          if (file.endsWith('.ss.tsx')) {
-            const destFile = path.join(destComponentsDir, file.replace('.ss.tsx', '.tsx'));
-            copyFileWithImportFix(sourceFile, destFile, variantName);
+        } else if (itemStat.isFile()) {
+          // Handle direct files in components directory (existing behavior)
+          if (variantName === 'hybrid') {
+            // For hybrid, only copy base .tsx files
+            if (item.endsWith('.tsx') && !item.includes('.tw.') && !item.includes('.ss.')) {
+              const destFile = path.join(destComponentsDir, item);
+              copyFileWithImportFix(sourceItem, destFile, variantName);
+            }
+          } else if (variantName === 'tailwind') {
+            // For tailwind, copy .tw.tsx files and rename them to .tsx
+            if (item.endsWith('.tw.tsx')) {
+              const destFile = path.join(destComponentsDir, item.replace('.tw.tsx', '.tsx'));
+              copyFileWithImportFix(sourceItem, destFile, variantName);
+            }
+          } else if (variantName === 'stylesheet') {
+            // For stylesheet, copy .ss.tsx files and rename them to .tsx
+            if (item.endsWith('.ss.tsx')) {
+              const destFile = path.join(destComponentsDir, item.replace('.ss.tsx', '.tsx'));
+              copyFileWithImportFix(sourceItem, destFile, variantName);
+            }
           }
         }
       }
@@ -495,10 +590,40 @@ function updateCoreIndexes() {
 }
 
 /**
+ * Initialize core directories if they don't exist
+ */
+function initializeCoreDirectories() {
+  console.log('🔄 Initializing core directories...');
+
+  // Create main core directory
+  ensureDir(CORE_DIR);
+
+  // Create each variant directory with basic structure
+  for (const [variantName, config] of Object.entries(VARIANTS)) {
+    const coreDir = path.join(CORE_DIR, config.coreDir);
+    const srcDir = path.join(coreDir, 'src');
+    const componentsDir = path.join(srcDir, 'components');
+    const typesDir = path.join(srcDir, 'types');
+    const utilsDir = path.join(srcDir, 'utils');
+
+    ensureDir(coreDir);
+    ensureDir(srcDir);
+    ensureDir(componentsDir);
+    ensureDir(typesDir);
+    ensureDir(utilsDir);
+
+    console.log(`📁 Initialized ${config.coreDir} structure`);
+  }
+}
+
+/**
  * Main function
  */
 function main() {
   const args = process.argv.slice(2);
+
+  // Initialize core directories first
+  initializeCoreDirectories();
 
   if (args.length === 0) {
     console.log('📋 Available components:');

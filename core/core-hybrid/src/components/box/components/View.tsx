@@ -20,7 +20,7 @@ interface ViewProps extends NativeViewProps {
  * Props for AnimatedView components that include className support
  */
 export type AnimatedViewProps = React.ComponentProps<typeof Animated.View>;
-interface AnimatedViewPropsWithClassName extends AnimatedViewProps {
+export interface AnimatedViewPropsWithClassName extends AnimatedViewProps {
   className?: string;
 }
 

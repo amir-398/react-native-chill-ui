@@ -1,0 +1,1 @@
+export { default as RipplePressable } from './components/RipplePressable';

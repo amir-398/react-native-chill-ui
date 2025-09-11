@@ -1,4 +1,4 @@
-import type { BoxProps } from '../../../types/box.types';
+import type { BoxProps } from '../../../types/box.tw.types';
 
 import cn from '../../../utils/cn';
 import styles from '../styles/Box.styles';

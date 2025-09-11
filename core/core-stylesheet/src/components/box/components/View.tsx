@@ -15,7 +15,6 @@ type ViewProps = NativeViewProps;
  * Props for AnimatedView components that include className support
  */
 export type AnimatedViewProps = React.ComponentProps<typeof Animated.View>;
-type AnimatedViewPropsWithClassName = AnimatedViewProps;
 
 /**
  * View component that provides a high-performance view container.
@@ -56,7 +55,7 @@ export function View(props: ViewProps) {
  * </AnimatedView>
  * ```
  */
-export function AnimatedView(props: AnimatedViewPropsWithClassName) {
+export function AnimatedView(props: AnimatedViewProps) {
   const { children, ...rest } = props;
 
   return <AnimatedNativeView {...rest}>{children}</AnimatedNativeView>;

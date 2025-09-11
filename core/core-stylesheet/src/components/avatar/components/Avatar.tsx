@@ -1,16 +1,16 @@
 import { Image, Pressable, TouchableOpacity } from 'react-native';
 
+import type { AvatarProps } from '../../../types/avatar.types';
+
 import { Box } from '../../box';
-import RipplePressable from '../../ripple-pressable';
 import String from '../../string/components/String';
 import getUserInitials from '../utils/getUsersInititials';
 import { AvatarSv, styles } from '../styles/Avatar.styles';
-import { AvatarProps } from '../../../types/avatar.types';
+import RipplePressable from '../../ripplePressable/components/RipplePressable';
 
 /**
  * Avatar component displays user profile images with fallback to initials.
  * Supports different sizes, shapes, and touchable interactions.
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
@@ -23,7 +23,6 @@ import { AvatarProps } from '../../../types/avatar.types';
  *   size="lg"
  *   variant="square"
  * />
- *
  * ```
  *
  * @param as - Component to use when avatar is pressable (default: 'Pressable') - 'pressable' | 'touchable-opacity' | 'ripple-pressable'

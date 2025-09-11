@@ -12,7 +12,7 @@
  * ```
  */
 function getUserInitials(data: { firstname?: string; lastname?: string }) {
-  if (!data?.firstname) return '';
+  if (!data?.firstname) return data.lastname?.charAt(0).toUpperCase();
   if (!data?.lastname) return data.firstname.charAt(0).toUpperCase();
   const firstInitial = data.firstname.charAt(0).toUpperCase();
   const lastInitial = data.lastname.charAt(0).toUpperCase();

@@ -6,7 +6,7 @@ import styles from '../styles/RipplePressable.styles';
 import AnimatedBox from '../../animatedBox/components/animatedBox/AnimatedBox';
 import { classNamePropsHandler } from '../../../utils/classNameMissingError';
 import { classNameHandler, styleHandler } from '../../../utils/propsHandlers';
-import { RipplePressableProps } from '../../../types/ripplePressable.types';
+import { RipplePressableProps } from '../../../types/ripplePressable.tw.types';
 
 /**
  * Individual ripple effect component using native Animated API

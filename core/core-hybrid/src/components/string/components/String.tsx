@@ -1,4 +1,4 @@
-import type { StringProps } from '../../../types/string.types';
+import type { StringProps } from '../../../types/string.tw.types';
 
 import cn from '../../../utils/cn';
 import { Text as NativeText } from './Text';

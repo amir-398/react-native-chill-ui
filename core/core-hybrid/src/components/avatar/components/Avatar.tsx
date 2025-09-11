@@ -1,13 +1,14 @@
 import { Image, Pressable, TouchableOpacity } from 'react-native';
 
+import type { AvatarProps } from '../../../types/avatar.tw.types';
+
 import { Box } from '../../box';
 import { String } from '../../string';
 import cn from '../../../utils/cn';
 import avatarTv from '../styles/Avatar.variants';
-import RipplePressable from '../../ripple-pressable';
 import getUserInitials from '../utils/getUsersInititials';
 import { AvatarSv, styles } from '../styles/Avatar.styles';
-import { AvatarProps } from '../../../types/avatar.types';
+import RipplePressable from '../../ripplePressable/components/RipplePressable';
 import { classNamePropsHandler } from '../../../utils/classNameMissingError';
 import { classNameHandler, styleHandler } from '../../../utils/propsHandlers';
 
@@ -27,7 +28,6 @@ import { classNameHandler, styleHandler } from '../../../utils/propsHandlers';
  *   size="lg"
  *   variant="square"
  * />
- *
  * ```
  *
  * @param as - Component to use when avatar is pressable (default: 'Pressable') - 'pressable' | 'touchable-opacity' | 'ripple-pressable'
@@ -56,7 +56,7 @@ export default function Avatar(props: AvatarProps) {
     variant = 'circle',
   } = props;
 
-  const initials = data?.firstname ? getUserInitials(data) : '';
+  const initials = getUserInitials(data);
   const image = data?.image_url;
 
   const avaratStyle = AvatarSv({ size, variant });
