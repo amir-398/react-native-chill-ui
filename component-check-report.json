@@ -1,0 +1,518 @@
+{
+  "timestamp": "2025-09-17T20:23:01.259Z",
+  "totalComponents": 34,
+  "components": [
+    {
+      "name": "AutocompleteDropdown",
+      "readme": {
+        "exists": true,
+        "issues": []
+      },
+      "story": {
+        "exists": true,
+        "issues": []
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "accordion",
+      "readme": {
+        "exists": true,
+        "issues": []
+      },
+      "story": {
+        "exists": true,
+        "issues": []
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "animatedBox",
+      "readme": {
+        "exists": true,
+        "issues": []
+      },
+      "story": {
+        "exists": true,
+        "issues": []
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "avatar",
+      "readme": {
+        "exists": true,
+        "issues": []
+      },
+      "story": {
+        "exists": true,
+        "issues": []
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "box",
+      "readme": {
+        "exists": true,
+        "issues": []
+      },
+      "story": {
+        "exists": true,
+        "issues": []
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "button",
+      "readme": {
+        "exists": true,
+        "issues": []
+      },
+      "story": {
+        "exists": true,
+        "issues": []
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "buttonIcon",
+      "readme": {
+        "exists": true,
+        "issues": []
+      },
+      "story": {
+        "exists": true,
+        "issues": []
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "carousel",
+      "readme": {
+        "exists": true,
+        "issues": []
+      },
+      "story": {
+        "exists": true,
+        "issues": []
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "checkbox",
+      "readme": {
+        "exists": true,
+        "issues": []
+      },
+      "story": {
+        "exists": true,
+        "issues": []
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "chip",
+      "readme": {
+        "exists": true,
+        "issues": [
+          "Missing usage section (looking for: ## Usage, ## Quick Start, ## Getting Started, ## Basic Usage)",
+          "Missing section: ## Examples (recommended)"
+        ]
+      },
+      "story": {
+        "exists": true,
+        "issues": []
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "dialog",
+      "readme": {
+        "exists": true,
+        "issues": []
+      },
+      "story": {
+        "exists": true,
+        "issues": []
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "dropdownMenu",
+      "readme": {
+        "exists": false,
+        "issues": [
+          "Missing README.md"
+        ]
+      },
+      "story": {
+        "exists": true,
+        "issues": []
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "highlightString",
+      "readme": {
+        "exists": true,
+        "issues": []
+      },
+      "story": {
+        "exists": true,
+        "issues": []
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "icon",
+      "readme": {
+        "exists": true,
+        "issues": [
+          "Missing usage section (looking for: ## Usage, ## Quick Start, ## Getting Started, ## Basic Usage)",
+          "Missing section: ## Examples (recommended)"
+        ]
+      },
+      "story": {
+        "exists": true,
+        "issues": []
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "inputDrodown",
+      "readme": {
+        "exists": false,
+        "issues": [
+          "Missing README.md"
+        ]
+      },
+      "story": {
+        "exists": false,
+        "issues": [
+          "Missing story file: inputDrodown.stories.tsx or inputDrodown/inputDrodown.stories.tsx"
+        ]
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "inputSelectDropdown",
+      "readme": {
+        "exists": true,
+        "issues": []
+      },
+      "story": {
+        "exists": true,
+        "issues": []
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "inputs",
+      "readme": {
+        "exists": true,
+        "issues": []
+      },
+      "story": {
+        "exists": false,
+        "issues": [
+          "Missing story file: inputs.stories.tsx or inputs/inputs.stories.tsx"
+        ]
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "loadingIndicatorsKit",
+      "readme": {
+        "exists": true,
+        "issues": []
+      },
+      "story": {
+        "exists": false,
+        "issues": [
+          "Missing story file: loadingIndicatorsKit.stories.tsx or loadingIndicatorsKit/loadingIndicatorsKit.stories.tsx"
+        ]
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "maskedInput",
+      "readme": {
+        "exists": true,
+        "issues": []
+      },
+      "story": {
+        "exists": false,
+        "issues": [
+          "Missing story file: maskedInput.stories.tsx or maskedInput/maskedInput.stories.tsx"
+        ]
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "phoneNumberInput",
+      "readme": {
+        "exists": true,
+        "issues": []
+      },
+      "story": {
+        "exists": true,
+        "issues": []
+      },
+      "structure": {
+        "issues": [
+          "Missing index.ts"
+        ]
+      }
+    },
+    {
+      "name": "places-input",
+      "readme": {
+        "exists": true,
+        "issues": []
+      },
+      "story": {
+        "exists": false,
+        "issues": [
+          "Missing story file: places-input.stories.tsx or places-input/places-input.stories.tsx"
+        ]
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "ripplePressable",
+      "readme": {
+        "exists": true,
+        "issues": [
+          "Missing section: ## Examples (recommended)"
+        ]
+      },
+      "story": {
+        "exists": true,
+        "issues": []
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "scale-pressable",
+      "readme": {
+        "exists": false,
+        "issues": [
+          "Missing README.md"
+        ]
+      },
+      "story": {
+        "exists": false,
+        "issues": [
+          "Missing story file: scale-pressable.stories.tsx or scale-pressable/scale-pressable.stories.tsx"
+        ]
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "segmented-control",
+      "readme": {
+        "exists": true,
+        "issues": []
+      },
+      "story": {
+        "exists": false,
+        "issues": [
+          "Missing story file: segmented-control.stories.tsx or segmented-control/segmented-control.stories.tsx"
+        ]
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "separator",
+      "readme": {
+        "exists": true,
+        "issues": []
+      },
+      "story": {
+        "exists": true,
+        "issues": []
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "skeletons",
+      "readme": {
+        "exists": true,
+        "issues": []
+      },
+      "story": {
+        "exists": false,
+        "issues": [
+          "Missing story file: skeletons.stories.tsx or skeletons/skeletons.stories.tsx"
+        ]
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "slider",
+      "readme": {
+        "exists": true,
+        "issues": []
+      },
+      "story": {
+        "exists": true,
+        "issues": []
+      },
+      "structure": {
+        "issues": [
+          "No main component file found"
+        ]
+      }
+    },
+    {
+      "name": "string",
+      "readme": {
+        "exists": true,
+        "issues": [
+          "Missing section: ## Examples (recommended)"
+        ]
+      },
+      "story": {
+        "exists": true,
+        "issues": []
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "tabSwitch",
+      "readme": {
+        "exists": true,
+        "issues": []
+      },
+      "story": {
+        "exists": true,
+        "issues": []
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "timePicker",
+      "readme": {
+        "exists": true,
+        "issues": []
+      },
+      "story": {
+        "exists": true,
+        "issues": []
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "toast",
+      "readme": {
+        "exists": true,
+        "issues": []
+      },
+      "story": {
+        "exists": true,
+        "issues": []
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "toggle",
+      "readme": {
+        "exists": true,
+        "issues": []
+      },
+      "story": {
+        "exists": true,
+        "issues": []
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "tooltip",
+      "readme": {
+        "exists": true,
+        "issues": []
+      },
+      "story": {
+        "exists": true,
+        "issues": []
+      },
+      "structure": {
+        "issues": []
+      }
+    },
+    {
+      "name": "wrapper",
+      "readme": {
+        "exists": true,
+        "issues": []
+      },
+      "story": {
+        "exists": true,
+        "issues": []
+      },
+      "structure": {
+        "issues": []
+      }
+    }
+  ]
+}

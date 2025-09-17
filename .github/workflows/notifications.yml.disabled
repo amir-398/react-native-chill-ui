@@ -1,0 +1,216 @@
+name: Notifications
+
+on:
+  workflow_run:
+    workflows: ["CI", "Build", "Release"]
+    types: [completed]
+  release:
+    types: [published, created]
+  issues:
+    types: [opened, labeled]
+  pull_request:
+    types: [opened, closed, merged]
+
+jobs:
+  notify-workflow-completion:
+    name: Notify Workflow Completion
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_run'
+    
+    steps:
+    - name: Notify workflow completion
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const workflow = context.payload.workflow_run;
+          const workflowName = workflow.name;
+          const conclusion = workflow.conclusion;
+          const branch = workflow.head_branch;
+          
+          let message = '';
+          let emoji = '';
+          
+          if (conclusion === 'success') {
+            emoji = '✅';
+            message = `${emoji} **${workflowName}** completed successfully on branch \`${branch}\``;
+          } else if (conclusion === 'failure') {
+            emoji = '❌';
+            message = `${emoji} **${workflowName}** failed on branch \`${branch}\``;
+          } else if (conclusion === 'cancelled') {
+            emoji = '⏹️';
+            message = `${emoji} **${workflowName}** was cancelled on branch \`${branch}\``;
+          } else {
+            emoji = '⚠️';
+            message = `${emoji} **${workflowName}** completed with status: \`${conclusion}\` on branch \`${branch}\``;
+          }
+          
+          // Add workflow run URL
+          message += `\n\n🔗 [View Details](${workflow.html_url})`;
+          
+          // Create a comment on the triggering PR if it exists
+          if (workflow.pull_requests && workflow.pull_requests.length > 0) {
+            const pr = workflow.pull_requests[0];
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              body: message
+            });
+          }
+          
+          console.log(`Notification sent: ${message}`);
+
+  notify-release:
+    name: Notify Release
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    
+    steps:
+    - name: Notify new release
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const release = context.payload.release;
+          const action = context.payload.action;
+          
+          if (action === 'published') {
+            const message = `🎉 **New Release Published!**
+            
+            **Version:** ${release.tag_name}
+            **Title:** ${release.name || release.tag_name}
+            
+            ${release.body ? `**Description:**\n${release.body.substring(0, 500)}${release.body.length > 500 ? '...' : ''}` : ''}
+            
+            🔗 [Download Release](${release.html_url})
+            📦 [View on NPM](https://www.npmjs.com/package/chill-ui)`;
+            
+            // You can add Slack/Discord webhook notifications here
+            console.log(`Release notification: ${message}`);
+          }
+
+  notify-critical-issues:
+    name: Notify Critical Issues
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues' && github.event.action == 'opened'
+    
+    steps:
+    - name: Check for critical issues
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const issue = context.payload.issue;
+          const labels = issue.labels.map(label => label.name);
+          
+          const isCritical = labels.includes('priority: critical') || 
+                           labels.includes('bug') && labels.includes('priority: high');
+          
+          if (isCritical) {
+            const message = `🚨 **Critical Issue Opened**
+            
+            **Title:** ${issue.title}
+            **Number:** #${issue.number}
+            **Labels:** ${labels.join(', ')}
+            
+            🔗 [View Issue](${issue.html_url})`;
+            
+            // You can add Slack/Discord webhook notifications here
+            console.log(`Critical issue notification: ${message}`);
+          }
+
+  notify-pr-merged:
+    name: Notify PR Merged
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged
+    
+    steps:
+    - name: Notify PR merged
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const pr = context.payload.pull_request;
+          const labels = pr.labels.map(label => label.name);
+          
+          // Only notify for significant PRs
+          const isSignificant = labels.includes('priority: high') || 
+                              labels.includes('priority: critical') ||
+                              labels.includes('breaking-change') ||
+                              pr.additions > 100 || pr.deletions > 100;
+          
+          if (isSignificant) {
+            const message = `🎉 **Significant PR Merged**
+            
+            **Title:** ${pr.title}
+            **Number:** #${pr.number}
+            **Author:** @${pr.user.login}
+            **Changes:** +${pr.additions} -${pr.deletions}
+            **Labels:** ${labels.join(', ')}
+            
+            🔗 [View PR](${pr.html_url})`;
+            
+            // You can add Slack/Discord webhook notifications here
+            console.log(`PR merged notification: ${message}`);
+          }
+
+  weekly-summary:
+    name: Weekly Summary
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    
+    steps:
+    - name: Generate weekly summary
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const oneWeekAgo = new Date();
+          oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+          
+          // Get recent issues
+          const { data: issues } = await github.rest.issues.listForRepo({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            state: 'all',
+            since: oneWeekAgo.toISOString(),
+            sort: 'created',
+            direction: 'desc'
+          });
+          
+          // Get recent PRs
+          const { data: prs } = await github.rest.pulls.list({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            state: 'all',
+            sort: 'updated',
+            direction: 'desc'
+          });
+          
+          const recentPrs = prs.filter(pr => new Date(pr.updated_at) > oneWeekAgo);
+          
+          // Get recent releases
+          const { data: releases } = await github.rest.repos.listReleases({
+            owner: context.repo.owner,
+            repo: context.repo.repo
+          });
+          
+          const recentReleases = releases.filter(release => new Date(release.published_at) > oneWeekAgo);
+          
+          const summary = `📊 **Weekly Summary** (${oneWeekAgo.toLocaleDateString()} - ${new Date().toLocaleDateString()})
+          
+          **📝 Issues:**
+          - New: ${issues.filter(i => !i.pull_request).length}
+          - Closed: ${issues.filter(i => !i.pull_request && i.state === 'closed').length}
+          
+          **🔄 Pull Requests:**
+          - New: ${recentPrs.length}
+          - Merged: ${recentPrs.filter(pr => pr.merged_at).length}
+          
+          **🚀 Releases:**
+          - Published: ${recentReleases.length}
+          ${recentReleases.map(r => `  - ${r.tag_name}`).join('\n')}
+          
+          **📈 Activity:**
+          - Total issues: ${issues.length}
+          - Total PRs: ${recentPrs.length}
+          - Total releases: ${recentReleases.length}`;
+          
+          // You can add Slack/Discord webhook notifications here
+          console.log(`Weekly summary: ${summary}`);

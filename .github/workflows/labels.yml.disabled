@@ -1,0 +1,83 @@
+name: Manage Labels
+
+on:
+  push:
+    branches: [ main ]
+    paths: [ '.github/labels.yml' ]
+  workflow_dispatch:
+
+jobs:
+  sync-labels:
+    name: Sync Labels
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Sync Labels
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          const yaml = require('js-yaml');
+          
+          try {
+            // Read labels configuration
+            const labelsConfig = yaml.load(fs.readFileSync('.github/labels.yml', 'utf8'));
+            
+            // Get existing labels
+            const { data: existingLabels } = await github.rest.issues.listLabelsForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            
+            const existingLabelNames = existingLabels.map(label => label.name);
+            
+            // Create or update labels
+            for (const label of labelsConfig) {
+              if (existingLabelNames.includes(label.name)) {
+                // Update existing label
+                await github.rest.issues.updateLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label.name,
+                  color: label.color,
+                  description: label.description,
+                });
+                console.log(`Updated label: ${label.name}`);
+              } else {
+                // Create new label
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label.name,
+                  color: label.color,
+                  description: label.description,
+                });
+                console.log(`Created label: ${label.name}`);
+              }
+            }
+            
+            // Remove labels that are not in the configuration
+            for (const existingLabel of existingLabels) {
+              if (!labelsConfig.some(label => label.name === existingLabel.name)) {
+                // Skip default GitHub labels
+                const defaultLabels = ['bug', 'duplicate', 'enhancement', 'good first issue', 'help wanted', 'invalid', 'question', 'wontfix'];
+                if (!defaultLabels.includes(existingLabel.name)) {
+                  await github.rest.issues.deleteLabel({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    name: existingLabel.name,
+                  });
+                  console.log(`Deleted label: ${existingLabel.name}`);
+                }
+              }
+            }
+            
+            console.log('✅ Labels synchronized successfully!');
+            
+          } catch (error) {
+            console.error('❌ Error synchronizing labels:', error);
+            throw error;
+          }

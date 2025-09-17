@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig",
+  "exclude": [
+    "example",
+    "chill-ui-watch/.storybook",
+    "chill-ui-watch/stories",
+    "chill-ui-watch/node_modules",
+    "chill-ui-watch/dist",
+    "chill-ui-watch/assets",
+    "chill-ui-watch/.expo"
+  ],
+  "include": ["generated/core-stylesheet/src/**/*"]
+  // "compilerOptions": {
+  //   "types": ["nativewind/types"]
+  // }
+}

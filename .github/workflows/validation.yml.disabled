@@ -1,0 +1,486 @@
+name: Validation
+
+on:
+  push:
+    branches: [main, develop, tests-branch]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+jobs:
+  code-validation:
+    name: Code Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Run TypeScript check
+        run: |
+          cd chill-ui-core
+          echo "Running TypeScript check..."
+          bun run ts:check
+
+      - name: Run ESLint
+        run: |
+          cd chill-ui-core
+          echo "Running ESLint..."
+          bun run lint
+
+      - name: Run Prettier check
+        run: |
+          cd chill-ui-core
+          echo "Running Prettier check..."
+          bun run format --check
+
+      - name: Check for console statements
+        run: |
+          cd chill-ui-core
+          echo "Checking for console statements..."
+
+          # Check for console statements in production code
+          if grep -r "console\." src/ --include="*.ts" --include="*.tsx" | grep -v "console.error\|console.warn"; then
+            echo "⚠️ Found console statements in production code"
+            exit 1
+          else
+            echo "✅ No console statements found in production code"
+          fi
+
+      - name: Check for debugger statements
+        run: |
+          cd chill-ui-core
+          echo "Checking for debugger statements..."
+
+          # Check for debugger statements
+          if grep -r "debugger" src/ --include="*.ts" --include="*.tsx"; then
+            echo "⚠️ Found debugger statements in production code"
+            exit 1
+          else
+            echo "✅ No debugger statements found in production code"
+          fi
+
+  build-validation:
+    name: Build Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Clean previous builds
+        run: |
+          bun run clean
+
+      - name: Build core library
+        run: |
+          bun run build
+
+      - name: Build hybrid variant
+        run: |
+          bun run build:hybrid
+
+      - name: Build tailwind variant
+        run: |
+          bun run build:tailwind
+
+      - name: Build stylesheet variant
+        run: |
+          bun run build:stylesheet
+
+      - name: Validate build outputs
+        run: |
+          echo "Validating build outputs..."
+
+          # Check if all required files exist
+          required_files=(
+            "lib/commonjs/index.js"
+            "lib/module/index.js"
+            "lib/typescript/index.d.ts"
+            "lib-tw/commonjs/index.js"
+            "lib-tw/module/index.js"
+            "lib-tw/typescript/index.d.ts"
+            "lib-ss/commonjs/index.js"
+            "lib-ss/module/index.js"
+            "lib-ss/typescript/index.d.ts"
+          )
+
+          for file in "${required_files[@]}"; do
+            if [ -f "$file" ]; then
+              echo "✅ $file exists"
+            else
+              echo "❌ $file is missing"
+              exit 1
+            fi
+          done
+
+      - name: Test build imports
+        run: |
+          echo "Testing build imports..."
+
+          # Test that all variants can be imported
+          for variant in lib lib-tw lib-ss; do
+            echo "Testing $variant variant..."
+            node -e "
+              try {
+                const variant = require('./$variant/commonjs/index.js');
+                console.log('✅ $variant variant imported successfully');
+              } catch (error) {
+                console.error('❌ $variant variant import failed:', error.message);
+                process.exit(1);
+              }
+            "
+          done
+
+  dependency-validation:
+    name: Dependency Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Validate package.json
+        run: |
+          cd chill-ui-core
+          echo "Validating package.json..."
+
+          # Check if package.json is valid JSON
+          if jq empty package.json; then
+            echo "✅ package.json is valid JSON"
+          else
+            echo "❌ package.json is invalid JSON"
+            exit 1
+          fi
+
+          # Check required fields
+          required_fields=("name" "version" "description" "main" "types")
+          for field in "${required_fields[@]}"; do
+            if jq -e ".$field" package.json > /dev/null; then
+              echo "✅ $field field exists"
+            else
+              echo "❌ $field field is missing"
+              exit 1
+            fi
+          done
+
+      - name: Check for security vulnerabilities
+        run: |
+          cd chill-ui-core
+          echo "Checking for security vulnerabilities..."
+
+          # Run security audit
+          if bun audit --audit-level moderate; then
+            echo "✅ No security vulnerabilities found"
+          else
+            echo "⚠️ Security vulnerabilities detected"
+            exit 1
+          fi
+
+      - name: Check for license compliance
+        run: |
+          cd chill-ui-core
+          echo "Checking for license compliance..."
+
+          # Check for problematic licenses
+          problematic_licenses=("GPL" "AGPL" "LGPL" "Copyleft")
+
+          for license in "${problematic_licenses[@]}"; do
+            if grep -r -i "$license" node_modules/ --include="package.json" | grep -q "license"; then
+              echo "⚠️ Found potentially problematic license: $license"
+              exit 1
+            fi
+          done
+
+          echo "✅ License compliance check passed"
+
+  documentation-validation:
+    name: Documentation Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Validate README files
+        run: |
+          echo "Validating README files..."
+
+          # Check if main README exists
+          if [ -f "README.md" ]; then
+            echo "✅ Main README exists"
+          else
+            echo "❌ Main README is missing"
+            exit 1
+          fi
+
+          # Check if core README exists
+          if [ -f "chill-ui-core/README.md" ]; then
+            echo "✅ Core README exists"
+          else
+            echo "❌ Core README is missing"
+            exit 1
+          fi
+
+      - name: Check documentation links
+        run: |
+          echo "Checking documentation links..."
+
+          # Check for broken links in README files
+          find . -name "README.md" | while read file; do
+            echo "Checking links in $file"
+            # Simple check for common link patterns
+            grep -n "http" "$file" | while read line; do
+              url=$(echo "$line" | sed 's/.*http[^[:space:]]*//')
+              if [ -n "$url" ]; then
+                if ! curl -s --head "$url" | head -n 1 | grep -q "200 OK"; then
+                  echo "⚠️ Potentially broken link in $file: $url"
+                fi
+              fi
+            done
+          done
+
+      - name: Validate component documentation
+        run: |
+          echo "Validating component documentation..."
+
+          # Check if all components have README files
+          find chill-ui-core/src/components -type d -mindepth 1 -maxdepth 1 | while read dir; do
+            component_name=$(basename "$dir")
+            readme_file="$dir/README.md"
+            
+            if [ ! -f "$readme_file" ]; then
+              echo "⚠️ Missing README for component: $component_name"
+            else
+              # Check if README has required sections
+              if ! grep -q "## Usage" "$readme_file"; then
+                echo "⚠️ README for $component_name missing Usage section"
+              fi
+              if ! grep -q "## Props" "$readme_file"; then
+                echo "⚠️ README for $component_name missing Props section"
+              fi
+            fi
+          done
+
+  performance-validation:
+    name: Performance Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Build library
+        run: |
+          bun run build
+
+      - name: Check bundle sizes
+        run: |
+          echo "Checking bundle sizes..."
+
+          # Check if bundles are not too large
+          max_size=1048576  # 1MB
+
+          for file in lib/*/index.js lib-tw/*/index.js lib-ss/*/index.js; do
+            if [ -f "$file" ]; then
+              size=$(stat -f%z "$file" 2>/dev/null || stat -c%s "$file" 2>/dev/null)
+              if [ "$size" -gt "$max_size" ]; then
+                echo "⚠️ Bundle $file is larger than 1MB: $(($size / 1024 / 1024))MB"
+                exit 1
+              else
+                echo "✅ Bundle $file size is acceptable: $(($size / 1024))KB"
+              fi
+            fi
+          done
+
+      - name: Check import performance
+        run: |
+          echo "Checking import performance..."
+
+          # Measure import time
+          import_time=$(node -e "
+            const start = process.hrtime.bigint();
+            require('./lib/commonjs/index.js');
+            const end = process.hrtime.bigint();
+            console.log(Number(end - start) / 1000000);
+          ")
+
+          echo "Import time: ${import_time}ms"
+
+          # Check if import time is acceptable
+          if (( $(echo "$import_time > 100" | bc -l) )); then
+            echo "⚠️ Import time is too slow: ${import_time}ms (threshold: 100ms)"
+            exit 1
+          else
+            echo "✅ Import time is acceptable: ${import_time}ms"
+          fi
+
+  validation-report:
+    name: Validation Report
+    runs-on: ubuntu-latest
+    needs: [code-validation, build-validation, dependency-validation, documentation-validation, performance-validation]
+    if: always()
+
+    steps:
+      - name: Generate validation report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const report = `## ✅ Validation Report
+
+            **Date:** ${new Date().toLocaleDateString()}
+            **Time:** ${new Date().toLocaleTimeString()}
+
+            ### Validation Results
+            - **Code Validation:** ${{ needs.code-validation.result === 'success' ? '✅ Passed' : '❌ Failed' }}
+            - **Build Validation:** ${{ needs.build-validation.result === 'success' ? '✅ Passed' : '❌ Failed' }}
+            - **Dependency Validation:** ${{ needs.dependency-validation.result === 'success' ? '✅ Passed' : '❌ Failed' }}
+            - **Documentation Validation:** ${{ needs.documentation-validation.result === 'success' ? '✅ Passed' : '❌ Failed' }}
+            - **Performance Validation:** ${{ needs.performance-validation.result === 'success' ? '✅ Passed' : '❌ Failed' }}
+
+            ### Summary
+            ${{ needs.code-validation.result === 'success' && needs.build-validation.result === 'success' && needs.dependency-validation.result === 'success' && needs.documentation-validation.result === 'success' && needs.performance-validation.result === 'success' ? '✅ All validations passed' : '⚠️ Some validations failed' }}
+
+            ### Details
+            - **Repository:** ${{ github.repository }}
+            - **Commit:** ${{ github.sha }}
+            - **Branch:** ${{ github.ref_name }}
+
+            ### Recommendations
+            - Address any failed validations
+            - Maintain code quality standards
+            - Keep documentation up to date
+            - Monitor performance metrics
+
+            ---
+            *This validation report was automatically generated.*`;
+
+            // Create a discussion with the validation report
+            await github.rest.discussions.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Validation Report - ${new Date().toLocaleDateString()}`,
+              body: report,
+              category: 'general'
+            });
+
+            console.log('Validation report generated successfully');
+
+      - name: Alert on validation failure
+        uses: actions/github-script@v7
+        if: failure()
+        with:
+          script: |
+            const alert = `🚨 **Validation Failure Alert**
+
+            **Date:** ${new Date().toLocaleDateString()}
+            **Time:** ${new Date().toLocaleTimeString()}
+
+            ### Failed Validations
+            ${{ needs.code-validation.result !== 'success' ? '- Code validation failed' : '' }}
+            ${{ needs.build-validation.result !== 'success' ? '- Build validation failed' : '' }}
+            ${{ needs.dependency-validation.result !== 'success' ? '- Dependency validation failed' : '' }}
+            ${{ needs.documentation-validation.result !== 'success' ? '- Documentation validation failed' : '' }}
+            ${{ needs.performance-validation.result !== 'success' ? '- Performance validation failed' : '' }}
+
+            ### Details
+            - **Repository:** ${{ github.repository }}
+            - **Commit:** ${{ github.sha }}
+            - **Run ID:** ${{ github.run_id }}
+
+            🔗 [View Workflow Run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+            ---
+            *This is an automated validation failure alert.*`;
+
+            // You can add Slack/Discord webhook notifications here
+            console.log(`Validation failure alert: ${alert}`);
+
+            // Create an issue for validation failures
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🚨 Validation Failure - ${new Date().toLocaleDateString()}`,
+              body: alert,
+              labels: ['validation', 'priority: high']
+            });

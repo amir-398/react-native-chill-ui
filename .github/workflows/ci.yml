@@ -1,0 +1,122 @@
+name: CI
+
+on:
+  push:
+    branches: [main, staging, develop]
+  pull_request:
+    branches: [main, staging, develop]
+
+jobs:
+  lint-test-type-check:
+    name: Test & Lint & Type Check
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Cache Bun dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.bun/install/cache
+            chill-ui-core/node_modules
+          key: ${{ runner.os }}-bun-${{ hashFiles('chill-ui-core/bun.lockb') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Run TypeScript check
+        run: |
+          cd chill-ui-core
+          bun run ts:check
+
+      - name: Run ESLint
+        run: |
+          cd chill-ui-core
+          bun run lint
+
+      - name: Run tests
+        run: |
+          cd chill-ui-core
+          bun run test:coverage
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./chill-ui-core/coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+          verbose: true
+
+  generate-cors:
+    name: Generate CORS Components
+    runs-on: ubuntu-latest
+    needs: lint-test-type-check
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.BOT_ACTIONS_ACCESS_TOKEN }}
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Cache Bun dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.bun/install/cache
+            chill-ui-core/node_modules
+          key: ${{ runner.os }}-bun-${{ hashFiles('chill-ui-core/bun.lockb') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Generate CORS components
+        run: |
+          bun run generate:cors box
+
+      - name: Run ESLint fix on generated CORS
+        run: |
+          bun run lint:generated-cors --fix
+
+      - name: Run ESLint check on generated CORS
+        run: |
+          bun run lint:generated-cors
+
+      - name: Run TypeScript check on generated CORS
+        run: |
+          bun run ts:check:generated-cors
+
+      - name: Build generated CORS packages
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging')
+        run: |
+          bun run build:all
+
+      - name: Pack generated CORS packages
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging')
+        run: |
+          bun run pack:all

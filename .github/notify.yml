@@ -1,0 +1,63 @@
+# Configuration des notifications GitHub
+# Ce fichier configure les notifications automatiques pour les événements du repository
+
+notifications:
+  # Notifications pour les releases
+  release:
+    - type: "success"
+      message: "🎉 New release published: {version}"
+      channels: ["#releases"]
+    
+    - type: "failure"
+      message: "❌ Release failed for version: {version}"
+      channels: ["#alerts"]
+
+  # Notifications pour les builds
+  build:
+    - type: "success"
+      message: "✅ Build successful for {branch}"
+      channels: ["#builds"]
+    
+    - type: "failure"
+      message: "❌ Build failed for {branch}"
+      channels: ["#alerts"]
+
+  # Notifications pour les tests
+  test:
+    - type: "failure"
+      message: "🧪 Tests failed on {branch}"
+      channels: ["#alerts"]
+    
+    - type: "coverage"
+      message: "📊 Test coverage: {coverage}%"
+      channels: ["#metrics"]
+
+  # Notifications pour les dépendances
+  dependencies:
+    - type: "update"
+      message: "📦 Dependencies updated: {package}"
+      channels: ["#dependencies"]
+    
+    - type: "vulnerability"
+      message: "🚨 Security vulnerability found: {package}"
+      channels: ["#security"]
+
+  # Notifications pour les issues critiques
+  issues:
+    - type: "critical"
+      message: "🚨 Critical issue opened: {title}"
+      channels: ["#alerts"]
+    
+    - type: "high"
+      message: "⚠️ High priority issue: {title}"
+      channels: ["#issues"]
+
+# Configuration des canaux de notification
+channels:
+  releases: "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK"
+  builds: "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK"
+  alerts: "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK"
+  metrics: "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK"
+  dependencies: "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK"
+  security: "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK"
+  issues: "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK"

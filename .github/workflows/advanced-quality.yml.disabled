@@ -1,0 +1,949 @@
+name: Advanced Quality
+
+on:
+  schedule:
+    # Run quality checks daily at 6:00 AM UTC
+    - cron: '0 6 * * *'
+  push:
+    branches: [main, develop, tests-branch]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+    inputs:
+      quality_check_type:
+        description: 'Type of quality check to run'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - code_quality
+          - test_coverage
+          - performance
+          - maintainability
+          - documentation
+      quality_threshold:
+        description: 'Quality threshold level'
+        required: false
+        default: 'high'
+        type: choice
+        options:
+          - low
+          - medium
+          - high
+          - excellent
+
+jobs:
+  code-quality-analysis:
+    name: Code Quality Analysis
+    runs-on: ubuntu-latest
+    if: github.event.inputs.quality_check_type == 'all' || github.event.inputs.quality_check_type == 'code_quality'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Run ESLint analysis
+        id: eslint-analysis
+        run: |
+          echo "Running ESLint analysis..."
+
+          cd chill-ui-core
+
+          # Run ESLint and capture output
+          if bun run lint; then
+            echo "eslint-status=passed" >> $GITHUB_OUTPUT
+            echo "✅ ESLint analysis passed"
+          else
+            echo "eslint-status=failed" >> $GITHUB_OUTPUT
+            echo "⚠️ ESLint analysis failed"
+          fi
+
+      - name: Run TypeScript analysis
+        id: typescript-analysis
+        run: |
+          echo "Running TypeScript analysis..."
+
+          cd chill-ui-core
+
+          # Run TypeScript check
+          if bun run ts:check; then
+            echo "typescript-status=passed" >> $GITHUB_OUTPUT
+            echo "✅ TypeScript analysis passed"
+          else
+            echo "typescript-status=failed" >> $GITHUB_OUTPUT
+            echo "⚠️ TypeScript analysis failed"
+          fi
+
+      - name: Run Prettier analysis
+        id: prettier-analysis
+        run: |
+          echo "Running Prettier analysis..."
+
+          cd chill-ui-core
+
+          # Run Prettier check
+          if bun run format --check; then
+            echo "prettier-status=passed" >> $GITHUB_OUTPUT
+            echo "✅ Prettier analysis passed"
+          else
+            echo "prettier-status=failed" >> $GITHUB_OUTPUT
+            echo "⚠️ Prettier analysis failed"
+          fi
+
+      - name: Analyze code complexity
+        id: complexity-analysis
+        run: |
+          echo "Analyzing code complexity..."
+
+          cd chill-ui-core
+
+          # Analyze function complexity
+          complex_functions=$(find src -name "*.ts" -o -name "*.tsx" | xargs grep -l "function\|const.*=" | xargs wc -l | awk '$1 > 50 {print $2}' | wc -l)
+
+          # Analyze cyclomatic complexity
+          high_complexity=$(find src -name "*.ts" -o -name "*.tsx" | xargs grep -c "if\|for\|while\|switch\|catch\|&&\|||" | awk -F: '$2 > 10 {print $1}' | wc -l)
+
+          # Analyze nesting depth
+          deep_nesting=$(find src -name "*.ts" -o -name "*.tsx" | xargs grep -c "{" | awk -F: '$2 > 5 {print $1}' | wc -l)
+
+          echo "complex-functions=$complex_functions" >> $GITHUB_OUTPUT
+          echo "high-complexity=$high_complexity" >> $GITHUB_OUTPUT
+          echo "deep-nesting=$deep_nesting" >> $GITHUB_OUTPUT
+
+          echo "Complex functions (>50 lines): $complex_functions"
+          echo "High complexity files (>10 conditions): $high_complexity"
+          echo "Deep nesting files (>5 levels): $deep_nesting"
+
+      - name: Check code duplication
+        run: |
+          echo "Checking code duplication..."
+
+          cd chill-ui-core
+
+          # Check for duplicate code patterns
+          duplicates=$(find src -name "*.ts" -o -name "*.tsx" | xargs grep -h "function\|const\|class" | sort | uniq -d | wc -l)
+
+          echo "duplicates=$duplicates" >> $GITHUB_OUTPUT
+
+          if [ "$duplicates" -gt 0 ]; then
+            echo "⚠️ Found $duplicates potential code duplicates"
+          else
+            echo "✅ No code duplicates found"
+          fi
+
+      - name: Generate code quality report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const report = `## 🔍 Code Quality Analysis Report
+
+            **Date:** ${new Date().toLocaleDateString()}
+            **Time:** ${new Date().toLocaleTimeString()}
+
+            ### Code Quality Status
+            - **ESLint:** ${{ steps.eslint-analysis.outputs.eslint-status === 'passed' ? '✅ Passed' : '❌ Failed' }}
+            - **TypeScript:** ${{ steps.typescript-analysis.outputs.typescript-status === 'passed' ? '✅ Passed' : '❌ Failed' }}
+            - **Prettier:** ${{ steps.prettier-analysis.outputs.prettier-status === 'passed' ? '✅ Passed' : '❌ Failed' }}
+            - **Complex Functions:** ${{ steps.complexity-analysis.outputs.complex-functions }}
+            - **High Complexity Files:** ${{ steps.complexity-analysis.outputs.high-complexity }}
+            - **Deep Nesting Files:** ${{ steps.complexity-analysis.outputs.deep-nesting }}
+            - **Code Duplicates:** ${{ steps.complexity-analysis.outputs.duplicates }}
+
+            ### Quality Score
+            ${{ steps.eslint-analysis.outputs.eslint-status === 'passed' && steps.typescript-analysis.outputs.typescript-status === 'passed' && steps.prettier-analysis.outputs.prettier-status === 'passed' ? '🟢 **High Quality** - Code meets quality standards' : '🟡 **Quality Issues** - Code needs improvement' }}
+
+            ### Recommendations
+            - Fix linting errors
+            - Resolve TypeScript issues
+            - Format code consistently
+            - Reduce function complexity
+            - Simplify nested structures
+            - Eliminate code duplication
+            - Improve code readability
+
+            ---
+            *This code quality analysis report was automatically generated.*`;
+
+            // Create a discussion with the code quality report
+            await github.rest.discussions.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Code Quality Analysis Report - ${new Date().toLocaleDateString()}`,
+              body: report,
+              category: 'quality'
+            });
+
+            console.log('Code quality analysis report generated successfully');
+
+  test-coverage-analysis:
+    name: Test Coverage Analysis
+    runs-on: ubuntu-latest
+    if: github.event.inputs.quality_check_type == 'all' || github.event.inputs.quality_check_type == 'test_coverage'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Run tests with coverage
+        id: test-coverage
+        run: |
+          echo "Running tests with coverage..."
+
+          cd chill-ui-core
+
+          # Run tests with coverage
+          if bun run test --coverage; then
+            echo "test-status=passed" >> $GITHUB_OUTPUT
+            echo "✅ Tests passed"
+          else
+            echo "test-status=failed" >> $GITHUB_OUTPUT
+            echo "⚠️ Tests failed"
+          fi
+
+      - name: Analyze coverage metrics
+        id: coverage-metrics
+        run: |
+          echo "Analyzing coverage metrics..."
+
+          cd chill-ui-core
+
+          # Check if coverage report exists
+          if [ -f "coverage/coverage-summary.json" ]; then
+            # Extract coverage metrics
+            total_coverage=$(jq -r '.total.lines.pct' coverage/coverage-summary.json)
+            functions_coverage=$(jq -r '.total.functions.pct' coverage/coverage-summary.json)
+            branches_coverage=$(jq -r '.total.branches.pct' coverage/coverage-summary.json)
+            statements_coverage=$(jq -r '.total.statements.pct' coverage/coverage-summary.json)
+            
+            echo "total-coverage=$total_coverage" >> $GITHUB_OUTPUT
+            echo "functions-coverage=$functions_coverage" >> $GITHUB_OUTPUT
+            echo "branches-coverage=$branches_coverage" >> $GITHUB_OUTPUT
+            echo "statements-coverage=$statements_coverage" >> $GITHUB_OUTPUT
+            
+            echo "Total coverage: ${total_coverage}%"
+            echo "Functions coverage: ${functions_coverage}%"
+            echo "Branches coverage: ${branches_coverage}%"
+            echo "Statements coverage: ${statements_coverage}%"
+          else
+            echo "⚠️ Coverage report not found"
+            echo "total-coverage=0" >> $GITHUB_OUTPUT
+            echo "functions-coverage=0" >> $GITHUB_OUTPUT
+            echo "branches-coverage=0" >> $GITHUB_OUTPUT
+            echo "statements-coverage=0" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check coverage thresholds
+        run: |
+          echo "Checking coverage thresholds..."
+
+          total_coverage="${{ steps.coverage-metrics.outputs.total-coverage }}"
+          functions_coverage="${{ steps.coverage-metrics.outputs.functions-coverage }}"
+          branches_coverage="${{ steps.coverage-metrics.outputs.branches-coverage }}"
+          statements_coverage="${{ steps.coverage-metrics.outputs.statements-coverage }}"
+
+          # Set thresholds based on quality level
+          case "${{ github.event.inputs.quality_threshold }}" in
+            "low")
+              total_threshold=60
+              functions_threshold=60
+              branches_threshold=60
+              statements_threshold=60
+              ;;
+            "medium")
+              total_threshold=70
+              functions_threshold=70
+              branches_threshold=70
+              statements_threshold=70
+              ;;
+            "high")
+              total_threshold=80
+              functions_threshold=80
+              branches_threshold=80
+              statements_threshold=80
+              ;;
+            "excellent")
+              total_threshold=90
+              functions_threshold=90
+              branches_threshold=90
+              statements_threshold=90
+              ;;
+            *)
+              total_threshold=80
+              functions_threshold=80
+              branches_threshold=80
+              statements_threshold=80
+              ;;
+          esac
+
+          # Check if coverage meets thresholds
+          if (( $(echo "$total_coverage >= $total_threshold" | bc -l) )); then
+            echo "✅ Total coverage meets threshold: ${total_coverage}% >= ${total_threshold}%"
+          else
+            echo "⚠️ Total coverage below threshold: ${total_coverage}% < ${total_threshold}%"
+          fi
+
+          if (( $(echo "$functions_coverage >= $functions_threshold" | bc -l) )); then
+            echo "✅ Functions coverage meets threshold: ${functions_coverage}% >= ${functions_threshold}%"
+          else
+            echo "⚠️ Functions coverage below threshold: ${functions_coverage}% < ${functions_threshold}%"
+          fi
+
+          if (( $(echo "$branches_coverage >= $branches_threshold" | bc -l) )); then
+            echo "✅ Branches coverage meets threshold: ${branches_coverage}% >= ${branches_threshold}%"
+          else
+            echo "⚠️ Branches coverage below threshold: ${branches_coverage}% < ${branches_threshold}%"
+          fi
+
+          if (( $(echo "$statements_coverage >= $statements_threshold" | bc -l) )); then
+            echo "✅ Statements coverage meets threshold: ${statements_coverage}% >= ${statements_threshold}%"
+          else
+            echo "⚠️ Statements coverage below threshold: ${statements_coverage}% < ${statements_threshold}%"
+          fi
+
+      - name: Generate test coverage report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const report = `## 🧪 Test Coverage Analysis Report
+
+            **Date:** ${new Date().toLocaleDateString()}
+            **Time:** ${new Date().toLocaleTimeString()}
+
+            ### Test Coverage Metrics
+            - **Total Coverage:** ${{ steps.coverage-metrics.outputs.total-coverage }}%
+            - **Functions Coverage:** ${{ steps.coverage-metrics.outputs.functions-coverage }}%
+            - **Branches Coverage:** ${{ steps.coverage-metrics.outputs.branches-coverage }}%
+            - **Statements Coverage:** ${{ steps.coverage-metrics.outputs.statements-coverage }}%
+
+            ### Coverage Status
+            ${{ steps.test-coverage.outputs.test-status === 'passed' ? '🟢 **Tests Passed** - All tests are passing' : '🔴 **Tests Failed** - Some tests are failing' }}
+
+            ### Quality Assessment
+            ${{ steps.coverage-metrics.outputs.total-coverage >= 80 ? '🟢 **High Coverage** - Test coverage meets quality standards' : steps.coverage-metrics.outputs.total-coverage >= 60 ? '🟡 **Medium Coverage** - Test coverage needs improvement' : '🔴 **Low Coverage** - Test coverage is insufficient' }}
+
+            ### Recommendations
+            - Increase test coverage
+            - Add edge case tests
+            - Improve test quality
+            - Implement integration tests
+            - Add performance tests
+            - Monitor coverage trends
+
+            ---
+            *This test coverage analysis report was automatically generated.*`;
+
+            // Create a discussion with the test coverage report
+            await github.rest.discussions.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Test Coverage Analysis Report - ${new Date().toLocaleDateString()}`,
+              body: report,
+              category: 'quality'
+            });
+
+            console.log('Test coverage analysis report generated successfully');
+
+  performance-analysis:
+    name: Performance Analysis
+    runs-on: ubuntu-latest
+    if: github.event.inputs.quality_check_type == 'all' || github.event.inputs.quality_check_type == 'performance'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Build library
+        run: |
+          bun run build
+
+      - name: Measure bundle sizes
+        id: bundle-sizes
+        run: |
+          echo "Measuring bundle sizes..."
+
+          # Measure bundle sizes
+          for variant in lib lib-tw lib-ss; do
+            if [ -d "$variant" ]; then
+              for format in commonjs module typescript; do
+                if [ -d "$variant/$format" ]; then
+                  size=$(du -sb "$variant/$format" | cut -f1)
+                  echo "$variant-$format-size=$size" >> $GITHUB_OUTPUT
+                  echo "$variant-$format-size-kb=$(($size / 1024))" >> $GITHUB_OUTPUT
+                  echo "Bundle $variant/$format: $(($size / 1024))KB"
+                fi
+              done
+            fi
+          done
+
+      - name: Measure import performance
+        id: import-performance
+        run: |
+          echo "Measuring import performance..."
+
+          # Measure import time
+          import_time=$(node -e "
+            const start = process.hrtime.bigint();
+            require('./lib/commonjs/index.js');
+            const end = process.hrtime.bigint();
+            console.log(Number(end - start) / 1000000);
+          ")
+
+          echo "import-time=$import_time" >> $GITHUB_OUTPUT
+          echo "Import time: ${import_time}ms"
+
+          # Measure memory usage
+          memory_usage=$(node -e "
+            const chillUI = require('./lib/commonjs/index.js');
+            const used = process.memoryUsage();
+            console.log(used.heapUsed / 1024 / 1024);
+          ")
+
+          echo "memory-usage=$memory_usage" >> $GITHUB_OUTPUT
+          echo "Memory usage: ${memory_usage}MB"
+
+      - name: Check performance thresholds
+        run: |
+          echo "Checking performance thresholds..."
+
+          import_time="${{ steps.import-performance.outputs.import-time }}"
+          memory_usage="${{ steps.import-performance.outputs.memory-usage }}"
+
+          # Set thresholds based on quality level
+          case "${{ github.event.inputs.quality_threshold }}" in
+            "low")
+              import_threshold=200
+              memory_threshold=200
+              ;;
+            "medium")
+              import_threshold=150
+              memory_threshold=150
+              ;;
+            "high")
+              import_threshold=100
+              memory_threshold=100
+              ;;
+            "excellent")
+              import_threshold=50
+              memory_threshold=50
+              ;;
+            *)
+              import_threshold=100
+              memory_threshold=100
+              ;;
+          esac
+
+          # Check if performance meets thresholds
+          if (( $(echo "$import_time <= $import_threshold" | bc -l) )); then
+            echo "✅ Import time meets threshold: ${import_time}ms <= ${import_threshold}ms"
+          else
+            echo "⚠️ Import time exceeds threshold: ${import_time}ms > ${import_threshold}ms"
+          fi
+
+          if (( $(echo "$memory_usage <= $memory_threshold" | bc -l) )); then
+            echo "✅ Memory usage meets threshold: ${memory_usage}MB <= ${memory_threshold}MB"
+          else
+            echo "⚠️ Memory usage exceeds threshold: ${memory_usage}MB > ${memory_threshold}MB"
+          fi
+
+      - name: Generate performance report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const report = `## ⚡ Performance Analysis Report
+
+            **Date:** ${new Date().toLocaleDateString()}
+            **Time:** ${new Date().toLocaleTimeString()}
+
+            ### Bundle Sizes
+            - **Core Library (CommonJS):** ${{ steps.bundle-sizes.outputs.lib-commonjs-size-kb }}KB
+            - **Core Library (Module):** ${{ steps.bundle-sizes.outputs.lib-module-size-kb }}KB
+            - **Core Library (TypeScript):** ${{ steps.bundle-sizes.outputs.lib-typescript-size-kb }}KB
+            - **Tailwind Variant (CommonJS):** ${{ steps.bundle-sizes.outputs.lib-tw-commonjs-size-kb }}KB
+            - **Tailwind Variant (Module):** ${{ steps.bundle-sizes.outputs.lib-tw-module-size-kb }}KB
+            - **Tailwind Variant (TypeScript):** ${{ steps.bundle-sizes.outputs.lib-tw-typescript-size-kb }}KB
+            - **Stylesheet Variant (CommonJS):** ${{ steps.bundle-sizes.outputs.lib-ss-commonjs-size-kb }}KB
+            - **Stylesheet Variant (Module):** ${{ steps.bundle-sizes.outputs.lib-ss-module-size-kb }}KB
+            - **Stylesheet Variant (TypeScript):** ${{ steps.bundle-sizes.outputs.lib-ss-typescript-size-kb }}KB
+
+            ### Performance Metrics
+            - **Import Time:** ${{ steps.import-performance.outputs.import-time }}ms
+            - **Memory Usage:** ${{ steps.import-performance.outputs.memory-usage }}MB
+
+            ### Performance Status
+            ${{ steps.import-performance.outputs.import-time <= 100 && steps.import-performance.outputs.memory-usage <= 100 ? '🟢 **High Performance** - Performance meets quality standards' : '🟡 **Performance Issues** - Performance needs optimization' }}
+
+            ### Recommendations
+            - Optimize bundle sizes
+            - Improve import performance
+            - Reduce memory footprint
+            - Implement code splitting
+            - Use tree shaking
+            - Monitor performance trends
+
+            ---
+            *This performance analysis report was automatically generated.*`;
+
+            // Create a discussion with the performance report
+            await github.rest.discussions.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Performance Analysis Report - ${new Date().toLocaleDateString()}`,
+              body: report,
+              category: 'quality'
+            });
+
+            console.log('Performance analysis report generated successfully');
+
+  maintainability-analysis:
+    name: Maintainability Analysis
+    runs-on: ubuntu-latest
+    if: github.event.inputs.quality_check_type == 'all' || github.event.inputs.quality_check_type == 'maintainability'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Analyze code structure
+        id: code-structure
+        run: |
+          echo "Analyzing code structure..."
+
+          cd chill-ui-core
+
+          # Count files and directories
+          total_files=$(find src -type f | wc -l)
+          total_dirs=$(find src -type d | wc -l)
+
+          # Count lines of code
+          total_lines=$(find src -name "*.ts" -o -name "*.tsx" | xargs wc -l | tail -1 | awk '{print $1}')
+
+          # Count functions and classes
+          functions=$(find src -name "*.ts" -o -name "*.tsx" | xargs grep -c "function\|const.*=" | awk -F: '{sum += $2} END {print sum}')
+          classes=$(find src -name "*.ts" -o -name "*.tsx" | xargs grep -c "class " | awk -F: '{sum += $2} END {print sum}')
+
+          echo "total-files=$total_files" >> $GITHUB_OUTPUT
+          echo "total-dirs=$total_dirs" >> $GITHUB_OUTPUT
+          echo "total-lines=$total_lines" >> $GITHUB_OUTPUT
+          echo "functions=$functions" >> $GITHUB_OUTPUT
+          echo "classes=$classes" >> $GITHUB_OUTPUT
+
+          echo "Total files: $total_files"
+          echo "Total directories: $total_dirs"
+          echo "Total lines of code: $total_lines"
+          echo "Functions: $functions"
+          echo "Classes: $classes"
+
+      - name: Analyze code organization
+        run: |
+          echo "Analyzing code organization..."
+
+          cd chill-ui-core
+
+          # Check for consistent naming
+          naming_issues=0
+
+          # Check for inconsistent file naming
+          if find src -name "*.ts" -o -name "*.tsx" | grep -v -E "^[a-z][a-zA-Z0-9]*\.(ts|tsx)$"; then
+            echo "⚠️ Inconsistent file naming found"
+            naming_issues=$((naming_issues + 1))
+          fi
+
+          # Check for inconsistent function naming
+          if find src -name "*.ts" -o -name "*.tsx" | xargs grep -n "function " | grep -v -E "function [a-z][a-zA-Z0-9]*"; then
+            echo "⚠️ Inconsistent function naming found"
+            naming_issues=$((naming_issues + 1))
+          fi
+
+          echo "naming-issues=$naming_issues" >> $GITHUB_OUTPUT
+
+          if [ "$naming_issues" -eq 0 ]; then
+            echo "✅ Consistent naming conventions"
+          else
+            echo "⚠️ Found $naming_issues naming convention issues"
+          fi
+
+      - name: Check for code smells
+        run: |
+          echo "Checking for code smells..."
+
+          cd chill-ui-core
+
+          # Check for long parameter lists
+          long_params=$(find src -name "*.ts" -o -name "*.tsx" | xargs grep -n "function.*(" | grep -E "\([^)]{50,}\)" | wc -l)
+
+          # Check for long functions
+          long_functions=$(find src -name "*.ts" -o -name "*.tsx" | xargs wc -l | awk '$1 > 100 {print $2}' | wc -l)
+
+          # Check for deep nesting
+          deep_nesting=$(find src -name "*.ts" -o -name "*.tsx" | xargs grep -c "{" | awk -F: '$2 > 5 {print $1}' | wc -l)
+
+          echo "long-params=$long_params" >> $GITHUB_OUTPUT
+          echo "long-functions=$long_functions" >> $GITHUB_OUTPUT
+          echo "deep-nesting=$deep_nesting" >> $GITHUB_OUTPUT
+
+          echo "Long parameter lists: $long_params"
+          echo "Long functions: $long_functions"
+          echo "Deep nesting: $deep_nesting"
+
+      - name: Generate maintainability report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const report = `## 🔧 Maintainability Analysis Report
+
+            **Date:** ${new Date().toLocaleDateString()}
+            **Time:** ${new Date().toLocaleTimeString()}
+
+            ### Code Structure
+            - **Total Files:** ${{ steps.code-structure.outputs.total-files }}
+            - **Total Directories:** ${{ steps.code-structure.outputs.total-dirs }}
+            - **Total Lines of Code:** ${{ steps.code-structure.outputs.total-lines }}
+            - **Functions:** ${{ steps.code-structure.outputs.functions }}
+            - **Classes:** ${{ steps.code-structure.outputs.classes }}
+
+            ### Code Organization
+            - **Naming Issues:** ${{ steps.code-structure.outputs.naming-issues }}
+            - **Long Parameter Lists:** ${{ steps.code-structure.outputs.long-params }}
+            - **Long Functions:** ${{ steps.code-structure.outputs.long-functions }}
+            - **Deep Nesting:** ${{ steps.code-structure.outputs.deep-nesting }}
+
+            ### Maintainability Status
+            ${{ steps.code-structure.outputs.naming-issues == 0 && steps.code-structure.outputs.long-params == 0 && steps.code-structure.outputs.long-functions == 0 && steps.code-structure.outputs.deep-nesting == 0 ? '🟢 **High Maintainability** - Code is well-organized and maintainable' : '🟡 **Maintainability Issues** - Code needs refactoring' }}
+
+            ### Recommendations
+            - Improve naming conventions
+            - Reduce function complexity
+            - Simplify parameter lists
+            - Reduce nesting depth
+            - Organize code structure
+            - Implement consistent patterns
+
+            ---
+            *This maintainability analysis report was automatically generated.*`;
+
+            // Create a discussion with the maintainability report
+            await github.rest.discussions.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Maintainability Analysis Report - ${new Date().toLocaleDateString()}`,
+              body: report,
+              category: 'quality'
+            });
+
+            console.log('Maintainability analysis report generated successfully');
+
+  documentation-quality:
+    name: Documentation Quality
+    runs-on: ubuntu-latest
+    if: github.event.inputs.quality_check_type == 'all' || github.event.inputs.quality_check_type == 'documentation'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Check documentation completeness
+        id: doc-completeness
+        run: |
+          echo "Checking documentation completeness..."
+
+          # Check if main README exists
+          if [ -f "README.md" ]; then
+            echo "main-readme-exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "main-readme-exists=false" >> $GITHUB_OUTPUT
+          fi
+
+          # Check if core README exists
+          if [ -f "chill-ui-core/README.md" ]; then
+            echo "core-readme-exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "core-readme-exists=false" >> $GITHUB_OUTPUT
+          fi
+
+          # Check component documentation
+          component_docs=0
+          total_components=0
+
+          find chill-ui-core/src/components -type d -mindepth 1 -maxdepth 1 | while read dir; do
+            component_name=$(basename "$dir")
+            readme_file="$dir/README.md"
+            
+            total_components=$((total_components + 1))
+            
+            if [ -f "$readme_file" ]; then
+              component_docs=$((component_docs + 1))
+            fi
+          done
+
+          echo "component-docs=$component_docs" >> $GITHUB_OUTPUT
+          echo "total-components=$total_components" >> $GITHUB_OUTPUT
+
+      - name: Check documentation quality
+        run: |
+          echo "Checking documentation quality..."
+
+          # Check for documentation quality issues
+          quality_issues=0
+
+          # Check for missing sections in README files
+          find . -name "README.md" | while read file; do
+            if ! grep -q "## Installation" "$file"; then
+              echo "⚠️ Missing Installation section in $file"
+              quality_issues=$((quality_issues + 1))
+            fi
+            
+            if ! grep -q "## Usage" "$file"; then
+              echo "⚠️ Missing Usage section in $file"
+              quality_issues=$((quality_issues + 1))
+            fi
+            
+            if ! grep -q "## API" "$file"; then
+              echo "⚠️ Missing API section in $file"
+              quality_issues=$((quality_issues + 1))
+            fi
+          done
+
+          echo "quality-issues=$quality_issues" >> $GITHUB_OUTPUT
+
+          if [ "$quality_issues" -eq 0 ]; then
+            echo "✅ Documentation quality is good"
+          else
+            echo "⚠️ Found $quality_issues documentation quality issues"
+          fi
+
+      - name: Check documentation links
+        run: |
+          echo "Checking documentation links..."
+
+          # Check for broken links in README files
+          broken_links=0
+
+          find . -name "README.md" | while read file; do
+            echo "Checking links in $file"
+            # Simple check for common link patterns
+            grep -n "http" "$file" | while read line; do
+              url=$(echo "$line" | sed 's/.*http[^[:space:]]*//')
+              if [ -n "$url" ]; then
+                if ! curl -s --head "$url" | head -n 1 | grep -q "200 OK"; then
+                  echo "⚠️ Potentially broken link in $file: $url"
+                  broken_links=$((broken_links + 1))
+                fi
+              fi
+            done
+          done
+
+          echo "broken-links=$broken_links" >> $GITHUB_OUTPUT
+
+      - name: Generate documentation quality report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const report = `## 📚 Documentation Quality Report
+
+            **Date:** ${new Date().toLocaleDateString()}
+            **Time:** ${new Date().toLocaleTimeString()}
+
+            ### Documentation Status
+            - **Main README:** ${{ steps.doc-completeness.outputs.main-readme-exists === 'true' ? '✅ Exists' : '❌ Missing' }}
+            - **Core README:** ${{ steps.doc-completeness.outputs.core-readme-exists === 'true' ? '✅ Exists' : '❌ Missing' }}
+            - **Component Documentation:** ${{ steps.doc-completeness.outputs.component-docs }}/${{ steps.doc-completeness.outputs.total-components }}
+            - **Quality Issues:** ${{ steps.doc-completeness.outputs.quality-issues }}
+            - **Broken Links:** ${{ steps.doc-completeness.outputs.broken-links }}
+
+            ### Documentation Quality
+            ${{ steps.doc-completeness.outputs.main-readme-exists === 'true' && steps.doc-completeness.outputs.core-readme-exists === 'true' && steps.doc-completeness.outputs.quality-issues == 0 && steps.doc-completeness.outputs.broken-links == 0 ? '🟢 **High Quality** - Documentation is comprehensive and accurate' : '🟡 **Quality Issues** - Documentation needs improvement' }}
+
+            ### Recommendations
+            - Complete missing documentation
+            - Fix broken links
+            - Add missing sections
+            - Improve documentation quality
+            - Add usage examples
+            - Maintain consistency
+
+            ---
+            *This documentation quality report was automatically generated.*`;
+
+            // Create a discussion with the documentation quality report
+            await github.rest.discussions.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Documentation Quality Report - ${new Date().toLocaleDateString()}`,
+              body: report,
+              category: 'quality'
+            });
+
+            console.log('Documentation quality report generated successfully');
+
+  quality-summary:
+    name: Quality Summary
+    runs-on: ubuntu-latest
+    needs:
+      [
+        code-quality-analysis,
+        test-coverage-analysis,
+        performance-analysis,
+        maintainability-analysis,
+        documentation-quality,
+      ]
+    if: always()
+
+    steps:
+      - name: Generate quality summary
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const summary = `## 📊 Advanced Quality Summary
+
+            **Date:** ${new Date().toLocaleDateString()}
+            **Time:** ${new Date().toLocaleTimeString()}
+
+            ### Quality Analysis Results
+            - **Code Quality Analysis:** ${{ needs.code-quality-analysis.result === 'success' ? '✅ Completed' : '❌ Failed' }}
+            - **Test Coverage Analysis:** ${{ needs.test-coverage-analysis.result === 'success' ? '✅ Completed' : '❌ Failed' }}
+            - **Performance Analysis:** ${{ needs.performance-analysis.result === 'success' ? '✅ Completed' : '❌ Failed' }}
+            - **Maintainability Analysis:** ${{ needs.maintainability-analysis.result === 'success' ? '✅ Completed' : '❌ Failed' }}
+            - **Documentation Quality:** ${{ needs.documentation-quality.result === 'success' ? '✅ Completed' : '❌ Failed' }}
+
+            ### Overall Quality Status
+            ${{ needs.code-quality-analysis.result === 'success' && needs.test-coverage-analysis.result === 'success' && needs.performance-analysis.result === 'success' && needs.maintainability-analysis.result === 'success' && needs.documentation-quality.result === 'success' ? '🟢 **High Quality** - All quality checks passed' : '🟡 **Quality Issues** - Some quality checks failed' }}
+
+            ### Next Steps
+            - Review individual quality reports
+            - Address any identified issues
+            - Implement quality improvements
+            - Monitor quality trends
+            - Set quality goals
+
+            ---
+            *This advanced quality summary was automatically generated.*`;
+
+            // Create a discussion with the quality summary
+            await github.rest.discussions.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Advanced Quality Summary - ${new Date().toLocaleDateString()}`,
+              body: summary,
+              category: 'quality'
+            });
+
+            console.log('Advanced quality summary generated successfully');
+
+      - name: Alert on quality issues
+        uses: actions/github-script@v7
+        if: failure()
+        with:
+          script: |
+            const alert = `🚨 **Quality Issues Alert**
+
+            **Date:** ${new Date().toLocaleDateString()}
+            **Time:** ${new Date().toLocaleTimeString()}
+
+            ### Failed Quality Checks
+            ${{ needs.code-quality-analysis.result !== 'success' ? '- Code quality analysis failed' : '' }}
+            ${{ needs.test-coverage-analysis.result !== 'success' ? '- Test coverage analysis failed' : '' }}
+            ${{ needs.performance-analysis.result !== 'success' ? '- Performance analysis failed' : '' }}
+            ${{ needs.maintainability-analysis.result !== 'success' ? '- Maintainability analysis failed' : '' }}
+            ${{ needs.documentation-quality.result !== 'success' ? '- Documentation quality check failed' : '' }}
+
+            ### Details
+            - **Repository:** ${{ github.repository }}
+            - **Run ID:** ${{ github.run_id }}
+
+            🔗 [View Workflow Run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+            ---
+            *This is an automated quality issues alert.*`;
+
+            // You can add Slack/Discord webhook notifications here
+            console.log(`Quality issues alert: ${alert}`);
+
+            // Create an issue for quality failures
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🚨 Quality Issues Alert - ${new Date().toLocaleDateString()}`,
+              body: alert,
+              labels: ['quality', 'priority: high']
+            });

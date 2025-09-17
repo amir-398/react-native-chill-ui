@@ -1,0 +1,34 @@
+# Global code owners
+* @amirmeb
+
+# Core library components
+/chill-ui-core/src/components/ @amirmeb
+/chill-ui-core/src/types/ @amirmeb
+/chill-ui-core/src/utils/ @amirmeb
+
+# Build configuration
+/bob.config.js @amirmeb
+/tsconfig*.json @amirmeb
+/babel.config.js @amirmeb
+
+# Package configuration
+/package.json @amirmeb
+/chill-ui-core/package.json @amirmeb
+
+# CI/CD configuration
+/.github/ @amirmeb
+
+# Documentation
+/README.md @amirmeb
+/BUILD.md @amirmeb
+/chill-ui-core/README.md @amirmeb
+/chill-ui-core/MIGRATION-GUIDE.md @amirmeb
+
+# Stories and examples
+/chill-ui-core/stories/ @amirmeb
+
+# Generated code (read-only)
+/generated/ @amirmeb
+/lib/ @amirmeb
+/lib-tw/ @amirmeb
+/lib-ss/ @amirmeb

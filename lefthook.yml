@@ -1,0 +1,11 @@
+pre-commit:
+  parallel: true
+  commands:
+    lint:
+      glob: 'chill-ui-core/src/**/*.{js,ts,jsx,tsx}'
+      run: cd chill-ui-core && bun run lint {staged_files}
+      stage_fixed: true
+    types:
+      glob: 'chill-ui-core/src/**/*.{js,ts,jsx,tsx}'
+      run: cd chill-ui-core && bun run ts:check {staged_files}
+      stage_fixed: true

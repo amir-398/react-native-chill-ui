@@ -1,0 +1,241 @@
+name: 💬 General Discussion
+description: Start a general discussion about Chill UI
+title: "[Discussion]: "
+labels: ["discussion"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for starting a discussion! This is a great place to ask questions, share ideas, or discuss the project.
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: What type of discussion is this?
+      options:
+        - General Question
+        - Usage Help
+        - Feature Discussion
+        - Performance
+        - Best Practices
+        - Migration Help
+        - Community
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Discussion Topic
+      description: What would you like to discuss?
+      placeholder: Describe your topic, question, or idea...
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Provide any additional context, code examples, or background information
+      placeholder: |
+        - What have you tried so far?
+        - What's your use case?
+        - Any relevant code examples?
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      description: Please confirm the following
+      options:
+        - label: I have searched existing discussions before creating this one
+          required: true
+        - label: I have provided enough context for others to understand my question/idea
+          required: true
+
+---
+
+name: 🆘 Help & Support
+description: Get help with using Chill UI
+title: "[Help]: "
+labels: ["help", "support"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Need help with Chill UI? We're here to help! Please provide as much detail as possible.
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component/Feature
+      description: Which component or feature do you need help with?
+      options:
+        - Box
+        - Button
+        - Input
+        - Dialog
+        - Avatar
+        - Chip
+        - Slider
+        - Toggle
+        - Installation
+        - Configuration
+        - Build Issues
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: variant
+    attributes:
+      label: Variant
+      description: Which variant are you using?
+      options:
+        - Core (default)
+        - Tailwind
+        - Stylesheet
+        - Hybrid
+        - Not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Your Question
+      description: What specific help do you need?
+      placeholder: Describe your question or problem...
+    validations:
+      required: true
+
+  - type: textarea
+    id: code
+    attributes:
+      label: Code Example
+      description: If applicable, share your code
+      render: typescript
+      placeholder: |
+        ```tsx
+        import { Box } from 'chill-ui';
+        
+        // Your code here
+        ```
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Your development environment
+      placeholder: |
+        - OS: 
+        - React Native version: 
+        - Chill UI version: 
+        - Node.js version: 
+
+  - type: textarea
+    id: tried
+    attributes:
+      label: What Have You Tried?
+      description: Describe what you've already attempted
+      placeholder: |
+        - I've tried...
+        - I've looked at...
+        - I've searched for...
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      description: Please confirm the following
+      options:
+        - label: I have searched existing issues and discussions
+          required: true
+        - label: I have checked the documentation
+          required: true
+        - label: I have provided a clear description of my problem
+          required: true
+
+---
+
+name: 💡 Ideas & Suggestions
+description: Share ideas and suggestions for Chill UI
+title: "[Idea]: "
+labels: ["idea", "suggestion"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have an idea for Chill UI? We'd love to hear it! Share your suggestions and ideas here.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: Which area does your idea relate to?
+      options:
+        - New Component
+        - Existing Component Enhancement
+        - API Improvements
+        - Performance
+        - Developer Experience
+        - Documentation
+        - Build System
+        - Testing
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: idea
+    attributes:
+      label: Your Idea
+      description: Describe your idea or suggestion
+      placeholder: What would you like to see improved or added?
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem/Use Case
+      description: What problem does this solve or what use case does it address?
+      placeholder: |
+        This would help because...
+        I'm facing this issue...
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: How do you envision this being implemented?
+      placeholder: |
+        I think this could be implemented by...
+        A possible approach would be...
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Examples
+      description: Any examples from other libraries or applications?
+      placeholder: |
+        - Library X does this by...
+        - App Y implements this as...
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      description: Please confirm the following
+      options:
+        - label: I have searched existing feature requests
+          required: true
+        - label: I have provided a clear problem statement
+          required: true
+        - label: I have considered how this might be implemented
+          required: true

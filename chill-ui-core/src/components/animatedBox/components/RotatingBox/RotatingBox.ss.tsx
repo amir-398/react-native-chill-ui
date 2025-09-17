@@ -1,0 +1,180 @@
+import type { RotatingBoxPropsSs, RotatingBoxRefSs } from '@types';
+
+import { Animated, Easing } from 'react-native';
+import { useRef, useEffect, useImperativeHandle, forwardRef, useCallback, PropsWithChildren } from 'react';
+
+import styles from '../../styles/AnimatedBox.styles';
+import AnimatedBox from '../animatedBox/AnimatedBox.ss';
+
+/**
+ * RotatingBox - Smooth rotation animation component
+ *
+ * Creates continuous 360-degree rotation effects. Perfect for loading spinners, icons,
+ * decorative elements, or any content that benefits from rotational motion. Provides
+ * smooth, customizable rotation with infinite loop capabilities.
+ *
+ * @example
+ * ```tsx
+ * // Loading spinner
+ * <RotatingBox autoStart infiniteLoop duration={1000} style={{ width: 32, height: 32 }}>
+ *   <Icon name="spinner" style={{ color: 'blue' }} />
+ * </RotatingBox>
+ *
+ * // Slow decorative rotation
+ * <RotatingBox
+ *   autoStart
+ *   infiniteLoop
+ *   duration={8000}
+ *   style={{ width: 64, height: 64, backgroundColor: 'purple', borderRadius: 32 }}
+ * >
+ *   <Icon name="star" style={{ color: 'white' }} />
+ * </RotatingBox>
+ * ```
+ *
+ * @param autoStart - Automatically start animation when component mounts (default: false)
+ * @param duration - One complete rotation duration in milliseconds (default: 2000)
+ * @param delay - Delay before starting animation in milliseconds (default: 0)
+ * @param infiniteLoop - Loop animation continuously (default: false)
+ * @param continuous - Make rotation continuous without pauses between loops (default: false)
+ * @param style - Inline styles for traditional styling or style overrides
+ * @param children - Content to be rotated
+ * @param ref - Ref for manual animation control (start, stop)
+ * @returns Animated component with rotation effect
+ */
+const RotatingBox = forwardRef<RotatingBoxRefSs, PropsWithChildren<RotatingBoxPropsSs>>((props, ref) => {
+  const {
+    autoStart = false,
+    children,
+    continuous = false,
+    delay = 0,
+    duration = 2000,
+    infiniteLoop = false,
+    style,
+    ...rest
+  } = props;
+  const rotateAnim = useRef(new Animated.Value(0)).current;
+  const animationRef = useRef<Animated.CompositeAnimation | null>(null);
+  const rotationCount = useRef(0);
+  const isStopped = useRef(false);
+
+  const spin = rotateAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg'],
+  });
+
+  const startAnimation = useCallback(() => {
+    isStopped.current = false;
+    animationRef.current?.stop();
+
+    if (!continuous) {
+      rotateAnim.setValue(0);
+    }
+
+    if (infiniteLoop) {
+      if (continuous) {
+        const animation = Animated.timing(rotateAnim, {
+          duration,
+          easing: Easing.linear,
+          toValue: 1,
+          useNativeDriver: true,
+        });
+        animationRef.current = animation;
+        const runContinuousLoop = () => {
+          if (animationRef.current !== animation || isStopped.current) {
+            // Animation was stopped, don't continue
+            return;
+          }
+          rotateAnim.setValue(0);
+          animation.start(() => {
+            runContinuousLoop();
+          });
+        };
+
+        runContinuousLoop();
+      } else {
+        const animation = Animated.timing(rotateAnim, {
+          duration,
+          toValue: 1,
+          useNativeDriver: true,
+        });
+
+        animationRef.current = animation;
+
+        const runAnimation = () => {
+          if (animationRef.current !== animation || isStopped.current) {
+            // Animation was stopped, don't continue
+            return;
+          }
+          rotateAnim.setValue(0);
+          animation.start(() => {
+            runAnimation();
+          });
+        };
+        runAnimation();
+      }
+    } else {
+      const animation = Animated.timing(rotateAnim, {
+        duration,
+        toValue: 1,
+        useNativeDriver: true,
+      });
+      animationRef.current = animation;
+      animationRef.current.start();
+    }
+  }, [duration, infiniteLoop, continuous, rotateAnim]);
+
+  const stopAnimation = useCallback(() => {
+    isStopped.current = true;
+    if (animationRef.current) {
+      animationRef.current.stop();
+      animationRef.current = null;
+    }
+    rotateAnim.setValue(0);
+    if (!continuous) {
+      rotationCount.current = 0;
+    }
+  }, [continuous, rotateAnim]);
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      start: startAnimation,
+      stop: stopAnimation,
+    }),
+    [startAnimation, stopAnimation],
+  );
+
+  useEffect(() => {
+    if (autoStart) {
+      const timer = setTimeout(() => {
+        startAnimation();
+      }, delay);
+
+      return () => {
+        clearTimeout(timer);
+        stopAnimation();
+      };
+    }
+    return undefined;
+  }, [delay, autoStart, startAnimation, stopAnimation]);
+
+  return (
+    <AnimatedBox
+      style={[
+        styles.rotationContainer,
+        {
+          transform: [{ rotate: spin }],
+          transformOrigin: 'center',
+        },
+        style,
+      ]}
+      {...rest}
+    >
+      {children}
+    </AnimatedBox>
+  );
+});
+
+RotatingBox.displayName = 'RotatingBox';
+
+export default RotatingBox;

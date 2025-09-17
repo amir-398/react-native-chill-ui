@@ -1,0 +1,1105 @@
+name: Advanced Validation
+
+on:
+  schedule:
+    # Run validation checks daily at 8:00 AM UTC
+    - cron: '0 8 * * *'
+  push:
+    branches: [main, develop, tests-branch]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+    inputs:
+      validation_type:
+        description: 'Type of validation to run'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - code_quality
+          - build_integrity
+          - dependencies
+          - documentation
+          - performance
+          - security
+      validation_level:
+        description: 'Level of validation to run'
+        required: false
+        default: 'standard'
+        type: choice
+        options:
+          - basic
+          - standard
+          - comprehensive
+          - exhaustive
+
+jobs:
+  code-quality-validation:
+    name: Code Quality Validation
+    runs-on: ubuntu-latest
+    if: github.event.inputs.validation_type == 'all' || github.event.inputs.validation_type == 'code_quality'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Run TypeScript check
+        id: typescript-check
+        run: |
+          echo "Running TypeScript check..."
+
+          cd chill-ui-core
+
+          if bun run ts:check; then
+            echo "typescript-status=passed" >> $GITHUB_OUTPUT
+            echo "✅ TypeScript check passed"
+          else
+            echo "typescript-status=failed" >> $GITHUB_OUTPUT
+            echo "⚠️ TypeScript check failed"
+          fi
+
+      - name: Run ESLint
+        id: eslint-check
+        run: |
+          echo "Running ESLint..."
+
+          cd chill-ui-core
+
+          if bun run lint; then
+            echo "eslint-status=passed" >> $GITHUB_OUTPUT
+            echo "✅ ESLint check passed"
+          else
+            echo "eslint-status=failed" >> $GITHUB_OUTPUT
+            echo "⚠️ ESLint check failed"
+          fi
+
+      - name: Run Prettier check
+        id: prettier-check
+        run: |
+          echo "Running Prettier check..."
+
+          cd chill-ui-core
+
+          if bun run format --check; then
+            echo "prettier-status=passed" >> $GITHUB_OUTPUT
+            echo "✅ Prettier check passed"
+          else
+            echo "prettier-status=failed" >> $GITHUB_OUTPUT
+            echo "⚠️ Prettier check failed"
+          fi
+
+      - name: Check for console statements
+        run: |
+          echo "Checking for console statements..."
+
+          cd chill-ui-core
+
+          # Check for console statements in production code
+          if grep -r "console\." src/ --include="*.ts" --include="*.tsx" | grep -v "console.error\|console.warn"; then
+            echo "⚠️ Found console statements in production code"
+            exit 1
+          else
+            echo "✅ No console statements found in production code"
+          fi
+
+      - name: Check for debugger statements
+        run: |
+          echo "Checking for debugger statements..."
+
+          cd chill-ui-core
+
+          # Check for debugger statements
+          if grep -r "debugger" src/ --include="*.ts" --include="*.tsx"; then
+            echo "⚠️ Found debugger statements in production code"
+            exit 1
+          else
+            echo "✅ No debugger statements found in production code"
+          fi
+
+      - name: Check for TODO/FIXME comments
+        run: |
+          echo "Checking for TODO/FIXME comments..."
+
+          cd chill-ui-core
+
+          todo_count=$(grep -r "TODO\|FIXME" src/ --include="*.ts" --include="*.tsx" | wc -l)
+          echo "Found $todo_count TODO/FIXME comments"
+
+          if [ $todo_count -gt 10 ]; then
+            echo "⚠️ Too many TODO/FIXME comments: $todo_count"
+            exit 1
+          else
+            echo "✅ TODO/FIXME count is acceptable: $todo_count"
+          fi
+
+      - name: Generate code quality validation report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const report = `## 🔍 Code Quality Validation Report
+
+            **Date:** ${new Date().toLocaleDateString()}
+            **Time:** ${new Date().toLocaleTimeString()}
+
+            ### Validation Results
+            - **TypeScript Check:** ${{ steps.typescript-check.outputs.typescript-status === 'passed' ? '✅ Passed' : '❌ Failed' }}
+            - **ESLint Check:** ${{ steps.eslint-check.outputs.eslint-status === 'passed' ? '✅ Passed' : '❌ Failed' }}
+            - **Prettier Check:** ${{ steps.prettier-check.outputs.prettier-status === 'passed' ? '✅ Passed' : '❌ Failed' }}
+            - **Console Statements:** ✅ Checked
+            - **Debugger Statements:** ✅ Checked
+            - **TODO/FIXME Comments:** ✅ Checked
+
+            ### Validation Level
+            - **Level:** ${{ github.event.inputs.validation_level || 'standard' }}
+
+            ### Quality Status
+            ${{ steps.typescript-check.outputs.typescript-status === 'passed' && steps.eslint-check.outputs.eslint-status === 'passed' && steps.prettier-check.outputs.prettier-status === 'passed' ? '🟢 **High Quality** - All code quality checks passed' : '🟡 **Quality Issues** - Some code quality checks failed' }}
+
+            ### Recommendations
+            - Fix TypeScript errors
+            - Resolve ESLint issues
+            - Format code consistently
+            - Remove console statements
+            - Remove debugger statements
+            - Address TODO/FIXME comments
+
+            ---
+            *This code quality validation report was automatically generated.*`;
+
+            // Create a discussion with the code quality validation report
+            await github.rest.discussions.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Code Quality Validation Report - ${new Date().toLocaleDateString()}`,
+              body: report,
+              category: 'validation'
+            });
+
+            console.log('Code quality validation report generated successfully');
+
+  build-integrity-validation:
+    name: Build Integrity Validation
+    runs-on: ubuntu-latest
+    if: github.event.inputs.validation_type == 'all' || github.event.inputs.validation_type == 'build_integrity'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Clean previous builds
+        run: |
+          bun run clean
+
+      - name: Build core library
+        id: build-core
+        run: |
+          echo "Building core library..."
+
+          if bun run build; then
+            echo "core-build-status=success" >> $GITHUB_OUTPUT
+            echo "✅ Core library build successful"
+          else
+            echo "core-build-status=failed" >> $GITHUB_OUTPUT
+            echo "⚠️ Core library build failed"
+          fi
+
+      - name: Build hybrid variant
+        id: build-hybrid
+        run: |
+          echo "Building hybrid variant..."
+
+          if bun run build:hybrid; then
+            echo "hybrid-build-status=success" >> $GITHUB_OUTPUT
+            echo "✅ Hybrid variant build successful"
+          else
+            echo "hybrid-build-status=failed" >> $GITHUB_OUTPUT
+            echo "⚠️ Hybrid variant build failed"
+          fi
+
+      - name: Build tailwind variant
+        id: build-tailwind
+        run: |
+          echo "Building tailwind variant..."
+
+          if bun run build:tailwind; then
+            echo "tailwind-build-status=success" >> $GITHUB_OUTPUT
+            echo "✅ Tailwind variant build successful"
+          else
+            echo "tailwind-build-status=failed" >> $GITHUB_OUTPUT
+            echo "⚠️ Tailwind variant build failed"
+          fi
+
+      - name: Build stylesheet variant
+        id: build-stylesheet
+        run: |
+          echo "Building stylesheet variant..."
+
+          if bun run build:stylesheet; then
+            echo "stylesheet-build-status=success" >> $GITHUB_OUTPUT
+            echo "✅ Stylesheet variant build successful"
+          else
+            echo "stylesheet-build-status=failed" >> $GITHUB_OUTPUT
+            echo "⚠️ Stylesheet variant build failed"
+          fi
+
+      - name: Validate build outputs
+        id: validate-builds
+        run: |
+          echo "Validating build outputs..."
+
+          # Check if all required files exist
+          required_files=(
+            "lib/commonjs/index.js"
+            "lib/module/index.js"
+            "lib/typescript/index.d.ts"
+            "lib-tw/commonjs/index.js"
+            "lib-tw/module/index.js"
+            "lib-tw/typescript/index.d.ts"
+            "lib-ss/commonjs/index.js"
+            "lib-ss/module/index.js"
+            "lib-ss/typescript/index.d.ts"
+          )
+
+          missing_files=0
+
+          for file in "${required_files[@]}"; do
+            if [ -f "$file" ]; then
+              echo "✅ $file exists"
+            else
+              echo "❌ $file is missing"
+              missing_files=$((missing_files + 1))
+            fi
+          done
+
+          echo "missing-files=$missing_files" >> $GITHUB_OUTPUT
+
+          if [ "$missing_files" -eq 0 ]; then
+            echo "✅ All required build files exist"
+          else
+            echo "⚠️ $missing_files required build files are missing"
+          fi
+
+      - name: Test build imports
+        run: |
+          echo "Testing build imports..."
+
+          # Test that all variants can be imported
+          for variant in lib lib-tw lib-ss; do
+            echo "Testing $variant variant..."
+            node -e "
+              try {
+                const variant = require('./$variant/commonjs/index.js');
+                console.log('✅ $variant variant imported successfully');
+              } catch (error) {
+                console.error('❌ $variant variant import failed:', error.message);
+                process.exit(1);
+              }
+            "
+          done
+
+      - name: Check build integrity
+        run: |
+          echo "Checking build integrity..."
+
+          # Check for build artifacts
+          for variant in lib lib-tw lib-ss; do
+            if [ -d "$variant" ]; then
+              echo "Checking $variant variant..."
+              
+              # Check for required directories
+              for dir in commonjs module typescript; do
+                if [ -d "$variant/$dir" ]; then
+                  echo "✅ $variant/$dir directory exists"
+                else
+                  echo "❌ $variant/$dir directory is missing"
+                  exit 1
+                fi
+              done
+            fi
+          done
+
+      - name: Generate build integrity validation report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const report = `## 🏗️ Build Integrity Validation Report
+
+            **Date:** ${new Date().toLocaleDateString()}
+            **Time:** ${new Date().toLocaleTimeString()}
+
+            ### Build Results
+            - **Core Library Build:** ${{ steps.build-core.outputs.core-build-status === 'success' ? '✅ Success' : '❌ Failed' }}
+            - **Hybrid Variant Build:** ${{ steps.build-hybrid.outputs.hybrid-build-status === 'success' ? '✅ Success' : '❌ Failed' }}
+            - **Tailwind Variant Build:** ${{ steps.build-tailwind.outputs.tailwind-build-status === 'success' ? '✅ Success' : '❌ Failed' }}
+            - **Stylesheet Variant Build:** ${{ steps.build-stylesheet.outputs.stylesheet-build-status === 'success' ? '✅ Success' : '❌ Failed' }}
+            - **Missing Files:** ${{ steps.validate-builds.outputs.missing-files }}
+
+            ### Validation Level
+            - **Level:** ${{ github.event.inputs.validation_level || 'standard' }}
+
+            ### Build Status
+            ${{ steps.build-core.outputs.core-build-status === 'success' && steps.build-hybrid.outputs.hybrid-build-status === 'success' && steps.build-tailwind.outputs.tailwind-build-status === 'success' && steps.build-stylesheet.outputs.stylesheet-build-status === 'success' && steps.validate-builds.outputs.missing-files == '0' ? '🟢 **Build Integrity Valid** - All builds successful and complete' : '🟡 **Build Issues** - Some builds failed or incomplete' }}
+
+            ### Recommendations
+            - Fix failed builds
+            - Ensure all variants build successfully
+            - Validate build outputs
+            - Test build imports
+            - Check build integrity
+            - Monitor build performance
+
+            ---
+            *This build integrity validation report was automatically generated.*`;
+
+            // Create a discussion with the build integrity validation report
+            await github.rest.discussions.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Build Integrity Validation Report - ${new Date().toLocaleDateString()}`,
+              body: report,
+              category: 'validation'
+            });
+
+            console.log('Build integrity validation report generated successfully');
+
+  dependency-validation:
+    name: Dependency Validation
+    runs-on: ubuntu-latest
+    if: github.event.inputs.validation_type == 'all' || github.event.inputs.validation_type == 'dependencies'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Validate package.json
+        id: package-validation
+        run: |
+          echo "Validating package.json..."
+
+          cd chill-ui-core
+
+          # Check if package.json is valid JSON
+          if jq empty package.json; then
+            echo "package-json-valid=true" >> $GITHUB_OUTPUT
+            echo "✅ package.json is valid JSON"
+          else
+            echo "package-json-valid=false" >> $GITHUB_OUTPUT
+            echo "❌ package.json is invalid JSON"
+            exit 1
+          fi
+
+          # Check required fields
+          required_fields=("name" "version" "description" "main" "types")
+          missing_fields=0
+
+          for field in "${required_fields[@]}"; do
+            if jq -e ".$field" package.json > /dev/null; then
+              echo "✅ $field field exists"
+            else
+              echo "❌ $field field is missing"
+              missing_fields=$((missing_fields + 1))
+            fi
+          done
+
+          echo "missing-fields=$missing_fields" >> $GITHUB_OUTPUT
+
+          if [ "$missing_fields" -eq 0 ]; then
+            echo "✅ All required fields present"
+          else
+            echo "⚠️ $missing_fields required fields missing"
+          fi
+
+      - name: Check for security vulnerabilities
+        id: security-check
+        run: |
+          echo "Checking for security vulnerabilities..."
+
+          cd chill-ui-core
+
+          # Run security audit
+          if bun audit --audit-level moderate; then
+            echo "security-audit-status=passed" >> $GITHUB_OUTPUT
+            echo "✅ Security audit passed"
+          else
+            echo "security-audit-status=failed" >> $GITHUB_OUTPUT
+            echo "⚠️ Security audit failed"
+          fi
+
+      - name: Check for license compliance
+        run: |
+          echo "Checking for license compliance..."
+
+          cd chill-ui-core
+
+          # Check for problematic licenses
+          problematic_licenses=("GPL" "AGPL" "LGPL" "Copyleft")
+          license_issues=0
+
+          for license in "${problematic_licenses[@]}"; do
+            if grep -r -i "$license" node_modules/ --include="package.json" | grep -q "license"; then
+              echo "⚠️ Found potentially problematic license: $license"
+              license_issues=$((license_issues + 1))
+            fi
+          done
+
+          echo "license-issues=$license_issues" >> $GITHUB_OUTPUT
+
+          if [ "$license_issues" -eq 0 ]; then
+            echo "✅ License compliance check passed"
+          else
+            echo "⚠️ Found $license_issues license compliance issues"
+          fi
+
+      - name: Check for outdated dependencies
+        run: |
+          echo "Checking for outdated dependencies..."
+
+          cd chill-ui-core
+
+          # Check for outdated dependencies
+          outdated=$(bun outdated --json 2>/dev/null || echo "[]")
+          outdated_count=$(echo "$outdated" | jq length)
+
+          echo "outdated-count=$outdated_count" >> $GITHUB_OUTPUT
+
+          if [ "$outdated_count" -gt 0 ]; then
+            echo "⚠️ Found $outdated_count outdated dependencies:"
+            echo "$outdated" | jq -r '.[] | "\(.name): \(.current) -> \(.latest)"'
+          else
+            echo "✅ All dependencies are up to date"
+          fi
+
+      - name: Generate dependency validation report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const report = `## 📦 Dependency Validation Report
+
+            **Date:** ${new Date().toLocaleDateString()}
+            **Time:** ${new Date().toLocaleTimeString()}
+
+            ### Validation Results
+            - **Package.json Valid:** ${{ steps.package-validation.outputs.package-json-valid === 'true' ? '✅ Valid' : '❌ Invalid' }}
+            - **Missing Fields:** ${{ steps.package-validation.outputs.missing-fields }}
+            - **Security Audit:** ${{ steps.security-check.outputs.security-audit-status === 'passed' ? '✅ Passed' : '❌ Failed' }}
+            - **License Issues:** ${{ steps.security-check.outputs.license-issues }}
+            - **Outdated Dependencies:** ${{ steps.security-check.outputs.outdated-count }}
+
+            ### Validation Level
+            - **Level:** ${{ github.event.inputs.validation_level || 'standard' }}
+
+            ### Dependency Status
+            ${{ steps.package-validation.outputs.package-json-valid === 'true' && steps.package-validation.outputs.missing-fields == '0' && steps.security-check.outputs.security-audit-status === 'passed' && steps.security-check.outputs.license-issues == '0' ? '🟢 **Dependencies Valid** - All dependency checks passed' : '🟡 **Dependency Issues** - Some dependency checks failed' }}
+
+            ### Recommendations
+            - Fix package.json issues
+            - Update outdated dependencies
+            - Resolve security vulnerabilities
+            - Review license compliance
+            - Regular dependency audits
+            - Automated dependency updates
+
+            ---
+            *This dependency validation report was automatically generated.*`;
+
+            // Create a discussion with the dependency validation report
+            await github.rest.discussions.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Dependency Validation Report - ${new Date().toLocaleDateString()}`,
+              body: report,
+              category: 'validation'
+            });
+
+            console.log('Dependency validation report generated successfully');
+
+  documentation-validation:
+    name: Documentation Validation
+    runs-on: ubuntu-latest
+    if: github.event.inputs.validation_type == 'all' || github.event.inputs.validation_type == 'documentation'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Validate README files
+        id: readme-validation
+        run: |
+          echo "Validating README files..."
+
+          # Check if main README exists
+          if [ -f "README.md" ]; then
+            echo "main-readme-exists=true" >> $GITHUB_OUTPUT
+            echo "✅ Main README exists"
+          else
+            echo "main-readme-exists=false" >> $GITHUB_OUTPUT
+            echo "❌ Main README is missing"
+          fi
+
+          # Check if core README exists
+          if [ -f "chill-ui-core/README.md" ]; then
+            echo "core-readme-exists=true" >> $GITHUB_OUTPUT
+            echo "✅ Core README exists"
+          else
+            echo "core-readme-exists=false" >> $GITHUB_OUTPUT
+            echo "❌ Core README is missing"
+          fi
+
+      - name: Check documentation links
+        id: link-validation
+        run: |
+          echo "Checking documentation links..."
+
+          # Check for broken links in README files
+          broken_links=0
+
+          find . -name "README.md" | while read file; do
+            echo "Checking links in $file"
+            # Simple check for common link patterns
+            grep -n "http" "$file" | while read line; do
+              url=$(echo "$line" | sed 's/.*http[^[:space:]]*//')
+              if [ -n "$url" ]; then
+                if ! curl -s --head "$url" | head -n 1 | grep -q "200 OK"; then
+                  echo "⚠️ Potentially broken link in $file: $url"
+                  broken_links=$((broken_links + 1))
+                fi
+              fi
+            done
+          done
+
+          echo "broken-links=$broken_links" >> $GITHUB_OUTPUT
+
+          if [ "$broken_links" -eq 0 ]; then
+            echo "✅ No broken links found"
+          else
+            echo "⚠️ Found $broken_links potentially broken links"
+          fi
+
+      - name: Validate component documentation
+        id: component-docs
+        run: |
+          echo "Validating component documentation..."
+
+          # Check if all components have README files
+          component_docs=0
+          total_components=0
+
+          find chill-ui-core/src/components -type d -mindepth 1 -maxdepth 1 | while read dir; do
+            component_name=$(basename "$dir")
+            readme_file="$dir/README.md"
+            
+            total_components=$((total_components + 1))
+            
+            if [ -f "$readme_file" ]; then
+              component_docs=$((component_docs + 1))
+            else
+              echo "⚠️ Missing README for component: $component_name"
+            fi
+          done
+
+          echo "component-docs=$component_docs" >> $GITHUB_OUTPUT
+          echo "total-components=$total_components" >> $GITHUB_OUTPUT
+
+          echo "Component documentation: $component_docs/$total_components"
+
+      - name: Check for documentation consistency
+        run: |
+          echo "Checking for documentation consistency..."
+
+          # Check for consistent formatting
+          find . -name "*.md" | while read file; do
+            # Check for consistent heading levels
+            if grep -q "^#" "$file" && ! grep -q "^##" "$file"; then
+              echo "⚠️ Inconsistent heading levels in $file"
+            fi
+          done
+
+      - name: Generate documentation validation report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const report = `## 📚 Documentation Validation Report
+
+            **Date:** ${new Date().toLocaleDateString()}
+            **Time:** ${new Date().toLocaleTimeString()}
+
+            ### Validation Results
+            - **Main README:** ${{ steps.readme-validation.outputs.main-readme-exists === 'true' ? '✅ Exists' : '❌ Missing' }}
+            - **Core README:** ${{ steps.readme-validation.outputs.core-readme-exists === 'true' ? '✅ Exists' : '❌ Missing' }}
+            - **Component Documentation:** ${{ steps.component-docs.outputs.component-docs }}/${{ steps.component-docs.outputs.total-components }}
+            - **Broken Links:** ${{ steps.link-validation.outputs.broken-links }}
+
+            ### Validation Level
+            - **Level:** ${{ github.event.inputs.validation_level || 'standard' }}
+
+            ### Documentation Status
+            ${{ steps.readme-validation.outputs.main-readme-exists === 'true' && steps.readme-validation.outputs.core-readme-exists === 'true' && steps.link-validation.outputs.broken-links == '0' ? '🟢 **Documentation Valid** - All documentation checks passed' : '🟡 **Documentation Issues** - Some documentation checks failed' }}
+
+            ### Recommendations
+            - Complete missing documentation
+            - Fix broken links
+            - Add component documentation
+            - Maintain consistency
+            - Regular documentation reviews
+            - Automated documentation validation
+
+            ---
+            *This documentation validation report was automatically generated.*`;
+
+            // Create a discussion with the documentation validation report
+            await github.rest.discussions.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Documentation Validation Report - ${new Date().toLocaleDateString()}`,
+              body: report,
+              category: 'validation'
+            });
+
+            console.log('Documentation validation report generated successfully');
+
+  performance-validation:
+    name: Performance Validation
+    runs-on: ubuntu-latest
+    if: github.event.inputs.validation_type == 'all' || github.event.inputs.validation_type == 'performance'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Build library
+        run: |
+          bun run build
+
+      - name: Check bundle sizes
+        id: bundle-sizes
+        run: |
+          echo "Checking bundle sizes..."
+
+          # Check if bundles are not too large
+          max_size=1048576  # 1MB
+          oversized_bundles=0
+
+          for file in lib/*/index.js lib-tw/*/index.js lib-ss/*/index.js; do
+            if [ -f "$file" ]; then
+              size=$(stat -f%z "$file" 2>/dev/null || stat -c%s "$file" 2>/dev/null)
+              if [ "$size" -gt "$max_size" ]; then
+                echo "⚠️ Bundle $file is larger than 1MB: $(($size / 1024 / 1024))MB"
+                oversized_bundles=$((oversized_bundles + 1))
+              else
+                echo "✅ Bundle $file size is acceptable: $(($size / 1024))KB"
+              fi
+            fi
+          done
+
+          echo "oversized-bundles=$oversized_bundles" >> $GITHUB_OUTPUT
+
+          if [ "$oversized_bundles" -eq 0 ]; then
+            echo "✅ All bundle sizes are acceptable"
+          else
+            echo "⚠️ $oversized_bundles bundles exceed size limit"
+          fi
+
+      - name: Check import performance
+        id: import-performance
+        run: |
+          echo "Checking import performance..."
+
+          # Measure import time
+          import_time=$(node -e "
+            const start = process.hrtime.bigint();
+            require('./lib/commonjs/index.js');
+            const end = process.hrtime.bigint();
+            console.log(Number(end - start) / 1000000);
+          ")
+
+          echo "import-time=$import_time" >> $GITHUB_OUTPUT
+          echo "Import time: ${import_time}ms"
+
+          # Check if import time is acceptable
+          if (( $(echo "$import_time > 100" | bc -l) )); then
+            echo "⚠️ Import time is too slow: ${import_time}ms (threshold: 100ms)"
+            echo "import-time-warning=true" >> $GITHUB_OUTPUT
+          else
+            echo "✅ Import time is acceptable: ${import_time}ms"
+            echo "import-time-warning=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check memory usage
+        id: memory-usage
+        run: |
+          echo "Checking memory usage..."
+
+          # Measure memory usage
+          memory_usage=$(node -e "
+            const chillUI = require('./lib/commonjs/index.js');
+            const used = process.memoryUsage();
+            console.log(used.heapUsed / 1024 / 1024);
+          ")
+
+          echo "memory-usage=$memory_usage" >> $GITHUB_OUTPUT
+          echo "Memory usage: ${memory_usage}MB"
+
+          # Check if memory usage is acceptable
+          if (( $(echo "$memory_usage > 100" | bc -l) )); then
+            echo "⚠️ Memory usage is too high: ${memory_usage}MB (threshold: 100MB)"
+            echo "memory-usage-warning=true" >> $GITHUB_OUTPUT
+          else
+            echo "✅ Memory usage is acceptable: ${memory_usage}MB"
+            echo "memory-usage-warning=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate performance validation report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const report = `## ⚡ Performance Validation Report
+
+            **Date:** ${new Date().toLocaleDateString()}
+            **Time:** ${new Date().toLocaleTimeString()}
+
+            ### Validation Results
+            - **Bundle Sizes:** ${{ steps.bundle-sizes.outputs.oversized-bundles == '0' ? '✅ Acceptable' : '⚠️ Issues' }}
+            - **Import Time:** ${{ steps.import-performance.outputs.import-time }}ms
+            - **Memory Usage:** ${{ steps.memory-usage.outputs.memory-usage }}MB
+            - **Import Time Warning:** ${{ steps.import-performance.outputs.import-time-warning === 'true' ? '⚠️ Yes' : '✅ No' }}
+            - **Memory Usage Warning:** ${{ steps.memory-usage.outputs.memory-usage-warning === 'true' ? '⚠️ Yes' : '✅ No' }}
+
+            ### Validation Level
+            - **Level:** ${{ github.event.inputs.validation_level || 'standard' }}
+
+            ### Performance Status
+            ${{ steps.bundle-sizes.outputs.oversized-bundles == '0' && steps.import-performance.outputs.import-time-warning === 'false' && steps.memory-usage.outputs.memory-usage-warning === 'false' ? '🟢 **Performance Valid** - All performance checks passed' : '🟡 **Performance Issues** - Some performance checks failed' }}
+
+            ### Recommendations
+            - Optimize bundle sizes
+            - Improve import performance
+            - Reduce memory footprint
+            - Implement code splitting
+            - Use tree shaking
+            - Monitor performance metrics
+
+            ---
+            *This performance validation report was automatically generated.*`;
+
+            // Create a discussion with the performance validation report
+            await github.rest.discussions.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Performance Validation Report - ${new Date().toLocaleDateString()}`,
+              body: report,
+              category: 'validation'
+            });
+
+            console.log('Performance validation report generated successfully');
+
+  security-validation:
+    name: Security Validation
+    runs-on: ubuntu-latest
+    if: github.event.inputs.validation_type == 'all' || github.event.inputs.validation_type == 'security'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Run security audit
+        id: security-audit
+        run: |
+          echo "Running security audit..."
+
+          cd chill-ui-core
+
+          # Run security audit
+          if bun audit --audit-level moderate; then
+            echo "security-audit-status=passed" >> $GITHUB_OUTPUT
+            echo "✅ Security audit passed"
+          else
+            echo "security-audit-status=failed" >> $GITHUB_OUTPUT
+            echo "⚠️ Security audit failed"
+          fi
+
+      - name: Check for security vulnerabilities
+        run: |
+          echo "Checking for security vulnerabilities..."
+
+          cd chill-ui-core
+
+          # Check for known vulnerabilities
+          vulnerabilities=$(bun audit --json 2>/dev/null || echo "[]")
+          vulnerability_count=$(echo "$vulnerabilities" | jq length)
+
+          echo "vulnerability-count=$vulnerability_count" >> $GITHUB_OUTPUT
+
+          if [ "$vulnerability_count" -gt 0 ]; then
+            echo "⚠️ Found $vulnerability_count security vulnerabilities"
+          else
+            echo "✅ No security vulnerabilities found"
+          fi
+
+      - name: Check for hardcoded secrets
+        run: |
+          echo "Checking for hardcoded secrets..."
+
+          # Check for common secret patterns
+          secret_patterns=(
+            "password.*=.*['\"][^'\"]{8,}['\"]"
+            "api[_-]?key.*=.*['\"][^'\"]{8,}['\"]"
+            "secret.*=.*['\"][^'\"]{8,}['\"]"
+            "token.*=.*['\"][^'\"]{8,}['\"]"
+          )
+
+          secrets_found=0
+
+          for pattern in "${secret_patterns[@]}"; do
+            if grep -r -i -E "$pattern" chill-ui-core/src/ --include="*.ts" --include="*.tsx"; then
+              echo "⚠️ Potential hardcoded secret found with pattern: $pattern"
+              secrets_found=$((secrets_found + 1))
+            fi
+          done
+
+          echo "secrets-found=$secrets_found" >> $GITHUB_OUTPUT
+
+          if [ "$secrets_found" -eq 0 ]; then
+            echo "✅ No hardcoded secrets found"
+          else
+            echo "⚠️ Found $secrets_found potential hardcoded secrets"
+          fi
+
+      - name: Generate security validation report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const report = `## 🔒 Security Validation Report
+
+            **Date:** ${new Date().toLocaleDateString()}
+            **Time:** ${new Date().toLocaleTimeString()}
+
+            ### Validation Results
+            - **Security Audit:** ${{ steps.security-audit.outputs.security-audit-status === 'passed' ? '✅ Passed' : '❌ Failed' }}
+            - **Vulnerabilities:** ${{ steps.security-audit.outputs.vulnerability-count }}
+            - **Hardcoded Secrets:** ${{ steps.security-audit.outputs.secrets-found }}
+
+            ### Validation Level
+            - **Level:** ${{ github.event.inputs.validation_level || 'standard' }}
+
+            ### Security Status
+            ${{ steps.security-audit.outputs.security-audit-status === 'passed' && steps.security-audit.outputs.vulnerability-count == '0' && steps.security-audit.outputs.secrets-found == '0' ? '🟢 **Security Valid** - All security checks passed' : '🟡 **Security Issues** - Some security checks failed' }}
+
+            ### Recommendations
+            - Fix security vulnerabilities
+            - Remove hardcoded secrets
+            - Update dependencies
+            - Implement security best practices
+            - Regular security audits
+            - Automated security scanning
+
+            ---
+            *This security validation report was automatically generated.*`;
+
+            // Create a discussion with the security validation report
+            await github.rest.discussions.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Security Validation Report - ${new Date().toLocaleDateString()}`,
+              body: report,
+              category: 'validation'
+            });
+
+            console.log('Security validation report generated successfully');
+
+  validation-summary:
+    name: Validation Summary
+    runs-on: ubuntu-latest
+    needs:
+      [
+        code-quality-validation,
+        build-integrity-validation,
+        dependency-validation,
+        documentation-validation,
+        performance-validation,
+        security-validation,
+      ]
+    if: always()
+
+    steps:
+      - name: Generate validation summary
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const summary = `## ✅ Advanced Validation Summary
+
+            **Date:** ${new Date().toLocaleDateString()}
+            **Time:** ${new Date().toLocaleTimeString()}
+
+            ### Validation Results
+            - **Code Quality Validation:** ${{ needs.code-quality-validation.result === 'success' ? '✅ Completed' : '❌ Failed' }}
+            - **Build Integrity Validation:** ${{ needs.build-integrity-validation.result === 'success' ? '✅ Completed' : '❌ Failed' }}
+            - **Dependency Validation:** ${{ needs.dependency-validation.result === 'success' ? '✅ Completed' : '❌ Failed' }}
+            - **Documentation Validation:** ${{ needs.documentation-validation.result === 'success' ? '✅ Completed' : '❌ Failed' }}
+            - **Performance Validation:** ${{ needs.performance-validation.result === 'success' ? '✅ Completed' : '❌ Failed' }}
+            - **Security Validation:** ${{ needs.security-validation.result === 'success' ? '✅ Completed' : '❌ Failed' }}
+
+            ### Validation Configuration
+            - **Type:** ${{ github.event.inputs.validation_type || 'all' }}
+            - **Level:** ${{ github.event.inputs.validation_level || 'standard' }}
+
+            ### Overall Status
+            ${{ needs.code-quality-validation.result === 'success' && needs.build-integrity-validation.result === 'success' && needs.dependency-validation.result === 'success' && needs.documentation-validation.result === 'success' && needs.performance-validation.result === 'success' && needs.security-validation.result === 'success' ? '🟢 **All Validations Passed** - All validation categories completed successfully' : '🟡 **Some Validations Failed** - Some validation categories failed' }}
+
+            ### Next Steps
+            - Review individual validation reports
+            - Address any identified issues
+            - Implement validation improvements
+            - Monitor validation trends
+            - Set validation goals
+
+            ---
+            *This advanced validation summary was automatically generated.*`;
+
+            // Create a discussion with the validation summary
+            await github.rest.discussions.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Advanced Validation Summary - ${new Date().toLocaleDateString()}`,
+              body: summary,
+              category: 'validation'
+            });
+
+            console.log('Advanced validation summary generated successfully');
+
+      - name: Alert on validation failures
+        uses: actions/github-script@v7
+        if: failure()
+        with:
+          script: |
+            const alert = `🚨 **Validation Failures Alert**
+
+            **Date:** ${new Date().toLocaleDateString()}
+            **Time:** ${new Date().toLocaleTimeString()}
+
+            ### Failed Validations
+            ${{ needs.code-quality-validation.result !== 'success' ? '- Code quality validation failed' : '' }}
+            ${{ needs.build-integrity-validation.result !== 'success' ? '- Build integrity validation failed' : '' }}
+            ${{ needs.dependency-validation.result !== 'success' ? '- Dependency validation failed' : '' }}
+            ${{ needs.documentation-validation.result !== 'success' ? '- Documentation validation failed' : '' }}
+            ${{ needs.performance-validation.result !== 'success' ? '- Performance validation failed' : '' }}
+            ${{ needs.security-validation.result !== 'success' ? '- Security validation failed' : '' }}
+
+            ### Details
+            - **Repository:** ${{ github.repository }}
+            - **Run ID:** ${{ github.run_id }}
+            - **Validation Type:** ${{ github.event.inputs.validation_type || 'all' }}
+            - **Validation Level:** ${{ github.event.inputs.validation_level || 'standard' }}
+
+            🔗 [View Workflow Run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+            ---
+            *This is an automated validation failures alert.*`;
+
+            // You can add Slack/Discord webhook notifications here
+            console.log(`Validation failures alert: ${alert}`);
+
+            // Create an issue for validation failures
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🚨 Validation Failures Alert - ${new Date().toLocaleDateString()}`,
+              body: alert,
+              labels: ['validation', 'priority: high']
+            });

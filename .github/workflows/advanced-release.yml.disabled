@@ -1,0 +1,630 @@
+name: Advanced Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 1.0.0)'
+        required: true
+        default: 'patch'
+      prerelease:
+        description: 'Create a prerelease'
+        type: boolean
+        default: false
+      dry_run:
+        description: 'Perform a dry run without publishing'
+        type: boolean
+        default: false
+
+jobs:
+  pre-release-validation:
+    name: Pre-Release Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Run all tests
+        run: |
+          cd chill-ui-core
+          bun run test --coverage
+
+      - name: Run linting
+        run: |
+          cd chill-ui-core
+          bun run lint
+
+      - name: Run type checking
+        run: |
+          cd chill-ui-core
+          bun run ts:check
+
+      - name: Build all variants
+        run: |
+          bun run build
+          bun run build:hybrid
+          bun run build:tailwind
+          bun run build:stylesheet
+
+      - name: Validate build outputs
+        run: |
+          echo "Validating build outputs..."
+
+          # Check if all required files exist
+          required_files=(
+            "lib/commonjs/index.js"
+            "lib/module/index.js"
+            "lib/typescript/index.d.ts"
+            "lib-tw/commonjs/index.js"
+            "lib-tw/module/index.js"
+            "lib-tw/typescript/index.d.ts"
+            "lib-ss/commonjs/index.js"
+            "lib-ss/module/index.js"
+            "lib-ss/typescript/index.d.ts"
+          )
+
+          for file in "${required_files[@]}"; do
+            if [ -f "$file" ]; then
+              echo "✅ $file exists"
+            else
+              echo "❌ $file is missing"
+              exit 1
+            fi
+          done
+
+      - name: Check for security vulnerabilities
+        run: |
+          cd chill-ui-core
+          bun audit --audit-level moderate
+
+      - name: Validate package.json
+        run: |
+          cd chill-ui-core
+          echo "Validating package.json..."
+
+          # Check if package.json is valid JSON
+          if jq empty package.json; then
+            echo "✅ package.json is valid JSON"
+          else
+            echo "❌ package.json is invalid JSON"
+            exit 1
+          fi
+
+          # Check required fields
+          required_fields=("name" "version" "description" "main" "types")
+          for field in "${required_fields[@]}"; do
+            if jq -e ".$field" package.json > /dev/null; then
+              echo "✅ $field field exists"
+            else
+              echo "❌ $field field is missing"
+              exit 1
+            fi
+          done
+
+  version-management:
+    name: Version Management
+    runs-on: ubuntu-latest
+    needs: pre-release-validation
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Get current version
+        id: current-version
+        run: |
+          cd chill-ui-core
+          current_version=$(jq -r '.version' package.json)
+          echo "current-version=$current_version" >> $GITHUB_OUTPUT
+          echo "Current version: $current_version"
+
+      - name: Calculate next version
+        id: next-version
+        run: |
+          cd chill-ui-core
+          current_version=$(jq -r '.version' package.json)
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            version_input="${{ github.event.inputs.version }}"
+            if [ "$version_input" = "patch" ] || [ "$version_input" = "minor" ] || [ "$version_input" = "major" ]; then
+              next_version=$(bun run --silent semver $current_version -i $version_input)
+            else
+              next_version="$version_input"
+            fi
+          else
+            # Extract version from tag
+            tag_name="${{ github.ref_name }}"
+            next_version="${tag_name#v}"
+          fi
+
+          echo "next-version=$next_version" >> $GITHUB_OUTPUT
+          echo "Next version: $next_version"
+
+      - name: Update version in package.json
+        run: |
+          cd chill-ui-core
+          next_version="${{ steps.next-version.outputs.next-version }}"
+
+          # Update version in package.json
+          jq --arg version "$next_version" '.version = $version' package.json > package.json.tmp
+          mv package.json.tmp package.json
+
+          echo "Updated version to: $next_version"
+
+      - name: Update version in root package.json
+        run: |
+          next_version="${{ steps.next-version.outputs.next-version }}"
+
+          # Update version in root package.json
+          jq --arg version "$next_version" '.version = $version' package.json > package.json.tmp
+          mv package.json.tmp package.json
+
+          echo "Updated root version to: $next_version"
+
+      - name: Update CHANGELOG
+        run: |
+          next_version="${{ steps.next-version.outputs.next-version }}"
+          current_version="${{ steps.current-version.outputs.current-version }}"
+
+          # Create CHANGELOG entry
+          changelog_entry="## [$next_version] - $(date +%Y-%m-%d)
+
+          ### Added
+          - New features and enhancements
+
+          ### Changed
+          - Improvements and modifications
+
+          ### Fixed
+          - Bug fixes and corrections
+
+          ### Security
+          - Security updates and patches
+
+          ### Documentation
+          - Documentation updates and improvements
+
+          ### Dependencies
+          - Dependency updates and upgrades
+
+          ---
+          "
+
+          # Prepend to CHANGELOG.md
+          if [ -f "CHANGELOG.md" ]; then
+            echo "$changelog_entry" | cat - CHANGELOG.md > CHANGELOG.tmp
+            mv CHANGELOG.tmp CHANGELOG.md
+          else
+            echo "$changelog_entry" > CHANGELOG.md
+          fi
+
+          echo "Updated CHANGELOG.md"
+
+      - name: Commit version changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+          git add package.json chill-ui-core/package.json CHANGELOG.md
+          git commit -m "chore: bump version to ${{ steps.next-version.outputs.next-version }}"
+
+      - name: Create version tag
+        run: |
+          next_version="${{ steps.next-version.outputs.next-version }}"
+          git tag -a "v$next_version" -m "Release version $next_version"
+
+      - name: Push changes and tag
+        run: |
+          git push origin main
+          git push origin "v${{ steps.next-version.outputs.next-version }}"
+
+  build-release:
+    name: Build Release
+    runs-on: ubuntu-latest
+    needs: version-management
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Clean previous builds
+        run: |
+          bun run clean
+
+      - name: Build core library
+        run: |
+          bun run build
+
+      - name: Build hybrid variant
+        run: |
+          bun run build:hybrid
+
+      - name: Build tailwind variant
+        run: |
+          bun run build:tailwind
+
+      - name: Build stylesheet variant
+        run: |
+          bun run build:stylesheet
+
+      - name: Validate build outputs
+        run: |
+          echo "Validating build outputs..."
+
+          # Check if all required files exist
+          required_files=(
+            "lib/commonjs/index.js"
+            "lib/module/index.js"
+            "lib/typescript/index.d.ts"
+            "lib-tw/commonjs/index.js"
+            "lib-tw/module/index.js"
+            "lib-tw/typescript/index.d.ts"
+            "lib-ss/commonjs/index.js"
+            "lib-ss/module/index.js"
+            "lib-ss/typescript/index.d.ts"
+          )
+
+          for file in "${required_files[@]}"; do
+            if [ -f "$file" ]; then
+              echo "✅ $file exists"
+            else
+              echo "❌ $file is missing"
+              exit 1
+            fi
+          done
+
+      - name: Generate build artifacts
+        run: |
+          echo "Generating build artifacts..."
+
+          # Create tarball for each variant
+          for variant in lib lib-tw lib-ss; do
+            if [ -d "$variant" ]; then
+              tar -czf "${variant}.tar.gz" "$variant"
+              echo "Created ${variant}.tar.gz"
+            fi
+          done
+
+          # Create source tarball
+          tar -czf "source.tar.gz" --exclude=node_modules --exclude=.git --exclude=dist .
+          echo "Created source.tar.gz"
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            *.tar.gz
+            lib/
+            lib-tw/
+            lib-ss/
+          retention-days: 30
+
+  publish-release:
+    name: Publish Release
+    runs-on: ubuntu-latest
+    needs: build-release
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run != 'true')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+
+      - name: Setup npm registry
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
+      - name: Publish to npm
+        run: |
+          cd chill-ui-core
+
+          # Check if this is a prerelease
+          if [ "${{ github.event.inputs.prerelease }}" = "true" ] || [[ "${{ steps.next-version.outputs.next-version }}" == *"-"* ]]; then
+            echo "Publishing prerelease version"
+            bun run publish --tag beta
+          else
+            echo "Publishing stable version"
+            bun run publish
+          fi
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          body: |
+            ## 🎉 Release ${{ github.ref_name }}
+
+            ### What's New
+            - New features and enhancements
+            - Bug fixes and improvements
+            - Performance optimizations
+            - Documentation updates
+
+            ### Installation
+            ```bash
+            npm install chill-ui@${{ github.ref_name }}
+            ```
+
+            ### Documentation
+            - [Getting Started](https://github.com/${{ github.repository }}/blob/main/README.md)
+            - [API Reference](https://github.com/${{ github.repository }}/blob/main/docs/API.md)
+            - [Examples](https://github.com/${{ github.repository }}/blob/main/examples)
+
+            ### Changelog
+            See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for detailed changes.
+
+            ---
+            *This release was automatically generated by GitHub Actions.*
+          draft: false
+          prerelease: ${{ github.event.inputs.prerelease == 'true' || contains(github.ref_name, 'beta') || contains(github.ref_name, 'alpha') || contains(github.ref_name, 'rc') }}
+
+      - name: Upload release assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./lib.tar.gz
+          asset_name: lib.tar.gz
+          asset_content_type: application/gzip
+
+      - name: Upload hybrid assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./lib-tw.tar.gz
+          asset_name: lib-tw.tar.gz
+          asset_content_type: application/gzip
+
+      - name: Upload stylesheet assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./lib-ss.tar.gz
+          asset_name: lib-ss.tar.gz
+          asset_content_type: application/gzip
+
+      - name: Upload source assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./source.tar.gz
+          asset_name: source.tar.gz
+          asset_content_type: application/gzip
+
+  post-release:
+    name: Post-Release
+    runs-on: ubuntu-latest
+    needs: [version-management, publish-release]
+    if: always()
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Generate release report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const report = `## 🚀 Advanced Release Report
+
+            **Date:** ${new Date().toLocaleDateString()}
+            **Time:** ${new Date().toLocaleTimeString()}
+
+            ### Release Information
+            - **Version:** ${{ github.ref_name }}
+            - **Repository:** ${{ github.repository }}
+            - **Commit:** ${{ github.sha }}
+            - **Branch:** ${{ github.ref_name }}
+
+            ### Release Status
+            - **Pre-Release Validation:** ${{ needs.pre-release-validation.result === 'success' ? '✅ Passed' : '❌ Failed' }}
+            - **Version Management:** ${{ needs.version-management.result === 'success' ? '✅ Passed' : '❌ Failed' }}
+            - **Build Release:** ${{ needs.build-release.result === 'success' ? '✅ Passed' : '❌ Failed' }}
+            - **Publish Release:** ${{ needs.publish-release.result === 'success' ? '✅ Passed' : '❌ Failed' }}
+
+            ### Release Summary
+            ${{ needs.publish-release.result === 'success' ? '🟢 **Released Successfully** - Version published to npm and GitHub' : '🟡 **Release Incomplete** - Some steps failed' }}
+
+            ### Next Steps
+            - Monitor npm package downloads
+            - Check GitHub release page
+            - Update documentation if needed
+            - Notify team of new release
+            - Plan next development cycle
+
+            ### Links
+            - [GitHub Release](https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }})
+            - [npm Package](https://www.npmjs.com/package/chill-ui)
+            - [Documentation](https://github.com/${{ github.repository }}/blob/main/README.md)
+
+            ---
+            *This advanced release report was automatically generated.*`;
+
+            // Create a discussion with the release report
+            await github.rest.discussions.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Advanced Release Report - ${{ github.ref_name }}`,
+              body: report,
+              category: 'announcements'
+            });
+
+            console.log('Advanced release report generated successfully');
+
+      - name: Notify team
+        uses: actions/github-script@v7
+        if: needs.publish-release.result == 'success'
+        with:
+          script: |
+            const notification = `🎉 **New Release Available!**
+
+            **Version:** ${{ github.ref_name }}
+            **Repository:** ${{ github.repository }}
+
+            ### What's New
+            - New features and enhancements
+            - Bug fixes and improvements
+            - Performance optimizations
+            - Documentation updates
+
+            ### Installation
+            \`\`\`bash
+            npm install chill-ui@${{ github.ref_name }}
+            \`\`\`
+
+            ### Links
+            - [GitHub Release](https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }})
+            - [npm Package](https://www.npmjs.com/package/chill-ui)
+
+            ---
+            *This is an automated release notification.*`;
+
+            // You can add Slack/Discord webhook notifications here
+            console.log(`Release notification: ${notification}`);
+
+            // Create an issue for release tracking
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🎉 Release ${{ github.ref_name }} - Tracking`,
+              body: notification,
+              labels: ['release', 'tracking']
+            });
+
+      - name: Update documentation
+        run: |
+          echo "Updating documentation..."
+
+          # Update version in documentation
+          next_version="${{ github.ref_name }}"
+
+          # Update README.md if it contains version references
+          if [ -f "README.md" ]; then
+            sed -i "s/chill-ui@[0-9]\+\.[0-9]\+\.[0-9]\+/chill-ui@$next_version/g" README.md
+          fi
+
+          # Update examples if they exist
+          if [ -d "examples" ]; then
+            find examples -name "package.json" -exec sed -i "s/chill-ui@[0-9]\+\.[0-9]\+\.[0-9]\+/chill-ui@$next_version/g" {} \;
+          fi
+
+          echo "Documentation updated"
+
+      - name: Commit documentation updates
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+          git add README.md examples/
+          git commit -m "docs: update version references to ${{ github.ref_name }}" || echo "No documentation changes to commit"
+
+          git push origin main || echo "No changes to push"

@@ -1,0 +1,174 @@
+# GitHub Labels Configuration for Chill UI
+
+# Priority Labels
+- name: "priority: critical"
+  color: "d73a4a"
+  description: "Critical issues that need immediate attention"
+
+- name: "priority: high"
+  color: "f85149"
+  description: "High priority issues"
+
+- name: "priority: medium"
+  color: "fb8500"
+  description: "Medium priority issues"
+
+- name: "priority: low"
+  color: "ffc107"
+  description: "Low priority issues"
+
+# Type Labels
+- name: "type: bug"
+  color: "d73a4a"
+  description: "Something isn't working"
+
+- name: "type: enhancement"
+  color: "a2eeef"
+  description: "New feature or request"
+
+- name: "type: documentation"
+  color: "0075ca"
+  description: "Improvements or additions to documentation"
+
+- name: "type: question"
+  color: "d876e3"
+  description: "Further information is requested"
+
+- name: "type: good first issue"
+  color: "7057ff"
+  description: "Good for newcomers"
+
+- name: "type: help wanted"
+  color: "008672"
+  description: "Extra attention is needed"
+
+# Component Labels
+- name: "component: box"
+  color: "c5def5"
+  description: "Related to Box component"
+
+- name: "component: button"
+  color: "c5def5"
+  description: "Related to Button component"
+
+- name: "component: input"
+  color: "c5def5"
+  description: "Related to Input components"
+
+- name: "component: dialog"
+  color: "c5def5"
+  description: "Related to Dialog component"
+
+- name: "component: avatar"
+  color: "c5def5"
+  description: "Related to Avatar component"
+
+- name: "component: chip"
+  color: "c5def5"
+  description: "Related to Chip component"
+
+- name: "component: slider"
+  color: "c5def5"
+  description: "Related to Slider component"
+
+- name: "component: toggle"
+  color: "c5def5"
+  description: "Related to Toggle component"
+
+- name: "component: core"
+  color: "c5def5"
+  description: "Related to core library functionality"
+
+# Variant Labels
+- name: "variant: core"
+  color: "e99695"
+  description: "Core variant (default)"
+
+- name: "variant: tailwind"
+  color: "e99695"
+  description: "Tailwind variant"
+
+- name: "variant: stylesheet"
+  color: "e99695"
+  description: "Stylesheet variant"
+
+- name: "variant: hybrid"
+  color: "e99695"
+  description: "Hybrid variant"
+
+# Status Labels
+- name: "status: needs-triage"
+  color: "f9d0c4"
+  description: "Needs to be triaged"
+
+- name: "status: in-progress"
+  color: "fbca04"
+  description: "Work in progress"
+
+- name: "status: blocked"
+  color: "d93f0b"
+  description: "Blocked by another issue"
+
+- name: "status: needs-review"
+  color: "0e8a16"
+  description: "Needs review"
+
+- name: "status: ready-for-merge"
+  color: "0e8a16"
+  description: "Ready to be merged"
+
+# Size Labels
+- name: "size: xs"
+  color: "3cbf00"
+  description: "Extra small change"
+
+- name: "size: s"
+  color: "5d9801"
+  description: "Small change"
+
+- name: "size: m"
+  color: "7eb101"
+  description: "Medium change"
+
+- name: "size: l"
+  color: "9fc801"
+  description: "Large change"
+
+- name: "size: xl"
+  color: "c0df01"
+  description: "Extra large change"
+
+# Automated Labels
+- name: "dependencies"
+  color: "0366d6"
+  description: "Pull requests that update a dependency file"
+
+- name: "github-actions"
+  color: "0366d6"
+  description: "Pull requests that update GitHub Actions"
+
+- name: "automated"
+  color: "0366d6"
+  description: "Automated pull requests"
+
+# Breaking Change Labels
+- name: "breaking-change"
+  color: "b60205"
+  description: "Contains breaking changes"
+
+# Platform Labels
+- name: "platform: ios"
+  color: "fef2c0"
+  description: "iOS specific"
+
+- name: "platform: android"
+  color: "fef2c0"
+  description: "Android specific"
+
+- name: "platform: web"
+  color: "fef2c0"
+  description: "Web specific"
+
+- name: "platform: cross-platform"
+  color: "fef2c0"
+  description: "Cross-platform"

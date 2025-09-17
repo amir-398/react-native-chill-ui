@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+lib/
+lib-tw/
+lib-ss/
+dist/
+
+# Coverage reports
+chill-ui-core/coverage/
+
+# Storybook
+.storybook/
+
+# Generated files
+*.generated.*
+*.d.ts.map
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db

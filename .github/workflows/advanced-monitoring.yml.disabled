@@ -1,0 +1,755 @@
+name: Advanced Monitoring
+
+on:
+  schedule:
+    # Run monitoring checks every hour
+    - cron: '0 * * * *'
+  workflow_dispatch:
+    inputs:
+      monitoring_type:
+        description: 'Type of monitoring to run'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - performance
+          - security
+          - dependencies
+          - documentation
+          - code_quality
+      alert_threshold:
+        description: 'Alert threshold for monitoring'
+        required: false
+        default: 'warning'
+        type: choice
+        options:
+          - info
+          - warning
+          - error
+          - critical
+
+jobs:
+  performance-monitoring:
+    name: Performance Monitoring
+    runs-on: ubuntu-latest
+    if: github.event.inputs.monitoring_type == 'all' || github.event.inputs.monitoring_type == 'performance'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Build library
+        run: |
+          bun run build
+
+      - name: Measure bundle sizes
+        id: bundle-sizes
+        run: |
+          echo "Measuring bundle sizes..."
+
+          # Measure bundle sizes
+          for variant in lib lib-tw lib-ss; do
+            if [ -d "$variant" ]; then
+              for format in commonjs module typescript; do
+                if [ -d "$variant/$format" ]; then
+                  size=$(du -sb "$variant/$format" | cut -f1)
+                  echo "$variant-$format-size=$size" >> $GITHUB_OUTPUT
+                  echo "$variant-$format-size-kb=$(($size / 1024))" >> $GITHUB_OUTPUT
+                  echo "Bundle $variant/$format: $(($size / 1024))KB"
+                fi
+              done
+            fi
+          done
+
+      - name: Measure import performance
+        id: import-performance
+        run: |
+          echo "Measuring import performance..."
+
+          # Measure import time
+          import_time=$(node -e "
+            const start = process.hrtime.bigint();
+            require('./lib/commonjs/index.js');
+            const end = process.hrtime.bigint();
+            console.log(Number(end - start) / 1000000);
+          ")
+
+          echo "import-time=$import_time" >> $GITHUB_OUTPUT
+          echo "Import time: ${import_time}ms"
+
+          # Measure memory usage
+          memory_usage=$(node -e "
+            const chillUI = require('./lib/commonjs/index.js');
+            const used = process.memoryUsage();
+            console.log(used.heapUsed / 1024 / 1024);
+          ")
+
+          echo "memory-usage=$memory_usage" >> $GITHUB_OUTPUT
+          echo "Memory usage: ${memory_usage}MB"
+
+      - name: Check performance thresholds
+        run: |
+          echo "Checking performance thresholds..."
+
+          import_time="${{ steps.import-performance.outputs.import-time }}"
+          memory_usage="${{ steps.import-performance.outputs.memory-usage }}"
+
+          # Check import time threshold
+          if (( $(echo "$import_time > 100" | bc -l) )); then
+            echo "⚠️ Import time exceeds threshold: ${import_time}ms (threshold: 100ms)"
+            echo "import-time-warning=true" >> $GITHUB_OUTPUT
+          else
+            echo "✅ Import time is acceptable: ${import_time}ms"
+            echo "import-time-warning=false" >> $GITHUB_OUTPUT
+          fi
+
+          # Check memory usage threshold
+          if (( $(echo "$memory_usage > 100" | bc -l) )); then
+            echo "⚠️ Memory usage exceeds threshold: ${memory_usage}MB (threshold: 100MB)"
+            echo "memory-usage-warning=true" >> $GITHUB_OUTPUT
+          else
+            echo "✅ Memory usage is acceptable: ${memory_usage}MB"
+            echo "memory-usage-warning=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate performance report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const report = `## 📊 Performance Monitoring Report
+
+            **Date:** ${new Date().toLocaleDateString()}
+            **Time:** ${new Date().toLocaleTimeString()}
+
+            ### Bundle Sizes
+            - **Core Library (CommonJS):** ${{ steps.bundle-sizes.outputs.lib-commonjs-size-kb }}KB
+            - **Core Library (Module):** ${{ steps.bundle-sizes.outputs.lib-module-size-kb }}KB
+            - **Core Library (TypeScript):** ${{ steps.bundle-sizes.outputs.lib-typescript-size-kb }}KB
+            - **Tailwind Variant (CommonJS):** ${{ steps.bundle-sizes.outputs.lib-tw-commonjs-size-kb }}KB
+            - **Tailwind Variant (Module):** ${{ steps.bundle-sizes.outputs.lib-tw-module-size-kb }}KB
+            - **Tailwind Variant (TypeScript):** ${{ steps.bundle-sizes.outputs.lib-tw-typescript-size-kb }}KB
+            - **Stylesheet Variant (CommonJS):** ${{ steps.bundle-sizes.outputs.lib-ss-commonjs-size-kb }}KB
+            - **Stylesheet Variant (Module):** ${{ steps.bundle-sizes.outputs.lib-ss-module-size-kb }}KB
+            - **Stylesheet Variant (TypeScript):** ${{ steps.bundle-sizes.outputs.lib-ss-typescript-size-kb }}KB
+
+            ### Performance Metrics
+            - **Import Time:** ${{ steps.import-performance.outputs.import-time }}ms
+            - **Memory Usage:** ${{ steps.import-performance.outputs.memory-usage }}MB
+
+            ### Performance Status
+            - **Import Time:** ${{ steps.import-performance.outputs.import-time-warning == 'true' ? '⚠️ Warning' : '✅ Good' }}
+            - **Memory Usage:** ${{ steps.import-performance.outputs.memory-usage-warning == 'true' ? '⚠️ Warning' : '✅ Good' }}
+
+            ### Recommendations
+            - Monitor bundle size growth
+            - Optimize import performance
+            - Reduce memory footprint
+            - Implement code splitting if needed
+            - Use tree shaking effectively
+            - Monitor performance regressions
+
+            ---
+            *This performance monitoring report was automatically generated.*`;
+
+            // Create a discussion with the performance report
+            await github.rest.discussions.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Performance Monitoring Report - ${new Date().toLocaleDateString()}`,
+              body: report,
+              category: 'general'
+            });
+
+            console.log('Performance monitoring report generated successfully');
+
+  security-monitoring:
+    name: Security Monitoring
+    runs-on: ubuntu-latest
+    if: github.event.inputs.monitoring_type == 'all' || github.event.inputs.monitoring_type == 'security'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Run security audit
+        id: security-audit
+        run: |
+          echo "Running security audit..."
+
+          cd chill-ui-core
+
+          # Run security audit
+          if bun audit --audit-level moderate; then
+            echo "security-audit-status=passed" >> $GITHUB_OUTPUT
+            echo "✅ Security audit passed"
+          else
+            echo "security-audit-status=failed" >> $GITHUB_OUTPUT
+            echo "⚠️ Security audit failed"
+          fi
+
+      - name: Check for security vulnerabilities
+        run: |
+          echo "Checking for security vulnerabilities..."
+
+          cd chill-ui-core
+
+          # Check for known vulnerabilities
+          vulnerabilities=$(bun audit --json 2>/dev/null || echo "[]")
+          vulnerability_count=$(echo "$vulnerabilities" | jq length)
+
+          echo "vulnerability-count=$vulnerability_count" >> $GITHUB_OUTPUT
+
+          if [ "$vulnerability_count" -gt 0 ]; then
+            echo "⚠️ Found $vulnerability_count security vulnerabilities"
+            echo "$vulnerabilities" | jq -r '.[] | "\(.name): \(.severity) - \(.description)"'
+          else
+            echo "✅ No security vulnerabilities found"
+          fi
+
+      - name: Check for license compliance
+        run: |
+          echo "Checking for license compliance..."
+
+          cd chill-ui-core
+
+          # Check for problematic licenses
+          problematic_licenses=("GPL" "AGPL" "LGPL" "Copyleft")
+          license_issues=0
+
+          for license in "${problematic_licenses[@]}"; do
+            if grep -r -i "$license" node_modules/ --include="package.json" | grep -q "license"; then
+              echo "⚠️ Found potentially problematic license: $license"
+              license_issues=$((license_issues + 1))
+            fi
+          done
+
+          echo "license-issues=$license_issues" >> $GITHUB_OUTPUT
+
+          if [ "$license_issues" -eq 0 ]; then
+            echo "✅ License compliance check passed"
+          else
+            echo "⚠️ Found $license_issues license compliance issues"
+          fi
+
+      - name: Generate security report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const report = `## 🔒 Security Monitoring Report
+
+            **Date:** ${new Date().toLocaleDateString()}
+            **Time:** ${new Date().toLocaleTimeString()}
+
+            ### Security Audit
+            - **Status:** ${{ steps.security-audit.outputs.security-audit-status === 'passed' ? '✅ Passed' : '❌ Failed' }}
+            - **Vulnerabilities:** ${{ steps.security-audit.outputs.vulnerability-count }}
+            - **License Issues:** ${{ steps.security-audit.outputs.license-issues }}
+
+            ### Security Status
+            ${{ steps.security-audit.outputs.security-audit-status === 'passed' && steps.security-audit.outputs.vulnerability-count == '0' && steps.security-audit.outputs.license-issues == '0' ? '🟢 **Secure** - No security issues detected' : '🟡 **Attention Required** - Security issues detected' }}
+
+            ### Recommendations
+            - Update dependencies regularly
+            - Monitor security advisories
+            - Review license compliance
+            - Implement security best practices
+            - Use automated security scanning
+            - Keep security tools updated
+
+            ---
+            *This security monitoring report was automatically generated.*`;
+
+            // Create a discussion with the security report
+            await github.rest.discussions.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Security Monitoring Report - ${new Date().toLocaleDateString()}`,
+              body: report,
+              category: 'general'
+            });
+
+            console.log('Security monitoring report generated successfully');
+
+  dependency-monitoring:
+    name: Dependency Monitoring
+    runs-on: ubuntu-latest
+    if: github.event.inputs.monitoring_type == 'all' || github.event.inputs.monitoring_type == 'dependencies'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Check for outdated dependencies
+        id: outdated-deps
+        run: |
+          echo "Checking for outdated dependencies..."
+
+          cd chill-ui-core
+
+          # Check for outdated dependencies
+          outdated=$(bun outdated --json 2>/dev/null || echo "[]")
+          outdated_count=$(echo "$outdated" | jq length)
+
+          echo "outdated-count=$outdated_count" >> $GITHUB_OUTPUT
+
+          if [ "$outdated_count" -gt 0 ]; then
+            echo "⚠️ Found $outdated_count outdated dependencies:"
+            echo "$outdated" | jq -r '.[] | "\(.name): \(.current) -> \(.latest)"'
+          else
+            echo "✅ All dependencies are up to date"
+          fi
+
+      - name: Check for duplicate dependencies
+        run: |
+          echo "Checking for duplicate dependencies..."
+
+          cd chill-ui-core
+
+          # Check for duplicate dependencies
+          duplicates=$(bun pm ls --json 2>/dev/null | jq -r '.[] | select(.duplicate == true) | .name' | wc -l)
+
+          echo "duplicate-count=$duplicates" >> $GITHUB_OUTPUT
+
+          if [ "$duplicates" -gt 0 ]; then
+            echo "⚠️ Found $duplicates duplicate dependencies"
+          else
+            echo "✅ No duplicate dependencies found"
+          fi
+
+      - name: Check for unused dependencies
+        run: |
+          echo "Checking for unused dependencies..."
+
+          cd chill-ui-core
+
+          # Check for unused dependencies
+          unused=$(bun pm ls --json 2>/dev/null | jq -r '.[] | select(.unused == true) | .name' | wc -l)
+
+          echo "unused-count=$unused" >> $GITHUB_OUTPUT
+
+          if [ "$unused" -gt 0 ]; then
+            echo "⚠️ Found $unused unused dependencies"
+          else
+            echo "✅ No unused dependencies found"
+          fi
+
+      - name: Generate dependency report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const report = `## 📦 Dependency Monitoring Report
+
+            **Date:** ${new Date().toLocaleDateString()}
+            **Time:** ${new Date().toLocaleTimeString()}
+
+            ### Dependency Status
+            - **Outdated Dependencies:** ${{ steps.outdated-deps.outputs.outdated-count }}
+            - **Duplicate Dependencies:** ${{ steps.outdated-deps.outputs.duplicate-count }}
+            - **Unused Dependencies:** ${{ steps.outdated-deps.outputs.unused-count }}
+
+            ### Dependency Health
+            ${{ steps.outdated-deps.outputs.outdated-count == '0' && steps.outdated-deps.outputs.duplicate-count == '0' && steps.outdated-deps.outputs.unused-count == '0' ? '🟢 **Healthy** - All dependencies are in good state' : '🟡 **Maintenance Required** - Some dependencies need attention' }}
+
+            ### Recommendations
+            - Update outdated dependencies
+            - Remove duplicate dependencies
+            - Clean up unused dependencies
+            - Monitor dependency security
+            - Use automated dependency updates
+            - Implement dependency scanning
+
+            ---
+            *This dependency monitoring report was automatically generated.*`;
+
+            // Create a discussion with the dependency report
+            await github.rest.discussions.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Dependency Monitoring Report - ${new Date().toLocaleDateString()}`,
+              body: report,
+              category: 'general'
+            });
+
+            console.log('Dependency monitoring report generated successfully');
+
+  documentation-monitoring:
+    name: Documentation Monitoring
+    runs-on: ubuntu-latest
+    if: github.event.inputs.monitoring_type == 'all' || github.event.inputs.monitoring_type == 'documentation'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Check documentation completeness
+        id: doc-completeness
+        run: |
+          echo "Checking documentation completeness..."
+
+          # Check if main README exists
+          if [ -f "README.md" ]; then
+            echo "main-readme-exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "main-readme-exists=false" >> $GITHUB_OUTPUT
+          fi
+
+          # Check if core README exists
+          if [ -f "chill-ui-core/README.md" ]; then
+            echo "core-readme-exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "core-readme-exists=false" >> $GITHUB_OUTPUT
+          fi
+
+          # Check component documentation
+          component_docs=0
+          total_components=0
+
+          find chill-ui-core/src/components -type d -mindepth 1 -maxdepth 1 | while read dir; do
+            component_name=$(basename "$dir")
+            readme_file="$dir/README.md"
+            
+            total_components=$((total_components + 1))
+            
+            if [ -f "$readme_file" ]; then
+              component_docs=$((component_docs + 1))
+            fi
+          done
+
+          echo "component-docs=$component_docs" >> $GITHUB_OUTPUT
+          echo "total-components=$total_components" >> $GITHUB_OUTPUT
+
+      - name: Check documentation links
+        run: |
+          echo "Checking documentation links..."
+
+          # Check for broken links in README files
+          broken_links=0
+
+          find . -name "README.md" | while read file; do
+            echo "Checking links in $file"
+            # Simple check for common link patterns
+            grep -n "http" "$file" | while read line; do
+              url=$(echo "$line" | sed 's/.*http[^[:space:]]*//')
+              if [ -n "$url" ]; then
+                if ! curl -s --head "$url" | head -n 1 | grep -q "200 OK"; then
+                  echo "⚠️ Potentially broken link in $file: $url"
+                  broken_links=$((broken_links + 1))
+                fi
+              fi
+            done
+          done
+
+          echo "broken-links=$broken_links" >> $GITHUB_OUTPUT
+
+      - name: Generate documentation report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const report = `## 📚 Documentation Monitoring Report
+
+            **Date:** ${new Date().toLocaleDateString()}
+            **Time:** ${new Date().toLocaleTimeString()}
+
+            ### Documentation Status
+            - **Main README:** ${{ steps.doc-completeness.outputs.main-readme-exists === 'true' ? '✅ Exists' : '❌ Missing' }}
+            - **Core README:** ${{ steps.doc-completeness.outputs.core-readme-exists === 'true' ? '✅ Exists' : '❌ Missing' }}
+            - **Component Documentation:** ${{ steps.doc-completeness.outputs.component-docs }}/${{ steps.doc-completeness.outputs.total-components }}
+            - **Broken Links:** ${{ steps.doc-completeness.outputs.broken-links }}
+
+            ### Documentation Health
+            ${{ steps.doc-completeness.outputs.main-readme-exists === 'true' && steps.doc-completeness.outputs.core-readme-exists === 'true' && steps.doc-completeness.outputs.broken-links == '0' ? '🟢 **Complete** - Documentation is comprehensive' : '🟡 **Incomplete** - Documentation needs attention' }}
+
+            ### Recommendations
+            - Complete missing documentation
+            - Fix broken links
+            - Update outdated information
+            - Add usage examples
+            - Improve API documentation
+            - Maintain consistency
+
+            ---
+            *This documentation monitoring report was automatically generated.*`;
+
+            // Create a discussion with the documentation report
+            await github.rest.discussions.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Documentation Monitoring Report - ${new Date().toLocaleDateString()}`,
+              body: report,
+              category: 'general'
+            });
+
+            console.log('Documentation monitoring report generated successfully');
+
+  code-quality-monitoring:
+    name: Code Quality Monitoring
+    runs-on: ubuntu-latest
+    if: github.event.inputs.monitoring_type == 'all' || github.event.inputs.monitoring_type == 'code_quality'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd chill-ui-core
+          bun install --frozen-lockfile
+
+      - name: Run code quality checks
+        id: code-quality
+        run: |
+          echo "Running code quality checks..."
+
+          cd chill-ui-core
+
+          # Run ESLint
+          if bun run lint; then
+            echo "eslint-status=passed" >> $GITHUB_OUTPUT
+            echo "✅ ESLint passed"
+          else
+            echo "eslint-status=failed" >> $GITHUB_OUTPUT
+            echo "⚠️ ESLint failed"
+          fi
+
+          # Run TypeScript check
+          if bun run ts:check; then
+            echo "typescript-status=passed" >> $GITHUB_OUTPUT
+            echo "✅ TypeScript check passed"
+          else
+            echo "typescript-status=failed" >> $GITHUB_OUTPUT
+            echo "⚠️ TypeScript check failed"
+          fi
+
+          # Run Prettier check
+          if bun run format --check; then
+            echo "prettier-status=passed" >> $GITHUB_OUTPUT
+            echo "✅ Prettier check passed"
+          else
+            echo "prettier-status=failed" >> $GITHUB_OUTPUT
+            echo "⚠️ Prettier check failed"
+          fi
+
+      - name: Check code complexity
+        run: |
+          echo "Checking code complexity..."
+
+          cd chill-ui-core
+
+          # Check for complex functions
+          complex_functions=$(find src -name "*.ts" -o -name "*.tsx" | xargs grep -l "function\|const.*=" | xargs wc -l | awk '$1 > 50 {print $2}' | wc -l)
+
+          echo "complex-functions=$complex_functions" >> $GITHUB_OUTPUT
+
+          if [ "$complex_functions" -gt 0 ]; then
+            echo "⚠️ Found $complex_functions complex functions (>50 lines)"
+          else
+            echo "✅ No complex functions found"
+          fi
+
+      - name: Generate code quality report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const report = `## 🔍 Code Quality Monitoring Report
+
+            **Date:** ${new Date().toLocaleDateString()}
+            **Time:** ${new Date().toLocaleTimeString()}
+
+            ### Code Quality Status
+            - **ESLint:** ${{ steps.code-quality.outputs.eslint-status === 'passed' ? '✅ Passed' : '❌ Failed' }}
+            - **TypeScript:** ${{ steps.code-quality.outputs.typescript-status === 'passed' ? '✅ Passed' : '❌ Failed' }}
+            - **Prettier:** ${{ steps.code-quality.outputs.prettier-status === 'passed' ? '✅ Passed' : '❌ Failed' }}
+            - **Complex Functions:** ${{ steps.code-quality.outputs.complex-functions }}
+
+            ### Code Quality Health
+            ${{ steps.code-quality.outputs.eslint-status === 'passed' && steps.code-quality.outputs.typescript-status === 'passed' && steps.code-quality.outputs.prettier-status === 'passed' ? '🟢 **High Quality** - Code meets quality standards' : '🟡 **Quality Issues** - Code needs improvement' }}
+
+            ### Recommendations
+            - Fix linting errors
+            - Resolve TypeScript issues
+            - Format code consistently
+            - Reduce function complexity
+            - Improve code readability
+            - Follow best practices
+
+            ---
+            *This code quality monitoring report was automatically generated.*`;
+
+            // Create a discussion with the code quality report
+            await github.rest.discussions.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Code Quality Monitoring Report - ${new Date().toLocaleDateString()}`,
+              body: report,
+              category: 'general'
+            });
+
+            console.log('Code quality monitoring report generated successfully');
+
+  monitoring-summary:
+    name: Monitoring Summary
+    runs-on: ubuntu-latest
+    needs:
+      [
+        performance-monitoring,
+        security-monitoring,
+        dependency-monitoring,
+        documentation-monitoring,
+        code-quality-monitoring,
+      ]
+    if: always()
+
+    steps:
+      - name: Generate monitoring summary
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const summary = `## 📊 Advanced Monitoring Summary
+
+            **Date:** ${new Date().toLocaleDateString()}
+            **Time:** ${new Date().toLocaleTimeString()}
+
+            ### Monitoring Results
+            - **Performance Monitoring:** ${{ needs.performance-monitoring.result === 'success' ? '✅ Completed' : '❌ Failed' }}
+            - **Security Monitoring:** ${{ needs.security-monitoring.result === 'success' ? '✅ Completed' : '❌ Failed' }}
+            - **Dependency Monitoring:** ${{ needs.dependency-monitoring.result === 'success' ? '✅ Completed' : '❌ Failed' }}
+            - **Documentation Monitoring:** ${{ needs.documentation-monitoring.result === 'success' ? '✅ Completed' : '❌ Failed' }}
+            - **Code Quality Monitoring:** ${{ needs.code-quality-monitoring.result === 'success' ? '✅ Completed' : '❌ Failed' }}
+
+            ### Overall Status
+            ${{ needs.performance-monitoring.result === 'success' && needs.security-monitoring.result === 'success' && needs.dependency-monitoring.result === 'success' && needs.documentation-monitoring.result === 'success' && needs.code-quality-monitoring.result === 'success' ? '🟢 **All Systems Operational** - All monitoring checks passed' : '🟡 **Attention Required** - Some monitoring checks failed' }}
+
+            ### Next Steps
+            - Review individual monitoring reports
+            - Address any identified issues
+            - Update monitoring thresholds if needed
+            - Implement recommended improvements
+            - Schedule regular monitoring reviews
+
+            ---
+            *This advanced monitoring summary was automatically generated.*`;
+
+            // Create a discussion with the monitoring summary
+            await github.rest.discussions.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Advanced Monitoring Summary - ${new Date().toLocaleDateString()}`,
+              body: summary,
+              category: 'general'
+            });
+
+            console.log('Advanced monitoring summary generated successfully');
+
+      - name: Alert on critical issues
+        uses: actions/github-script@v7
+        if: failure()
+        with:
+          script: |
+            const alert = `🚨 **Critical Monitoring Alert**
+
+            **Date:** ${new Date().toLocaleDateString()}
+            **Time:** ${new Date().toLocaleTimeString()}
+
+            ### Failed Monitoring Checks
+            ${{ needs.performance-monitoring.result !== 'success' ? '- Performance monitoring failed' : '' }}
+            ${{ needs.security-monitoring.result !== 'success' ? '- Security monitoring failed' : '' }}
+            ${{ needs.dependency-monitoring.result !== 'success' ? '- Dependency monitoring failed' : '' }}
+            ${{ needs.documentation-monitoring.result !== 'success' ? '- Documentation monitoring failed' : '' }}
+            ${{ needs.code-quality-monitoring.result !== 'success' ? '- Code quality monitoring failed' : '' }}
+
+            ### Details
+            - **Repository:** ${{ github.repository }}
+            - **Run ID:** ${{ github.run_id }}
+
+            🔗 [View Workflow Run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+            ---
+            *This is an automated critical monitoring alert.*`;
+
+            // You can add Slack/Discord webhook notifications here
+            console.log(`Critical monitoring alert: ${alert}`);
+
+            // Create an issue for critical monitoring failures
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🚨 Critical Monitoring Alert - ${new Date().toLocaleDateString()}`,
+              body: alert,
+              labels: ['monitoring', 'priority: critical']
+            });

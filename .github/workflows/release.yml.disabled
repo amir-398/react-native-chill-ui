@@ -1,0 +1,181 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 1.0.0)'
+        required: true
+        type: string
+
+jobs:
+  release:
+    name: Release Package
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: latest
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        registry-url: 'https://registry.npmjs.org'
+        
+    - name: Install dependencies
+      run: |
+        cd chill-ui-core
+        bun install --frozen-lockfile
+        
+    - name: Build all variants
+      run: |
+        bun run clean
+        bun run build
+        bun run build:hybrid
+        bun run build:tailwind
+        bun run build:stylesheet
+        
+    - name: Run tests
+      run: |
+        cd chill-ui-core
+        bun run test
+        
+    - name: Configure Git
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        
+    - name: Extract version
+      id: version
+      run: |
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+        else
+          echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+        fi
+        
+    - name: Update package version
+      run: |
+        npm version ${{ steps.version.outputs.version }} --no-git-tag-version
+        cd chill-ui-core
+        npm version ${{ steps.version.outputs.version }} --no-git-tag-version
+        
+    - name: Generate changelog
+      run: |
+        # Create a simple changelog entry
+        echo "## [${{ steps.version.outputs.version }}] - $(date +%Y-%m-%d)" >> CHANGELOG.md
+        echo "" >> CHANGELOG.md
+        echo "### Added" >> CHANGELOG.md
+        echo "- New features and improvements" >> CHANGELOG.md
+        echo "" >> CHANGELOG.md
+        echo "### Changed" >> CHANGELOG.md
+        echo "- Bug fixes and optimizations" >> CHANGELOG.md
+        echo "" >> CHANGELOG.md
+        
+    - name: Publish to NPM
+      run: |
+        npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        
+    - name: Create GitHub Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ steps.version.outputs.version }}
+        release_name: Release v${{ steps.version.outputs.version }}
+        body_path: CHANGELOG.md
+        draft: false
+        prerelease: false
+        
+    - name: Upload release assets
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./chill-ui-${{ steps.version.outputs.version }}.tgz
+        asset_name: chill-ui-${{ steps.version.outputs.version }}.tgz
+        asset_content_type: application/gzip
+
+  create-release-pr:
+    name: Create Release PR
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: latest
+        
+    - name: Create release branch
+      run: |
+        git checkout -b release/v${{ github.event.inputs.version }}
+        
+    - name: Update package version
+      run: |
+        npm version ${{ github.event.inputs.version }} --no-git-tag-version
+        cd chill-ui-core
+        npm version ${{ github.event.inputs.version }} --no-git-tag-version
+        
+    - name: Commit changes
+      run: |
+        git add .
+        git commit -m "chore: bump version to ${{ github.event.inputs.version }}"
+        
+    - name: Push branch
+      run: |
+        git push origin release/v${{ github.event.inputs.version }}
+        
+    - name: Create Pull Request
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const { data: pullRequest } = await github.rest.pulls.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: `Release v${{ github.event.inputs.version }}`,
+            head: `release/v${{ github.event.inputs.version }}`,
+            base: 'main',
+            body: `## Release v${{ github.event.inputs.version }}
+            
+            This PR prepares the release of version ${{ github.event.inputs.version }}.
+            
+            ### Changes:
+            - Updated package versions
+            - Prepared for release
+            
+            ### Checklist:
+            - [ ] All tests pass
+            - [ ] Build is successful
+            - [ ] Documentation is updated
+            - [ ] Changelog is updated
+            
+            Once this PR is merged, the release will be automatically triggered.`
+          });
+          
+          console.log(`Created PR: ${pullRequest.html_url}`);

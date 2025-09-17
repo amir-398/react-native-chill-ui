@@ -1,0 +1,178 @@
+{
+  "name": "chill-ui",
+  "version": "1.0.0",
+  "description": "Chill UI is a library of components for react native",
+  "keywords": [
+    "react-native",
+    "ui",
+    "components",
+    "react-native-components",
+    "react-native-ui",
+    "react-native-components"
+  ],
+  "homepage": "https://github.com/amirmeb/chill-ui",
+  "bugs": {
+    "url": "https://github.com/amirmeb/chill-ui/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/onmotion/react-native-autocomplete-dropdown.git"
+  },
+  "license": "MIT",
+  "author": "Amir Meberbeche <amir.meb398@gmail.com>",
+  "main": "lib/commonjs/index.js",
+  "module": "lib/module/index.js",
+  "source": "src/index",
+  "react-native": "src/index",
+  "types": "lib/typescript/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./lib/module/index.js",
+      "require": "./lib/commonjs/index.js",
+      "types": "./lib/typescript/index.d.ts"
+    },
+    "./tailwind": {
+      "import": "./lib-tw/module/index.js",
+      "require": "./lib-tw/commonjs/index.js",
+      "types": "./lib-tw/typescript/index.d.ts"
+    },
+    "./stylesheet": {
+      "import": "./lib-ss/module/index.js",
+      "require": "./lib-ss/commonjs/index.js",
+      "types": "./lib-ss/typescript/index.d.ts"
+    },
+    "./lib/*": "./lib/*",
+    "./lib-tw/*": "./lib-tw/*",
+    "./lib-ss/*": "./lib-ss/*"
+  },
+  "bin": {
+    "chill-ui": "./cli/index.js"
+  },
+  "files": [
+    "lib",
+    "lib-tw",
+    "lib-ss",
+    "cli",
+    "registry",
+    "packages"
+  ],
+  "scripts": {
+    "build:hybrid": "cd generated/core-hybrid && bunx bob build",
+    "build:tailwind": "cd generated/core-tailwind && bunx bob build",
+    "build:stylesheet": "cd generated/core-stylesheet && bunx bob build",
+    "build:all": "bun run build:hybrid && bun run build:tailwind && bun run build:stylesheet",
+    "clean": "rm -rf lib lib-tw lib-ss generated/core-hybrid/lib generated/core-tailwind/lib generated/core-stylesheet/lib",
+    "generate:cors": "node scripts/generate-cors.js",
+    "generate:cors:all": "node scripts/generate-cors.js all",
+    "lint": "bunx eslint .",
+    "lint:generated-cors": "bunx eslint --ignore-pattern '**/lib/**' generated/*/src/**/*.{ts,tsx}",
+    "ts:check:generated-cors": "find generated -name '*.ts' -o -name '*.tsx' | xargs bunx tsc --noEmit --skipLibCheck --jsx react-jsx",
+    "check:generated-cors": "bun run ts:check:generated-cors && bun run lint:generated-cors",
+    "check:main-core": "cd chill-ui-core && bun run ts:check && bun run lint",
+    "pack:stylesheet": "cd generated/core-stylesheet && npm pack",
+    "pack:tailwind": "cd generated/core-tailwind && npm pack",
+    "pack:hybrid": "cd generated/core-hybrid && npm pack",
+    "pack:all": "bun run pack:stylesheet && bun run pack:tailwind && bun run pack:hybrid",
+    "build:pack:all": "bun run build:all && bun run pack:all",
+    "release": "bunx release-it",
+    "test": "cd chill-ui-core && bunx jest",
+    "test:build": "bunx scripts/test-build.js",
+    "test:cli": "bunx scripts/test-cli-local.js",
+    "cli:config": "bun run cli/index.js",
+    "cli:install": "bun run packages/installer/bin/installer.js",
+    "tsc": "bunx tsc --noEmit",
+    "typecheck": "bunx tsc --noEmit",
+    "convert:aliases": "node scripts/convert-aliases-to-relative.js",
+    "check:components-docs": "node scripts/check-components.js",
+    "check:components-docs:report": "node scripts/check-components.js --report"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/preset-env": "^7.25.3",
+    "@babel/runtime": "^7.25.0",
+    "@commitlint/config-conventional": "^17.0.0",
+    "@ef-carbon/tspm": "^2.2.5",
+    "@gulp-plugin/alias": "^2.2.2",
+    "@react-native-async-storage/async-storage": "^2.1.2",
+    "@react-native-community/cli": "18.0.0",
+    "@react-native-community/cli-platform-android": "18.0.0",
+    "@react-native-community/cli-platform-ios": "18.0.0",
+    "@react-native/babel-preset": "0.79.2",
+    "@react-native/eslint-config": "0.79.2",
+    "@react-native/metro-config": "0.79.2",
+    "@react-native/typescript-config": "0.79.2",
+    "@types/jest": "^29.5.13",
+    "@types/react-test-renderer": "^19.0.0",
+    "clsx": "^2.1.1",
+    "commitlint": "^17.0.2",
+    "del-cli": "^5.1.0",
+    "eslint": "^8.19.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-expo": "^9.2.0",
+    "eslint-config-prettier": "^10.1.3",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-perfectionist": "^4.13.0",
+    "eslint-plugin-prettier": "^5.4.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-unused-imports": "^4.1.4",
+    "jest": "^29.6.3",
+    "lefthook": "^1.11.12",
+    "prettier": "^3.0.0",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "react": "19.0.0",
+    "react-native": "0.79.2",
+    "react-native-builder-bob": "^0.30.2",
+    "react-native-reanimated": "~3.17.4",
+    "react-native-safe-area-context": "^5.4.1",
+    "react-native-webview": "^13.13.5",
+    "react-test-renderer": "19.0.0",
+    "release-it": "^15.0.0",
+    "tailwind-merge": "^3.3.0",
+    "tailwind-variants": "^1.0.0",
+    "tailwindcss": "^3.4.17",
+    "tsc-alias": "^1.8.16",
+    "typescript": "5.1.6"
+  },
+  "peerDependencies": {
+    "clsx": "*",
+    "react": "*",
+    "react-native": "*",
+    "react-native-reanimated": "*",
+    "react-native-safe-area-context": "*",
+    "react-native-svg": "*",
+    "react-native-webview": "*",
+    "tailwind-merge": "*",
+    "tailwind-variants": "*",
+    "tailwindcss": "*"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "release-it": {
+    "git": {
+      "commitMessage": "Release ${version}",
+      "tagName": "v${version}"
+    },
+    "npm": {
+      "publish": true
+    },
+    "github": {
+      "release": true
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": "angular"
+      }
+    }
+  },
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^12.0.0",
+    "nativewind": "^4.2.1",
+    "react-native-gesture-handler": "^2.25.0"
+  }
+}

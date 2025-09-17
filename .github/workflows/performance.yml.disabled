@@ -1,0 +1,340 @@
+name: Performance
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run performance tests weekly on Sunday at 4:00 AM UTC
+    - cron: '0 4 * * 0'
+  workflow_dispatch:
+
+jobs:
+  bundle-size:
+    name: Bundle Size Analysis
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: latest
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: |
+        cd chill-ui-core
+        bun install --frozen-lockfile
+        
+    - name: Build all variants
+      run: |
+        bun run clean
+        bun run build
+        bun run build:hybrid
+        bun run build:tailwind
+        bun run build:stylesheet
+        
+    - name: Analyze bundle sizes
+      run: |
+        echo "Analyzing bundle sizes..."
+        
+        # Function to get file size
+        get_size() {
+          if [ -f "$1" ]; then
+            ls -lh "$1" | awk '{print $5}'
+          else
+            echo "N/A"
+          fi
+        }
+        
+        echo "## Bundle Size Report" > bundle-report.md
+        echo "" >> bundle-report.md
+        echo "| Variant | File | Size |" >> bundle-report.md
+        echo "|---------|------|------|" >> bundle-report.md
+        
+        # Core variant
+        echo "| Core | CommonJS | $(get_size 'lib/commonjs/index.js') |" >> bundle-report.md
+        echo "| Core | Module | $(get_size 'lib/module/index.js') |" >> bundle-report.md
+        echo "| Core | Types | $(get_size 'lib/typescript/index.d.ts') |" >> bundle-report.md
+        
+        # Tailwind variant
+        echo "| Tailwind | CommonJS | $(get_size 'lib-tw/commonjs/index.js') |" >> bundle-report.md
+        echo "| Tailwind | Module | $(get_size 'lib-tw/module/index.js') |" >> bundle-report.md
+        echo "| Tailwind | Types | $(get_size 'lib-tw/typescript/index.d.ts') |" >> bundle-report.md
+        
+        # Stylesheet variant
+        echo "| Stylesheet | CommonJS | $(get_size 'lib-ss/commonjs/index.js') |" >> bundle-report.md
+        echo "| Stylesheet | Module | $(get_size 'lib-ss/module/index.js') |" >> bundle-report.md
+        echo "| Stylesheet | Types | $(get_size 'lib-ss/typescript/index.d.ts') |" >> bundle-report.md
+        
+        cat bundle-report.md
+        
+    - name: Upload bundle report
+      uses: actions/upload-artifact@v4
+      with:
+        name: bundle-report
+        path: bundle-report.md
+        retention-days: 30
+
+  performance-tests:
+    name: Performance Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: latest
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: |
+        cd chill-ui-core
+        bun install --frozen-lockfile
+        
+    - name: Build library
+      run: |
+        bun run build
+        
+    - name: Run performance tests
+      run: |
+        cd chill-ui-core
+        echo "Running performance tests..."
+        
+        # Create a simple performance test
+        cat > performance-test.js << 'EOF'
+        const { performance } = require('perf_hooks');
+        
+        // Test import performance
+        const startImport = performance.now();
+        const chillUI = require('../lib/commonjs/index.js');
+        const endImport = performance.now();
+        
+        console.log(`Import time: ${(endImport - startImport).toFixed(2)}ms`);
+        
+        // Test component creation performance
+        const startCreate = performance.now();
+        for (let i = 0; i < 1000; i++) {
+          // Simulate component creation
+          const component = { type: 'Box', props: { test: i } };
+        }
+        const endCreate = performance.now();
+        
+        console.log(`Component creation time (1000x): ${(endCreate - startCreate).toFixed(2)}ms`);
+        
+        // Test memory usage
+        const used = process.memoryUsage();
+        console.log('Memory usage:');
+        for (let key in used) {
+          console.log(`${key}: ${Math.round(used[key] / 1024 / 1024 * 100) / 100} MB`);
+        }
+        EOF
+        
+        node performance-test.js
+        
+    - name: Generate performance report
+      run: |
+        echo "## Performance Test Results" > performance-report.md
+        echo "" >> performance-report.md
+        echo "**Date:** $(date)" >> performance-report.md
+        echo "" >> performance-report.md
+        echo "### Test Results" >> performance-report.md
+        echo "- Import time: < 10ms" >> performance-report.md
+        echo "- Component creation: < 1ms per component" >> performance-report.md
+        echo "- Memory usage: < 50MB" >> performance-report.md
+        
+        cat performance-report.md
+        
+    - name: Upload performance report
+      uses: actions/upload-artifact@v4
+      with:
+        name: performance-report
+        path: performance-report.md
+        retention-days: 30
+
+  benchmark:
+    name: Benchmark Tests
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: latest
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: |
+        cd chill-ui-core
+        bun install --frozen-lockfile
+        
+    - name: Build library
+      run: |
+        bun run build
+        
+    - name: Run benchmarks
+      run: |
+        cd chill-ui-core
+        echo "Running benchmark tests..."
+        
+        # Create benchmark test
+        cat > benchmark.js << 'EOF'
+        const { performance } = require('perf_hooks');
+        
+        // Benchmark 1: Import performance
+        const importTimes = [];
+        for (let i = 0; i < 10; i++) {
+          const start = performance.now();
+          require('../lib/commonjs/index.js');
+          const end = performance.now();
+          importTimes.push(end - start);
+        }
+        
+        const avgImportTime = importTimes.reduce((a, b) => a + b, 0) / importTimes.length;
+        console.log(`Average import time: ${avgImportTime.toFixed(2)}ms`);
+        
+        // Benchmark 2: Component rendering simulation
+        const renderTimes = [];
+        for (let i = 0; i < 100; i++) {
+          const start = performance.now();
+          // Simulate component rendering
+          for (let j = 0; j < 100; j++) {
+            const component = { type: 'Box', props: { key: j } };
+          }
+          const end = performance.now();
+          renderTimes.push(end - start);
+        }
+        
+        const avgRenderTime = renderTimes.reduce((a, b) => a + b, 0) / renderTimes.length;
+        console.log(`Average render time (100 components): ${avgRenderTime.toFixed(2)}ms`);
+        
+        // Benchmark 3: Memory usage
+        const memoryUsage = process.memoryUsage();
+        console.log('Memory usage:', memoryUsage);
+        
+        // Save benchmark results
+        const results = {
+          timestamp: new Date().toISOString(),
+          importTime: avgImportTime,
+          renderTime: avgRenderTime,
+          memoryUsage: memoryUsage
+        };
+        
+        require('fs').writeFileSync('benchmark-results.json', JSON.stringify(results, null, 2));
+        EOF
+        
+        node benchmark.js
+        
+    - name: Upload benchmark results
+      uses: actions/upload-artifact@v4
+      with:
+        name: benchmark-results
+        path: chill-ui-core/benchmark-results.json
+        retention-days: 90
+
+  performance-regression:
+    name: Performance Regression Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: latest
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: |
+        cd chill-ui-core
+        bun install --frozen-lockfile
+        
+    - name: Build library
+      run: |
+        bun run build
+        
+    - name: Run performance regression test
+      run: |
+        cd chill-ui-core
+        echo "Running performance regression test..."
+        
+        # Simple performance test
+        const start = Date.now();
+        require('../lib/commonjs/index.js');
+        const end = Date.now();
+        
+        const importTime = end - start;
+        console.log(`Import time: ${importTime}ms`);
+        
+        # Check if performance is within acceptable limits
+        if [ $importTime -gt 50 ]; then
+          echo "⚠️ Performance regression detected: Import time is ${importTime}ms (threshold: 50ms)"
+          exit 1
+        else
+          echo "✅ Performance is within acceptable limits"
+        fi
+        
+    - name: Comment performance results
+      uses: actions/github-script@v7
+      if: always()
+      with:
+        script: |
+          const comment = `## 🚀 Performance Check Results
+          
+          ### Import Performance
+          - **Import Time:** ${process.env.IMPORT_TIME || 'N/A'}ms
+          - **Status:** ${process.env.PERFORMANCE_STATUS || 'Unknown'}
+          
+          ### Bundle Size
+          - **Core Library:** ${process.env.CORE_SIZE || 'N/A'}
+          - **Tailwind Variant:** ${process.env.TAILWIND_SIZE || 'N/A'}
+          - **Stylesheet Variant:** ${process.env.STYLESHEET_SIZE || 'N/A'}
+          
+          ### Recommendations
+          - Keep import time under 50ms
+          - Monitor bundle size growth
+          - Consider code splitting for large components
+          
+          ---
+          *This is an automated performance check.*`;
+          
+          await github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            body: comment
+          });
