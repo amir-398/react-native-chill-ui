@@ -28,7 +28,7 @@
     "@storybook/react-native": "^8.6.4",
     "expo": "53.0.20",
     "expo-font": "~13.3.2",
-    "expo-status-bar": "~2.2.3",
+    "expo-status-bar": "~3.0.8",
     "install": "^0.13.0",
     "nativewind": "^4.1.23",
     "react": "19.0.0",
