@@ -5,7 +5,7 @@ import Icon from '../icon';
 import { Box } from '../box';
 import * as flags from './flags';
 import { String } from '../string';
-import Input from '../inputs/Input';
+import Input from '../input/Input';
 import { DEFAULT_CONFIG } from '../inputSelectDropdown/types';
 import InputDropdownModal from '../inputDrodown/InputDropdownModal';
 import { countryCodes, type CountryCodesProps } from './countryCodes';

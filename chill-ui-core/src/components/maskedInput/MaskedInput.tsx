@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import Input from '../inputs/Input';
+import Input from '../input/Input';
 import { MaskedInputProps } from '../../types/input.types';
 
 /**

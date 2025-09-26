@@ -1,7 +1,7 @@
+import { cn } from '@utils';
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { Dimensions, InteractionManager, Modal, TouchableWithoutFeedback, View } from 'react-native';
 
-import cn from '../../cn';
 import { Box } from '../../box';
 import { Size, Rect, Point } from './models';
 import styleGenerator from './TooltipStyles';

@@ -1,6 +1,6 @@
 import { tv } from 'tailwind-variants';
 
-const avatarTv = tv({
+export const avatarTv = tv({
   base: 'bg-[#7DD3FC] items-center justify-center overflow-hidden',
   variants: {
     size: {
@@ -20,4 +20,4 @@ const avatarTv = tv({
   },
 });
 
-export default avatarTv;
+export const avatarImageClassName = 'absolute h-full w-full';

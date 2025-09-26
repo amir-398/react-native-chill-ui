@@ -18,17 +18,6 @@ import AnimatedBox from '../animatedBox/AnimatedBox.ss';
  * <SlideInBox autoStart direction="left" style={{ backgroundColor: 'blue', padding: 24, borderRadius: 8 }}>
  *   <String style={{ color: 'white' }}>Sliding in from left</String>
  * </SlideInBox>
- *
- * // Slide in from top with custom distance
- * <SlideInBox
- *   autoStart
- *   direction="up"
- *   distance={150}
- *   duration={600}
- *   style={{ backgroundColor: 'green', padding: 16, borderRadius: 12, shadowOpacity: 0.3 }}
- * >
- *   <String style={{ color: 'white' }}>Notification from top</String>
- * </SlideInBox>
  * ```
  *
  * @param direction - Direction to slide from: 'left', 'right', 'up', or 'down' (default: 'left')

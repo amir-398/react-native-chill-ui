@@ -11,10 +11,34 @@ jest.mock('../styles/AnimatedBox.styles', () => ({
   default: jest.fn(() => ({})),
 }));
 
+// Mock String styles
+jest.mock('../../string/styles/String.styles', () => ({
+  __esModule: true,
+  default: jest.fn(() => ({})),
+}));
+
+// Mock String variants
+jest.mock('../../string/styles/String.variants', () => ({
+  __esModule: true,
+  default: jest.fn(() => ({})),
+}));
+
 // Mock Tailwind utilities
 jest.mock('../../../utils/tw/cn', () => ({
   __esModule: true,
   default: jest.fn((...args) => args.filter(Boolean).join(' ')),
+}));
+
+// Mock cn from @utils
+jest.mock('../../../utils', () => ({
+  classNameHandler: jest.fn(className => ({ className })),
+  classNamePropsHandler: jest.fn(),
+  cn: jest.fn((...args) => args.filter(Boolean).join(' ')),
+  colorVariantPropsHandler: jest.fn(),
+  isNativeWindInstalled: jest.fn(() => false),
+  StringSv: jest.fn(() => ({})),
+  styleHandler: jest.fn(style => ({ style: style.defaultStyle })),
+  sv: jest.fn(() => ({})),
 }));
 
 // Mock Hybrid utilities

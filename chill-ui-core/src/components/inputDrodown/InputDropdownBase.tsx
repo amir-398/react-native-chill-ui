@@ -3,7 +3,7 @@ import { Animated } from 'react-native';
 import { useEffect, useRef } from 'react';
 
 import { Box } from '../box';
-import { Input } from '../inputs';
+import { Input } from '../input';
 import { AnimatedBox } from '../animatedBox';
 import { InputDropdownBaseProps } from '../../types/dropdown.types';
 

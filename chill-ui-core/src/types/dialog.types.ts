@@ -1,7 +1,7 @@
 import type { ViewProps } from 'react-native';
 import type { VariantProps } from 'tailwind-variants';
 
-import type { IconProps } from './icon.types';
+import type { IconProps } from './icon/icon.tw.types';
 import type dialogVariants from '../components/dialog/Dialog.variants';
 
 import { StrictOmit } from './utils/StrictOmit.types';

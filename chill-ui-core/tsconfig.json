@@ -36,6 +36,7 @@
       "@/*": ["src/*"],
       "@utils": ["src/utils"],
       "@types": ["src/types"],
+      "@constants": ["src/constants"],
       "@components": ["src/components"],
       "@components/*": ["src/components/*"]
     }
@@ -47,7 +48,8 @@
     "nativewind-env.d.ts",
     "global.d.ts",
     "src/components/select/react-native-element-dropdown/src/components/Dropdown",
-    "src/components/select/react-native-element-dropdown/src/components/InputSelectDropdown"
+    "src/components/select/react-native-element-dropdown/src/components/InputSelectDropdown",
+    "src/types/utils/index.ts"
   ],
   "exclude": [
     "node_modules",

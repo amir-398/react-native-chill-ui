@@ -1,5 +1,5 @@
+import { View } from 'react-native';
 import { useFonts } from 'expo-font';
-import { String, BoxCenter } from 'react-native-chill-ui';
 import {
   Poppins_700Bold,
   Poppins_800ExtraBold,
@@ -22,6 +22,8 @@ import {
   Montserrat_600SemiBold,
   Montserrat_100Thin,
 } from '@expo-google-fonts/montserrat';
+
+import { AutocompleteDropdown, AutocompleteDropdownContext } from '@/components/AutocompleteDropdown';
 
 // Import global.css only if NativeWind is available
 try {
@@ -71,8 +73,21 @@ export default function App() {
   // });
 
   return (
-    <BoxCenter style={{ marginTop: 100 }}>
-      <String>Hello, World!</String>
-    </BoxCenter>
+    <AutocompleteDropdownContext>
+      <View style={{ marginTop: 100, padding: 20 }}>
+        <AutocompleteDropdown
+          dataSet={[
+            { id: 1, name: 'John Doe' },
+            { id: 2, name: 'Jane Doe' },
+            { id: 3, name: 'John Smith' },
+            { id: 4, name: 'Jane Smith' },
+          ]}
+          valueField="name"
+          onSelectItem={item => {
+            console.log('Selected item:', item);
+          }}
+        />
+      </View>
+    </AutocompleteDropdownContext>
   );
 }

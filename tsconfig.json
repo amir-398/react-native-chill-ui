@@ -39,6 +39,6 @@
     /* Types */
     // "types": ["nativewind/types"]
   },
-  "include": ["**/*.ts", "**/*.tsx", "nativewind-env.d.ts", "global.d.ts", "scripts/test.js"],
+  "include": ["**/*.ts", "**/*.tsx", "nativewind-env.d.ts", "global.d.ts", "scripts/test.js", "chill-ui-core/src/types/utils/index.ts"],
   "exclude": ["node_modules"]
 }

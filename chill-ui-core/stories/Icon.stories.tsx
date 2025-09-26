@@ -2,14 +2,19 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { action } from '@storybook/addon-actions';
 
-import Icon from '../src/components/icon/Icon';
+import { Icon } from '../src/components/icon';
 import UiPresentation from './storybook/UiPresentation';
 
 const meta: Meta<typeof Icon> = {
   argTypes: {
+    as: {
+      control: 'select',
+      description: 'Component to use when pressable',
+      options: ['pressable', 'touchable-opacity', 'ripple-pressable'],
+    },
     className: {
       control: 'text',
-      description: 'The class name of the icon',
+      description: 'Custom CSS classes (only used with NativeWind)',
     },
     color: {
       control: 'color',
@@ -17,7 +22,7 @@ const meta: Meta<typeof Icon> = {
     },
     hasPressEffect: {
       control: 'boolean',
-      description: 'Adds padding and press effect to the icon',
+      description: 'Whether to show press effect when pressed',
     },
     name: {
       control: 'select',
@@ -35,24 +40,27 @@ const meta: Meta<typeof Icon> = {
         'xmark-solid',
       ],
     },
-    padding: {
-      control: 'select',
-      description: 'The padding of the icon',
-      options: ['xs', 'sm', 'md', 'lg', 'xl', '2xl'],
-    },
-    pressEffectClassName: {
-      control: 'text',
-      description: 'The class name of the press effect',
+    onPress: {
+      action: 'onPress',
+      description: 'Callback function when icon is pressed',
     },
     pressEffectSize: {
       control: 'select',
-      description: 'The size of the press effect',
-      options: ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'],
+      description: 'Size of the press effect padding',
+      options: ['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'],
+    },
+    pressEffectStyle: {
+      control: 'object',
+      description: 'Custom styles for the press effect (only works with NativeWind and Hybrid versions)',
     },
     size: {
       control: 'select',
       description: 'The size of the icon',
       options: ['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'],
+    },
+    style: {
+      control: 'object',
+      description: 'Additional inline styles',
     },
   },
   component: Icon,
@@ -129,4 +137,34 @@ export const DifferentIcons: Story = {
       <Icon name="angles-up-solid" color="#000" size="md" />
     </UiPresentation>
   ),
+};
+
+export const PressableVariants: Story = {
+  render: () => (
+    <UiPresentation>
+      <Icon name="bell-solid" onPress={action('pressable')} as="pressable" />
+      <Icon name="bell-solid" onPress={action('touchable-opacity')} as="touchable-opacity" />
+      <Icon name="bell-solid" onPress={action('ripple-pressable')} as="ripple-pressable" />
+    </UiPresentation>
+  ),
+};
+
+export const PressEffectSizes: Story = {
+  render: () => (
+    <UiPresentation>
+      <Icon name="heart-solid" onPress={action('small')} pressEffectSize="sm" />
+      <Icon name="heart-solid" onPress={action('medium')} pressEffectSize="md" />
+      <Icon name="heart-solid" onPress={action('large')} pressEffectSize="lg" />
+    </UiPresentation>
+  ),
+};
+
+export const WithoutPressEffect: Story = {
+  args: {
+    color: '#000',
+    hasPressEffect: false,
+    name: 'bell-solid',
+    onPress: action('onPress'),
+    size: 'md',
+  },
 };

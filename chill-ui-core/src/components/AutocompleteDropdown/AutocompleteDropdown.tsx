@@ -1,14 +1,13 @@
-import { cn } from '@utils';
+import { Box } from '@components/box';
 import { TextInput } from 'react-native';
+import { Input } from '@components/input';
+import { String } from '@components/string';
+import { cn, get, isEqual, debounce } from '@utils';
+import HighlightString from '@components/highlightString';
+import InputDropdown from '@components/inputDrodown/InputDropdown';
 import React, { useCallback, useEffect, useImperativeHandle, useRef, memo, useMemo } from 'react';
 
-import { Box } from '../box';
-import { Input } from '../inputs';
-import { String } from '../string';
 import { DEFAULT_CONFIG } from './types';
-import HighlightString from '../highlightString';
-import { get, isEqual, debounce } from '../../utils';
-import InputDropdown from '../inputDrodown/InputDropdown';
 import useDropdownActions from './hooks/useDropdownActions';
 import useDropdownKeyboard from './hooks/useDropdownKeyboard';
 import useGetDropdownPosition from './hooks/useGetDropdownPosition';
@@ -84,7 +83,6 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
     const inputRef = useRef<TextInput>(null);
     const inputContainerRef = useRef<any>(null);
 
-    // Enregistrer cette instance lors du montage
     useEffect(() => {
       registerInstance(instanceId, inputContainerRef, offsetX, offsetY);
       return () => {
@@ -189,12 +187,9 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
         if (confirmSelectItem && onConfirmSelectItem) {
           return onConfirmSelectItem(item);
         }
-
-        // Toujours sélectionner l'item et effacer le searchText pour que displayValue affiche la valeur sélectionnée
         updateState({ currentValue: item, searchText: '' });
         onSelectItem?.(item);
 
-        // Fermer le dropdown seulement si closeModalWhenSelectedItem est true
         if (closeModalWhenSelectedItem) {
           setShowDropdown(instanceId, false);
           performSearch('');
@@ -282,7 +277,7 @@ const AutocompleteDropdown = React.forwardRef<AutocompleteDropdownRefProps, Auto
               {...highlightProps}
             />
           ) : (
-            <String {...dropdownItemProps?.stringItemProps} color="black">
+            <String {...dropdownItemProps?.stringItemProps} color="#000">
               {valueField ? get(item, valueField) : item}
             </String>
           )}

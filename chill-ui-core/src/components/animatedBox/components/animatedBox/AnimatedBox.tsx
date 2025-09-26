@@ -2,14 +2,13 @@ import { AnimatedBoxPropsTw } from '@types';
 import { cn, classNamePropsHandler, classNameHandler, styleHandler } from '@utils';
 
 import styles from '../../styles/AnimatedBox.styles';
+import { animatedBoxClassName } from '../../styles/AnimatedBox.variants';
 import { AnimatedView as AnimatedViewNative } from '../../../box/components/View';
 
 /**
  * AnimatedBox - Base animated container component
- *
- * A flexible animated container that serves as the foundation for all other animated components.
  * Provides optimal performance using React Native's internal ViewNativeComponent and automatically
- * detects NativeWind availability for seamless styling compatibility.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
@@ -43,7 +42,7 @@ export default function AnimatedBox(props: AnimatedBoxPropsTw) {
 
   return (
     <AnimatedViewNative
-      {...classNameHandler(cn('overflow-hidden', className))}
+      {...classNameHandler(cn(animatedBoxClassName, className))}
       {...styleHandler({ defaultStyle: styles.baseAnimated })}
       {...rest}
     />

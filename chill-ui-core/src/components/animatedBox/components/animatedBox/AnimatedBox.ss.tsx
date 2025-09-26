@@ -4,10 +4,8 @@ import styles from '../../styles/AnimatedBox.styles';
 import { AnimatedView as AnimatedViewNative } from '../../../box/components/View.ss';
 
 /**
- * AnimatedBox - Base animated container component
- *
- * A flexible animated container that serves as the foundation for all other animated components.
- * Provides optimal performance using React Native's internal ViewNativeComponent and automatically
+ * AnimatedBox - Base animated container component.
+ * Provides optimal performance using React Native's internal ViewNativeComponent.
  *
  * @example
  * ```tsx

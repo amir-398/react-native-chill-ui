@@ -30,6 +30,18 @@ jest.mock('../../../utils/tw/cn', () => ({
   default: jest.fn((...args) => args.filter(Boolean).join(' ')),
 }));
 
+// Mock cn from @utils
+jest.mock('../../../utils', () => ({
+  classNameHandler: jest.fn(className => ({ className })),
+  classNamePropsHandler: jest.fn(),
+  cn: jest.fn((...args) => args.filter(Boolean).join(' ')),
+  colorVariantPropsHandler: jest.fn(),
+  isNativeWindInstalled: jest.fn(() => false),
+  StringSv: jest.fn(() => ({})),
+  styleHandler: jest.fn(style => ({ style: style.defaultStyle })),
+  sv: jest.fn(() => ({})),
+}));
+
 jest.mock('../../../utils/hybrid/propsHandlers', () => ({
   classNameHandler: jest.fn(className => ({ className })),
   styleHandler: jest.fn(style => ({ style: style?.defaultStyle || style })),

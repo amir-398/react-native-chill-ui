@@ -3,3 +3,8 @@ export * from './avatar';
 export * from './ripplePressable';
 export * from './box';
 export * from './animatedBox';
+export * from './accordion';
+export * from './button';
+export * from './input';
+export * from './icon';
+export * from './utils';

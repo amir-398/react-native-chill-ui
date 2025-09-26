@@ -10,10 +10,6 @@ const meta = {
       control: 'boolean',
       description: 'Whether to start the animation automatically',
     },
-    children: {
-      control: 'object',
-      description: 'Content to display inside the slide-in box',
-    },
     className: {
       control: 'text',
       description: 'Additional className for the slide-in box',

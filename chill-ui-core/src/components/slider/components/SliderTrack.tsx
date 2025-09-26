@@ -1,6 +1,6 @@
 import { Animated, ViewStyle } from 'react-native';
 
-import cn from '../../cn';
+import { cn } from '@utils';
 import { Box } from '../../box';
 
 interface SliderTrackProps {

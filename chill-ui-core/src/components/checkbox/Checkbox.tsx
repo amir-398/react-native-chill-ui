@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Pressable } from 'react-native';
 
 import { Box } from '../box';
-import Icon from '../icon/Icon';
+import { Icon } from '../icon';
 import { String } from '../string';
 import { CheckboxProps } from '../../types/checkbox.types';
 import { checkboxSizeVariants, checkboxVariants } from './styleVariants';

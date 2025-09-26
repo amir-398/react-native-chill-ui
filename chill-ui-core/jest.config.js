@@ -9,6 +9,11 @@ module.exports = {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^@components/(.*)$': '<rootDir>/src/components/$1',
+    '^@components$': '<rootDir>/src/components',
+    '^@constants$': '<rootDir>/src/constants',
+    '^@types$': '<rootDir>/src/types',
+    '^@utils$': '<rootDir>/src/utils',
   },
   modulePathIgnorePatterns: ['<rootDir>/dist/', '<rootDir>/.expo/'],
 

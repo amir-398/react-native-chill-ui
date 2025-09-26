@@ -12,24 +12,13 @@ import AnimatedBox from '../animatedBox/AnimatedBox';
  * Creates smooth slide-in effects from any direction (left, right, up, down). Perfect for
  * revealing content with directional motion, creating engaging transitions for cards, menus,
  * notifications, and other UI elements.
- * Provides both NativeWind and traditional styles support.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
  * // Basic slide in from left
  * <SlideInBox autoStart direction="left" className="bg-blue-500 p-6 rounded-lg">
  *   <String className="text-white">Sliding in from left</String>
- * </SlideInBox>
- *
- * // Slide in from top with custom distance
- * <SlideInBox
- *   autoStart
- *   direction="up"
- *   distance={150}
- *   duration={600}
- *   className="bg-green-500 p-4 rounded-xl shadow-lg"
- * >
- *   <String className="text-white">Notification from top</String>
  * </SlideInBox>
  * ```
  *

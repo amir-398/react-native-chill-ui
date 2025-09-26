@@ -10,6 +10,7 @@
     "paths": {
       "@types": ["./src/types"],
       "@utils": ["./src/utils"],
+      "@constants": ["./src/constants"],
       "@components/*": ["./src/components/*"]
     }
   },

@@ -7,7 +7,6 @@ import AnimatedBox from '../animatedBox/AnimatedBox.tw';
 
 /**
  * FadeInBox - Smooth fade-in animation component
- *
  * Creates a beautiful fade-in effect by animating opacity from 0 to 1. Perfect for revealing
  * content with elegant transitions. Supports both automatic and manual control with ref methods.
  *

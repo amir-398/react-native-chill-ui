@@ -1,307 +1,271 @@
-# CustomIcon Component
+# Icon Component
 
-Le composant CustomIcon est un système d'icônes SVG personnalisable qui fournit un rendu d'icônes optimisé avec support automatique de NativeWind et fallback vers StyleSheet.
+A flexible and performant icon component for React Native that displays SVG icons with customizable size, color, and press interactions across three different styling approaches.
 
-## Fonctionnalités
+## Available Versions
 
-- ✅ **Support NativeWind optionnel** : Détection automatique et fallback vers StyleSheet
-- ✅ **Icônes SVG** : Rendu d'icônes vectorielles scalables
-- ✅ **Personnalisation** : Couleur, taille et styles personnalisables
-- ✅ **Performance** : Optimisé pour le rendu d'icônes
-- ✅ **TypeScript** : Support complet des types
-- ✅ **Flexible** : Support des props className et style
+This component comes in three versions to match your project's styling approach. You choose the version during installation, but the import statement remains consistent across all versions:
 
-## Utilisation
+### 1. **StyleSheet Version**
 
-### Avec NativeWind Installé
+- Uses React Native's built-in StyleSheet API
+- Perfect for projects that don't use CSS-in-JS libraries
+- Lightweight and performant
+- Install: `npm install react-native-chill-ui@stylesheet`
+
+### 2. **Tailwind Version**
+
+- Uses NativeWind/Tailwind CSS classes
+- Ideal for projects already using Tailwind CSS
+- Requires NativeWind setup and Tailwind configuration
+- Install: `npm install react-native-chill-ui@tailwind`
+
+### 3. **Hybrid Version**
+
+- Automatically detects if NativeWind is available
+- Falls back to StyleSheet if NativeWind is not installed
+- Best for component libraries or projects that need flexibility
+- Install: `npm install react-native-chill-ui@hybrid`
+
+**Note**: Regardless of the version you choose, the import statement remains the same: `import { Icon } from 'react-native-chill-ui'`
+
+## Features
+
+- **Multiple Sizes**: 8 different size variants from 2xs to 3xl
+- **Interactive Icons**: Supports Pressable, TouchableOpacity, and RipplePressable interactions
+- **Press Effects**: Customizable press effects with padding and background color
+- **SVG Icons**: Displays SVG icons from a predefined icon set
+- **Customizable Styling**: Colors, sizes, and custom CSS classes
+- **TypeScript Support**: Fully typed for a better development experience
+
+## Quick Start
 
 ```tsx
-import CustomIcon from '@/components/icon/CustomIcon';
+import { Icon } from 'react-native-chill-ui';
 
-// Icône avec classes Tailwind
-<CustomIcon name="star" className="w-6 h-6 text-yellow-500" />
+// Basic icon
+<Icon name="heart-solid" />
 
-// Icône avec taille et couleur personnalisées
-<CustomIcon name="heart" className="w-8 h-8 text-red-500" />
+// Customized with size and color
+<Icon name="star-solid" size="lg" color="#FFD700" />
 
-// Icône dans un bouton
-<Button className="flex-row items-center space-x-2">
-  <CustomIcon name="plus" className="w-5 h-5" />
-  <String>Ajouter</String>
-</Button>
-```
-
-### Sans NativeWind (Fallback StyleSheet)
-
-```tsx
-import CustomIcon from '@/components/icon/CustomIcon';
-
-// Utilisation avec StyleSheet (fallback automatique)
-<CustomIcon
-  name="star"
-  style={{ width: 24, height: 24 }}
-  color="#F59E0B"
+// Interactive icon with press effect
+<Icon
+  name="settings-solid"
+  onPress={() => console.log('Settings pressed')}
+  hasPressEffect={true}
 />
 
-// Icône avec styles inline
-<CustomIcon
-  name="heart"
-  style={{ width: 32, height: 32 }}
-  color="#EF4444"
+// Different pressable components
+<Icon
+  name="user-solid"
+  onPress={handleUserPress}
+  as="touchable-opacity"
 />
-
-// Icône dans un bouton
-<Button style={{ flexDirection: 'row', alignItems: 'center' }}>
-  <CustomIcon name="plus" style={{ width: 20, height: 20 }} />
-  <String>Ajouter</String>
-</Button>
 ```
 
-## Props
+## Choosing the Right Version
 
-### IconProps
+Select the appropriate version during installation based on your project's needs:
 
-```tsx
-interface IconProps {
-  name: keyof TIcons;           // Nom de l'icône (requis)
-  color?: string;               // Couleur de l'icône (défaut: '#fff')
-  className?: string;           // Classes Tailwind CSS (avec NativeWind)
-  style?: StyleProp<ViewStyle>; // Styles inline React Native
-  ...SvgProps;                  // Toutes les props de react-native-svg
-}
-```
+| Version        | Installation Command                           | Use When                                                                                             | Pros                                                                            | Cons                                                  |
+| -------------- | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| **StyleSheet** | `npm install react-native-chill-ui@stylesheet` | • No CSS-in-JS dependencies<br/>• Maximum performance needed<br/>• Simple styling requirements       | • Lightweight<br/>• Fast performance<br/>• No external dependencies             | • Less flexible<br/>• Manual theme management         |
+| **Tailwind**   | `npm install react-native-chill-ui@tailwind`   | • Already using NativeWind<br/>• Team familiar with Tailwind<br/>• Design system based on utilities  | • Consistent with web Tailwind<br/>• Powerful utility system<br/>• Easy theming | • Requires NativeWind setup<br/>• Larger bundle size  |
+| **Hybrid**     | `npm install react-native-chill-ui@hybrid`     | • Building component library<br/>• Uncertain about styling approach<br/>• Want maximum compatibility | • Works in any environment<br/>• Future-proof<br/>• Automatic detection         | • Slightly larger bundle<br/>• More complex internals |
 
-### Icônes Disponibles
+## Configuration
 
-Le composant utilise le système d'icônes défini dans `constants/ICONS.ts`. Voici quelques exemples :
+### For Tailwind and Hybrid Versions
 
-```tsx
-// Icônes de base
-<CustomIcon name="star" />
-<CustomIcon name="heart" />
-<CustomIcon name="plus" />
-<CustomIcon name="minus" />
-<CustomIcon name="check" />
-<CustomIcon name="close" />
+When using the Tailwind or Hybrid versions, you must define your application's color palette in your `tailwind.config.js` file.
 
-// Icônes de navigation
-<CustomIcon name="arrow-left" />
-<CustomIcon name="arrow-right" />
-<CustomIcon name="arrow-up" />
-<CustomIcon name="arrow-down" />
+### Styling
 
-// Icônes d'interface
-<CustomIcon name="menu" />
-<CustomIcon name="search" />
-<CustomIcon name="settings" />
-<CustomIcon name="user" />
-```
+The Icon component supports styling through:
 
-## Exemples d'Utilisation
+- **NativeWind classes** (Tailwind/Hybrid versions): Use `className` prop
+- **StyleSheet styles** (all versions): Use `style` prop with standard React Native properties
 
-### Icônes dans des Boutons
+## Size Variants
 
-```tsx
-// Bouton avec icône
-<Button className="flex-row items-center space-x-2 bg-blue-500">
-  <CustomIcon name="plus" className="w-5 h-5 text-white" />
-  <String className="text-white">Ajouter un élément</String>
-</Button>
+The Icon component supports the following size options:
 
-// Bouton d'action flottant
-<BoxAbsolute className="bottom-4 right-4">
-  <Button className="w-14 h-14 rounded-full bg-blue-500 items-center justify-center">
-    <CustomIcon name="plus" className="w-6 h-6 text-white" />
-  </Button>
-</BoxAbsolute>
-```
+- `2xs`: 12px
+- `xs`: 16px
+- `sm`: 20px
+- `md`: 24px (default)
+- `lg`: 28px
+- `xl`: 32px
+- `2xl`: 36px
+- `3xl`: 40px
 
-### Icônes dans des Listes
+## Press Effect Sizes
+
+When `hasPressEffect` is enabled, the following padding sizes are applied:
+
+- `2xs`: 1px padding
+- `xs`: 2px padding
+- `sm`: 6px padding
+- `md`: 8px padding
+- `lg`: 12px padding
+- `xl`: 16px padding
+- `2xl`: 20px padding
+- `3xl`: 24px padding
+
+## Examples
+
+### Basic Usage
 
 ```tsx
-// Liste avec icônes
-<BoxColumn>
-  {menuItems.map(item => (
-    <BoxRowCenterBetween key={item.id} className="border-b border-gray-200 p-4">
-      <BoxRowCenter className="space-x-3">
-        <CustomIcon name={item.icon} className="h-5 w-5 text-gray-600" />
-        <String>{item.title}</String>
-      </BoxRowCenter>
-      <CustomIcon name="arrow-right" className="h-4 w-4 text-gray-400" />
-    </BoxRowCenterBetween>
-  ))}
-</BoxColumn>
-```
+import { Icon } from 'react-native-chill-ui';
 
-### Icônes avec États
-
-```tsx
-// Icône avec état actif/inactif
-function FavoriteButton({ isFavorite, onToggle }) {
+const BasicIcons = () => {
   return (
-    <Button onPress={onToggle} className="p-2">
-      <CustomIcon name="heart" className={`h-6 w-6 ${isFavorite ? 'text-red-500' : 'text-gray-400'}`} />
-    </Button>
+    <Box className="flex-row items-center space-x-4">
+      <Icon name="heart-solid" />
+      <Icon name="star-solid" size="lg" />
+      <Icon name="settings-solid" size="xl" color="#3B82F6" />
+    </Box>
   );
-}
-
-// Icône avec animation
-function AnimatedIcon() {
-  const scale = useSharedValue(1);
-
-  const handlePress = () => {
-    scale.value = withSpring(0.8, { duration: 100 });
-    setTimeout(() => {
-      scale.value = withSpring(1, { duration: 100 });
-    }, 100);
-  };
-
-  return (
-    <AnimatedView style={{ transform: [{ scale: scale.value }] }} onPress={handlePress}>
-      <CustomIcon name="star" className="h-8 w-8 text-yellow-500" />
-    </AnimatedView>
-  );
-}
-```
-
-### Icônes dans des Cartes
-
-```tsx
-// Carte avec icône
-<Box className="rounded-lg bg-white p-4 shadow-sm">
-  <BoxRowCenterBetween>
-    <BoxRowCenter className="space-x-3">
-      <CustomIcon name="user" className="h-8 w-8 text-blue-500" />
-      <BoxColumn>
-        <String className="font-semibold">John Doe</String>
-        <String className="text-gray-500">En ligne</String>
-      </BoxColumn>
-    </BoxRowCenter>
-    <CustomIcon name="more" className="h-5 w-5 text-gray-400" />
-  </BoxRowCenterBetween>
-</Box>
-```
-
-## Performance
-
-### Optimisations
-
-- **SVG Natif** : Utilise react-native-svg pour un rendu optimal
-- **Détection NativeWind** : Cache le résultat de la détection
-- **Props Conditionnelles** : Évite les props inutiles selon le mode
-- **Rendu Optimisé** : Minimise les re-rendus
-
-### Comparaison de Performance
-
-| Approche                    | Performance | Bundle Size | Compatibilité     |
-| --------------------------- | ----------- | ----------- | ----------------- |
-| **CustomIcon + NativeWind** | ⭐⭐⭐⭐⭐  | Minimal     | NativeWind requis |
-| **CustomIcon + StyleSheet** | ⭐⭐⭐⭐    | Minimal     | Universel         |
-| **Icon Font**               | ⭐⭐⭐      | Standard    | Universel         |
-| **Image Icons**             | ⭐⭐        | Plus grand  | Universel         |
-
-## Migration
-
-### Depuis une Version Précédente
-
-Si vous utilisez déjà CustomIcon, **aucun changement n'est requis**. Le composant continue de fonctionner normalement.
-
-### Ajout de NativeWind
-
-Si vous souhaitez ajouter NativeWind à votre projet :
-
-1. **Installation** :
-
-```bash
-npm install nativewind
-npm install --save-dev tailwindcss
-```
-
-2. **Configuration** :
-
-```javascript
-// tailwind.config.js
-module.exports = {
-  content: ['./App.{js,jsx,ts,tsx}', './src/**/*.{js,jsx,ts,tsx}'],
-  presets: [require('nativewind/preset')],
-  theme: { extend: {} },
-  plugins: [],
 };
 ```
 
-3. **Migration progressive** :
+### Size Variants
 
 ```tsx
-// Avant (StyleSheet)
-<CustomIcon
-  name="star"
-  style={{ width: 24, height: 24 }}
-  color="#F59E0B"
-/>
-
-// Après (NativeWind)
-<CustomIcon name="star" className="w-6 h-6 text-yellow-500" />
+const SizeVariants = () => {
+  return (
+    <Box className="flex-row items-center space-x-4">
+      <Icon name="heart-solid" size="2xs" />
+      <Icon name="heart-solid" size="xs" />
+      <Icon name="heart-solid" size="sm" />
+      <Icon name="heart-solid" size="md" />
+      <Icon name="heart-solid" size="lg" />
+      <Icon name="heart-solid" size="xl" />
+      <Icon name="heart-solid" size="2xl" />
+      <Icon name="heart-solid" size="3xl" />
+    </Box>
+  );
+};
 ```
 
-## Compatibilité
-
-- ✅ React Native 0.70+
-- ✅ Expo SDK 48+
-- ✅ TypeScript 4.9+
-- ✅ NativeWind 2.0+ (optionnel)
-- ✅ react-native-svg 13.0+
-- ✅ iOS 12+
-- ✅ Android API 21+
-
-## Bonnes Pratiques
-
-### 1. Utilisez des Tailles Cohérentes
+### Interactive Icons
 
 ```tsx
-// ✅ Bon : Tailles standardisées
-<CustomIcon name="star" className="w-5 h-5" />
-<CustomIcon name="heart" className="w-6 h-6" />
-<CustomIcon name="plus" className="w-8 h-8" />
+const InteractiveIcons = () => {
+  const handlePress = () => {
+    console.log('Icon pressed!');
+  };
 
-// ❌ Évitez : Tailles arbitraires
-<CustomIcon name="star" className="w-4.5 h-4.5" />
+  return (
+    <Box className="flex-row items-center space-x-4">
+      {/* Default Pressable with press effect */}
+      <Icon name="heart-solid" onPress={handlePress} hasPressEffect={true} />
+
+      {/* TouchableOpacity */}
+      <Icon name="star-solid" onPress={handlePress} as="touchable-opacity" />
+
+      {/* RipplePressable */}
+      <Icon name="settings-solid" onPress={handlePress} as="ripple-pressable" />
+
+      {/* Without press effect */}
+      <Icon name="user-solid" onPress={handlePress} hasPressEffect={false} />
+    </Box>
+  );
+};
 ```
 
-### 2. Utilisez des Couleurs Sémantiques
+### Custom Styling
 
 ```tsx
-// ✅ Bon : Couleurs avec signification
-<CustomIcon name="check" className="text-green-500" />
-<CustomIcon name="close" className="text-red-500" />
-<CustomIcon name="warning" className="text-yellow-500" />
+const CustomStyledIcons = () => {
+  return (
+    <Box className="flex-row items-center space-x-4">
+      {/* Custom color */}
+      <Icon name="heart-solid" color="#FF6B6B" size="lg" />
 
-// ❌ Évitez : Couleurs arbitraires
-<CustomIcon name="check" className="text-purple-300" />
+      {/* Custom CSS classes (with NativeWind) */}
+      <Icon name="star-solid" className="rounded-full border-2 border-blue-500 p-2" size="lg" />
+
+      {/* Custom press effect style */}
+      <Icon
+        name="settings-solid"
+        onPress={() => {}}
+        pressEffectStyle={{ backgroundColor: 'rgba(59, 130, 246, 0.2)' }}
+        size="lg"
+      />
+
+      {/* Custom press effect size */}
+      <Icon name="user-solid" onPress={() => {}} pressEffectSize="xl" size="md" />
+    </Box>
+  );
+};
 ```
 
-### 3. Optimisez pour l'Accessibilité
+### Icon Set Usage
 
 ```tsx
-// ✅ Bon : Accessibilité
-<Button onPress={handleFavorite} accessibilityLabel="Ajouter aux favoris">
-  <CustomIcon name="heart" className="w-6 h-6" />
-</Button>
+const IconSetExamples = () => {
+  return (
+    <Box className="flex-row flex-wrap gap-4">
+      {/* Navigation icons */}
+      <Icon name="home-solid" size="lg" />
+      <Icon name="search-solid" size="lg" />
+      <Icon name="user-solid" size="lg" />
+      <Icon name="settings-solid" size="lg" />
 
-// ✅ Bon : États visuels clairs
-<CustomIcon
-  name="star"
-  className={`w-6 h-6 ${isRated ? 'text-yellow-500' : 'text-gray-300'}`}
-/>
+      {/* Action icons */}
+      <Icon name="heart-solid" size="lg" color="#FF6B6B" />
+      <Icon name="star-solid" size="lg" color="#FFD700" />
+      <Icon name="bookmark-solid" size="lg" color="#10B981" />
+      <Icon name="share-solid" size="lg" color="#3B82F6" />
+
+      {/* Utility icons */}
+      <Icon name="check-solid" size="lg" color="#10B981" />
+      <Icon name="close-solid" size="lg" color="#EF4444" />
+      <Icon name="plus-solid" size="lg" color="#3B82F6" />
+      <Icon name="minus-solid" size="lg" color="#EF4444" />
+    </Box>
+  );
+};
 ```
 
-### 4. Utilisez des Icônes Appropriées
+## API Reference
 
-```tsx
-// ✅ Bon : Icônes sémantiques
-<CustomIcon name="user" /> // Pour les profils
-<CustomIcon name="settings" /> // Pour les paramètres
-<CustomIcon name="search" /> // Pour la recherche
+### IconProps
 
-// ❌ Évitez : Icônes génériques
-<CustomIcon name="circle" /> // Trop générique
-```
+| Prop               | Type                                                              | Default       | Description                                             |
+| ------------------ | ----------------------------------------------------------------- | ------------- | ------------------------------------------------------- |
+| `name`             | `keyof TIcons`                                                    | **Required**  | Icon name from the available icon set                   |
+| `size`             | `'2xs' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| '3xl'` | `'md'`        | Icon size variant                                       |
+| `color`            | `string`                                                          | `'#000'`      | Icon color (CSS color value)                            |
+| `onPress`          | `() => void`                                                      | -             | Callback function when icon is pressed                  |
+| `hasPressEffect`   | `boolean`                                                         | `true`        | Whether to show press effect when icon is pressed       |
+| `pressEffectSize`  | `'2xs' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| '3xl'` | -             | Size of the press effect padding                        |
+| `pressEffectStyle` | `StyleProp<ViewStyle>`                                            | -             | Custom styles for the press effect                      |
+| `as`               | `'pressable' \| 'touchable-opacity' \| 'ripple-pressable'`        | `'pressable'` | Component to use when pressable                         |
+| `className`        | `string`                                                          | -             | Custom CSS classes (used with NativeWind)               |
+| `style`            | `StyleProp<ViewStyle>`                                            | -             | Additional inline styles                                |
+| `...rest`          | `ViewProps`                                                       | -             | Any other props accepted by the native `View` component |
+
+### Size Variants
+
+| Size  | Dimensions | Use Case                       |
+| ----- | ---------- | ------------------------------ |
+| `2xs` | 12x12px    | Very small icons, badges       |
+| `xs`  | 16x16px    | Small icons, compact layouts   |
+| `sm`  | 20x20px    | Small icons, user lists        |
+| `md`  | 24x24px    | Default size, most common use  |
+| `lg`  | 28x28px    | Large icons, prominent display |
+| `xl`  | 32x32px    | Extra large, headers           |
+| `2xl` | 36x36px    | Very large, hero sections      |
+| `3xl` | 40x40px    | Maximum size, special cases    |
+
+### Pressable Components
+
+| Component           | Description                                      | Use Case                     |
+| ------------------- | ------------------------------------------------ | ---------------------------- |
+| `pressable`         | Default React Native Pressable with press effect | Most common, modern look     |
+| `touchable-opacity` | TouchableOpacity with opacity change             | Alternative, structured look |
+| `ripple-pressable`  | Custom ripple effect component                   | Material Design style        |

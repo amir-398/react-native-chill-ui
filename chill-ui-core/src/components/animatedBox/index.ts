@@ -12,9 +12,17 @@
  * </FadeInBox>
  * ```
  */
+
+// const getConditionalExport = () => {
+//   if (isNativeWindInstalled()) {
+//     return require('./components/animatedBox/AnimatedBox.tw').default;
+//   }
+//   return null;
+// };
 export { default as AnimatedBox } from './components/animatedBox/AnimatedBox';
 export { default as AnimatedBoxSs } from './components/animatedBox/AnimatedBox.ss';
 export { default as AnimatedBoxTw } from './components/animatedBox/AnimatedBox.tw';
+// export { getConditionalExport as AnimatedBoxTw };
 
 //* * fade in box */
 export { default as FadeInBox } from './components/FadeInBox/FadeInBox';
@@ -36,7 +44,6 @@ export { default as RotatingBoxTw } from './components/RotatingBox/RotatingBox.t
 export { default as BounceBox } from './components/BounceBox/BounceBox';
 export { default as BounceBoxSs } from './components/BounceBox/BounceBox.ss';
 export { default as BounceBoxTw } from './components/BounceBox/BounceBox.tw';
-
 //* * scale in box */
 export { default as ScaleInBox } from './components/ScaleInBox/ScaleInBox';
 export { default as ScaleInBoxSs } from './components/ScaleInBox/ScaleInBox.ss';

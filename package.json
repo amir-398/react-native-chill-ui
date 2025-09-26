@@ -84,7 +84,10 @@
     "typecheck": "bunx tsc --noEmit",
     "convert:aliases": "node scripts/convert-aliases-to-relative.js",
     "check:components-docs": "node scripts/check-components.js",
-    "check:components-docs:report": "node scripts/check-components.js --report"
+    "check:components-docs:report": "node scripts/check-components.js --report",
+    "generate:variants": "node scripts/generate-variants.js",
+    "generate:variants:ss": "node scripts/generate-variants.js",
+    "generate:variants:tw": "node scripts/generate-variants.js"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

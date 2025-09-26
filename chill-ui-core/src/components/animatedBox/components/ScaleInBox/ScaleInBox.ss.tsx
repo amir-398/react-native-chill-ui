@@ -7,26 +7,13 @@ import AnimatedBox from '../animatedBox/AnimatedBox.ss';
 
 /**
  * ScaleInBox - Dynamic scale-in animation component
- *
- * Creates an engaging scale-in effect using spring physics for natural feel. Animates scale
- * from 0.8 to 1.0 with smooth spring transition. Perfect for emphasizing content appearance
- * with bouncy, organic motion.
+ * Creates an engaging scale-in effect using spring physics for natural feel.
  *
  * @example
  * ```tsx
  * // Basic auto-start scale in
  * <ScaleInBox autoStart style={{ backgroundColor: 'green', padding: 24, borderRadius: 12 }}>
  *   <String style={{ color: 'white', fontWeight: 'bold' }}>Scaling in smoothly</String>
- * </ScaleInBox>
- *
- * // With custom timing and delay
- * <ScaleInBox
- *   autoStart
- *   duration={1200}
- *   delay={500}
- *   style={{ backgroundColor: 'purple', padding: 16, borderRadius: 8, shadowOpacity: 0.3 }}
- * >
- *   <String style={{ color: 'white' }}>Delayed spring entrance</String>
  * </ScaleInBox>
  * ```
  *

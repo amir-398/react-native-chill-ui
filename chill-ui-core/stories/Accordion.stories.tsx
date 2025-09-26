@@ -5,13 +5,29 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '..
 
 const meta = {
   argTypes: {
+    className: {
+      control: 'text',
+      description: 'Custom CSS classes (used with NativeWind)',
+    },
+    collapseIcon: {
+      control: 'text',
+      description: 'Icon to show when item is expanded',
+    },
     collapsible: {
       control: 'boolean',
       description: 'Whether items can be collapsed when type is single',
     },
+    defaultValue: {
+      control: 'text',
+      description: 'Default open items (string for single, array for multiple)',
+    },
     disabled: {
       control: 'boolean',
       description: 'Whether the accordion is disabled',
+    },
+    expandIcon: {
+      control: 'text',
+      description: 'Icon to show when item is collapsed',
     },
     hasCollapseIcon: {
       control: 'boolean',
@@ -22,9 +38,13 @@ const meta = {
       description: 'Position of the expand/collapse icon',
       options: ['left', 'right'],
     },
+    onValueChange: {
+      action: 'onValueChange',
+      description: 'Callback fired when accordion state changes',
+    },
     type: {
       control: 'select',
-      description: 'Accordion type - single or multiple',
+      description: 'Whether single or multiple items can be open at once',
       options: ['single', 'multiple'],
     },
   },
@@ -51,7 +71,7 @@ export const Default: Story = {
     iconPosition: 'right',
     type: 'single',
   },
-  render: args => (
+  render: (args: any) => (
     <Accordion {...args}>
       <AccordionItem value="getting-started">
         <AccordionTrigger>Is it accessible?</AccordionTrigger>
@@ -100,7 +120,7 @@ export const MultipleAccordion: Story = {
     iconPosition: 'right',
     type: 'multiple',
   },
-  render: args => (
+  render: (args: any) => (
     <Accordion {...args}>
       <AccordionItem value="getting-started">
         <AccordionTrigger>Getting Started</AccordionTrigger>
@@ -142,7 +162,7 @@ export const LeftIconPosition: Story = {
     iconPosition: 'left',
     type: 'single',
   },
-  render: args => (
+  render: (args: any) => (
     <Accordion {...args}>
       <AccordionItem value="item1">
         <AccordionTrigger>Question 1</AccordionTrigger>
@@ -164,11 +184,11 @@ export const LeftIconPosition: Story = {
 export const NoAnimation: Story = {
   args: {
     collapsible: true,
-
+    hasCollapseIcon: true,
     iconPosition: 'right',
     type: 'single',
   },
-  render: args => (
+  render: (args: any) => (
     <Accordion {...args}>
       <AccordionItem value="item1">
         <AccordionTrigger>No Animation Example</AccordionTrigger>
@@ -194,7 +214,7 @@ export const DisabledAccordion: Story = {
     iconPosition: 'right',
     type: 'single',
   },
-  render: args => (
+  render: (args: any) => (
     <Accordion {...args}>
       <AccordionItem value="item1">
         <AccordionTrigger>Disabled Accordion</AccordionTrigger>
@@ -219,7 +239,7 @@ export const CustomTriggerContent: Story = {
     iconPosition: 'right',
     type: 'single',
   },
-  render: args => (
+  render: (args: any) => (
     <Accordion {...args}>
       <AccordionItem value="custom">
         <AccordionTrigger>
@@ -241,6 +261,65 @@ export const CustomTriggerContent: Story = {
         <AccordionTrigger>Standard Trigger</AccordionTrigger>
         <AccordionContent>
           <String className="text-gray-700">This is a standard trigger for comparison.</String>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  ),
+};
+
+export const CustomIcons: Story = {
+  args: {
+    collapseIcon: 'minus-solid',
+    collapsible: true,
+    expandIcon: 'plus-solid',
+    iconPosition: 'right',
+    type: 'single',
+  },
+  render: (args: any) => (
+    <Accordion {...args}>
+      <AccordionItem value="item1">
+        <AccordionTrigger>Custom Icons Example</AccordionTrigger>
+        <AccordionContent>
+          <String className="text-gray-700">
+            This accordion uses custom plus/minus icons instead of the default arrows.
+          </String>
+        </AccordionContent>
+      </AccordionItem>
+
+      <AccordionItem value="item2">
+        <AccordionTrigger>Another Item with Custom Icons</AccordionTrigger>
+        <AccordionContent>
+          <String className="text-gray-700">Notice how the icons change when you expand/collapse items.</String>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  ),
+};
+
+export const WithCallback: Story = {
+  args: {
+    collapsible: true,
+    iconPosition: 'right',
+    onValueChange: (value: any) => console.log('Accordion value changed:', value),
+    type: 'single',
+  },
+  render: (args: any) => (
+    <Accordion {...args}>
+      <AccordionItem value="item1">
+        <AccordionTrigger>Item with Callback</AccordionTrigger>
+        <AccordionContent>
+          <String className="text-gray-700">
+            Check the console to see the callback being triggered when you expand/collapse items.
+          </String>
+        </AccordionContent>
+      </AccordionItem>
+
+      <AccordionItem value="item2">
+        <AccordionTrigger>Another Item</AccordionTrigger>
+        <AccordionContent>
+          <String className="text-gray-700">
+            The onValueChange callback will log the current state to the console.
+          </String>
         </AccordionContent>
       </AccordionItem>
     </Accordion>

@@ -3,7 +3,7 @@ import React, { memo, useCallback } from 'react';
 
 import { Box } from '../box';
 import { String } from '../string';
-import Input from '../inputs/Input';
+import Input from '../input/Input';
 import { get, isEqual } from '../../utils';
 import { useInputSelectDropdown } from './hooks';
 import HighlightString from '../highlightString';

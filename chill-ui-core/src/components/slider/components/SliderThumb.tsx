@@ -1,6 +1,6 @@
 import { Animated, Image, ViewStyle } from 'react-native';
 
-import cn from '../../cn';
+import { cn } from '@utils';
 
 interface SliderThumbProps {
   thumbColor: string;

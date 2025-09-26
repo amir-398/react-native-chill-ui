@@ -8,3 +8,4 @@ export { default as Pulse } from './Pulse';
 export { default as Swing } from './Swing';
 export { default as Wander } from './Wander';
 export { default as Spinner } from './Spinner';
+export { default as LoadingIndicator } from './LoadingIndicator';

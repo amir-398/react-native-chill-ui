@@ -13,7 +13,7 @@ import AnimatedBox from '../animatedBox/AnimatedBox';
  * Creates continuous 360-degree rotation effects. Perfect for loading spinners, icons,
  * decorative elements, or any content that benefits from rotational motion. Provides
  * smooth, customizable rotation with infinite loop capabilities.
- * Provides both NativeWind and traditional styles support.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
@@ -21,14 +21,6 @@ import AnimatedBox from '../animatedBox/AnimatedBox';
  * <RotatingBox autoStart infiniteLoop duration={1000} className="w-8 h-8">
  *   <Icon name="spinner" className="text-blue-500" />
  * </RotatingBox>
- *
- * // Slow decorative rotation
- * <RotatingBox
- *   autoStart
- *   infiniteLoop
- *   duration={8000}
- *   className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"
- * >
  *   <Icon name="star" className="text-white" />
  * </RotatingBox>
  * ```

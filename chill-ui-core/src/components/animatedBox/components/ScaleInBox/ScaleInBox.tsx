@@ -10,33 +10,14 @@ import AnimatedBox from '../animatedBox/AnimatedBox';
  * ScaleInBox - Dynamic scale-in animation component
  *
  * Creates an engaging scale-in effect using spring physics for natural feel. Animates scale
- * from 0.8 to 1.0 with smooth spring transition. Perfect for emphasizing content appearance
- * with bouncy, organic motion.
- * Provides both NativeWind and traditional styles support.
+ * from 0.8 to 1.0 with smooth spring transition.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
  * // Basic auto-start scale in
  * <ScaleInBox autoStart className="bg-green-500 p-6 rounded-xl">
  *   <String className="text-white font-bold">Scaling in smoothly</String>
- * </ScaleInBox>
- *
- * // With delay
- * <ScaleInBox
- *   autoStart
- *   delay={500}
- *   className="bg-purple-500 p-4 rounded-lg shadow-lg"
- * >
- *   <String className="text-white">Delayed spring entrance</String>
- * </ScaleInBox>
- *
- * // Infinite loop animation
- * <ScaleInBox
- *   autoStart
- *   infiniteLoop
- *   className="bg-blue-500 p-3 rounded-full"
- * >
- *   <Icon name="pulse" className="text-white" />
  * </ScaleInBox>
  * ```
  *

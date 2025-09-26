@@ -6,9 +6,9 @@ import { RipplePressable } from '@components/ripplePressable';
 import { Image, Pressable, TouchableOpacity } from 'react-native';
 import { cn, classNamePropsHandler, classNameHandler, styleHandler } from '@utils';
 
-import avatarTv from '../styles/Avatar.variants';
 import getUserInitials from '../utils/getUsersInititials';
 import { AvatarSv, styles } from '../styles/Avatar.styles';
+import { avatarTv, avatarImageClassName } from '../styles/Avatar.variants';
 
 /**
  * Avatar component displays user profile images with fallback to initials.
@@ -69,7 +69,7 @@ export default function Avatar(props: AvatarPropsTw) {
       </String>
       {image && (
         <Image
-          {...classNameHandler('absolute h-full w-full')}
+          {...classNameHandler(avatarImageClassName)}
           {...styleHandler({ defaultStyle: styles.image })}
           source={{ uri: image }}
         />

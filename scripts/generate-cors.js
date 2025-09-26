@@ -407,7 +407,16 @@ function processComponentWithSubComponents(componentName) {
         copyFileWithImportFix(sourceFile, destFile, variantName);
         console.log(`📄 Copied: ${sourceFileName} → ${capitalizedName}.tsx`);
       } else {
-        console.log(`⚠️  File not found: ${sourceFile}`);
+        // Fallback: try base .tsx file if variant-specific file doesn't exist
+        const fallbackFileName = `${subComponentName}.tsx`;
+        const fallbackSourceFile = path.join(sourceSubComponentDir, fallbackFileName);
+
+        if (fs.existsSync(fallbackSourceFile)) {
+          copyFileWithImportFix(fallbackSourceFile, destFile, variantName);
+          console.log(`📄 Copied (fallback): ${fallbackFileName} → ${capitalizedName}.tsx`);
+        } else {
+          console.log(`⚠️  File not found: ${sourceFile} or ${fallbackSourceFile}`);
+        }
       }
     }
 
@@ -601,12 +610,30 @@ function processStandardComponent(componentName) {
               if (file.endsWith('.tw.tsx')) {
                 const destFile = path.join(destSubDir, file.replace('.tw.tsx', '.tsx'));
                 copyFileWithImportFix(sourceFile, destFile, variantName);
+              } else if (file.endsWith('.tsx') && !file.includes('.tw.') && !file.includes('.ss.')) {
+                // Check if .tw.tsx variant exists before using fallback
+                const twVariantFile = file.replace('.tsx', '.tw.tsx');
+                const twVariantPath = path.join(sourceItem, twVariantFile);
+                if (!fs.existsSync(twVariantPath)) {
+                  // Fallback: copy base .tsx files if no .tw.tsx variant exists
+                  const destFile = path.join(destSubDir, file);
+                  copyFileWithImportFix(sourceFile, destFile, variantName);
+                }
               }
             } else if (variantName === 'stylesheet') {
               // For stylesheet, copy .ss.tsx files and rename them to .tsx
               if (file.endsWith('.ss.tsx')) {
                 const destFile = path.join(destSubDir, file.replace('.ss.tsx', '.tsx'));
                 copyFileWithImportFix(sourceFile, destFile, variantName);
+              } else if (file.endsWith('.tsx') && !file.includes('.tw.') && !file.includes('.ss.')) {
+                // Check if .ss.tsx variant exists before using fallback
+                const ssVariantFile = file.replace('.tsx', '.ss.tsx');
+                const ssVariantPath = path.join(sourceItem, ssVariantFile);
+                if (!fs.existsSync(ssVariantPath)) {
+                  // Fallback: copy base .tsx files if no .ss.tsx variant exists
+                  const destFile = path.join(destSubDir, file);
+                  copyFileWithImportFix(sourceFile, destFile, variantName);
+                }
               }
             }
           }
@@ -623,12 +650,30 @@ function processStandardComponent(componentName) {
             if (item.endsWith('.tw.tsx')) {
               const destFile = path.join(destComponentsDir, item.replace('.tw.tsx', '.tsx'));
               copyFileWithImportFix(sourceItem, destFile, variantName);
+            } else if (item.endsWith('.tsx') && !item.includes('.tw.') && !item.includes('.ss.')) {
+              // Check if .tw.tsx variant exists before using fallback
+              const twVariantFile = item.replace('.tsx', '.tw.tsx');
+              const twVariantPath = path.join(componentsDir, twVariantFile);
+              if (!fs.existsSync(twVariantPath)) {
+                // Fallback: copy base .tsx files if no .tw.tsx variant exists
+                const destFile = path.join(destComponentsDir, item);
+                copyFileWithImportFix(sourceItem, destFile, variantName);
+              }
             }
           } else if (variantName === 'stylesheet') {
             // For stylesheet, copy .ss.tsx files and rename them to .tsx
             if (item.endsWith('.ss.tsx')) {
               const destFile = path.join(destComponentsDir, item.replace('.ss.tsx', '.tsx'));
               copyFileWithImportFix(sourceItem, destFile, variantName);
+            } else if (item.endsWith('.tsx') && !item.includes('.tw.') && !item.includes('.ss.')) {
+              // Check if .ss.tsx variant exists before using fallback
+              const ssVariantFile = item.replace('.tsx', '.ss.tsx');
+              const ssVariantPath = path.join(componentsDir, ssVariantFile);
+              if (!fs.existsSync(ssVariantPath)) {
+                // Fallback: copy base .tsx files if no .ss.tsx variant exists
+                const destFile = path.join(destComponentsDir, item);
+                copyFileWithImportFix(sourceItem, destFile, variantName);
+              }
             }
           }
         }
@@ -710,7 +755,17 @@ function processUtils() {
 
     ensureDir(coreUtilsDir);
 
-    // Only copy variant-specific files, no common files
+    // Copy common utils first (shared by all variants)
+    const commonDir = path.join(utilsSourceDir, 'common');
+    if (fs.existsSync(commonDir)) {
+      const commonFiles = fs.readdirSync(commonDir);
+      for (const file of commonFiles) {
+        const sourcePath = path.join(commonDir, file);
+        const destPath = path.join(coreUtilsDir, file);
+        copyFileWithImportFix(sourcePath, destPath, variantName);
+      }
+      console.log(`📄 Copied common utils for ${variantName}`);
+    }
 
     // Handle variant-specific utils
     if (variantName === 'tailwind') {
@@ -785,6 +840,55 @@ function processUtils() {
     if (utilsIndexContent) {
       fs.writeFileSync(utilsIndexPath, utilsIndexContent);
       console.log(`📄 Created utils index: ${utilsIndexPath}`);
+    }
+  }
+}
+
+/**
+ * Process shared directories (constants, etc.) for all variants
+ */
+function processSharedDirectories() {
+  console.log('\n🔄 Processing shared directories...');
+
+  const sourceDir = 'chill-ui-core/src';
+  const sharedDirs = ['constants'];
+  const sharedFiles = ['index.ts', 'index.ss.ts', 'index.tw.ts'];
+
+  for (const [variantName, config] of Object.entries(VARIANTS)) {
+    const coreSrcDir = path.join(CORE_DIR, config.coreDir, 'src');
+
+    console.log(`\n📦 Processing shared directories for variant: ${variantName}`);
+
+    for (const sharedDir of sharedDirs) {
+      const sourceSharedDir = path.join(sourceDir, sharedDir);
+      const destSharedDir = path.join(coreSrcDir, sharedDir);
+
+      if (fs.existsSync(sourceSharedDir)) {
+        // Clean destination
+        if (fs.existsSync(destSharedDir)) {
+          fs.rmSync(destSharedDir, { recursive: true });
+          console.log(`🧹 Cleaned: ${destSharedDir}`);
+        }
+
+        // Copy directory
+        copyDirectory(sourceSharedDir, destSharedDir, variantName);
+        console.log(`📁 Copied shared directory: ${sharedDir} for ${variantName}`);
+      } else {
+        console.log(`⚠️  Shared directory not found: ${sourceSharedDir}`);
+      }
+    }
+
+    // Copy shared files
+    for (const sharedFile of sharedFiles) {
+      const sourceFile = path.join(sourceDir, sharedFile);
+      const destFile = path.join(coreSrcDir, sharedFile);
+
+      if (fs.existsSync(sourceFile)) {
+        copyFileWithImportFix(sourceFile, destFile, variantName);
+        console.log(`📄 Copied shared file: ${sharedFile} for ${variantName}`);
+      } else {
+        console.log(`⚠️  Shared file not found: ${sourceFile}`);
+      }
     }
   }
 }
@@ -1019,6 +1123,7 @@ function main() {
     processUtils();
   }
 
+  processSharedDirectories();
   createTypesIndexes();
   createComponentsIndex();
   updateCoreIndexes();

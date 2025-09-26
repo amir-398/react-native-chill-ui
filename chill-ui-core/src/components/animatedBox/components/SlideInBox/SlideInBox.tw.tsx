@@ -18,17 +18,6 @@ import AnimatedBox from '../animatedBox/AnimatedBox.tw';
  * <SlideInBox autoStart direction="left" className="bg-blue-500 p-6 rounded-lg">
  *   <String className="text-white">Sliding in from left</String>
  * </SlideInBox>
- *
- * // Slide in from top with custom distance
- * <SlideInBox
- *   autoStart
- *   direction="up"
- *   distance={150}
- *   duration={600}
- *   className="bg-green-500 p-4 rounded-xl shadow-lg"
- * >
- *   <String className="text-white">Notification from top</String>
- * </SlideInBox>
  * ```
  *
  * @param direction - Direction to slide from: 'left', 'right', 'up', or 'down' (default: 'left')

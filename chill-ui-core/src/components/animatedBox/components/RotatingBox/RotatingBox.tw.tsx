@@ -19,14 +19,6 @@ import AnimatedBox from '../animatedBox/AnimatedBox.tw';
  * <RotatingBox autoStart infiniteLoop duration={1000} className="w-8 h-8">
  *   <Icon name="spinner" className="text-blue-500" />
  * </RotatingBox>
- *
- * // Slow decorative rotation
- * <RotatingBox
- *   autoStart
- *   infiniteLoop
- *   duration={8000}
- *   className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"
- * >
  *   <Icon name="star" className="text-white" />
  * </RotatingBox>
  * ```

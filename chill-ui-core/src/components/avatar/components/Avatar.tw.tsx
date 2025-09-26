@@ -6,8 +6,8 @@ import { StringTw } from '@components/string';
 import { RipplePressableTw } from '@components/ripplePressable';
 import { Image, Pressable, TouchableOpacity } from 'react-native';
 
-import avatarTv from '../styles/Avatar.variants';
 import getUserInitials from '../utils/getUsersInititials';
+import { avatarTv, avatarImageClassName } from '../styles/Avatar.variants';
 
 /**
  * Avatar component displays user profile images with fallback to initials.
@@ -62,7 +62,7 @@ export default function Avatar(props: AvatarPropsTw) {
       <StringTw size={size as any} font="primarySemiBold" {...stringProps}>
         {initials}
       </StringTw>
-      {image && <Image className="absolute h-full w-full" source={{ uri: image }} />}
+      {image && <Image className={avatarImageClassName} source={{ uri: image }} />}
     </BoxTw>
   );
 

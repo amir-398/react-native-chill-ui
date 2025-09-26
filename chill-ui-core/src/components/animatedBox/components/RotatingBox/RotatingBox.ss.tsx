@@ -8,7 +8,6 @@ import AnimatedBox from '../animatedBox/AnimatedBox.ss';
 
 /**
  * RotatingBox - Smooth rotation animation component
- *
  * Creates continuous 360-degree rotation effects. Perfect for loading spinners, icons,
  * decorative elements, or any content that benefits from rotational motion. Provides
  * smooth, customizable rotation with infinite loop capabilities.
@@ -19,17 +18,6 @@ import AnimatedBox from '../animatedBox/AnimatedBox.ss';
  * <RotatingBox autoStart infiniteLoop duration={1000} style={{ width: 32, height: 32 }}>
  *   <Icon name="spinner" style={{ color: 'blue' }} />
  * </RotatingBox>
- *
- * // Slow decorative rotation
- * <RotatingBox
- *   autoStart
- *   infiniteLoop
- *   duration={8000}
- *   style={{ width: 64, height: 64, backgroundColor: 'purple', borderRadius: 32 }}
- * >
- *   <Icon name="star" style={{ color: 'white' }} />
- * </RotatingBox>
- * ```
  *
  * @param autoStart - Automatically start animation when component mounts (default: false)
  * @param duration - One complete rotation duration in milliseconds (default: 2000)

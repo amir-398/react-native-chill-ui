@@ -2,7 +2,7 @@ import type { VariantProps } from 'tailwind-variants';
 
 import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils';
 
-import type { IconProps } from './icon.types';
+import type { IconProps } from './icon/icon.tw.types';
 import type { StringProps } from './string/string.ss.types';
 import type chipVariants from '../components/chip/Chip.variants';
 import type { chipPositionVariants } from '../components/chip/Chip.variants';

@@ -1,6 +1,6 @@
 import { TIcons } from '@/constants/ICONS';
 
-import { IconProps } from './icon.types';
+import { IconProps } from './icon/icon.tw.types';
 import { LoadingIndicatorProps } from './loadingIndicator.types';
 
 export type TouchableComponentType = 'TouchableOpacity' | 'Pressable' | 'RipplePressable';

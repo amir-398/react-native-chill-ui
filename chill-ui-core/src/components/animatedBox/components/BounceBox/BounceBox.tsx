@@ -11,7 +11,7 @@ import AnimatedBox from '../animatedBox/AnimatedBox';
  *
  * Creates an attention-grabbing bounce effect by animating vertical translation. Perfect for
  * notifications, call-to-action elements, or any content that needs to catch the user's eye.
- * Supports both single bounces and continuous bouncing patterns.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
  * ```tsx
