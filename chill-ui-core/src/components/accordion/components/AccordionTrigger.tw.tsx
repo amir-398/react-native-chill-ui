@@ -1,8 +1,8 @@
 import type { AccordionTriggerPropsTw } from '@types';
 
-import Icon from '@components/icon';
 import { cn, isString } from '@utils';
 import { BoxTw } from '@components/box';
+import { IconTw } from '@components/icon';
 import { StringTw } from '@components/string';
 import { AnimatedBox } from '@components/animatedBox';
 import { RipplePressableTw } from '@components/ripplePressable';
@@ -10,14 +10,8 @@ import { TouchableOpacity, Animated, Pressable } from 'react-native';
 import { useState, useEffect, cloneElement, isValidElement, Children, PropsWithChildren } from 'react';
 
 import { useAccordion } from './AccordionContext';
+import { twStyles } from '../styles/Accordion.tw.styles';
 import { useAccordionItem } from './AccordionItemContext';
-import {
-  accordionTriggerClassName,
-  accordionTriggerDisabledClassName,
-  accordionTriggerTextClassName,
-  accordionTriggerTextWithLeftIconClassName,
-  accordionTriggerTextWithRightIconClassName,
-} from '../styles/Accordion.variants';
 
 /**
  * AccordionTrigger is the clickable header that toggles the accordion item.
@@ -85,7 +79,7 @@ export default function AccordionTrigger(props: PropsWithChildren<AccordionTrigg
   };
 
   const commonProps = {
-    className: cn(accordionTriggerClassName, { [accordionTriggerDisabledClassName]: disabled }, className),
+    className: cn(twStyles.accordionTrigger, { [twStyles.accordionTriggerDisabled]: disabled }, className),
     disabled,
     onPress: handlePress,
     style,
@@ -99,7 +93,7 @@ export default function AccordionTrigger(props: PropsWithChildren<AccordionTrigg
             transform: [{ rotate: animatedRotation }],
           }}
         >
-          <Icon
+          <IconTw
             name={isOpen ? (collapseIcon as any) || 'angle-down-solid' : (expandIcon as any) || 'angle-down-solid'}
           />
         </AnimatedBox>
@@ -108,9 +102,9 @@ export default function AccordionTrigger(props: PropsWithChildren<AccordionTrigg
       {isString(children) ? (
         <StringTw
           className={cn(
-            accordionTriggerTextClassName,
-            hasCollapseIcon && iconPosition === 'left' && accordionTriggerTextWithLeftIconClassName,
-            hasCollapseIcon && iconPosition === 'right' && accordionTriggerTextWithRightIconClassName,
+            twStyles.accordionTriggerText,
+            hasCollapseIcon && iconPosition === 'left' && twStyles.accordionTriggerTextWithLeftIcon,
+            hasCollapseIcon && iconPosition === 'right' && twStyles.accordionTriggerTextWithRightIcon,
           )}
           {...stringProps}
         >
@@ -119,8 +113,8 @@ export default function AccordionTrigger(props: PropsWithChildren<AccordionTrigg
       ) : (
         <BoxTw
           className={cn(
-            hasCollapseIcon && iconPosition === 'left' && accordionTriggerTextWithLeftIconClassName,
-            hasCollapseIcon && iconPosition === 'right' && accordionTriggerTextWithRightIconClassName,
+            hasCollapseIcon && iconPosition === 'left' && twStyles.accordionTriggerTextWithLeftIcon,
+            hasCollapseIcon && iconPosition === 'right' && twStyles.accordionTriggerTextWithRightIcon,
           )}
         >
           {children}
@@ -133,7 +127,7 @@ export default function AccordionTrigger(props: PropsWithChildren<AccordionTrigg
             transform: [{ rotate: animatedRotation }],
           }}
         >
-          <Icon
+          <IconTw
             name={isOpen ? (collapseIcon as any) || 'angle-down-solid' : (expandIcon as any) || 'angle-down-solid'}
           />
         </AnimatedBox>

@@ -4,7 +4,8 @@ import { View, Animated, Pressable } from 'react-native';
 import { cn, classNamePropsHandler, classNameHandler, styleHandler } from '@utils';
 import { useState, useRef, useEffect, PropsWithChildren, Children, isValidElement } from 'react';
 
-import styles from '../styles/RipplePressable.styles';
+import styles from '../styles/RipplePressable.ss.styles';
+import { twStyles } from '../styles/RipplePressable.tw.styles';
 
 /**
  * Individual ripple effect component using native Animated API
@@ -192,15 +193,15 @@ function RipplePressable(props: PropsWithChildren<RipplePressablePropsTw>) {
 
   return (
     <Pressable
+      {...rest}
       ref={containerRef}
       onPress={handlePress}
       disabled={disabled}
-      {...classNameHandler(cn('self-start overflow-hidden', disabled && 'opacity-50', className))}
+      {...classNameHandler(cn(twStyles.container, disabled && twStyles.disabled, className))}
       {...styleHandler({
         defaultStyle: [styles.container, { borderRadius: childBorderRadius }, disabled && styles.disabled],
         style,
       })}
-      {...rest}
     >
       {children}
       {!disabled &&

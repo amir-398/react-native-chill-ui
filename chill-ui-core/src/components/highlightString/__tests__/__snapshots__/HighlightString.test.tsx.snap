@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HighlightString Component Snapshots matches snapshot for basic highlighting 1`] = `
+<Text
+  useFastText={false}
+>
+  Hello 
+  <Text
+    className="bg-[#FFE4B5]"
+    style={
+      {
+        "backgroundColor": "#FFE4B5",
+      }
+    }
+    useFastText={false}
+  >
+    world
+  </Text>
+  , welcome to the 
+  <Text
+    className="bg-[#FFE4B5]"
+    style={
+      {
+        "backgroundColor": "#FFE4B5",
+      }
+    }
+    useFastText={false}
+  >
+    world
+  </Text>
+   of programming
+</Text>
+`;
+
+exports[`HighlightString Component Snapshots matches snapshot with custom styling 1`] = `
+<Text
+  className="text-lg text-blue-500"
+  style={
+    {
+      "fontSize": 16,
+    }
+  }
+  useFastText={false}
+>
+  Hello 
+  <Text
+    className="bg-yellow-200 font-bold"
+    style={
+      {
+        "backgroundColor": "#FFE4B5",
+      }
+    }
+    useFastText={false}
+  >
+    world
+  </Text>
+  , welcome to the 
+  <Text
+    className="bg-yellow-200 font-bold"
+    style={
+      {
+        "backgroundColor": "#FFE4B5",
+      }
+    }
+    useFastText={false}
+  >
+    world
+  </Text>
+   of programming
+</Text>
+`;
+
+exports[`HighlightString Component Snapshots matches snapshot with no highlighting 1`] = `
+<Text>
+  Hello world, welcome to the world of programming
+</Text>
+`;
+
+exports[`HighlightString Component Snapshots matches snapshot with special characters 1`] = `
+<Text
+  useFastText={false}
+>
+  Test 
+  <Text
+    className="bg-[#FFE4B5]"
+    style={
+      {
+        "backgroundColor": "#FFE4B5",
+      }
+    }
+    useFastText={false}
+  >
+    $100
+  </Text>
+   + 50% = $150
+</Text>
+`;

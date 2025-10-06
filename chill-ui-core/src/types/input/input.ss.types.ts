@@ -3,7 +3,8 @@ import type { VariantProps } from '@utils';
 import type { IconPropsSs, StringPropsSs } from '@types';
 import type { TextInputProps, View } from 'react-native';
 
-import { inputSv } from '@components/input/styles/Input.styles';
+import { StyleProp, ViewStyle } from 'react-native';
+import { inputSv } from '@/components/input/styles/Input.ss.styles';
 
 import { StrictOmit, OptionalProp } from '../utils';
 
@@ -27,8 +28,7 @@ export type InputProps = TextInputProps &
     hasError?: boolean;
     /** Error message to display */
     errorMessage?: string;
-    /** Custom CSS classes for the error message */
-    errorClassName?: string;
+
     /** Icon name to display with error */
     errorIconName?: keyof TIcons;
 
@@ -36,9 +36,13 @@ export type InputProps = TextInputProps &
     /** Whether to show clear icon */
     hasClearIcon?: boolean;
 
-    // Icon actions
+    /** Custom CSS classes for the error message */
+    errorStyle?: StyleProp<ViewStyle>;
+
     /** Custom CSS classes for the input field */
-    inputClassName?: string;
+    inputStyle?: StyleProp<ViewStyle>;
+
+    // Icon actions
     /** Left icon configuration */
     leftIconAction?: {
       /** Icon name from the available icon set */
@@ -108,11 +112,3 @@ export type MaskedInputProps = {
   /** Callback with masked and unmasked text */
   onChangeText: ({ maskedText, unmaskedText }: { maskedText: string; unmaskedText: string }) => void;
 } & Omit<InputProps, 'onChangeText'>;
-
-/**
- * Props for the Inputs component
- */
-export type InputsProps = {
-  /** Custom CSS classes for the container */
-  containerClassName?: string;
-} & InputProps;

@@ -2,8 +2,8 @@ import { FlatListProps } from 'react-native';
 
 import { InputProps } from './input.types';
 import { StringProps } from './string/string.ss.types';
-import { HighlightStringProps } from './highlightString.types';
-import { InputDropdownListProps, InputDropdownProps } from './dropdown.types';
+import { HighlightStringProps } from './highlightString/highlightString.ss.types';
+import { InputDropdownListProps, InputDropdownProps } from './inputDropdown/inputDropdown.tw.types';
 
 /**
  * Ref methods for controlling AutocompleteDropdown externally

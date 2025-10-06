@@ -1,14 +1,13 @@
-import { cn } from '@utils';
+import { Box } from '@components/box';
+import { Input } from '@components/input';
+import { cn, get, isEqual } from '@utils';
+import { String } from '@components/string';
 import React, { memo, useCallback } from 'react';
+import { HighlightString } from '@components/highlightString';
+import { InputDropdownModal } from '@/components/inputDropdown';
 
-import { Box } from '../box';
-import { String } from '../string';
-import Input from '../input/Input';
-import { get, isEqual } from '../../utils';
 import { useInputSelectDropdown } from './hooks';
-import HighlightString from '../highlightString';
 import { IDropdownRef, DEFAULT_CONFIG } from './types';
-import InputDropdownModal from '../inputDrodown/InputDropdownModal';
 import { InputSelectDropdownProps } from '../../types/inputSelectDropdown.types';
 
 /**
@@ -147,7 +146,7 @@ const InputSelectDropdown = React.forwardRef<IDropdownRef, InputSelectDropdownPr
       <Box className={cn('p-3', dropdownItemProps?.className)} style={{ flex: 1 }}>
         {hasHighlightString ? (
           <HighlightString
-            text={valueField ? get(item, valueField) : item}
+            content={valueField ? get(item, valueField) : item}
             highlightTerm={highlightProps?.highlightTerm ?? state.searchText ?? ''}
             stringProps={dropdownItemProps?.stringItemProps ?? {}}
             {...highlightProps}

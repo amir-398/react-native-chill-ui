@@ -1,7 +1,7 @@
 import type { TextProps } from 'react-native';
 import type { VariantProps } from 'tailwind-variants';
 
-import type stringTv from '../../components/string/styles/String.variants';
+import type stringTv from '../../components/string/styles/String.tw.styles';
 
 /**
  * Props for the String component

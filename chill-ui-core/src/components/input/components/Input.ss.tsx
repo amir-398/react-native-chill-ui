@@ -8,7 +8,7 @@ import { Animated, Pressable, TextInput } from 'react-native';
 import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 
 import { inputDefaultProps } from '../utils/defaultProps';
-import { inputContainerSv, inputSv, styles } from '../styles/Input.styles';
+import { inputContainerSv, inputSv, styles } from '../styles/Input.ss.styles';
 
 /**
  * Input component with StyleSheet styling.
@@ -38,12 +38,11 @@ import { inputContainerSv, inputSv, styles } from '../styles/Input.styles';
  * ```
  *
  * @param allow - Input validation type ('all' | 'numbers' | 'letters' | 'lettersWithoutSpecialCharacters')
- * @param className - Custom CSS classes (not used in StyleSheet version)
  * @param clearIconProps - Props for the clear icon component
  * @param clickableAs - Animation type when input is pressed ('scale' | undefined)
  * @param customRegex - Custom regex pattern for input validation
  * @param editable - Whether the input is editable (default: true)
- * @param errorClassName - Custom CSS classes for error state (not used in StyleSheet version)
+ * @param errorStyle - Custom CSS classes for the error message
  * @param errorIconName - Icon name to display with error message
  * @param errorMessage - Error message to display below input
  * @param errorStringProps - Props for the error message String component
@@ -52,7 +51,7 @@ import { inputContainerSv, inputSv, styles } from '../styles/Input.styles';
  * @param hasClearIcon - Whether to show clear icon when input has value (default: true)
  * @param hasError - Whether input is in error state
  * @param hasSecureTextEntry - Whether input should hide text (password field)
- * @param inputClassName - Custom CSS classes for the input field (not used in StyleSheet version)
+ * @param inputStyle - Custom CSS classes for the input field
  * @param isDisabled - Whether input is disabled
  * @param isStretchable - Whether input should stretch to full width
  * @param label - Label text to display above input
@@ -73,21 +72,20 @@ import { inputContainerSv, inputSv, styles } from '../styles/Input.styles';
 const Input = forwardRef<TextInput, InputPropsSs>((props, ref) => {
   const {
     allow = inputDefaultProps.allow,
-    className,
     clearIconProps,
     clickableAs,
     customRegex,
     editable = inputDefaultProps.editable,
-    errorClassName,
     errorIconName,
     errorMessage,
     errorStringProps,
+    errorStyle,
     eyeIconProps,
     font = inputDefaultProps.font,
     hasClearIcon = inputDefaultProps.hasClearIcon,
     hasError,
     hasSecureTextEntry,
-    inputClassName,
+    inputStyle,
     isDisabled,
     isStretchable,
     label,
@@ -192,12 +190,13 @@ const Input = forwardRef<TextInput, InputPropsSs>((props, ref) => {
         style={[
           inputContainerSv({ hasError, isDisabled }),
           clickableAs === 'scale' ? { transform: [{ scale: scaleAnim }] } : undefined,
+          hasError && errorStyle,
         ]}
       >
         {!!leftIconAction?.iconName && !leftIconAction?.customIcon && (
           <IconSs
             name={leftIconAction?.iconName as any}
-            size={leftIconAction?.iconSize ?? 'sm'}
+            size={leftIconAction?.iconSize ?? xmarkIconSize}
             color={leftIconAction?.iconColor}
             onPress={leftIconAction?.iconPress}
             style={styles.leftIcon}
@@ -215,7 +214,7 @@ const Input = forwardRef<TextInput, InputPropsSs>((props, ref) => {
           onPressOut={handlePressOut}
           ref={ref}
           value={inputValue}
-          style={inputSv({ font, isStretchable, multiline, size })}
+          style={[inputSv({ font, isStretchable, multiline, size }), inputStyle]}
           onChangeText={handleOnChange}
           secureTextEntry={isSecureEntry}
           multiline={multiline}
@@ -232,7 +231,7 @@ const Input = forwardRef<TextInput, InputPropsSs>((props, ref) => {
           {!!rightIconAction?.iconName && !rightIconAction?.customIcon && (
             <IconSs
               name={rightIconAction?.iconName as any}
-              size={rightIconAction?.iconSize || 'sm'}
+              size={rightIconAction?.iconSize || xmarkIconSize}
               color={rightIconAction?.iconColor}
               onPress={rightIconAction?.iconPress}
               style={styles.rightIcon}

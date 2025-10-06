@@ -3,7 +3,7 @@ import type { RotatingBoxPropsSs, RotatingBoxRefSs } from '@types';
 import { Animated, Easing } from 'react-native';
 import { useRef, useEffect, useImperativeHandle, forwardRef, useCallback, PropsWithChildren } from 'react';
 
-import styles from '../../styles/AnimatedBox.styles';
+import styles from '../../styles/AnimatedBox.ss.styles';
 import AnimatedBox from '../animatedBox/AnimatedBox.ss';
 
 /**

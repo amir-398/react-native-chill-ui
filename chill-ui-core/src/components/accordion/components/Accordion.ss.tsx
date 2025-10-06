@@ -3,7 +3,7 @@ import type { AccordionPropsSs } from '@types';
 import { BoxSs } from '@components/box';
 import { PropsWithChildren } from 'react';
 
-import styles from '../styles/Accordion.styles';
+import styles from '../styles/Accordion.ss.styles';
 import { AccordionProvider } from './AccordionContext';
 import { accordionDefaultProps } from '../utils/defaultProps';
 

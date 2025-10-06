@@ -1,5 +1,5 @@
 import { InputProps } from './input.types';
-import { InputDropdownProps } from './dropdown.types';
+import { InputDropdownProps } from './inputDropdown/inputDropdown.tw.types';
 import { CountryCodesProps } from '../components/phoneNumberInput/countryCodes';
 
 /**

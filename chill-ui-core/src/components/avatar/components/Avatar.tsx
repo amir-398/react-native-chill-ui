@@ -7,8 +7,8 @@ import { Image, Pressable, TouchableOpacity } from 'react-native';
 import { cn, classNamePropsHandler, classNameHandler, styleHandler } from '@utils';
 
 import getUserInitials from '../utils/getUsersInititials';
-import { AvatarSv, styles } from '../styles/Avatar.styles';
-import { avatarTv, avatarImageClassName } from '../styles/Avatar.variants';
+import { AvatarSv, styles } from '../styles/Avatar.ss.styles';
+import { avatarTv, twStyles } from '../styles/Avatar.tw.styles';
 
 /**
  * Avatar component displays user profile images with fallback to initials.
@@ -69,7 +69,7 @@ export default function Avatar(props: AvatarPropsTw) {
       </String>
       {image && (
         <Image
-          {...classNameHandler(avatarImageClassName)}
+          {...classNameHandler(twStyles.avatarImage)}
           {...styleHandler({ defaultStyle: styles.image })}
           source={{ uri: image }}
         />

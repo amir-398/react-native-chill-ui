@@ -1,6 +1,6 @@
 import type { AccordionPropsTw } from '@types';
 
-import { AccordionProviderProps } from './types';
+import { AccordionProviderProps } from '../types';
 
 export const accordionDefaultProps: Partial<AccordionPropsTw> = {
   collapsible: false,

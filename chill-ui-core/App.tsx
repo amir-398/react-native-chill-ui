@@ -1,5 +1,6 @@
-import { View } from 'react-native';
+import { useState } from 'react';
 import { useFonts } from 'expo-font';
+import { ButtonTw } from '@components/button';
 import {
   Poppins_700Bold,
   Poppins_800ExtraBold,
@@ -22,8 +23,28 @@ import {
   Montserrat_600SemiBold,
   Montserrat_100Thin,
 } from '@expo-google-fonts/montserrat';
-
-import { AutocompleteDropdown, AutocompleteDropdownContext } from '@/components/AutocompleteDropdown';
+import {
+  Box,
+  Dialog,
+  DialogClose,
+  DialogCloseSs,
+  DialogCloseTw,
+  DialogContent,
+  DialogContentSs,
+  DialogContentTw,
+  DialogFooter,
+  DialogFooterSs,
+  DialogFooterTw,
+  DialogHeader,
+  DialogHeaderSs,
+  DialogHeaderTw,
+  DialogSs,
+  DialogTrigger,
+  DialogTriggerSs,
+  DialogTriggerTw,
+  DialogTw,
+  StringTw,
+} from '@components';
 
 // Import global.css only if NativeWind is available
 try {
@@ -34,7 +55,27 @@ try {
   console.log('NativeWind not available, skipping global.css import');
 }
 
+const sampleImages = [
+  {
+    id: '1',
+    title: 'Première image',
+    uri: 'https://picsum.photos/800/600?random=1',
+  },
+  {
+    id: '2',
+    title: 'Première image',
+    uri: 'https://picsum.photos/800/600?random=1',
+  },
+  {
+    id: '3',
+    title: 'Première image',
+    uri: 'https://picsum.photos/800/600?random=1',
+  },
+];
+
 export default function App() {
+  const [isChecked, setIsChecked] = useState(false);
+  console.log('isChecked=>', isChecked);
   const [fontsLoaded] = useFonts({
     primary_bold_font: Poppins_700Bold,
     primary_extra_bold_font: Poppins_800ExtraBold,
@@ -73,21 +114,91 @@ export default function App() {
   // });
 
   return (
-    <AutocompleteDropdownContext>
-      <View style={{ marginTop: 100, padding: 20 }}>
-        <AutocompleteDropdown
-          dataSet={[
-            { id: 1, name: 'John Doe' },
-            { id: 2, name: 'Jane Doe' },
-            { id: 3, name: 'John Smith' },
-            { id: 4, name: 'Jane Smith' },
-          ]}
-          valueField="name"
-          onSelectItem={item => {
-            console.log('Selected item:', item);
-          }}
-        />
-      </View>
-    </AutocompleteDropdownContext>
+    <Box className="m-1 mt-16 flex-1 items-center justify-center bg-slate-100">
+      <DialogTw>
+        <DialogTriggerTw asChild>
+          <ButtonTw title="Open Dialog Tailwind" />
+        </DialogTriggerTw>
+        <DialogContentTw>
+          <DialogHeaderTw hasCloseMark />
+
+          <Box className="p-6">
+            <StringTw className="text-gray-700">
+              Are you sure you want to proceed with this action? This cannot be undone.
+            </StringTw>
+          </Box>
+
+          <DialogFooterTw>
+            <Box className="flex-row justify-end gap-3">
+              <DialogCloseTw asChild>
+                <ButtonTw title="Cancel" />
+              </DialogCloseTw>
+              <ButtonTw
+                variant="contained"
+                colorVariant="primary"
+                onPress={() => console.log('Confirmed!')}
+                title="Confirm"
+              />
+            </Box>
+          </DialogFooterTw>
+        </DialogContentTw>
+      </DialogTw>
+      <DialogSs>
+        <DialogTriggerSs asChild>
+          <ButtonTw title="Open Dialog StyleSheet" />
+        </DialogTriggerSs>
+        <DialogContentSs>
+          <DialogHeaderSs hasCloseMark />
+
+          <Box className="p-6">
+            <StringTw className="text-gray-700">
+              Are you sure you want to proceed with this action? This cannot be undone.
+            </StringTw>
+          </Box>
+
+          <DialogFooterSs>
+            <Box className="flex-row justify-end gap-3">
+              <DialogCloseSs asChild>
+                <ButtonTw title="Cancel" />
+              </DialogCloseSs>
+              <ButtonTw
+                variant="contained"
+                colorVariant="primary"
+                onPress={() => console.log('Confirmed!')}
+                title="Confirm"
+              />
+            </Box>
+          </DialogFooterSs>
+        </DialogContentSs>
+      </DialogSs>
+      <Dialog>
+        <DialogTrigger asChild>
+          <ButtonTw title="Open Dialog HYBRID" />
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader hasCloseMark />
+
+          <Box className="p-6">
+            <StringTw className="text-gray-700">
+              Are you sure you want to proceed with this action? This cannot be undone.
+            </StringTw>
+          </Box>
+
+          <DialogFooter>
+            <Box className="flex-row justify-end gap-3">
+              <DialogClose asChild>
+                <ButtonTw title="Cancel" />
+              </DialogClose>
+              <ButtonTw
+                variant="contained"
+                colorVariant="primary"
+                onPress={() => console.log('Confirmed!')}
+                title="Confirm"
+              />
+            </Box>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </Box>
   );
 }

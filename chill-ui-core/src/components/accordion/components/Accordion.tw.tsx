@@ -5,8 +5,8 @@ import { BoxTw } from '@components/box';
 import { PropsWithChildren } from 'react';
 
 import { AccordionProvider } from './AccordionContext';
+import { twStyles } from '../styles/Accordion.tw.styles';
 import { accordionDefaultProps } from '../utils/defaultProps';
-import { accordionClassName } from '../styles/Accordion.variants';
 
 /**
  * Accordion component provides a collapsible content area with support for single or multiple items.
@@ -66,7 +66,7 @@ export default function Accordion(props: PropsWithChildren<AccordionPropsTw>) {
       collapseIcon={collapseIcon}
       onValueChange={onValueChange}
     >
-      <BoxTw className={cn(accordionClassName, className)} style={style}>
+      <BoxTw className={cn(twStyles.accordion, className)} style={style}>
         {children}
       </BoxTw>
     </AccordionProvider>

@@ -36,6 +36,7 @@
       "@/*": ["src/*"],
       "@utils": ["src/utils"],
       "@types": ["src/types"],
+      "@types/*": ["src/types/*"],
       "@constants": ["src/constants"],
       "@components": ["src/components"],
       "@components/*": ["src/components/*"]
@@ -49,7 +50,8 @@
     "global.d.ts",
     "src/components/select/react-native-element-dropdown/src/components/Dropdown",
     "src/components/select/react-native-element-dropdown/src/components/InputSelectDropdown",
-    "src/types/utils/index.ts"
+    "src/types/utils/index.ts",
+    "src/types/inputDropdown/index.ts"
   ],
   "exclude": [
     "node_modules",

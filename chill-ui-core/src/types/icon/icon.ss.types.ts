@@ -1,6 +1,6 @@
 import type { TIcons } from '@constants';
 import type { VariantProps } from '@utils';
-import type { iconPaddingSv, iconSizeSv } from '@components/icon/styles/Icon.styles';
+import type { iconPaddingSv, iconSizeSv } from '@components/icon/styles/Icon.ss.styles';
 
 import { StyleProp, ViewStyle } from 'react-native';
 

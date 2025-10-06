@@ -1,13 +1,13 @@
 import { Image } from 'react-native';
+import { Icon } from '@components/icon';
+import { Input } from '@components/input';
+import { String } from '@components/string';
+import { InputDropdownModal } from '@/components/inputDropdown';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import Icon from '../icon';
 import { Box } from '../box';
 import * as flags from './flags';
-import { String } from '../string';
-import Input from '../input/Input';
 import { DEFAULT_CONFIG } from '../inputSelectDropdown/types';
-import InputDropdownModal from '../inputDrodown/InputDropdownModal';
 import { countryCodes, type CountryCodesProps } from './countryCodes';
 import { useInputSelectDropdown } from '../inputSelectDropdown/hooks';
 import { PhoneNumberInputProps } from '../../types/phoneNumberInput.types';

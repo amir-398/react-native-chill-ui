@@ -2,8 +2,9 @@ import type { BoxPropsTw } from '@types';
 
 import { cn, classNamePropsHandler, classNameHandler, styleHandler } from '@utils';
 
-import styles from '../styles/Box.styles';
 import { View as NativeView } from './View';
+import styles from '../styles/Box.ss.styles';
+import { twStyles } from '../styles/Box.tw.styles';
 
 /**
  * Basic Box component - a flexible container with no default styling.
@@ -47,7 +48,7 @@ function BoxRow(props: BoxPropsTw) {
 
   return (
     <NativeView
-      {...classNameHandler(cn('flex flex-row', className))}
+      {...classNameHandler(cn(twStyles.boxRow, className))}
       {...styleHandler({ defaultStyle: styles.row, style })}
       {...rest}
     />
@@ -75,7 +76,7 @@ function BoxRowCenter(props: BoxPropsTw) {
 
   return (
     <NativeView
-      {...classNameHandler(cn('flex flex-row items-center', className))}
+      {...classNameHandler(cn(twStyles.boxRowCenter, className))}
       {...styleHandler({ defaultStyle: styles.rowCenter, style })}
       {...rest}
     />
@@ -103,7 +104,7 @@ function BoxRowBetween(props: BoxPropsTw) {
 
   return (
     <NativeView
-      {...classNameHandler(cn('flex flex-row justify-between', className))}
+      {...classNameHandler(cn(twStyles.boxRowBetween, className))}
       {...styleHandler({ defaultStyle: styles.rowBetween, style })}
       {...rest}
     />
@@ -134,7 +135,7 @@ function BoxRowCenterBetween(props: BoxPropsTw) {
 
   return (
     <NativeView
-      {...classNameHandler(cn('flex flex-row items-center justify-between', className))}
+      {...classNameHandler(cn(twStyles.boxRowCenterBetween, className))}
       {...styleHandler({ defaultStyle: styles.rowCenterBetween, style })}
       {...rest}
     />
@@ -163,7 +164,7 @@ function BoxColumn(props: BoxPropsTw) {
 
   return (
     <NativeView
-      {...classNameHandler(cn('flex flex-col', className))}
+      {...classNameHandler(cn(twStyles.boxColumn, className))}
       {...styleHandler({ defaultStyle: styles.column, style })}
       {...rest}
     />
@@ -191,7 +192,7 @@ function BoxColumnCenter(props: BoxPropsTw) {
 
   return (
     <NativeView
-      {...classNameHandler(cn('flex flex-col items-center', className))}
+      {...classNameHandler(cn(twStyles.boxColumnCenter, className))}
       {...styleHandler({ defaultStyle: styles.columnCenter, style })}
       {...rest}
     />
@@ -220,7 +221,7 @@ function BoxColumnBetween(props: BoxPropsTw) {
 
   return (
     <NativeView
-      {...classNameHandler(cn('flex flex-col justify-between', className))}
+      {...classNameHandler(cn(twStyles.boxColumnBetween, className))}
       {...styleHandler({ defaultStyle: styles.columnBetween, style })}
       {...rest}
     />
@@ -250,7 +251,7 @@ function BoxColumnCenterBetween(props: BoxPropsTw) {
 
   return (
     <NativeView
-      {...classNameHandler(cn('flex flex-col items-center justify-between', className))}
+      {...classNameHandler(cn(twStyles.boxColumnCenterBetween, className))}
       {...styleHandler({ defaultStyle: styles.columnCenterBetween, style })}
       {...rest}
     />
@@ -278,7 +279,7 @@ function BoxCenter(props: BoxPropsTw) {
 
   return (
     <NativeView
-      {...classNameHandler(cn('flex items-center justify-center', className))}
+      {...classNameHandler(cn(twStyles.boxCenter, className))}
       {...styleHandler({ defaultStyle: styles.center, style })}
       {...rest}
     />
@@ -306,7 +307,7 @@ function BoxGrow(props: BoxPropsTw) {
 
   return (
     <NativeView
-      {...classNameHandler(cn('flex-1', className))}
+      {...classNameHandler(cn(twStyles.boxGrow, className))}
       {...styleHandler({ defaultStyle: styles.grow, style })}
       {...rest}
     />
@@ -334,7 +335,7 @@ function BoxRowGrow(props: BoxPropsTw) {
 
   return (
     <NativeView
-      {...classNameHandler(cn('flex-1 flex-row', className))}
+      {...classNameHandler(cn(twStyles.boxRowGrow, className))}
       {...styleHandler({ defaultStyle: styles.rowGrow, style })}
       {...rest}
     />
@@ -363,7 +364,7 @@ function BoxColumnGrow(props: BoxPropsTw) {
 
   return (
     <NativeView
-      {...classNameHandler(cn('flex-1 flex-col', className))}
+      {...classNameHandler(cn(twStyles.boxColumnGrow, className))}
       {...styleHandler({ defaultStyle: styles.columnGrow, style })}
       {...rest}
     />
@@ -391,7 +392,7 @@ function BoxAbsolute(props: BoxPropsTw) {
 
   return (
     <NativeView
-      {...classNameHandler(cn('absolute', className))}
+      {...classNameHandler(cn(twStyles.boxAbsolute, className))}
       {...styleHandler({ defaultStyle: styles.absolute, style })}
       {...rest}
     />
@@ -422,7 +423,7 @@ function BoxStack(props: BoxPropsTw) {
 
   return (
     <NativeView
-      {...classNameHandler(cn('relative', className))}
+      {...classNameHandler(cn(twStyles.boxStack, className))}
       {...styleHandler({ defaultStyle: styles.stack, style })}
       {...rest}
     />

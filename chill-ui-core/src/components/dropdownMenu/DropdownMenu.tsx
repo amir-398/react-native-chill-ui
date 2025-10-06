@@ -1,14 +1,14 @@
 import { cn } from '@utils';
+import { Icon } from '@components/icon';
+import { InputDropdownModal } from '@/components/inputDropdown';
 import { useCallback, useMemo, forwardRef, useImperativeHandle } from 'react';
 import { TouchableHighlight, TouchableOpacity, Pressable } from 'react-native';
 
-import Icon from '../icon';
 import { Box } from '../box';
 import { String } from '../string';
 import { RipplePressable } from '../ripplePressable';
 import useDropdownMenu from './hooks/useDropdownMenu';
 import { DEFAULT_CONFIG } from '../inputSelectDropdown/types';
-import InputDropdownModal from '../inputDrodown/InputDropdownModal';
 import { DropdownMenuItemProps, DropdownMenuProps, DropdownMenuRef } from '../../types/dropdownMenu.types';
 
 const DropdownMenu = forwardRef<DropdownMenuRef, DropdownMenuProps>(

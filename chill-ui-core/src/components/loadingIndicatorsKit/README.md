@@ -1,199 +1,246 @@
-# Loading Indicators Kit
+# LoadingIndicator Component
 
-A comprehensive collection of loading animation components for React Native. Features 10 different animation types with customizable size, color, and behavior. Perfect for providing visual feedback during data loading, API calls, and user interactions.
+A comprehensive collection of loading animation components for React Native that provides 10 different animation types with customizable size, color, and behavior. Perfect for providing visual feedback during data loading, API calls, and user interactions.
+
+## Available Versions
+
+This component comes in three versions to match your project's styling approach. You choose the version during installation, but the import statement remains consistent across all versions:
+
+### 1. **StyleSheet Version**
+
+- Uses React Native's built-in StyleSheet API
+- Perfect for projects that don't use CSS-in-JS libraries
+- Lightweight and performant
+- Install: `npm install react-native-chill-ui@stylesheet`
+
+### 2. **Tailwind Version**
+
+- Uses NativeWind/Tailwind CSS classes
+- Ideal for projects already using Tailwind CSS
+- Requires NativeWind setup and Tailwind configuration
+- Install: `npm install react-native-chill-ui@tailwind`
+
+### 3. **Hybrid Version**
+
+- Automatically detects if NativeWind is available
+- Falls back to StyleSheet if NativeWind is not installed
+- Best for component libraries or projects that need flexibility
+- Install: `npm install react-native-chill-ui@hybrid`
+
+**Note**: Regardless of the version you choose, the import statement remains the same: `import { LoadingIndicator } from 'react-native-chill-ui'`
 
 ## Features
 
-- ✅ **10 Animation Types**: Bounce, Chase, CircleFade, Flow, Fold, Grid, Pulse, Spinner, Swing, Wander
-- ✅ **Customizable Size**: Support for size variants (xs, sm, md, lg) and custom pixel values
-- ✅ **Color Customization**: Full color control for all animations
-- ✅ **Animation Control**: Start, stop, and pause animations programmatically
-- ✅ **Accessibility**: Screen reader support and ARIA attributes
-- ✅ **Performance**: Optimized animations using React Native Animated API
-- ✅ **TypeScript**: Full type safety with detailed interfaces
-- ✅ **Flexible**: Easy to extend with custom animations
+- **10 Animation Types**: Bounce, Chase, CircleFade, Flow, Fold, Grid, Pulse, Spinner, Swing, Wander
+- **Customizable Size**: Support for custom pixel values and consistent sizing
+- **Color Customization**: Full color control for all animations
+- **Animation Control**: Start, stop, and pause animations programmatically
+- **Accessibility**: Screen reader support and ARIA attributes
+- **Performance**: Optimized animations using React Native Animated API
+- **TypeScript Support**: Fully typed for a better development experience
 
 ## Quick Start
 
 ```tsx
-import LoadingIndicator from '@/components/loadingIndicatorsKit/LoadingIndicator';
+import { LoadingIndicator } from 'react-native-chill-ui';
 
 // Basic usage with default spinner
 <LoadingIndicator />
 
 // Specific animation type
-<LoadingIndicator name="bounce" size={24} color="#007AFF" />
+<LoadingIndicator name="bounce" size={40} color="#007AFF" />
+
+// With animation control
+<LoadingIndicator
+  name="pulse"
+  size={32}
+  color="#FF6B6B"
+  animating={isLoading}
+  hidesWhenStopped={false}
+/>
 ```
+
+## Choosing the Right Version
+
+Select the appropriate version during installation based on your project's needs:
+
+| Version        | Installation Command                           | Use When                                                                                             | Pros                                                                            | Cons                                                  |
+| -------------- | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| **StyleSheet** | `npm install react-native-chill-ui@stylesheet` | • No CSS-in-JS dependencies<br/>• Maximum performance needed<br/>• Simple styling requirements       | • Lightweight<br/>• Fast performance<br/>• No external dependencies             | • Less flexible<br/>• Manual theme management         |
+| **Tailwind**   | `npm install react-native-chill-ui@tailwind`   | • Already using NativeWind<br/>• Team familiar with Tailwind<br/>• Design system based on utilities  | • Consistent with web Tailwind<br/>• Powerful utility system<br/>• Easy theming | • Requires NativeWind setup<br/>• Larger bundle size  |
+| **Hybrid**     | `npm install react-native-chill-ui@hybrid`     | • Building component library<br/>• Uncertain about styling approach<br/>• Want maximum compatibility | • Works in any environment<br/>• Future-proof<br/>• Automatic detection         | • Slightly larger bundle<br/>• More complex internals |
 
 ## Animation Types
 
-### 1. Spinner (Default)
+The LoadingIndicator component supports the following animation types:
 
-A classic rotating spinner animation.
+- `spinner`: Classic rotating spinner (default)
+- `bounce`: Three bouncing circles with staggered animation
+- `chase`: Six dots arranged in a circle with chasing effect
+- `circleFade`: Twelve circles arranged in a clock pattern with fading
+- `flow`: Three circles in a flowing wave-like pattern
+- `fold`: Four cubes in a folding animation with 3D effect
+- `grid`: Nine squares arranged in a 3x3 grid with scaling
+- `pulse`: Single circle with pulsing scale animation
+- `swing`: Two circles with swinging pendulum-like animation
+- `wander`: Two circles that wander around each other
 
-```tsx
-<LoadingIndicator name="spinner" size="md" color="#007AFF" />
-```
+## Size Variants
 
-### 2. Bounce
+The LoadingIndicator component supports custom size values:
 
-A bouncing dot animation that moves up and down.
-
-```tsx
-<LoadingIndicator name="bounce" size={32} color="#FF6B6B" />
-```
-
-### 3. Chase
-
-Multiple dots that chase each other in a circular pattern.
-
-```tsx
-<LoadingIndicator name="chase" size="lg" color="#4ECDC4" />
-```
-
-### 4. CircleFade
-
-Dots that fade in and out in a circular arrangement.
-
-```tsx
-<LoadingIndicator name="circleFade" size={40} color="#45B7D1" />
-```
-
-### 5. Flow
-
-A flowing wave-like animation.
-
-```tsx
-<LoadingIndicator name="flow" size="sm" color="#96CEB4" />
-```
-
-### 6. Fold
-
-A folding paper-like animation.
-
-```tsx
-<LoadingIndicator name="fold" size={28} color="#FFEAA7" />
-```
-
-### 7. Grid
-
-A grid of dots that animate in sequence.
-
-```tsx
-<LoadingIndicator name="grid" size={36} color="#DDA0DD" />
-```
-
-### 8. Pulse
-
-A pulsing scale animation.
-
-```tsx
-<LoadingIndicator name="pulse" size="md" color="#FF8C42" />
-```
-
-### 9. Swing
-
-A swinging pendulum-like animation.
-
-```tsx
-<LoadingIndicator name="swing" size={44} color="#98D8C8" />
-```
-
-### 10. Wander
-
-A wandering dot that moves in a complex pattern.
-
-```tsx
-<LoadingIndicator name="wander" size={48} color="#F7DC6F" />
-```
+- **16-24px**: Small indicators for inline loading
+- **32-40px**: Standard size for most use cases (default: 40px)
+- **48-64px**: Large indicators for full-screen loading
 
 ## Examples
 
 ### Basic Usage
 
 ```tsx
-import LoadingIndicator from '@/components/loadingIndicatorsKit/LoadingIndicator';
+import { LoadingIndicator } from 'react-native-chill-ui';
 
-// Default spinner
-<LoadingIndicator />
+const BasicLoading = () => {
+  const [isLoading, setIsLoading] = useState(true);
 
-// Specific animation with custom size and color
-<LoadingIndicator
-  name="bounce"
-  size={32}
-  color="#007AFF"
-/>
+  return <LoadingIndicator name="bounce" size={40} color="#007AFF" animating={isLoading} />;
+};
 
-// Using size variants
-<LoadingIndicator name="pulse" size="lg" />
-<LoadingIndicator name="chase" size="md" />
-<LoadingIndicator name="flow" size="sm" />
-<LoadingIndicator name="grid" size="xs" />
+const DefaultLoading = () => {
+  return <LoadingIndicator />;
+};
 ```
 
 ### Animation Control
 
 ```tsx
-const [isLoading, setIsLoading] = useState(true);
+const ControlledLoading = () => {
+  const [isLoading, setIsLoading] = useState(false);
 
-// Control animation state
-<LoadingIndicator name="spinner" animating={isLoading} hidesWhenStopped={true} />;
+  const startLoading = () => setIsLoading(true);
+  const stopLoading = () => setIsLoading(false);
 
-// Start/stop animation
-const startLoading = () => setIsLoading(true);
-const stopLoading = () => setIsLoading(false);
+  return (
+    <View>
+      <LoadingIndicator name="chase" size={32} color="#FF6B6B" animating={isLoading} hidesWhenStopped={false} />
+      <Button title="Start" onPress={startLoading} />
+      <Button title="Stop" onPress={stopLoading} />
+    </View>
+  );
+};
 ```
 
-### Custom Styling
+### Size Variants
 
 ```tsx
-<LoadingIndicator
-  name="pulse"
-  size={40}
-  color="#FF6B6B"
-  style={{
-    backgroundColor: '#F8F9FA',
-    borderRadius: 8,
-    padding: 16,
-  }}
-/>
+const SizeVariants = () => {
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 20 }}>
+      <LoadingIndicator name="spinner" size={16} color="#007AFF" />
+      <LoadingIndicator name="spinner" size={24} color="#007AFF" />
+      <LoadingIndicator name="spinner" size={32} color="#007AFF" />
+      <LoadingIndicator name="spinner" size={40} color="#007AFF" />
+      <LoadingIndicator name="spinner" size={48} color="#007AFF" />
+    </View>
+  );
+};
 ```
 
-### Accessibility
+### Animation Type Examples
 
 ```tsx
-<LoadingIndicator name="spinner" accessible={true} accessibilityLabel="Loading content, please wait" />
+const AnimationTypes = () => {
+  return (
+    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 20 }}>
+      <LoadingIndicator name="bounce" size={40} color="#FF6B6B" />
+      <LoadingIndicator name="chase" size={40} color="#34C759" />
+      <LoadingIndicator name="circleFade" size={40} color="#FF9500" />
+      <LoadingIndicator name="flow" size={40} color="#AF52DE" />
+      <LoadingIndicator name="fold" size={40} color="#FF2D92" />
+      <LoadingIndicator name="grid" size={40} color="#5AC8FA" />
+      <LoadingIndicator name="pulse" size={40} color="#FF3B30" />
+      <LoadingIndicator name="spinner" size={40} color="#007AFF" />
+      <LoadingIndicator name="swing" size={40} color="#30D158" />
+      <LoadingIndicator name="wander" size={40} color="#007AFF" />
+    </View>
+  );
+};
 ```
 
-### Different Sizes
+### Loading States in Forms
 
 ```tsx
-// Size variants
-<LoadingIndicator name="bounce" size="xs" />   // 12px
-<LoadingIndicator name="bounce" size="sm" />   // 16px
-<LoadingIndicator name="bounce" size="md" />   // 24px
-<LoadingIndicator name="bounce" size="lg" />   // 32px
+const FormWithLoading = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-// Custom pixel values
-<LoadingIndicator name="bounce" size={20} />
-<LoadingIndicator name="bounce" size={48} />
-<LoadingIndicator name="bounce" size={64} />
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    try {
+      await submitForm();
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <View>
+      <Input placeholder="Email" />
+      <Input placeholder="Password" secureTextEntry />
+      <Button title={isSubmitting ? 'Submitting...' : 'Submit'} onPress={handleSubmit} disabled={isSubmitting} />
+      {isSubmitting && (
+        <LoadingIndicator name="flow" size={24} color="#007AFF" style={{ alignSelf: 'center', marginTop: 10 }} />
+      )}
+    </View>
+  );
+};
 ```
 
-## Props Reference
+### Loading in Lists
+
+```tsx
+const ListWithLoading = () => {
+  const [items, setItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const loadMore = async () => {
+    setIsLoading(true);
+    try {
+      const newItems = await fetchMoreItems();
+      setItems(prev => [...prev, ...newItems]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <FlatList
+      data={items}
+      renderItem={({ item }) => <ItemComponent item={item} />}
+      onEndReached={loadMore}
+      ListFooterComponent={() =>
+        isLoading ? (
+          <LoadingIndicator name="grid" size={32} color="#007AFF" style={{ alignSelf: 'center', marginVertical: 20 }} />
+        ) : null
+      }
+    />
+  );
+};
+```
+
+## API Reference
 
 ### LoadingIndicatorProps
 
-| Prop                 | Type                                     | Default     | Description                            |
-| -------------------- | ---------------------------------------- | ----------- | -------------------------------------- |
-| `name`               | `LoadingIndicatorType`                   | `'spinner'` | Type of loading animation              |
-| `size`               | `number \| 'xs' \| 'sm' \| 'md' \| 'lg'` | `'md'`      | Size of the loading indicator          |
-| `color`              | `string`                                 | `'#000'`    | Color of the loading indicator         |
-| `animating`          | `boolean`                                | `true`      | Whether the animation is running       |
-| `hidesWhenStopped`   | `boolean`                                | `true`      | Whether to hide when stopped           |
-| `style`              | `ViewStyle`                              | -           | Custom styles for the container        |
-| `accessible`         | `boolean`                                | -           | Whether the component is accessible    |
-| `accessibilityLabel` | `string`                                 | -           | Accessibility label for screen readers |
+| Prop                 | Type                                                                                                               | Default     | Description                             |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------- | --------------------------------------- |
+| `name`               | `'bounce' \| 'chase' \| 'circleFade' \| 'flow' \| 'fold' \| 'grid' \| 'pulse' \| 'spinner' \| 'swing' \| 'wander'` | `'spinner'` | Type of loading animation to display    |
+| `size`               | `number`                                                                                                           | `40`        | Size of the loading indicator in pixels |
+| `color`              | `string`                                                                                                           | `'#000'`    | Color of the loading indicator          |
+| `animating`          | `boolean`                                                                                                          | `true`      | Whether the animation is running        |
+| `hidesWhenStopped`   | `boolean`                                                                                                          | `true`      | Whether to hide when animation stops    |
+| `style`              | `StyleProp<ViewStyle>`                                                                                             | -           | Custom style object for the container   |
+| `accessible`         | `boolean`                                                                                                          | -           | Whether the component is accessible     |
+| `accessibilityLabel` | `string`                                                                                                           | -           | Accessibility label for screen readers  |
 
 ### LoadingIndicatorType
 
@@ -211,19 +258,9 @@ type LoadingIndicatorType =
   | 'wander';
 ```
 
-## Size Variants
-
-| Size   | Pixel Value | Use Case                      |
-| ------ | ----------- | ----------------------------- |
-| `xs`   | 12px        | Small inline indicators       |
-| `sm`   | 16px        | Compact indicators            |
-| `md`   | 24px        | Standard indicators (default) |
-| `lg`   | 32px        | Large indicators              |
-| Custom | Any number  | Specific size requirements    |
-
 ## Individual Components
 
-Each animation type is available as a separate component:
+You can also import and use individual animation components directly:
 
 ```tsx
 import {
@@ -237,316 +274,134 @@ import {
   Spinner,
   Swing,
   Wander
-} from '@/components/loadingIndicatorsKit';
+} from 'react-native-chill-ui';
 
 // Use individual components
-<Bounce size={24} color="#007AFF" />
-<Chase size="lg" color="#4ECDC4" />
-<Pulse size={32} color="#FF6B6B" />
+<Bounce size={40} color="#007AFF" />
+<Chase size={32} color="#FF6B6B" />
+<Pulse size={24} color="#34C759" />
 ```
 
-## AnimationContainer
-
-For custom animations, use the `AnimationContainer` component:
-
-```tsx
-import AnimationContainer from '@/components/loadingIndicatorsKit/AnimationContainer';
-
-<AnimationContainer
-  animating={isLoading}
-  initAnimation={() => ({
-    rotation: value => ({
-      animation: Animated.loop(
-        Animated.timing(value, {
-          toValue: 1,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-      ),
-      values: [
-        value.interpolate({
-          inputRange: [0, 1],
-          outputRange: ['0deg', '360deg'],
-        }),
-      ],
-    }),
-  })}
->
-  {({ rotation }) => (
-    <Animated.View style={{ transform: [{ rotate: rotation[0] }] }}>
-      <Icon name="spinner" />
-    </Animated.View>
-  )}
-</AnimationContainer>;
-```
+Each component has the same props interface and includes full JSDoc documentation.
 
 ## Best Practices
 
 ### 1. Choose Appropriate Animation Types
 
-```tsx
-// ✅ Good - Use spinner for general loading
-<LoadingIndicator name="spinner" />
-
-// ✅ Good - Use pulse for content loading
-<LoadingIndicator name="pulse" />
-
-// ✅ Good - Use bounce for button states
-<LoadingIndicator name="bounce" size="sm" />
-
-// ❌ Avoid - Don't use complex animations for simple loading
-<LoadingIndicator name="wander" size="xs" />
-```
+- **Spinner**: Classic, universally recognized
+- **Bounce**: Playful, good for casual apps
+- **Pulse**: Subtle, good for minimal designs
+- **Chase/CircleFade**: Professional, good for business apps
+- **Flow**: Smooth, good for content loading
+- **Grid**: Structured, good for data loading
 
 ### 2. Use Appropriate Sizes
 
-```tsx
-// ✅ Good - Small size for inline loading
-<LoadingIndicator name="spinner" size="xs" />
-
-// ✅ Good - Medium size for content areas
-<LoadingIndicator name="spinner" size="md" />
-
-// ✅ Good - Large size for full-screen loading
-<LoadingIndicator name="spinner" size="lg" />
-
-// ❌ Avoid - Don't use large animations in small spaces
-<LoadingIndicator name="chase" size="lg" />
-```
+- **16-24px**: Small indicators for inline loading
+- **32-40px**: Standard size for most use cases
+- **48-64px**: Large indicators for full-screen loading
 
 ### 3. Provide Accessibility Labels
 
 ```tsx
-// ✅ Good - Clear accessibility label
-<LoadingIndicator
-  name="spinner"
-  accessible={true}
-  accessibilityLabel="Loading user data, please wait"
-/>
-
-// ❌ Avoid - No accessibility information
-<LoadingIndicator name="spinner" />
+<LoadingIndicator name="spinner" accessible={true} accessibilityLabel="Loading content" />
 ```
 
 ### 4. Control Animation State
 
 ```tsx
-// ✅ Good - Control animation based on loading state
-<LoadingIndicator
-  name="spinner"
-  animating={isLoading}
-  hidesWhenStopped={true}
-/>
+const [isLoading, setIsLoading] = useState(false);
 
-// ❌ Avoid - Always animating even when not needed
-<LoadingIndicator name="spinner" animating={true} />
+// Start loading
+setIsLoading(true);
+
+// Stop loading
+setIsLoading(false);
+
+<LoadingIndicator name="bounce" animating={isLoading} hidesWhenStopped={false} />;
 ```
 
 ### 5. Use Consistent Colors
 
 ```tsx
-// ✅ Good - Use brand colors consistently
-<LoadingIndicator name="spinner" color="#007AFF" />
+// Use your app's primary color
+<LoadingIndicator name="spinner" color={theme.colors.primary} />
 
-// ✅ Good - Use semantic colors
-<LoadingIndicator name="spinner" color="#FF6B6B" /> // Error state
-<LoadingIndicator name="spinner" color="#4ECDC4" /> // Success state
-
-// ❌ Avoid - Random colors
-<LoadingIndicator name="spinner" color="#FF00FF" />
-```
-
-## Advanced Usage
-
-### Custom Animation with AnimationContainer
-
-```tsx
-import AnimationContainer from '@/components/loadingIndicatorsKit/AnimationContainer';
-
-const CustomLoadingAnimation = ({ isLoading }) => (
-  <AnimationContainer
-    animating={isLoading}
-    initAnimation={() => ({
-      scale: value => ({
-        animation: Animated.loop(
-          Animated.sequence([
-            Animated.timing(value, { toValue: 1, duration: 500 }),
-            Animated.timing(value, { toValue: 0.5, duration: 500 }),
-          ]),
-        ),
-        values: [
-          value.interpolate({
-            inputRange: [0, 1],
-            outputRange: [0.5, 1],
-          }),
-        ],
-      }),
-      opacity: value => ({
-        animation: Animated.loop(Animated.timing(value, { toValue: 1, duration: 1000 })),
-        values: [
-          value.interpolate({
-            inputRange: [0, 1],
-            outputRange: [0.3, 1],
-          }),
-        ],
-      }),
-    })}
-  >
-    {({ scale, opacity }) => (
-      <Animated.View
-        style={{
-          transform: [{ scale: scale[0] }],
-          opacity: opacity[0],
-          width: 40,
-          height: 40,
-          borderRadius: 20,
-          backgroundColor: '#007AFF',
-        }}
-      />
-    )}
-  </AnimationContainer>
-);
-```
-
-### Loading States in Forms
-
-```tsx
-const [isSubmitting, setIsSubmitting] = useState(false);
-
-const handleSubmit = async () => {
-  setIsSubmitting(true);
-  try {
-    await submitForm();
-  } finally {
-    setIsSubmitting(false);
-  }
-};
-
-<Button onPress={handleSubmit} disabled={isSubmitting}>
-  {isSubmitting ? (
-    <Box className="flex-row items-center gap-2">
-      <LoadingIndicator name="bounce" size="xs" color="white" />
-      <String color="white">Submitting...</String>
-    </Box>
-  ) : (
-    <String color="white">Submit</String>
-  )}
-</Button>;
-```
-
-### Loading in Lists
-
-```tsx
-const [isLoading, setIsLoading] = useState(false);
-const [items, setItems] = useState([]);
-
-const loadMoreItems = async () => {
-  setIsLoading(true);
-  try {
-    const newItems = await fetchItems();
-    setItems(prev => [...prev, ...newItems]);
-  } finally {
-    setIsLoading(false);
-  }
-};
-
-<FlatList
-  data={items}
-  renderItem={renderItem}
-  ListFooterComponent={
-    isLoading ? (
-      <Box className="items-center p-4">
-        <LoadingIndicator name="pulse" size="md" />
-      </Box>
-    ) : null
-  }
-  onEndReached={loadMoreItems}
-/>;
-```
-
-### Full-Screen Loading
-
-```tsx
-const [isLoading, setIsLoading] = useState(true);
-
-if (isLoading) {
-  return (
-    <Box className="flex-1 items-center justify-center bg-white">
-      <LoadingIndicator name="spinner" size="lg" color="#007AFF" />
-      <String className="mt-4" color="gray">
-        Loading...
-      </String>
-    </Box>
-  );
-}
+// Use semantic colors
+<LoadingIndicator name="pulse" color="#34C759" /> // Success
+<LoadingIndicator name="chase" color="#FF9500" /> // Warning
+<LoadingIndicator name="bounce" color="#FF3B30" /> // Error
 ```
 
 ## Performance Considerations
 
-- All animations use React Native's native driver when possible
-- Animations are optimized for 60fps performance
-- Components use `memo` to prevent unnecessary re-renders
-- Animation state is managed efficiently to avoid memory leaks
+- All animations use `useNativeDriver: true` for optimal performance
+- Animations are automatically cleaned up when components unmount
+- Use `hidesWhenStopped={false}` only when you need to show the static state
+- Consider using smaller sizes for better performance on older devices
 
 ## Accessibility
 
-The loading indicators include comprehensive accessibility features:
-
-- **Screen reader support**: Proper labeling and announcements
-- **Animation control**: Users can disable animations in system settings
-- **Focus management**: Proper focus handling
-- **ARIA attributes**: Correct semantic markup
-
-### Accessibility Best Practices
+### Screen Reader Support
 
 ```tsx
-// Always provide accessibility labels
 <LoadingIndicator
   name="spinner"
   accessible={true}
-  accessibilityLabel="Loading content, please wait"
-/>
-
-// Respect user's animation preferences
-<LoadingIndicator
-  name="spinner"
-  animating={!isReducedMotionEnabled}
-/>
-
-// Provide context for screen readers
-<LoadingIndicator
-  name="spinner"
-  accessibilityLabel="Loading user profile data"
+  accessibilityLabel="Loading user data"
+  accessibilityRole="progressbar"
 />
 ```
+
+### Accessibility Best Practices
+
+1. **Provide meaningful labels**: Use descriptive accessibility labels
+2. **Use appropriate roles**: Set `accessibilityRole="progressbar"` for loading indicators
+3. **Announce state changes**: Use `accessibilityLiveRegion` for dynamic content
+4. **Consider reduced motion**: Respect user preferences for reduced motion
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **Animation not playing**: Check that `animating` prop is true
-2. **Animation too fast/slow**: Adjust duration in individual components
-3. **Performance issues**: Ensure animations use native driver
-4. **Accessibility issues**: Provide proper accessibility labels
+1. **Animation not showing**
+   - Check if `animating` prop is `true`
+   - Verify `size` is greater than 0
+   - Ensure `color` is a valid color string
+
+2. **Animation not stopping**
+   - Set `animating={false}` to stop the animation
+   - Use `hidesWhenStopped={true}` to hide when stopped
+
+3. **Performance issues**
+   - Use smaller sizes for better performance
+   - Avoid using too many loading indicators simultaneously
+   - Consider using `useNativeDriver: true` (already enabled by default)
 
 ### Debug Example
 
 ```tsx
-const [debugInfo, setDebugInfo] = useState({});
+const DebugLoading = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [animationType, setAnimationType] = useState('spinner');
 
-<LoadingIndicator
-  name="spinner"
-  onLayout={event => {
-    setDebugInfo({
-      width: event.nativeEvent.layout.width,
-      height: event.nativeEvent.layout.height,
-    });
-  }}
-/>;
+  return (
+    <View>
+      <Text>Animation Type: {animationType}</Text>
+      <Text>Is Loading: {isLoading.toString()}</Text>
 
-{
-  debugInfo.width && <String>Debug: {JSON.stringify(debugInfo)}</String>;
-}
+      <LoadingIndicator
+        name={animationType}
+        size={40}
+        color="#007AFF"
+        animating={isLoading}
+        style={{ borderWidth: 1, borderColor: 'red' }} // Debug border
+      />
+
+      <Button title="Toggle" onPress={() => setIsLoading(!isLoading)} />
+    </View>
+  );
+};
 ```
 
 ## Migration from Other Libraries
@@ -554,25 +409,53 @@ const [debugInfo, setDebugInfo] = useState({});
 ### From react-native-spinkit
 
 ```tsx
-// Old (react-native-spinkit)
-<Spinner type="Bounce" size={24} color="#007AFF" />
+// Before
+import { Spinner } from 'react-native-spinkit';
 
-// New (LoadingIndicatorsKit)
-<LoadingIndicator name="bounce" size={24} color="#007AFF" />
+<Spinner type="Bounce" size={40} color="#007AFF" />;
+
+// After
+import { LoadingIndicator } from 'react-native-chill-ui';
+
+<LoadingIndicator name="bounce" size={40} color="#007AFF" />;
 ```
 
 ### From react-native-loading-spinner-overlay
 
 ```tsx
-// Old (react-native-loading-spinner-overlay)
-<Spinner visible={isLoading} />;
+// Before
+import Spinner from 'react-native-loading-spinner-overlay';
 
-// New (LoadingIndicatorsKit)
+<Spinner visible={isLoading} textContent="Loading..." />;
+
+// After
+import { LoadingIndicator } from 'react-native-chill-ui';
+
 {
   isLoading && (
-    <Box className="absolute inset-0 items-center justify-center bg-black/50">
-      <LoadingIndicator name="spinner" size="lg" color="white" />
-    </Box>
+    <View
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0,0.5)',
+      }}
+    >
+      <LoadingIndicator name="spinner" size={40} color="#007AFF" />
+      <Text style={{ color: 'white', marginTop: 10 }}>Loading...</Text>
+    </View>
   );
 }
 ```
+
+## Contributing
+
+We welcome contributions! Please see our [Contributing Guide](../../CONTRIBUTING.md) for details.
+
+## License
+
+This component is part of the react-native-chill-ui library. See [LICENSE](../../LICENSE.md) for details.

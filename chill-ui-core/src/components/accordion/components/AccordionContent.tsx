@@ -4,10 +4,10 @@ import { Box } from '@components/box';
 import { String } from '@components/string';
 import { classNameHandler, cn, styleHandler, classNamePropsHandler, isString } from '@utils';
 
-import styles from '../styles/Accordion.styles';
 import { useAccordion } from './AccordionContext';
+import styles from '../styles/Accordion.ss.styles';
+import { twStyles } from '../styles/Accordion.tw.styles';
 import { useAccordionItem } from './AccordionItemContext';
-import { accordionContentClassName } from '../styles/Accordion.variants';
 
 /**
  * AccordionContent is the collapsible content area that shows/hides based on the accordion state.
@@ -53,7 +53,7 @@ export default function AccordionContent(props: AccordionContentPropsTw) {
       }}
     >
       <Box
-        {...classNameHandler(cn(accordionContentClassName, className))}
+        {...classNameHandler(cn(twStyles.accordionContent, className))}
         {...styleHandler({ defaultStyle: [styles.accordionContent, contentStyle], style })}
         {...rest}
       >

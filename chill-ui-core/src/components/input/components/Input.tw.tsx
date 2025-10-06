@@ -1,5 +1,5 @@
-import { BoxTw } from '@components';
 import { InputPropsTw } from '@types';
+import { BoxTw } from '@components/box';
 import { IconTw } from '@components/icon';
 import { StringTw } from '@components/string';
 import { cn, getStringLength, isString } from '@utils';
@@ -19,7 +19,7 @@ import {
   bottomInputContainerShowLengthClassName,
   iconContainerClassName,
   bottomInputContainerClassName,
-} from '../styles/Input.variants';
+} from '../styles/Input.tw.styles';
 
 /**
  * Input component with Tailwind styling.
@@ -201,12 +201,16 @@ const Input = forwardRef<TextInput, InputPropsTw>((props, ref) => {
       <AnimatedBoxTw
         ref={wrapperRef}
         style={clickableAs === 'scale' ? { transform: [{ scale: scaleAnim }] } : undefined}
-        className={cn(inputContainerTv({ hasError: !!hasError, isDisabled: !!isDisabled }), className)}
+        className={cn(
+          inputContainerTv({ hasError: !!hasError, isDisabled: !!isDisabled }),
+          hasError && errorClassName,
+          className,
+        )}
       >
         {!!leftIconAction?.iconName && !leftIconAction?.customIcon && (
           <IconTw
             name={leftIconAction?.iconName as any}
-            size={leftIconAction?.iconSize || 'sm'}
+            size={leftIconAction?.iconSize || xmarkIconSize}
             color={leftIconAction?.iconColor}
             onPress={leftIconAction?.iconPress}
             className={leftIconClassName}
@@ -227,7 +231,6 @@ const Input = forwardRef<TextInput, InputPropsTw>((props, ref) => {
           className={cn(
             inputFieldTv({ font, isStretchable: !!isStretchable, multiline: !!multiline, size }),
             inputClassName,
-            hasError && errorClassName,
           )}
           onChangeText={handleOnChange}
           secureTextEntry={isSecureEntry}
@@ -245,7 +248,7 @@ const Input = forwardRef<TextInput, InputPropsTw>((props, ref) => {
           {!!rightIconAction?.iconName && !rightIconAction?.customIcon && (
             <IconTw
               name={rightIconAction?.iconName as any}
-              size={rightIconAction?.iconSize || 'sm'}
+              size={rightIconAction?.iconSize || xmarkIconSize}
               color={rightIconAction?.iconColor}
               onPress={rightIconAction?.iconPress}
               className={rightIconClassName}

@@ -1,6 +1,6 @@
 import type { BoxPropsSs } from '@types';
 
-import styles from '../styles/Box.styles';
+import styles from '../styles/Box.ss.styles';
 import { View as NativeView } from './View.ss';
 
 /**

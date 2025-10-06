@@ -5,8 +5,8 @@ import { BoxTw } from '@components/box';
 import { StringTw } from '@components/string';
 
 import { useAccordion } from './AccordionContext';
+import { twStyles } from '../styles/Accordion.tw.styles';
 import { useAccordionItem } from './AccordionItemContext';
-import { accordionContentClassName } from '../styles/Accordion.variants';
 
 /**
  * AccordionContent is the collapsible content area that shows/hides based on the accordion state.
@@ -48,7 +48,7 @@ export default function AccordionContent(props: AccordionContentPropsTw) {
         overflow: 'hidden',
       }}
     >
-      <BoxTw className={cn(accordionContentClassName, className)} style={style} {...rest}>
+      <BoxTw className={cn(twStyles.accordionContent, className)} style={style} {...rest}>
         {isString(children) ? <StringTw {...stringProps}>{children}</StringTw> : children}
       </BoxTw>
     </BoxTw>

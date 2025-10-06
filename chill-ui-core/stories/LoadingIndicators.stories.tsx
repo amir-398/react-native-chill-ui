@@ -2,195 +2,247 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Text } from 'react-native';
 
-import { Box } from '../src/components';
-import {
-  Bounce,
-  Chase,
-  CircleFade,
-  Flow,
-  Fold,
-  Grid,
-  Pulse,
-  Spinner,
-  Swing,
-  Wander,
-} from '../src/components/loadingIndicatorsKit';
+import UiPresentation from './storybook';
+import { LoadingIndicator } from '../src/components/loadingIndicatorsKit';
 
-const meta: Meta<typeof Pulse> = {
+const meta: Meta<typeof LoadingIndicator> = {
   argTypes: {
-    animating: {
-      control: 'boolean',
-      description: 'Whether the animation is running',
-    },
-    color: {
-      control: 'color',
-      description: 'Color of the loading indicator',
-    },
-    hidesWhenStopped: {
-      control: 'boolean',
-      description: 'Whether to hide the indicator when animation is stopped',
+    name: {
+      control: 'select',
+      description: 'Type of loading animation to display',
+      options: ['bounce', 'chase', 'circleFade', 'flow', 'fold', 'grid', 'pulse', 'spinner', 'swing', 'wander'],
     },
     size: {
       control: 'number',
       description: 'Size of the loading indicator in pixels',
     },
+    color: {
+      control: 'color',
+      description: 'Color of the loading indicator',
+    },
+    animating: {
+      control: 'boolean',
+      description: 'Whether the animation is running',
+    },
+    hidesWhenStopped: {
+      control: 'boolean',
+      description: 'Whether to hide the indicator when animation is stopped',
+    },
+    style: {
+      control: 'object',
+      description: 'Custom style object for the container',
+    },
+    accessible: {
+      control: 'boolean',
+      description: 'Whether the component is accessible',
+    },
+    accessibilityLabel: {
+      control: 'text',
+      description: 'Accessibility label for screen readers',
+    },
   },
+  component: LoadingIndicator,
   decorators: [
     (Story: any) => (
-      <Box
-        style={{
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          gap: 40,
-          justifyContent: 'center',
-          padding: 10,
-        }}
-      >
+      <UiPresentation className="items-center justify-center px-3">
         <Story />
-      </Box>
+      </UiPresentation>
     ),
   ],
-  title: 'components/LoadingIndicators',
+  title: 'Components/LoadingIndicators',
 };
 
 export default meta;
-type Story = StoryObj<typeof Pulse>;
+type Story = StoryObj<typeof LoadingIndicator>;
 
-function LoadingIndicatorWrapper({ children }: { children: React.ReactNode }) {
-  return <Box className="flex flex-col items-center gap-2">{children}</Box>;
-}
-
-export const AllIndicators: Story = {
+// Basic LoadingIndicator
+export const Default: Story = {
   args: {
-    animating: true,
-    color: '#000',
-    hidesWhenStopped: true,
+    name: 'spinner',
     size: 40,
+    color: '#000',
+    animating: true,
+    hidesWhenStopped: true,
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'All available loading indicators with default size and color',
-      },
-    },
-  },
-  render: (args: any) => (
-    <>
-      <LoadingIndicatorWrapper>
-        <Bounce {...args} />
-        <Text>Bounce</Text>
-      </LoadingIndicatorWrapper>
-
-      <LoadingIndicatorWrapper>
-        <Chase {...args} />
-        <Text>Chase</Text>
-      </LoadingIndicatorWrapper>
-
-      <LoadingIndicatorWrapper>
-        <CircleFade {...args} />
-        <Text>CircleFade</Text>
-      </LoadingIndicatorWrapper>
-
-      <LoadingIndicatorWrapper>
-        <Flow {...args} />
-        <Text>Flow</Text>
-      </LoadingIndicatorWrapper>
-
-      <LoadingIndicatorWrapper>
-        <Fold {...args} />
-        <Text>Fold</Text>
-      </LoadingIndicatorWrapper>
-
-      <LoadingIndicatorWrapper>
-        <Grid {...args} />
-        <Text>Grid</Text>
-      </LoadingIndicatorWrapper>
-
-      <LoadingIndicatorWrapper>
-        <Pulse {...args} />
-        <Text>Pulse</Text>
-      </LoadingIndicatorWrapper>
-
-      <LoadingIndicatorWrapper>
-        <Spinner {...args} />
-        <Text>Spinner</Text>
-      </LoadingIndicatorWrapper>
-
-      <LoadingIndicatorWrapper>
-        <Swing {...args} />
-        <Text>Swing</Text>
-      </LoadingIndicatorWrapper>
-
-      <LoadingIndicatorWrapper>
-        <Wander {...args} />
-        <Text>Wander</Text>
-      </LoadingIndicatorWrapper>
-    </>
-  ),
 };
 
-export const DifferentSizes: Story = {
+export const Bounce: Story = {
   args: {
+    name: 'bounce',
+    size: 40,
+    color: '#007AFF',
     animating: true,
-    color: '#000',
     hidesWhenStopped: true,
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Loading indicators with different sizes',
-      },
-    },
-  },
-  render: (args: any) => (
-    <>
-      <LoadingIndicatorWrapper>
-        <Pulse {...args} size={20} />
-        <Text>Small (20)</Text>
-      </LoadingIndicatorWrapper>
-
-      <LoadingIndicatorWrapper>
-        <Pulse {...args} size={40} />
-        <Text>Medium (40)</Text>
-      </LoadingIndicatorWrapper>
-
-      <LoadingIndicatorWrapper>
-        <Pulse {...args} size={60} />
-        <Text>Large (60)</Text>
-      </LoadingIndicatorWrapper>
-    </>
-  ),
 };
 
-export const DifferentColors: Story = {
+export const Chase: Story = {
   args: {
+    name: 'chase',
+    size: 40,
+    color: '#34C759',
     animating: true,
     hidesWhenStopped: true,
-    size: 40,
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Loading indicators with different colors',
-      },
+};
+
+export const CircleFade: Story = {
+  args: {
+    name: 'circleFade',
+    size: 40,
+    color: '#FF9500',
+    animating: true,
+    hidesWhenStopped: true,
+  },
+};
+
+export const Flow: Story = {
+  args: {
+    name: 'flow',
+    size: 40,
+    color: '#AF52DE',
+    animating: true,
+    hidesWhenStopped: true,
+  },
+};
+
+export const Fold: Story = {
+  args: {
+    name: 'fold',
+    size: 40,
+    color: '#FF2D92',
+    animating: true,
+    hidesWhenStopped: true,
+  },
+};
+
+export const Grid: Story = {
+  args: {
+    name: 'grid',
+    size: 40,
+    color: '#5AC8FA',
+    animating: true,
+    hidesWhenStopped: true,
+  },
+};
+
+export const Pulse: Story = {
+  args: {
+    name: 'pulse',
+    size: 40,
+    color: '#FF3B30',
+    animating: true,
+    hidesWhenStopped: true,
+  },
+};
+
+export const Spinner: Story = {
+  args: {
+    name: 'spinner',
+    size: 40,
+    color: '#007AFF',
+    animating: true,
+    hidesWhenStopped: true,
+  },
+};
+
+export const Swing: Story = {
+  args: {
+    name: 'swing',
+    size: 40,
+    color: '#30D158',
+    animating: true,
+    hidesWhenStopped: true,
+  },
+};
+
+export const Wander: Story = {
+  args: {
+    name: 'wander',
+    size: 40,
+    color: '#007AFF',
+    animating: true,
+    hidesWhenStopped: true,
+  },
+};
+
+// Size variants
+export const Small: Story = {
+  args: {
+    name: 'spinner',
+    size: 20,
+    color: '#007AFF',
+    animating: true,
+    hidesWhenStopped: true,
+  },
+};
+
+export const Medium: Story = {
+  args: {
+    name: 'spinner',
+    size: 40,
+    color: '#007AFF',
+    animating: true,
+    hidesWhenStopped: true,
+  },
+};
+
+export const Large: Story = {
+  args: {
+    name: 'spinner',
+    size: 60,
+    color: '#007AFF',
+    animating: true,
+    hidesWhenStopped: true,
+  },
+};
+
+// Animation control
+export const NotAnimating: Story = {
+  args: {
+    name: 'bounce',
+    size: 40,
+    color: '#007AFF',
+    animating: false,
+    hidesWhenStopped: false,
+  },
+};
+
+export const HiddenWhenStopped: Story = {
+  args: {
+    name: 'pulse',
+    size: 40,
+    color: '#FF3B30',
+    animating: false,
+    hidesWhenStopped: true,
+  },
+};
+
+// Custom styling
+export const CustomStyle: Story = {
+  args: {
+    name: 'chase',
+    size: 40,
+    color: '#34C759',
+    animating: true,
+    hidesWhenStopped: true,
+    style: {
+      backgroundColor: '#f0f0f0',
+      borderRadius: 8,
+      padding: 16,
     },
   },
-  render: (args: any) => (
-    <>
-      <LoadingIndicatorWrapper>
-        <Pulse {...args} color="#FF0000" />
-        <Text>Red</Text>
-      </LoadingIndicatorWrapper>
+};
 
-      <LoadingIndicatorWrapper>
-        <Pulse {...args} color="#00FF00" />
-        <Text>Green</Text>
-      </LoadingIndicatorWrapper>
-
-      <LoadingIndicatorWrapper>
-        <Pulse {...args} color="#0000FF" />
-        <Text>Blue</Text>
-      </LoadingIndicatorWrapper>
-    </>
-  ),
+// Accessibility
+export const WithAccessibility: Story = {
+  args: {
+    name: 'spinner',
+    size: 40,
+    color: '#007AFF',
+    animating: true,
+    hidesWhenStopped: true,
+    accessible: true,
+    accessibilityLabel: 'Loading user data',
+  },
 };

@@ -1,8 +1,7 @@
+import type { StringPropsTw } from '@types';
 import type { VariantProps } from 'tailwind-variants';
 import type { StyleProp, ViewStyle } from 'react-native';
-
-import type { StringProps } from '../string/string.tw.types';
-import type avatarTv from '../../components/avatar/styles/Avatar.variants';
+import type { avatarTv } from '@/components/avatar/styles/Avatar.tw.styles';
 
 /**
  * Props for Avatar component
@@ -25,7 +24,7 @@ export interface AvatarProps {
   /** Custom background color */
   color?: string;
   /** Props for the String component displaying initials */
-  stringProps?: StringProps;
+  stringProps?: StringPropsTw;
   /** Custom inline styles */
   style?: StyleProp<ViewStyle>;
   /** Component to use when avatar is pressable - default: 'Pressable' */

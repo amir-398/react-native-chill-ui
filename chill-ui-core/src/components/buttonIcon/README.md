@@ -1,53 +1,200 @@
 # ButtonIcon Component
 
-A versatile and customizable ButtonIcon component for React Native applications with support for multiple touchable types, loading states, and various styling options.
+A versatile and performant icon button component for React Native that provides multiple touchable types, loading states, and customizable styling across three different styling approaches.
+
+## Available Versions
+
+This component comes in three versions to match your project's styling approach. You choose the version during installation, but the import statement remains consistent across all versions:
+
+### 1. **StyleSheet Version**
+
+- Uses React Native's built-in StyleSheet API
+- Perfect for projects that don't use CSS-in-JS libraries
+- Lightweight and performant
+- Install: `npm install react-native-chill-ui@stylesheet`
+
+### 2. **Tailwind Version**
+
+- Uses NativeWind/Tailwind CSS classes
+- Ideal for projects already using Tailwind CSS
+- Requires NativeWind setup and Tailwind configuration
+- Install: `npm install react-native-chill-ui@tailwind`
+
+### 3. **Hybrid Version**
+
+- Automatically detects if NativeWind is available
+- Falls back to StyleSheet if NativeWind is not installed
+- Best for component libraries or projects that need flexibility
+- Install: `npm install react-native-chill-ui@hybrid`
+
+**Note**: Regardless of the version you choose, the import statement remains the same: `import { ButtonIcon } from 'react-native-chill-ui'`
 
 ## Features
 
-- **Multiple Touchable Types**: Support for TouchableOpacity, Pressable, and RipplePressable
+- **Multiple Touchable Types**: Support for TouchableOpacity, Pressable, RipplePressable, and ScalePressable
 - **Loading States**: Built-in loading indicator with customizable props
 - **Icon Support**: Flexible icon display with customizable size and color
+- **Multiple Variants**: Contained and outlined button styles
+- **Color Variants**: 15+ predefined color schemes (NativeWind only)
+- **Shape Options**: Circle and square button shapes
 - **Multiple Sizes**: Support for various icon sizes from 2xs to 3xl
-- **TypeScript**: Complete type safety with proper interfaces
+- **TypeScript Support**: Fully typed for a better development experience
 - **Performance Optimized**: Efficient rendering with proper prop handling
 - **Accessible**: Proper focus management and screen reader support
 
-## Basic Usage
+## Quick Start
 
 ```tsx
-import { ButtonIcon } from 'chill-ui';
+import { ButtonIcon } from 'react-native-chill-ui';
 
-function Example() {
-  return (
-    <Box className="gap-4 p-4">
-      <ButtonIcon iconName="bell-solid" onPress={() => console.log('Pressed!')} />
+// Basic icon button
+<ButtonIcon iconName="bell-solid" onPress={handlePress} />
 
-      <ButtonIcon as="RipplePressable" iconName="home-solid" onPress={() => console.log('Pressed!')} />
+// With different touchable types
+<ButtonIcon iconName="home-solid" as="ripple-pressable" onPress={handlePress} />
+<ButtonIcon iconName="settings-solid" as="scale-pressable" onPress={handlePress} />
 
-      <ButtonIcon isLoading iconName="spinner" onPress={() => console.log('Pressed!')} />
-    </Box>
-  );
-}
+// With loading state
+<ButtonIcon iconName="refresh-solid" isLoading onPress={handlePress} />
+
+// With different variants (NativeWind only)
+<ButtonIcon iconName="heart-solid" variant="outlined" colorVariant="error" onPress={handlePress} />
+<ButtonIcon iconName="star-solid" rounded="circle" colorVariant="success" onPress={handlePress} />
 ```
 
 ## Props
 
-| Prop                    | Type                     | Required | Default       | Description                        |
-| ----------------------- | ------------------------ | -------- | ------------- | ---------------------------------- |
-| `iconName`              | `keyof TIcons`           | ✅       | -             | Name of the icon to display        |
-| `onPress`               | `() => void`             | ❌       | -             | Press callback function            |
-| `as`                    | `TouchableComponentType` | ❌       | `'Pressable'` | Type of touchable component to use |
-| `size`                  | `IconProps['size']`      | ❌       | `'md'`        | Icon size variant                  |
-| `iconColor`             | `string`                 | ❌       | -             | Color of the icon                  |
-| `isDisabled`            | `boolean`                | ❌       | `false`       | Whether button is disabled         |
-| `isLoading`             | `boolean`                | ❌       | `false`       | Whether button is in loading state |
-| `className`             | `string`                 | ❌       | -             | Custom CSS classes                 |
-| `loadingIndicatorProps` | `LoadingIndicatorProps`  | ❌       | -             | Props for loading indicator        |
+| Prop                    | Type                        | Required | Default               | Description                            |
+| ----------------------- | --------------------------- | -------- | --------------------- | -------------------------------------- |
+| `iconName`              | `keyof TIcons`              | ✅       | -                     | Name of the icon to display            |
+| `onPress`               | `() => void`                | ❌       | -                     | Press callback function                |
+| `as`                    | `TouchableComponentType`    | ❌       | `'touchable-opacity'` | Type of touchable component to use     |
+| `size`                  | `IconProps['size']`         | ❌       | `'md'`                | Icon size variant                      |
+| `iconColor`             | `string`                    | ❌       | -                     | Color of the icon                      |
+| `isDisabled`            | `boolean`                   | ❌       | `false`               | Whether button is disabled             |
+| `isLoading`             | `boolean`                   | ❌       | `false`               | Whether button is in loading state     |
+| `className`             | `string`                    | ❌       | -                     | (only NativeWind) Custom CSS classes   |
+| `colorVariant`          | `ColorVariant`              | ❌       | `'primary'`           | (only NativeWind) Button color variant |
+| `rounded`               | `'circle' \| 'square'`      | ❌       | `'square'`            | Button shape                           |
+| `variant`               | `'contained' \| 'outlined'` | ❌       | `'contained'`         | Button style variant                   |
+| `style`                 | `ViewStyle`                 | ❌       | -                     | Style object for the button container  |
+| `loadingIndicatorProps` | `LoadingIndicatorProps`     | ❌       | -                     | Props for loading indicator            |
 
 ### TouchableComponentType
 
 ```tsx
-type TouchableComponentType = 'TouchableOpacity' | 'Pressable' | 'RipplePressable';
+type TouchableComponentType = 'touchable-opacity' | 'pressable' | 'ripple-pressable' | 'scale-pressable';
+```
+
+### ColorVariant (NativeWind only)
+
+```tsx
+type ColorVariant =
+  | 'primary'
+  | 'secondary'
+  | 'tertiary'
+  | 'error'
+  | 'warning'
+  | 'info'
+  | 'success'
+  | 'accent'
+  | 'dark'
+  | 'light'
+  | 'danger'
+  | 'neutral'
+  | 'muted'
+  | 'inverted'
+  | 'white';
+```
+
+## Color Variants Setup (NativeWind)
+
+To use the color variants with the Tailwind version, you need to configure your `tailwind.config.js`:
+
+```javascript
+// tailwind.config.js
+module.exports = {
+  // ... other config
+  theme: {
+    extend: {
+      colors: {
+        button: {
+          // Primary colors
+          primary: {
+            background: '#7DD3FC',
+            content: '#000',
+          },
+          secondary: {
+            background: '#CBD2D9',
+            content: '#FCD34D',
+          },
+          tertiary: {
+            background: '#E5E7EB',
+            content: '#374151',
+          },
+
+          // Semantic colors
+          success: {
+            background: '#10B981',
+            content: '#FFF',
+          },
+          error: {
+            background: '#EF4444',
+            content: '#FFF',
+          },
+          warning: {
+            background: '#F59E0B',
+            content: '#000',
+          },
+          info: {
+            background: '#3B82F6',
+            content: '#FFF',
+          },
+
+          // Additional variants
+          accent: {
+            background: '#8B5CF6',
+            content: '#FFF',
+          },
+          danger: {
+            background: '#DC2626',
+            content: '#FFF',
+          },
+          dark: {
+            background: '#1F2937',
+            content: '#FFF',
+          },
+          light: {
+            background: '#F9FAFB',
+            content: '#111827',
+          },
+          neutral: {
+            background: '#6B7280',
+            content: '#FFF',
+          },
+          muted: {
+            background: '#9CA3AF',
+            content: '#374151',
+          },
+          inverted: {
+            background: '#000',
+            content: '#FFF',
+          },
+          white: {
+            background: '#FFF',
+            content: '#000',
+          },
+
+          // Disabled state
+          disabled: {
+            background: '#E5E7EB',
+            content: '#9CA3AF',
+          },
+        },
+      },
+    },
+  },
+};
 ```
 
 ## Examples

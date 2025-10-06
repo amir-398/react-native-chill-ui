@@ -1,259 +1,303 @@
 # Checkbox Component
 
-A flexible and customizable checkbox component for React Native applications with support for different variants, custom styling, and accessibility features.
+A flexible and customizable Checkbox component for React Native applications with support for controlled/uncontrolled patterns, multiple variants, and various styling options across three different styling approaches.
+
+## Available Versions
+
+This component comes in three versions to match your project's styling approach. You choose the version during installation, but the import statement remains consistent across all versions:
+
+### 1. **StyleSheet Version**
+
+- Uses React Native's built-in StyleSheet API
+- Perfect for projects that don't use CSS-in-JS libraries
+- Lightweight and performant
+- Install: `npm install react-native-chill-ui@stylesheet`
+
+### 2. **Tailwind Version**
+
+- Uses NativeWind/Tailwind CSS classes
+- Ideal for projects already using Tailwind CSS
+- Requires NativeWind setup and Tailwind configuration
+- Install: `npm install react-native-chill-ui@tailwind`
+
+### 3. **Hybrid Version**
+
+- Automatically detects if NativeWind is available
+- Falls back to StyleSheet if NativeWind is not installed
+- Best for component libraries or projects that need flexibility
+- Install: `npm install react-native-chill-ui@hybrid`
+
+**Note**: Regardless of the version you choose, the import statement remains the same: `import { Checkbox } from 'react-native-chill-ui'`
 
 ## Features
 
-- **Multiple Variants**: Support for square and circular checkbox styles
-- **Custom Sizing**: Flexible size options with custom dimensions
-- **Custom Colors**: Full control over checked/unchecked colors and icon colors
-- **Custom Icons**: Ability to use custom icon components
-- **Accessibility**: Proper focus management and screen reader support
-- **TypeScript**: Complete type safety with proper interfaces
-- **Label Support**: Optional text labels with custom styling
+- **Controlled & Uncontrolled**: Support for both controlled and uncontrolled component patterns
+- **Multiple Variants**: Square and circle variants for different design needs
+- **Size Variants**: 6 size options from xs to 2xl
+- **Custom Colors**: Support for custom checked/unchecked colors
+- **Custom Icons**: Use any icon or custom component for the checked state
+- **Label Support**: Optional label with pressable/non-pressable behavior
+- **Disabled State**: Visual and interactive disabled state support
+- **TypeScript Support**: Fully typed for a better development experience
+- **Accessible**: Proper focus management and screen reader support
 
-## Basic Usage
+## Quick Start
 
 ```tsx
-import { Checkbox } from 'chill-ui';
+import { Checkbox } from 'react-native-chill-ui';
 
-function Example() {
-  const [isChecked, setIsChecked] = useState(false);
+// Basic usage (uncontrolled)
+<Checkbox label="Accept terms and conditions" onCheckedChange={setChecked} />
 
-  return (
-    <Box className="gap-4 p-4">
-      <Checkbox label="Accept terms and conditions" isChecked={isChecked} onChange={setIsChecked} />
+// Controlled checkbox
+<Checkbox
+  label="Accept terms"
+  isChecked={checked}
+  onCheckedChange={setChecked}
+/>
 
-      <Checkbox label="Subscribe to newsletter" variant="circle" isChecked={isChecked} onChange={setIsChecked} />
-    </Box>
-  );
-}
+// With different variants and sizes
+<Checkbox
+  label="Circle checkbox"
+  variant="circle"
+  size="lg"
+  isChecked={checked}
+  onCheckedChange={setChecked}
+/>
+
+// With custom colors
+<Checkbox
+  label="Custom colors"
+  checkedColor="#FF0000"
+  uncheckedColor="#CCCCCC"
+  isChecked={checked}
+  onCheckedChange={setChecked}
+/>
+
+// With pressable label
+<Checkbox
+  label="Clickable label"
+  isLabelPressable
+  isChecked={checked}
+  onCheckedChange={setChecked}
+/>
 ```
 
 ## Props
 
-| Prop               | Type                         | Required | Default         | Description                          |
-| ------------------ | ---------------------------- | -------- | --------------- | ------------------------------------ |
-| `isChecked`        | `boolean`                    | ❌       | `false`         | Whether the checkbox is checked      |
-| `onChange`         | `(checked: boolean) => void` | ❌       | -               | Callback when checkbox state changes |
-| `label`            | `string`                     | ❌       | -               | Label text for the checkbox          |
-| `variant`          | `'square' \| 'circle'`       | ❌       | `'square'`      | Visual variant of the checkbox       |
-| `size`             | `IconSizeVr['size']`         | ❌       | `'sm'`          | Size variant of the checkbox         |
-| `checkboxSize`     | `number`                     | ❌       | -               | Custom size for the checkbox         |
-| `isDisabled`       | `boolean`                    | ❌       | `false`         | Whether the checkbox is disabled     |
-| `iconName`         | `keyof TIcons`               | ❌       | `'check-solid'` | Name of the icon to use              |
-| `iconColor`        | `string`                     | ❌       | `'white'`       | Color of the check icon              |
-| `checkedColor`     | `string`                     | ❌       | -               | Background color when checked        |
-| `uncheckedColor`   | `string`                     | ❌       | -               | Background color when unchecked      |
-| `className`        | `string`                     | ❌       | -               | Additional CSS classes for container |
-| `checkedClassName` | `string`                     | ❌       | -               | Additional CSS classes when checked  |
-| `labelClassName`   | `string`                     | ❌       | -               | Additional CSS classes for label     |
-| `customIcon`       | `React.ReactNode`            | ❌       | -               | Custom icon component to use         |
+| Prop               | Type                                            | Required | Default    | Description                                                     |
+| ------------------ | ----------------------------------------------- | -------- | ---------- | --------------------------------------------------------------- |
+| `checkedClassName` | `string`                                        | ❌       | -          | (only NativeWind) Additional CSS classes when checked           |
+| `checkedColor`     | `string`                                        | ❌       | `#3B82F6`  | Background color when checked                                   |
+| `checkedStyle`     | `StyleProp<ViewStyle>`                          | ❌       | -          | Additional style object when checked                            |
+| `children`         | `React.ReactNode`                               | ❌       | -          | Custom content to render instead of default icon when checked   |
+| `className`        | `string`                                        | ❌       | -          | (only NativeWind) Custom CSS classes for the checkbox container |
+| `iconProps`        | `Partial<IconProps>`                            | ❌       | -          | Props to pass to the icon component                             |
+| `isChecked`        | `boolean`                                       | ❌       | `false`    | Whether the checkbox is checked (controlled mode)               |
+| `isDisabled`       | `boolean`                                       | ❌       | `false`    | Whether the checkbox is disabled                                |
+| `isLabelPressable` | `boolean`                                       | ❌       | `false`    | Whether clicking the label toggles the checkbox                 |
+| `label`            | `string`                                        | ❌       | -          | Label text for the checkbox                                     |
+| `labelProps`       | `Partial<StringProps>`                          | ❌       | -          | Props to pass to the label component                            |
+| `onCheckedChange`  | `(checked: boolean) => void`                    | ❌       | -          | Callback when checkbox state changes                            |
+| `size`             | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl'` | ❌       | `'md'`     | Size variant of the checkbox                                    |
+| `style`            | `StyleProp<ViewStyle>`                          | ❌       | -          | Style object for the checkbox container                         |
+| `uncheckedColor`   | `string`                                        | ❌       | `#FFFFFF`  | Background color when unchecked                                 |
+| `variant`          | `'square' \| 'circle'`                          | ❌       | `'square'` | Visual variant of the checkbox                                  |
+
+## Choosing the Right Version
+
+Select the appropriate version during installation based on your project's needs:
+
+| Version        | Installation Command                           | Use When                                                                                             | Pros                                                                            | Cons                                                  |
+| -------------- | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| **StyleSheet** | `npm install react-native-chill-ui@stylesheet` | • No CSS-in-JS dependencies<br/>• Maximum performance needed<br/>• Simple styling requirements       | • Lightweight<br/>• Fast performance<br/>• No external dependencies             | • Less flexible<br/>• Manual theme management         |
+| **Tailwind**   | `npm install react-native-chill-ui@tailwind`   | • Already using NativeWind<br/>• Team familiar with Tailwind<br/>• Design system based on utilities  | • Consistent with web Tailwind<br/>• Powerful utility system<br/>• Easy theming | • Requires NativeWind setup<br/>• Larger bundle size  |
+| **Hybrid**     | `npm install react-native-chill-ui@hybrid`     | • Building component library<br/>• Uncertain about styling approach<br/>• Want maximum compatibility | • Works in any environment<br/>• Future-proof<br/>• Automatic detection         | • Slightly larger bundle<br/>• More complex internals |
 
 ## Examples
 
-### Basic Checkbox
+### Controlled vs Uncontrolled
 
 ```tsx
+// Uncontrolled (component manages its own state)
+<Checkbox label="I agree to the terms" onCheckedChange={checked => console.log('Checkbox is now:', checked)} />;
+
+// Controlled (you manage the state)
 const [isChecked, setIsChecked] = useState(false);
 
-<Checkbox label="Accept terms and conditions" isChecked={isChecked} onChange={setIsChecked} />;
+<Checkbox label="I agree to the terms" isChecked={isChecked} onCheckedChange={setIsChecked} />;
 ```
 
-### Checked State
+### Different Variants and Sizes
 
 ```tsx
-<Checkbox label="Checked Checkbox" isChecked={true} onChange={handleChange} />
-```
+// Square checkboxes (default)
+<Checkbox label="Small square" variant="square" size="sm" />
+<Checkbox label="Medium square" variant="square" size="md" />
+<Checkbox label="Large square" variant="square" size="lg" />
 
-### Disabled States
-
-```tsx
-<Box className="gap-4">
-  <Checkbox label="Disabled Checkbox" isDisabled={true} onChange={handleChange} />
-
-  <Checkbox label="Disabled Checked Checkbox" isChecked={true} isDisabled={true} onChange={handleChange} />
-</Box>
-```
-
-### Different Variants
-
-```tsx
-<Box className="gap-4">
-  <Checkbox label="Square Checkbox" variant="square" isChecked={isChecked} onChange={setIsChecked} />
-
-  <Checkbox label="Circle Checkbox" variant="circle" isChecked={isChecked} onChange={setIsChecked} />
-</Box>
-```
-
-### Custom Sizing
-
-```tsx
-<Box className="gap-4">
-  <Checkbox label="Small Checkbox" size="sm" isChecked={isChecked} onChange={setIsChecked} />
-
-  <Checkbox label="Large Checkbox" size="lg" isChecked={isChecked} onChange={setIsChecked} />
-
-  <Checkbox label="Custom Size Checkbox" checkboxSize={30} isChecked={isChecked} onChange={setIsChecked} />
-</Box>
+// Circle checkboxes
+<Checkbox label="Small circle" variant="circle" size="sm" />
+<Checkbox label="Medium circle" variant="circle" size="md" />
+<Checkbox label="Large circle" variant="circle" size="lg" />
 ```
 
 ### Custom Colors
 
 ```tsx
+// StyleSheet and Hybrid versions
 <Checkbox
-  label="Custom Colors Checkbox"
+  label="Custom colors"
   checkedColor="#FF0000"
-  uncheckedColor="#CCCCCC"
-  iconColor="#FFFFFF"
-  isChecked={isChecked}
-  onChange={setIsChecked}
+  uncheckedColor="#FFCCCC"
+  isChecked={checked}
+  onCheckedChange={setChecked}
+/>
+
+// Tailwind version (only NativeWind)
+<Checkbox
+  label="Tailwind classes"
+  className="border-red-500"
+  checkedClassName="bg-red-500 border-red-500"
+  isChecked={checked}
+  onCheckedChange={setChecked}
 />
 ```
 
 ### Custom Icons
 
 ```tsx
+// Using different icon
 <Checkbox
-  label="Custom Icon Checkbox"
-  iconName="star-solid"
-  iconColor="#FFD700"
-  isChecked={isChecked}
-  onChange={setIsChecked}
+  label="Custom icon"
+  iconProps={{ name: 'star-solid', color: '#FFD700' }}
+  isChecked={checked}
+  onCheckedChange={setChecked}
 />
 
-// With custom React component
+// Using custom component
 <Checkbox
-  label="Custom Component Icon"
-  customIcon={<CustomCheckIcon />}
-  isChecked={isChecked}
-  onChange={setIsChecked}
+  label="Custom component"
+  isChecked={checked}
+  onCheckedChange={setChecked}
+>
+  <CustomCheckIcon />
+</Checkbox>
+```
+
+### Label Behavior
+
+```tsx
+// Non-pressable label (default) - only checkbox is clickable
+<Checkbox
+  label="Only checkbox clickable"
+  isLabelPressable={false}
+  isChecked={checked}
+  onCheckedChange={setChecked}
+/>
+
+// Pressable label - both checkbox and label are clickable
+<Checkbox
+  label="Label also clickable"
+  isLabelPressable
+  isChecked={checked}
+  onCheckedChange={setChecked}
 />
 ```
 
-### Without Label
+### Disabled State
 
 ```tsx
-<Checkbox isChecked={isChecked} onChange={setIsChecked} />
+<Checkbox
+  label="Disabled unchecked"
+  isDisabled
+  isChecked={false}
+/>
+
+<Checkbox
+  label="Disabled checked"
+  isDisabled
+  isChecked={true}
+/>
+```
+
+### Custom Label Styling
+
+```tsx
+// StyleSheet version
+<Checkbox
+  label="Custom label"
+  labelProps={{
+    style: { fontSize: 18, color: '#333' }
+  }}
+  isChecked={checked}
+  onCheckedChange={setChecked}
+/>
+
+// Tailwind version (only NativeWind)
+<Checkbox
+  label="Custom label"
+  labelProps={{
+    className: 'text-lg font-bold text-gray-700'
+  }}
+  isChecked={checked}
+  onCheckedChange={setChecked}
+/>
 ```
 
 ## Best Practices
 
-### 1. State Management
-
-```tsx
-// ✅ Good: Use controlled component pattern
-const [isChecked, setIsChecked] = useState(false);
-
-<Checkbox
-  isChecked={isChecked}
-  onChange={setIsChecked}
-  label="Controlled checkbox"
-/>
-
-// ✅ Good: Use with form libraries
-<Checkbox
-  isChecked={formik.values.agreement}
-  onChange={(checked) => formik.setFieldValue('agreement', checked)}
-  label="I agree to the terms"
-/>
-```
-
-### 2. Accessibility
-
-```tsx
-// ✅ Good: Provide meaningful labels
-<Checkbox
-  label="I agree to receive marketing emails"
-  isChecked={marketingConsent}
-  onChange={setMarketingConsent}
-/>
-
-// ✅ Good: Use appropriate sizes for touch targets
-<Checkbox
-  size="md" // Adequate size for mobile
-  label="Accessible checkbox"
-  isChecked={isChecked}
-  onChange={setIsChecked}
-/>
-```
-
-### 3. Visual Consistency
-
-```tsx
-// ✅ Good: Use consistent styling across checkboxes
-<Box className="gap-4">
-  <Checkbox label="Option 1" variant="square" size="md" isChecked={option1} onChange={setOption1} />
-  <Checkbox label="Option 2" variant="square" size="md" isChecked={option2} onChange={setOption2} />
-</Box>
-```
-
-### 4. Custom Styling
-
-```tsx
-// ✅ Good: Use custom colors for brand consistency
-<Checkbox
-  label="Brand Checkbox"
-  checkedColor="#007AFF"
-  uncheckedColor="#E5E5EA"
-  iconColor="#FFFFFF"
-  isChecked={isChecked}
-  onChange={setIsChecked}
-/>
-
-// ✅ Good: Use custom classes for complex styling
-<Checkbox
-  label="Styled Checkbox"
-  className="border-2 border-blue-500"
-  checkedClassName="bg-blue-500 border-blue-600"
-  labelClassName="text-blue-900 font-semibold"
-  isChecked={isChecked}
-  onChange={setIsChecked}
-/>
-```
-
-## TypeScript
-
-The component is fully typed with TypeScript:
-
-```tsx
-interface CheckboxProps {
-  label?: string;
-  iconColor?: string;
-  className?: string;
-  isChecked?: boolean;
-  isDisabled?: boolean;
-  checkedColor?: string;
-  checkboxSize?: number;
-  uncheckedColor?: string;
-  iconName?: keyof TIcons;
-  labelClassName?: string;
-  checkedClassName?: string;
-  customIcon?: React.ReactNode;
-  onChange?: (checked: boolean) => void;
-  size?: IconSizeVr['size'];
-  variant?: 'square' | 'circle';
-}
-```
+1. **Always provide a label** for accessibility and better UX
+2. **Use controlled mode** when checkbox state affects other parts of your UI
+3. **Use uncontrolled mode** for simple forms where you don't need intermediate state
+4. **Set `isLabelPressable={true}`** for better mobile UX (larger touch target)
+5. **Use appropriate size** based on your design - `md` is good for most cases
+6. **Provide clear labels** that describe what the user is agreeing to
+7. **Handle disabled state** properly to prevent user confusion
 
 ## Performance Considerations
 
-- **Controlled vs Uncontrolled**: The component supports both controlled and uncontrolled patterns
-- **State Updates**: Efficient state management with proper callback handling
-- **Rendering**: Optimized rendering with conditional icon display
+- The component uses `useMemo` for computed values to prevent unnecessary re-renders
+- Icon size is calculated once and memoized based on checkbox size
+- Controlled mode re-renders only when `isChecked` prop changes
+- Uncontrolled mode re-renders only on user interaction
 
-## Dependencies
+## TypeScript
 
-- **React Native**: Core components (Pressable)
-- **Icon**: For check indicators
-- **String**: For label text
-- **Box**: For layout containers
+The component is fully typed with TypeScript. Import types as needed:
 
-## Accessibility
+```tsx
+import { Checkbox } from 'react-native-chill-ui';
+import type { CheckboxPropsTw, CheckboxPropsSs } from 'react-native-chill-ui';
 
-The component supports standard accessibility features:
+// For Tailwind/Hybrid versions
+const MyCheckbox: React.FC<{ checked: boolean }> = ({ checked }) => (
+  <Checkbox label="Typed checkbox" isChecked={checked} />
+);
+```
 
-- **Focus Management**: Proper focus handling for keyboard navigation
-- **Screen Reader**: Compatible with screen readers
-- **Touch Targets**: Adequate touch target sizes for mobile accessibility
-- **Visual Feedback**: Clear visual states for checked/unchecked/disabled
+## Related Components
+
+- **Input**: For text input with validation
+- **Button**: For action buttons with various styles
+- **Toggle**: For switch/toggle functionality
+- **RadioButton**: For mutually exclusive options
+
+## File Structure
+
+```
+checkbox/
+├── components/
+│   ├── Checkbox.tsx       # Hybrid version (auto-detects NativeWind)
+│   ├── Checkbox.ss.tsx    # StyleSheet version
+│   └── Checkbox.tw.tsx    # Tailwind/NativeWind version
+├── styles/
+│   ├── Checkbox.ss.styles.ts  # StyleSheet styles
+│   └── Checkbox.tw.styles.ts  # Tailwind variants
+├── utils/
+│   └── defaultProps.ts    # Default prop values
+├── types/
+│   ├── checkbox.ss.types.ts  # StyleSheet types
+│   └── checkbox.tw.types.ts  # Tailwind types
+└── README.md              # This file
+```

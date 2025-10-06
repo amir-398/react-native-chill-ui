@@ -1,7 +1,7 @@
 import { cn } from '@utils';
 import { AnimatedBoxPropsTw } from '@types';
 
-import { animatedBoxClassName } from '../../styles/AnimatedBox.variants';
+import { twStyles } from '../../styles/AnimatedBox.tw.styles';
 import { AnimatedView as AnimatedViewNative } from '../../../box/components/View.tw';
 
 /**
@@ -26,5 +26,5 @@ import { AnimatedView as AnimatedViewNative } from '../../../box/components/View
 export default function AnimatedBox(props: AnimatedBoxPropsTw) {
   const { className, ...rest } = props;
 
-  return <AnimatedViewNative className={cn(animatedBoxClassName, className)} {...rest} />;
+  return <AnimatedViewNative className={cn(twStyles.animatedBox, className)} {...rest} />;
 }

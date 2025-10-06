@@ -1,22 +1,10 @@
-/**
- * AutocompleteDropdown provides a smart dropdown with search functionality and auto-completion features.
- * Supports custom rendering, positioning, and advanced search capabilities.
- *
- * @example
- * ```tsx
- * <AutocompleteDropdown
- *   dataSet={data}
- *   valueField="name"
- *   searchField="name"
- *   onSelectItem={(item) => console.log('Selected:', item)}
- *   inputProps={{
- *     placeholder: 'Search...',
- *   }}
- * />
- * ```
- *
- * @see {@link https://github.com/your-repo/chill-ui/tree/main/src/components/AutocompleteDropdown/README.md Documentation}
- */
-export { default as AutocompleteDropdown } from './AutocompleteDropdown';
-export * from './types';
+// Hybrid version (default)
+export { default as AutocompleteDropdown } from './components/AutocompleteDropdown';
+
+// StyleSheet version
+export { default as AutocompleteDropdownSs } from './components/AutocompleteDropdown.ss';
+
+// Tailwind version
+export { default as AutocompleteDropdownTw } from './components/AutocompleteDropdown.tw';
+
 export { AutocompleteDropdownContext } from './context/AutoCompleteDropdownContext';

@@ -3,7 +3,7 @@ import type { StringPropsSs } from '@types';
 import { PropsWithChildren } from 'react';
 
 import { Text as NativeText } from './Text.ss';
-import StringSv from '../styles/String.styles';
+import { StringSv, styles } from '../styles/String.ss.styles';
 
 /**
  * String component that provides a high-level text component with predefined styling variants.
@@ -32,12 +32,16 @@ import StringSv from '../styles/String.styles';
  * @returns Styled text component with consistent typography
  */
 export default function String(props: PropsWithChildren<StringPropsSs>) {
-  const { children, color, font, position, size, style, variant, ...rest } = props;
+  const { children, color, font, onPress, position, size, style, variant, ...rest } = props;
 
   const baseStyle = StringSv({ font, position, size, variant });
 
   return (
-    <NativeText style={[baseStyle, color && { color }, style]} {...rest}>
+    <NativeText
+      style={[baseStyle, !onPress && styles.pointerEventsNone, color && { color }, style]}
+      onPress={onPress}
+      {...rest}
+    >
       {children}
     </NativeText>
   );

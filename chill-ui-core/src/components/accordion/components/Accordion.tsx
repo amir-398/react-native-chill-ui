@@ -4,10 +4,10 @@ import { Box } from '@components/box';
 import { PropsWithChildren } from 'react';
 import { classNameHandler, cn, styleHandler } from '@utils';
 
-import styles from '../styles/Accordion.styles';
+import styles from '../styles/Accordion.ss.styles';
 import { AccordionProvider } from './AccordionContext';
+import { twStyles } from '../styles/Accordion.tw.styles';
 import { accordionDefaultProps } from '../utils/defaultProps';
-import { accordionClassName } from '../styles/Accordion.variants';
 import { classNamePropsHandler } from '../../../utils/hybrid/classNamePropsHandler';
 
 /**
@@ -71,7 +71,7 @@ export default function Accordion(props: PropsWithChildren<AccordionPropsTw>) {
       onValueChange={onValueChange}
     >
       <Box
-        {...classNameHandler(cn(accordionClassName, className))}
+        {...classNameHandler(cn(twStyles.accordion, className))}
         {...styleHandler({ defaultStyle: styles.accordion, style })}
       >
         {children}

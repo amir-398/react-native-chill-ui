@@ -1,7 +1,7 @@
+import type { TIcons } from '@constants';
 import type { ViewProps, TouchableOpacityProps, StyleProp, ViewStyle } from 'react-native';
 
 import type { StringPropsSs } from '../string';
-import type { TIcons } from '../../constants/ICONS';
 
 // Accordion types
 

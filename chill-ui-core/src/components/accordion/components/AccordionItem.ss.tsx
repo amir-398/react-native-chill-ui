@@ -2,7 +2,7 @@ import type { AccordionItemPropsSs } from '@types';
 
 import { BoxSs } from '@components/box';
 
-import styles from '../styles/Accordion.styles';
+import styles from '../styles/Accordion.ss.styles';
 import { AccordionItemProvider } from './AccordionItemContext';
 
 /**

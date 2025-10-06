@@ -1,0 +1,17 @@
+export const carouselDefaultProps: Partial<CarouselProps> = {
+  autoPlay: false,
+  autoPlayDirection: 'forward',
+  autoPlayInterval: 3000,
+  autoPlayLoop: true,
+  dotActiveColor: '#fff',
+  dotInactiveColor: '#a1a1a1',
+  dotName: 'dot-solid',
+  dotPosition: 'bottom',
+  dotSize: '2xs',
+  elementOffset: 16,
+  elementPosition: 'bottom',
+  initialIndex: 0,
+  leftIconName: 'angle-left-solid',
+  orientation: 'horizontal',
+  rightIconName: 'angle-right-solid',
+};

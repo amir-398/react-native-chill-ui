@@ -1,6 +1,6 @@
 import { AnimatedBoxPropsSs } from '@types';
 
-import styles from '../../styles/AnimatedBox.styles';
+import styles from '../../styles/AnimatedBox.ss.styles';
 import { AnimatedView as AnimatedViewNative } from '../../../box/components/View.ss';
 
 /**

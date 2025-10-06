@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useMemo, useCallback } from 'react';
 
 import { accordionProviderDefaultProps } from '../utils/defaultProps';
-import { AccordionContextType, AccordionProviderProps } from '../utils/types';
+import { AccordionContextType, AccordionProviderProps } from '../types';
 
 export type AccordionType = 'single' | 'multiple';
 

@@ -1,15 +1,13 @@
 import type { IconPropsTw } from '@types';
 
 import { cn } from '@utils';
+import { BoxTw } from '@components/box';
 import { Pressable, TouchableOpacity } from 'react-native';
 import { RipplePressable } from '@components/ripplePressable';
 
-import { BoxTw } from '@/components/box';
-
 import CustomIcon from './CustomIcon.tw';
 import { iconDefaultProps } from '../utils/defaultProps';
-import { iconSizeTv, iconClassname, iconPressableTv, iconPaddingTv } from '../styles/Icon.variants';
-
+import { iconSizeTv, iconPressableTv, iconPaddingTv, twStyles } from '../styles/Icon.tw.styles';
 /**
  * Icon component with NativeWind support.
  * Provides SVG icons with customizable size, color, and press interactions.
@@ -46,12 +44,7 @@ export default function Icon(props: IconPropsTw) {
   } = props;
 
   const iconContent = (
-    <CustomIcon
-      name={name}
-      className={cn(iconSizeTv({ size }), { [cn(iconClassname)]: !onPress }, className)}
-      style={!onPress ? style : undefined}
-      color={color}
-    />
+    <CustomIcon name={name} className={cn(iconSizeTv({ size }), className)} style={style} color={color} />
   );
 
   if (!onPress) {
@@ -61,29 +54,33 @@ export default function Icon(props: IconPropsTw) {
   switch (as) {
     case 'ripple-pressable':
       return (
-        <RipplePressable className={cn(iconClassname, className)} style={style} onPress={onPress}>
-          {iconContent}
-        </RipplePressable>
+        <BoxTw>
+          <RipplePressable className={cn(twStyles.iconBase, className)} style={style} onPress={onPress}>
+            {iconContent}
+          </RipplePressable>
+        </BoxTw>
       );
     case 'touchable-opacity':
       return (
-        <TouchableOpacity className={cn(iconClassname, className)} style={style} onPress={onPress}>
-          {iconContent}
-        </TouchableOpacity>
+        <BoxTw>
+          <TouchableOpacity className={cn(twStyles.iconBase, className)} style={style} onPress={onPress}>
+            {iconContent}
+          </TouchableOpacity>
+        </BoxTw>
       );
 
     case 'pressable':
     default:
       return (
-        <BoxTw className="shrink">
+        <BoxTw>
           <Pressable
             className={cn(
-              iconClassname,
+              twStyles.iconBase,
               iconPressableTv({ hasPressEffect }),
               hasPressEffect && iconPaddingTv({ size: pressEffectSize ?? size }),
               className,
             )}
-            style={{}}
+            style={style}
             onPress={onPress}
           >
             {iconContent}

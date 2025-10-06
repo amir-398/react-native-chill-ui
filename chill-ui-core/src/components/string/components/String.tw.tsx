@@ -4,7 +4,7 @@ import { cn } from '@utils';
 import { PropsWithChildren } from 'react';
 
 import { Text as NativeText } from './Text.tw';
-import stringTv from '../styles/String.variants';
+import { stringTv, twStyles } from '../styles/String.tw.styles';
 
 /**
  * String component that provides a high-level text component with predefined styling variants.
@@ -34,12 +34,28 @@ import stringTv from '../styles/String.variants';
  * @returns Styled text component with consistent typography
  */
 export default function String(props: PropsWithChildren<StringPropsTw>) {
-  const { children, className, color, colorVariant = 'primary', font, position, size, style, variant, ...rest } = props;
+  const {
+    children,
+    className,
+    color,
+    colorVariant = 'primary',
+    font,
+    onPress,
+    position,
+    size,
+    style,
+    variant,
+    ...rest
+  } = props;
 
-  const dynamicClasses = cn(stringTv({ color: colorVariant, font, position, size, variant }), className);
+  const dynamicClasses = cn(
+    stringTv({ color: colorVariant, font, position, size, variant }),
+    !onPress && twStyles.pointerEventsNone,
+    className,
+  );
 
   return (
-    <NativeText className={dynamicClasses} style={[color && { color }, style]} {...rest}>
+    <NativeText className={dynamicClasses} style={[color && { color }, style]} onPress={onPress} {...rest}>
       {children}
     </NativeText>
   );

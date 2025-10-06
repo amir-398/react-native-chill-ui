@@ -1,12 +1,13 @@
 import { IconProps } from '@types';
+import { Box } from '@components/box';
 import { Pressable, TouchableOpacity } from 'react-native';
 import { RipplePressable } from '@components/ripplePressable';
 import { cn, classNamePropsHandler, classNameHandler, styleHandler } from '@utils';
 
 import CustomIcon from './CustomIcon';
 import { iconDefaultProps } from '../utils/defaultProps';
-import { iconSizeSv, iconPaddingSv, iconPressEffectSv, styles } from '../styles/Icon.styles';
-import { iconSizeTv, iconPaddingTv, iconPressableTv, iconClassname } from '../styles/Icon.variants';
+import { iconSizeSv, iconPaddingSv, iconPressEffectSv, styles } from '../styles/Icon.ss.styles';
+import { iconSizeTv, iconPaddingTv, iconPressableTv, twStyles } from '../styles/Icon.tw.styles';
 
 /**
  * Icon component that displays SVG icons with customizable size, color, and press interactions.
@@ -54,8 +55,8 @@ export default function Icon(props: IconProps) {
   const iconContent = (
     <CustomIcon
       name={name}
-      {...classNameHandler(cn(iconSizeTv({ size }), { [cn(iconClassname, className)]: !onPress }))}
-      {...styleHandler({ defaultStyle: [iconStyle, !onPress && styles.iconBase], style: !onPress ? style : undefined })}
+      {...classNameHandler(cn(iconSizeTv({ size }), className))}
+      {...styleHandler({ defaultStyle: iconStyle, style })}
       color={color}
     />
   );
@@ -67,54 +68,60 @@ export default function Icon(props: IconProps) {
   switch (as) {
     case 'ripple-pressable':
       return (
-        <RipplePressable
-          {...classNameHandler(cn(iconClassname, className))}
-          {...styleHandler({ style })}
-          onPress={onPress}
-          {...rest}
-        >
-          {iconContent}
-        </RipplePressable>
+        <Box>
+          <RipplePressable
+            {...classNameHandler(cn(twStyles.iconBase, className))}
+            {...styleHandler({ style })}
+            onPress={onPress}
+            {...rest}
+          >
+            {iconContent}
+          </RipplePressable>
+        </Box>
       );
     case 'touchable-opacity':
       return (
-        <TouchableOpacity
-          {...classNameHandler(cn(iconClassname, className))}
-          {...styleHandler({ style })}
-          onPress={onPress}
-          {...rest}
-        >
-          {iconContent}
-        </TouchableOpacity>
+        <Box>
+          <TouchableOpacity
+            {...classNameHandler(cn(twStyles.iconBase, className))}
+            {...styleHandler({ style })}
+            onPress={onPress}
+            {...rest}
+          >
+            {iconContent}
+          </TouchableOpacity>
+        </Box>
       );
 
     case 'pressable':
     default:
       return (
-        <Pressable
-          {...classNameHandler(
-            cn(
-              iconClassname,
-              iconPressableTv({ hasPressEffect }),
-              hasPressEffect && iconPaddingTv({ size: pressEffectSize ?? size }),
-              className,
-            ),
-          )}
-          style={({ pressed }) =>
-            styleHandler({
-              defaultStyle: [
-                styles.iconBase,
-                hasPressEffect && iconPaddingSv({ pressEffectSize: pressEffectSize ?? size }),
-                iconPressEffectSv({ pressed: hasPressEffect && pressed }),
-              ],
-              style: [pressed && pressEffectStyle, style],
-            }).style
-          }
-          onPress={onPress}
-          {...rest}
-        >
-          {iconContent}
-        </Pressable>
+        <Box>
+          <Pressable
+            {...classNameHandler(
+              cn(
+                twStyles.iconBase,
+                iconPressableTv({ hasPressEffect }),
+                hasPressEffect && iconPaddingTv({ size: pressEffectSize ?? size }),
+                className,
+              ),
+            )}
+            style={({ pressed }) =>
+              styleHandler({
+                defaultStyle: [
+                  styles.iconBase,
+                  hasPressEffect && iconPaddingSv({ pressEffectSize: pressEffectSize ?? size }),
+                  iconPressEffectSv({ pressed: hasPressEffect && pressed }),
+                ],
+                style: [pressed && pressEffectStyle, style],
+              }).style
+            }
+            onPress={onPress}
+            {...rest}
+          >
+            {iconContent}
+          </Pressable>
+        </Box>
       );
   }
 }

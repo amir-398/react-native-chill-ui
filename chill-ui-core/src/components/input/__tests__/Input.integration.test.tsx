@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react-native';
 import { useState } from 'react';
+import { render, screen, fireEvent } from '@testing-library/react-native';
 
 import Input from '../components/Input';
 
@@ -11,12 +11,12 @@ jest.mock('../styles/Input.styles', () => ({
 }));
 
 jest.mock('../../../utils', () => ({
-  classNamePropsHandler: jest.fn(),
   classNameHandler: jest.fn(() => ({})),
-  styleHandler: jest.fn(() => ({})),
+  classNamePropsHandler: jest.fn(),
   cn: jest.fn((...args) => args.filter(Boolean).join(' ')),
   getStringLength: jest.fn(str => str?.length || 0),
   isString: jest.fn(value => typeof value === 'string'),
+  styleHandler: jest.fn(() => ({})),
 }));
 
 jest.mock('../../../components/box', () => ({
@@ -25,7 +25,9 @@ jest.mock('../../../components/box', () => ({
 
 jest.mock('../../../components/icon', () => ({
   Icon: ({ name, onPress }: any) => {
-    const MockIcon = () => <div data-testid={`icon-${name}`} onClick={onPress} />;
+    function MockIcon() {
+      return <div data-testid={`icon-${name}`} onClick={onPress} />;
+    }
     return <MockIcon />;
   },
 }));
@@ -40,7 +42,7 @@ jest.mock('../../../components/animatedBox', () => ({
 
 describe('Input Component Integration Tests', () => {
   it('should handle form workflow', () => {
-    const FormComponent = () => {
+    function FormComponent() {
       const [email, setEmail] = useState('');
       const [password, setPassword] = useState('');
 
@@ -57,7 +59,7 @@ describe('Input Component Integration Tests', () => {
           />
         </>
       );
-    };
+    }
 
     render(<FormComponent />);
 

@@ -4,8 +4,8 @@ import { isString } from '@utils';
 import { BoxSs } from '@components/box';
 import { StringSs } from '@components/string';
 
-import styles from '../styles/Accordion.styles';
 import { useAccordion } from './AccordionContext';
+import styles from '../styles/Accordion.ss.styles';
 import { useAccordionItem } from './AccordionItemContext';
 
 /**

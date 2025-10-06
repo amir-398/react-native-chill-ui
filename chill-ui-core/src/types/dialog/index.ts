@@ -1,0 +1,20 @@
+export type {
+  DialogBackdropProps as DialogBackdropPropsSs,
+  DialogCloseProps as DialogClosePropsSs,
+  DialogContentProps as DialogContentPropsSs,
+  DialogFooterProps as DialogFooterPropsSs,
+  DialogProps as DialogPropsSs,
+  DialogTitleProps as DialogTitlePropsSs,
+  DialogTriggerProps as DialogTriggerPropsSs,
+} from './dialog.ss.types';
+
+export type {
+  DialogBackdropProps as DialogBackdropPropsTw,
+  DialogCloseProps as DialogClosePropsTw,
+  DialogContentProps as DialogContentPropsTw,
+  DialogFooterProps as DialogFooterPropsTw,
+  DialogHeaderProps as DialogHeaderPropsTw,
+  DialogProps as DialogPropsTw,
+  DialogTitleProps as DialogTitlePropsTw,
+  DialogTriggerProps as DialogTriggerPropsTw,
+} from './dialog.tw.types';

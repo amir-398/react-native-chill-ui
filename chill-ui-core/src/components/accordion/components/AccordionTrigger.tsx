@@ -1,7 +1,7 @@
 import type { AccordionTriggerPropsTw } from '@types';
 
-import Icon from '@components/icon';
 import { Box } from '@components/box';
+import { Icon } from '@components/icon';
 import { String } from '@components/string';
 import { AnimatedBox } from '@components/animatedBox';
 import { RipplePressable } from '@components/ripplePressable';
@@ -9,16 +9,10 @@ import { TouchableOpacity, Animated, Pressable } from 'react-native';
 import { cn, classNameHandler, styleHandler, classNamePropsHandler, isString } from '@utils';
 import { useState, useEffect, cloneElement, isValidElement, Children, PropsWithChildren } from 'react';
 
-import styles from '../styles/Accordion.styles';
 import { useAccordion } from './AccordionContext';
+import styles from '../styles/Accordion.ss.styles';
+import { twStyles } from '../styles/Accordion.tw.styles';
 import { useAccordionItem } from './AccordionItemContext';
-import {
-  accordionTriggerClassName,
-  accordionTriggerDisabledClassName,
-  accordionTriggerTextClassName,
-  accordionTriggerTextWithLeftIconClassName,
-  accordionTriggerTextWithRightIconClassName,
-} from '../styles/Accordion.variants';
 
 /**
  * AccordionTrigger is the clickable header that toggles the accordion item.
@@ -95,7 +89,7 @@ export default function AccordionTrigger(props: PropsWithChildren<AccordionTrigg
   };
 
   const commonProps = {
-    ...classNameHandler(cn(accordionTriggerClassName, { [accordionTriggerDisabledClassName]: disabled }, className)),
+    ...classNameHandler(cn(twStyles.accordionTrigger, { [twStyles.accordionTriggerDisabled]: disabled }, className)),
     ...styleHandler({
       defaultStyle: [styles.accordionTrigger, disabled && styles.accordionTriggerDisabled],
       style: [style],
@@ -122,9 +116,9 @@ export default function AccordionTrigger(props: PropsWithChildren<AccordionTrigg
         <String
           {...stringProps}
           {...classNameHandler(
-            cn(accordionTriggerTextClassName, {
-              [accordionTriggerTextWithLeftIconClassName]: hasCollapseIcon && iconPosition === 'left',
-              [accordionTriggerTextWithRightIconClassName]: hasCollapseIcon && iconPosition === 'right',
+            cn(twStyles.accordionTriggerText, {
+              [twStyles.accordionTriggerTextWithLeftIcon]: hasCollapseIcon && iconPosition === 'left',
+              [twStyles.accordionTriggerTextWithRightIcon]: hasCollapseIcon && iconPosition === 'right',
             }),
           )}
           {...styleHandler({
@@ -141,8 +135,8 @@ export default function AccordionTrigger(props: PropsWithChildren<AccordionTrigg
         <Box
           {...classNameHandler(
             cn({
-              [accordionTriggerTextWithLeftIconClassName]: hasCollapseIcon && iconPosition === 'left',
-              [accordionTriggerTextWithRightIconClassName]: hasCollapseIcon && iconPosition === 'right',
+              [twStyles.accordionTriggerTextWithLeftIcon]: hasCollapseIcon && iconPosition === 'left',
+              [twStyles.accordionTriggerTextWithRightIcon]: hasCollapseIcon && iconPosition === 'right',
             }),
           )}
           {...styleHandler({

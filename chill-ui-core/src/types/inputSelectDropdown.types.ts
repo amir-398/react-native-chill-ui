@@ -1,6 +1,6 @@
 import { InputProps } from './input.types';
-import { HighlightStringProps } from './highlightString.types';
-import { InputDropdownListProps, InputDropdownProps } from './dropdown.types';
+import { HighlightStringProps } from './highlightString/highlightString.ss.types';
+import { InputDropdownListProps, InputDropdownProps } from './inputDropdown/inputDropdown.tw.types';
 
 /**
  * Props for the InputSelectDropdown component

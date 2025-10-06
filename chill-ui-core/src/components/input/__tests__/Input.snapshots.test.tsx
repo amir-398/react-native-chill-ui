@@ -10,12 +10,12 @@ jest.mock('../styles/Input.styles', () => ({
 }));
 
 jest.mock('../../../utils', () => ({
-  classNamePropsHandler: jest.fn(),
   classNameHandler: jest.fn(() => ({})),
-  styleHandler: jest.fn(() => ({})),
+  classNamePropsHandler: jest.fn(),
   cn: jest.fn((...args) => args.filter(Boolean).join(' ')),
   getStringLength: jest.fn(str => str?.length || 0),
   isString: jest.fn(value => typeof value === 'string'),
+  styleHandler: jest.fn(() => ({})),
 }));
 
 jest.mock('../../../components/box', () => ({
@@ -24,7 +24,9 @@ jest.mock('../../../components/box', () => ({
 
 jest.mock('../../../components/icon', () => ({
   Icon: ({ name, onPress }: any) => {
-    const MockIcon = () => <div data-testid={`icon-${name}`} onClick={onPress} />;
+    function MockIcon() {
+      return <div data-testid={`icon-${name}`} onClick={onPress} />;
+    }
     return <MockIcon />;
   },
 }));
@@ -44,14 +46,12 @@ describe('Input Component Snapshots', () => {
   });
 
   it('should match snapshot for input with error', () => {
-    const tree = render(
-      <Input placeholder="Input with error" hasError={true} errorMessage="This is an error message" />,
-    );
+    const tree = render(<Input placeholder="Input with error" hasError errorMessage="This is an error message" />);
     expect(tree).toMatchSnapshot();
   });
 
   it('should match snapshot for password input', () => {
-    const tree = render(<Input placeholder="Enter password" hasSecureTextEntry={true} value="password123" />);
+    const tree = render(<Input placeholder="Enter password" hasSecureTextEntry value="password123" />);
     expect(tree).toMatchSnapshot();
   });
 });

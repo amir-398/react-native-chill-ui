@@ -3,8 +3,8 @@ import type { StringPropsTw } from '@types';
 import { cn, classNameHandler, styleHandler, classNamePropsHandler, colorVariantPropsHandler } from '@utils';
 
 import { Text as NativeText } from './Text';
-import StringSv from '../styles/String.styles';
-import stringTv from '../styles/String.variants';
+import { StringSv, styles } from '../styles/String.ss.styles';
+import { stringTv, twStyles } from '../styles/String.tw.styles';
 
 /**
  * String component that provides a high-level text component with predefined styling variants.
@@ -35,16 +35,37 @@ import stringTv from '../styles/String.variants';
  * @returns Styled text component with consistent typography
  */
 export default function String(props: StringPropsTw) {
-  const { children, className, color, colorVariant = 'primary', font, position, size, style, variant, ...rest } = props;
+  const {
+    children,
+    className,
+    color,
+    colorVariant = 'primary',
+    font,
+    onPress,
+    position,
+    size,
+    style,
+    variant,
+    ...rest
+  } = props;
   classNamePropsHandler(props, 'String');
   colorVariantPropsHandler(props, 'String');
 
-  const dynamicClasses = cn(stringTv({ color: colorVariant, font, position, size, variant }), className);
+  const dynamicClasses = cn(
+    stringTv({ color: colorVariant, font, position, size, variant }),
+    !onPress && twStyles.pointerEventsNone,
+    className,
+  );
 
   const stringStyle = StringSv({ font, position, size, variant });
 
   return (
-    <NativeText {...classNameHandler(dynamicClasses)} {...styleHandler({ defaultStyle: stringStyle })} {...rest}>
+    <NativeText
+      {...classNameHandler(dynamicClasses)}
+      {...styleHandler({ defaultStyle: [stringStyle, !onPress && styles.pointerEventsNone], style })}
+      onPress={onPress}
+      {...rest}
+    >
       {children}
     </NativeText>
   );

@@ -1,0 +1,16 @@
+export const twStyles = {
+  boxAbsolute: 'absolute',
+  boxCenter: 'flex-row items-center justify-center',
+  boxColumn: 'flex-col',
+  boxColumnBetween: 'flex-col justify-between',
+  boxColumnCenter: 'flex-col items-center',
+  boxColumnCenterBetween: 'flex flex-col items-center justify-between',
+  boxColumnGrow: 'flex-1 flex-col',
+  boxGrow: 'flex-1',
+  boxRow: 'flex-row',
+  boxRowBetween: 'flex-row justify-between',
+  boxRowCenter: 'flex-row items-center',
+  boxRowCenterBetween: 'flex-row items-center justify-between',
+  boxRowGrow: 'flex-1 flex-row',
+  boxStack: 'flex-row items-center justify-center',
+};

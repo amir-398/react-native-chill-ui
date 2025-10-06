@@ -7,128 +7,214 @@ import { AutocompleteDropdownContext, AutocompleteDropdown } from '../src/compon
 
 const meta: Meta<typeof AutocompleteDropdown> = {
   argTypes: {
-    // Basic configuration
+    // Required props
     dataSet: {
       control: 'object',
-      description: 'The data to display in the dropdown list',
+      description: 'Array of data items to display in the dropdown',
+      table: {
+        type: { summary: 'T[]' },
+      },
     },
     valueField: {
       control: 'text',
-      description: 'The field to use as value',
+      description: 'Field to use as the display value and identifier',
+      table: {
+        type: { summary: 'keyof T' },
+      },
     },
 
-    // Input configuration
-    inputProps: {
-      control: 'object',
-      description: 'Input configuration',
-    },
-
-    // Dropdown configuration
-    dropdownProps: {
-      control: 'object',
-      description: 'Dropdown configuration',
-    },
-
-    maxHeight: {
-      control: 'number',
-      description: 'Maximum height of the dropdown',
-    },
-
-    minHeight: {
-      control: 'number',
-      description: 'Minimum height of the dropdown',
-    },
-
-    searchField: {
-      control: 'text',
-      description: 'The field to use for search',
-    },
-
-    // Items configuration
-    dropdownItemProps: {
-      control: 'object',
-      description: 'Dropdown items configuration',
-    },
-
-    dropdownListProps: {
-      control: 'object',
-      description: 'Dropdown FlatList configuration',
-    },
+    // Positioning and sizing
     offsetX: {
       control: 'number',
-      description: 'Offset X of the dropdown',
+      description: 'Horizontal offset for dropdown positioning (default: 0)',
+      table: {
+        defaultValue: { summary: '0' },
+        type: { summary: 'number' },
+      },
     },
     offsetY: {
       control: 'number',
-      description: 'Offset Y of the dropdown',
+      description: 'Vertical offset for dropdown positioning (default: 0)',
+      table: {
+        defaultValue: { summary: '0' },
+        type: { summary: 'number' },
+      },
+    },
+    maxHeight: {
+      control: 'number',
+      description: 'Maximum height of dropdown (default: 300)',
+      table: {
+        defaultValue: { summary: '300' },
+        type: { summary: 'number' },
+      },
+    },
+    minHeight: {
+      control: 'number',
+      description: 'Minimum height of dropdown (default: 0)',
+      table: {
+        defaultValue: { summary: '0' },
+        type: { summary: 'number' },
+      },
     },
 
-    // State and loading
-    isLoading: {
+    // Search configuration
+    searchField: {
+      control: 'text',
+      description: 'Field to search in (defaults to valueField)',
+      table: {
+        type: { summary: 'keyof T' },
+      },
+    },
+    hasPerformSearch: {
       control: 'boolean',
-      description: 'Shows a loading indicator',
+      description: 'Enable search functionality (default: true)',
+      table: {
+        defaultValue: { summary: 'true' },
+        type: { summary: 'boolean' },
+      },
     },
-
-    // Customization
-    customDropdownItem: {
+    searchQuery: {
       control: false,
-      description: 'Custom component for items',
-    },
-    dropdownPosition: {
-      control: 'select',
-      description: 'Position of the dropdown',
-      options: ['auto', 'top', 'bottom'],
+      description: 'Custom search function for filtering items',
+      table: {
+        type: { summary: '(keyword: string, labelValue: string) => boolean' },
+      },
     },
 
     // Filtering
     excludeItems: {
       control: 'object',
-      description: 'Items to exclude from the list',
+      description: 'Items to exclude from dropdown',
+      table: {
+        type: { summary: 'T[]' },
+      },
+    },
+
+    // Visual configuration
+    hasHighlightString: {
+      control: 'boolean',
+      description: 'Highlight search terms in results (default: true)',
+      table: {
+        defaultValue: { summary: 'true' },
+        type: { summary: 'boolean' },
+      },
+    },
+    highlightProps: {
+      control: 'object',
+      description: 'Props for text highlighting configuration',
+      table: {
+        type: { summary: 'Partial<Omit<HighlightStringProps, "text">>' },
+      },
+    },
+
+    // State
+    isLoading: {
+      control: 'boolean',
+      description: 'Show loading indicator',
+      table: {
+        type: { summary: 'boolean' },
+      },
     },
 
     // Behavior
     closeModalWhenSelectedItem: {
       control: 'boolean',
-      description: 'Closes the modal when selecting an item',
+      description: 'Close dropdown after selection (default: true)',
+      table: {
+        defaultValue: { summary: 'true' },
+        type: { summary: 'boolean' },
+      },
     },
     confirmSelectItem: {
       control: 'boolean',
-      description: 'Activates selection confirmation',
+      description: 'Require confirmation before selecting',
+      table: {
+        type: { summary: 'boolean' },
+      },
     },
-    hasHighlightString: {
-      control: 'boolean',
-      description: 'Activates highlight string',
-    },
-
-    hasPerformSearch: {
-      control: 'boolean',
-      description: 'Activates automatic search',
-    },
-    highlightProps: {
-      control: 'object',
-      description: 'Highlight string configuration',
+    dropdownPosition: {
+      control: 'select',
+      description: "Dropdown positioning: 'auto', 'top', or 'bottom'",
+      options: ['auto', 'top', 'bottom'],
+      table: {
+        type: { summary: "'auto' | 'top' | 'bottom'" },
+      },
     },
 
     // Callbacks
     onBlur: {
       control: false,
       description: 'Callback when input loses focus',
-    },
-    onConfirmSelectItem: {
-      control: false,
-      description: 'Callback when confirming selection',
+      table: {
+        type: { summary: '() => void' },
+      },
     },
     onFocus: {
       control: false,
       description: 'Callback when input gains focus',
+      table: {
+        type: { summary: '() => void' },
+      },
+    },
+    onChangeText: {
+      control: false,
+      description: 'Callback function when the input text changes',
+      table: {
+        type: { summary: '(text: string) => void' },
+      },
     },
     onSelectItem: {
       control: false,
-      description: 'Callback when selecting an item',
+      description: 'Callback function when an item is selected',
+      table: {
+        type: { summary: '(item: T) => void' },
+      },
     },
-    searchQuery: {
+    onConfirmSelectItem: {
       control: false,
-      description: 'Custom search function (keyword, labelValue) => boolean',
+      description: 'Callback for confirmed selection',
+      table: {
+        type: { summary: '(item: T) => void' },
+      },
+    },
+
+    // Customization
+    customDropdownItem: {
+      control: false,
+      description: 'Custom renderer for dropdown items',
+      table: {
+        type: { summary: '(item: T, selected?: boolean) => React.ReactElement | null' },
+      },
+    },
+
+    // Props objects
+    inputProps: {
+      control: 'object',
+      description: 'Props to pass to the input component',
+      table: {
+        type: { summary: 'Omit<InputProps, "onChangeText">' },
+      },
+    },
+    dropdownItemProps: {
+      control: 'object',
+      description: 'Props for styling dropdown items',
+      table: {
+        type: { summary: '{ className?: string; activeBackgroundColor?: string; stringItemProps?: StringPropsTw }' },
+      },
+    },
+    dropdownListProps: {
+      control: 'object',
+      description: 'Props for the dropdown FlatList component',
+      table: {
+        type: { summary: 'Omit<FlatListProps<any>, "renderItem" | "data">' },
+      },
+    },
+    dropdownProps: {
+      control: 'object',
+      description: 'Props for the dropdown container',
+      table: {
+        type: { summary: 'Partial<InputDropdownProps>' },
+      },
     },
   },
   component: AutocompleteDropdown,

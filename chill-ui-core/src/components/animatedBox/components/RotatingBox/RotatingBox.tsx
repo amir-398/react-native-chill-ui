@@ -4,7 +4,7 @@ import { Animated, Easing } from 'react-native';
 import { cn, classNameHandler, classNamePropsHandler } from '@utils';
 import { useRef, useEffect, useImperativeHandle, forwardRef, useCallback, PropsWithChildren } from 'react';
 
-import styles from '../../styles/AnimatedBox.styles';
+import styles from '../../styles/AnimatedBox.ss.styles';
 import AnimatedBox from '../animatedBox/AnimatedBox';
 
 /**

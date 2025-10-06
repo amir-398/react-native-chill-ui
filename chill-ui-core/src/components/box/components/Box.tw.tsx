@@ -3,6 +3,7 @@ import type { BoxPropsTw } from '@types';
 import { cn } from '@utils';
 
 import { View as NativeView } from './View.tw';
+import { twStyles } from '../styles/Box.tw.styles';
 
 /**
  * Basic Box component - a flexible container with no default styling.
@@ -39,7 +40,7 @@ function Box(props: BoxPropsTw) {
 function BoxRow(props: BoxPropsTw) {
   const { className, ...rest } = props;
 
-  return <NativeView className={cn('flex flex-row', className)} {...rest} />;
+  return <NativeView className={cn(twStyles.boxRow, className)} {...rest} />;
 }
 
 /**
@@ -59,7 +60,7 @@ function BoxRow(props: BoxPropsTw) {
 function BoxRowCenter(props: BoxPropsTw) {
   const { className, ...rest } = props;
 
-  return <NativeView className={cn('flex flex-row items-center', className)} {...rest} />;
+  return <NativeView className={cn(twStyles.boxRowCenter, className)} {...rest} />;
 }
 
 /**
@@ -79,7 +80,7 @@ function BoxRowCenter(props: BoxPropsTw) {
 function BoxRowBetween(props: BoxPropsTw) {
   const { className, ...rest } = props;
 
-  return <NativeView className={cn('flex flex-row justify-between', className)} {...rest} />;
+  return <NativeView className={cn(twStyles.boxRowBetween, className)} {...rest} />;
 }
 
 /**
@@ -102,7 +103,7 @@ function BoxRowBetween(props: BoxPropsTw) {
 function BoxRowCenterBetween(props: BoxPropsTw) {
   const { className, ...rest } = props;
 
-  return <NativeView className={cn('flex flex-row items-center justify-between', className)} {...rest} />;
+  return <NativeView className={cn(twStyles.boxRowCenterBetween, className)} {...rest} />;
 }
 
 // Column Variants
@@ -123,7 +124,7 @@ function BoxRowCenterBetween(props: BoxPropsTw) {
 function BoxColumn(props: BoxPropsTw) {
   const { className, ...rest } = props;
 
-  return <NativeView className={cn('flex flex-col', className)} {...rest} />;
+  return <NativeView className={cn(twStyles.boxColumn, className)} {...rest} />;
 }
 
 /**
@@ -143,7 +144,7 @@ function BoxColumn(props: BoxPropsTw) {
 function BoxColumnCenter(props: BoxPropsTw) {
   const { className, ...rest } = props;
 
-  return <NativeView className={cn('flex flex-col items-center', className)} {...rest} />;
+  return <NativeView className={cn(twStyles.boxColumnCenter, className)} {...rest} />;
 }
 
 /**
@@ -164,7 +165,7 @@ function BoxColumnCenter(props: BoxPropsTw) {
 function BoxColumnBetween(props: BoxPropsTw) {
   const { className, ...rest } = props;
 
-  return <NativeView className={cn('flex flex-col justify-between', className)} {...rest} />;
+  return <NativeView className={cn(twStyles.boxColumnBetween, className)} {...rest} />;
 }
 
 /**
@@ -185,7 +186,7 @@ function BoxColumnBetween(props: BoxPropsTw) {
 function BoxColumnCenterBetween(props: BoxPropsTw) {
   const { className, ...rest } = props;
 
-  return <NativeView className={cn('flex flex-col items-center justify-between', className)} {...rest} />;
+  return <NativeView className={cn(twStyles.boxColumnCenterBetween, className)} {...rest} />;
 }
 
 // Center Variants
@@ -205,7 +206,7 @@ function BoxColumnCenterBetween(props: BoxPropsTw) {
 function BoxCenter(props: BoxPropsTw) {
   const { className, ...rest } = props;
 
-  return <NativeView className={cn('flex items-center justify-center', className)} {...rest} />;
+  return <NativeView className={cn(twStyles.boxCenter, className)} {...rest} />;
 }
 
 // Grow Variants
@@ -225,7 +226,7 @@ function BoxCenter(props: BoxPropsTw) {
 function BoxGrow(props: BoxPropsTw) {
   const { className, ...rest } = props;
 
-  return <NativeView className={cn('flex-1', className)} {...rest} />;
+  return <NativeView className={cn(twStyles.boxGrow, className)} {...rest} />;
 }
 
 /**
@@ -245,7 +246,7 @@ function BoxGrow(props: BoxPropsTw) {
 function BoxRowGrow(props: BoxPropsTw) {
   const { className, ...rest } = props;
 
-  return <NativeView className={cn('flex-1 flex-row', className)} {...rest} />;
+  return <NativeView className={cn(twStyles.boxRowGrow, className)} {...rest} />;
 }
 
 /**
@@ -266,7 +267,7 @@ function BoxRowGrow(props: BoxPropsTw) {
 function BoxColumnGrow(props: BoxPropsTw) {
   const { className, ...rest } = props;
 
-  return <NativeView className={cn('flex-1 flex-col', className)} {...rest} />;
+  return <NativeView className={cn(twStyles.boxColumnGrow, className)} {...rest} />;
 }
 
 // Positioning Variants
@@ -286,7 +287,7 @@ function BoxColumnGrow(props: BoxPropsTw) {
 function BoxAbsolute(props: BoxPropsTw) {
   const { className, ...rest } = props;
 
-  return <NativeView className={cn('absolute', className)} {...rest} />;
+  return <NativeView className={cn(twStyles.boxAbsolute, className)} {...rest} />;
 }
 
 // Stack Variants (for layered content)
@@ -309,7 +310,7 @@ function BoxAbsolute(props: BoxPropsTw) {
 function BoxStack(props: BoxPropsTw) {
   const { className, ...rest } = props;
 
-  return <NativeView className={cn('relative', className)} {...rest} />;
+  return <NativeView className={cn(twStyles.boxStack, className)} {...rest} />;
 }
 
 export {

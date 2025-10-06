@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Checkbox Snapshots should match snapshot for basic states 1`] = `null`;
+
+exports[`Checkbox Snapshots should match snapshot for label behavior 1`] = `null`;
+
+exports[`Checkbox Snapshots should match snapshot for sizes 1`] = `null`;
+
+exports[`Checkbox Snapshots should match snapshot for variants 1`] = `null`;

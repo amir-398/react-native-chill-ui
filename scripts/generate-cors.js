@@ -82,6 +82,16 @@ function copyFileWithImportFix(sourcePath, destPath, variant) {
     content = content.replace(/from\s+['"](.+?)\.ss['"]/g, "from '$1'");
   }
 
+  // Fix style imports to remove variant suffixes (except for hybrid)
+  if (variant === 'tailwind') {
+    // Remove .tw.styles suffixes from imports
+    content = content.replace(/from\s+['"](.+?)\.tw\.styles['"]/g, "from '$1.styles'");
+  } else if (variant === 'stylesheet') {
+    // Remove .ss.styles suffixes from imports
+    content = content.replace(/from\s+['"](.+?)\.ss\.styles['"]/g, "from '$1.styles'");
+  }
+  // For hybrid, keep the original import names with suffixes
+
   // Fix imports from nested component folders (like BounceBox/) to types FIRST
   // e.g., '../../../../types/animatedBox/bounceBox.types' -> '../../../../types/bounceBox.types'
   // This removes only the intermediate component folder name, preserving the relative path depth
@@ -117,6 +127,9 @@ function copyFileWithImportFix(sourcePath, destPath, variant) {
 
   // Also handle cases where the type name is at the end of a line or followed by other characters
   content = content.replace(/(\w+)(Ss|Tw)(\s*[;,}])/g, '$1$3');
+
+  // Handle cases where the type name is followed by generic parameters like <T>
+  content = content.replace(/(\w+)(Ss|Tw)(\s*<)/g, '$1$3');
 
   ensureDir(path.dirname(destPath));
   fs.writeFileSync(destPath, content);
@@ -321,6 +334,20 @@ function processComponentWithSubComponents(componentName) {
 
     ensureDir(coreComponentPath);
 
+    // Copy all directories except those handled specially (components, styles) and test directories
+    const specialDirs = ['components', 'styles'];
+    const excludedDirs = ['__tests__'];
+    const allItems = fs.readdirSync(componentPath);
+    const directories = allItems.filter(item => {
+      const itemPath = path.join(componentPath, item);
+      return fs.statSync(itemPath).isDirectory() && !specialDirs.includes(item) && !excludedDirs.includes(item);
+    });
+
+    for (const dir of directories) {
+      const sourceDir = path.join(componentPath, dir);
+      copyDirectory(sourceDir, path.join(coreComponentPath, dir), variantName);
+    }
+
     // Copy shared files (README, etc.)
     const sharedFiles = ['README.md'];
     for (const file of sharedFiles) {
@@ -339,21 +366,23 @@ function processComponentWithSubComponents(componentName) {
       // First pass: check if there are any files to copy for this variant
       for (const file of styleFiles) {
         if (variantName === 'tailwind') {
-          // Tailwind: only keep .variants files
-          if (file.includes('.variants.')) {
+          // Tailwind: keep .tw.styles.ts files
+          if (file.includes('.tw.styles.')) {
             hasFilesToCopy = true;
             break;
           }
         } else if (variantName === 'stylesheet') {
-          // Stylesheet: only keep .styles files
-          if (file.includes('.styles.')) {
+          // Stylesheet: keep .ss.styles.ts files
+          if (file.includes('.ss.styles.')) {
             hasFilesToCopy = true;
             break;
           }
         } else if (variantName === 'hybrid') {
-          // Hybrid: copy all style files
-          hasFilesToCopy = true;
-          break;
+          // Hybrid: keep both .ss.styles.ts and .tw.styles.ts files
+          if (file.includes('.ss.styles.') || file.includes('.tw.styles.')) {
+            hasFilesToCopy = true;
+            break;
+          }
         }
       }
 
@@ -364,22 +393,34 @@ function processComponentWithSubComponents(componentName) {
 
         for (const file of styleFiles) {
           const sourceFile = path.join(stylesDir, file);
-          const destFile = path.join(destStylesDir, file);
+
+          // Determine destination filename by removing variant suffixes (except for hybrid)
+          let destFileName = file;
+          if (variantName === 'tailwind' && file.includes('.tw.styles.')) {
+            destFileName = file.replace('.tw.styles.', '.styles.');
+          } else if (variantName === 'stylesheet' && file.includes('.ss.styles.')) {
+            destFileName = file.replace('.ss.styles.', '.styles.');
+          }
+          // For hybrid, keep the original filename with suffixes
+
+          const destFile = path.join(destStylesDir, destFileName);
 
           // Filter style files based on variant
           if (variantName === 'tailwind') {
-            // Tailwind: only keep .variants files
-            if (file.includes('.variants.')) {
+            // Tailwind: keep .tw.styles.ts files
+            if (file.includes('.tw.styles.')) {
               copyFileWithImportFix(sourceFile, destFile, variantName);
             }
           } else if (variantName === 'stylesheet') {
-            // Stylesheet: only keep .styles files
-            if (file.includes('.styles.')) {
+            // Stylesheet: keep .ss.styles.ts files
+            if (file.includes('.ss.styles.')) {
               copyFileWithImportFix(sourceFile, destFile, variantName);
             }
           } else if (variantName === 'hybrid') {
-            // Hybrid: copy all style files
-            copyFileWithImportFix(sourceFile, destFile, variantName);
+            // Hybrid: keep both .ss.styles.ts and .tw.styles.ts files
+            if (file.includes('.ss.styles.') || file.includes('.tw.styles.')) {
+              copyFileWithImportFix(sourceFile, destFile, variantName);
+            }
           }
         }
       }
@@ -502,16 +543,22 @@ function processStandardComponent(componentName) {
     // Copy component structure
     ensureDir(coreComponentPath);
 
-    // Copy shared files (utils, README, etc.)
-    const sharedDirs = ['utils'];
-    const sharedFiles = ['README.md'];
+    // Copy all directories except those handled specially (components, styles) and test directories
+    const specialDirs = ['components', 'styles'];
+    const excludedDirs = ['__tests__'];
+    const allItems = fs.readdirSync(componentPath);
+    const directories = allItems.filter(item => {
+      const itemPath = path.join(componentPath, item);
+      return fs.statSync(itemPath).isDirectory() && !specialDirs.includes(item) && !excludedDirs.includes(item);
+    });
 
-    for (const dir of sharedDirs) {
+    for (const dir of directories) {
       const sourceDir = path.join(componentPath, dir);
-      if (fs.existsSync(sourceDir)) {
-        copyDirectory(sourceDir, path.join(coreComponentPath, dir), variantName);
-      }
+      copyDirectory(sourceDir, path.join(coreComponentPath, dir), variantName);
     }
+
+    // Copy shared files (README, etc.)
+    const sharedFiles = ['README.md'];
 
     for (const file of sharedFiles) {
       const sourceFile = path.join(componentPath, file);
@@ -529,20 +576,20 @@ function processStandardComponent(componentName) {
       // First pass: check if there are any files to copy for this variant
       for (const file of styleFiles) {
         if (variantName === 'tailwind') {
-          // Tailwind: only keep .variants files
-          if (file.includes('.variants.')) {
+          // Tailwind: keep .tw.styles.ts files
+          if (file.includes('.tw.styles.')) {
             hasFilesToCopy = true;
             break;
           }
         } else if (variantName === 'stylesheet') {
-          // Stylesheet: only keep .styles files
-          if (file.includes('.styles.')) {
+          // Stylesheet: keep .ss.styles.ts files
+          if (file.includes('.ss.styles.')) {
             hasFilesToCopy = true;
             break;
           }
         } else if (variantName === 'hybrid') {
-          // Hybrid: keep both .styles and .variants files
-          if (file.includes('.styles.') || file.includes('.variants.')) {
+          // Hybrid: keep both .ss.styles.ts and .tw.styles.ts files
+          if (file.includes('.ss.styles.') || file.includes('.tw.styles.')) {
             hasFilesToCopy = true;
             break;
           }
@@ -556,22 +603,32 @@ function processStandardComponent(componentName) {
 
         for (const file of styleFiles) {
           const sourceFile = path.join(stylesDir, file);
-          const destFile = path.join(destStylesDir, file);
+
+          // Determine destination filename by removing variant suffixes (except for hybrid)
+          let destFileName = file;
+          if (variantName === 'tailwind' && file.includes('.tw.styles.')) {
+            destFileName = file.replace('.tw.styles.', '.styles.');
+          } else if (variantName === 'stylesheet' && file.includes('.ss.styles.')) {
+            destFileName = file.replace('.ss.styles.', '.styles.');
+          }
+          // For hybrid, keep the original filename with suffixes
+
+          const destFile = path.join(destStylesDir, destFileName);
 
           // Filter style files based on variant
           if (variantName === 'tailwind') {
-            // Tailwind: only keep .variants files
-            if (file.includes('.variants.')) {
+            // Tailwind: keep .tw.styles.ts files
+            if (file.includes('.tw.styles.')) {
               copyFileWithImportFix(sourceFile, destFile, variantName);
             }
           } else if (variantName === 'stylesheet') {
-            // Stylesheet: only keep .styles files
-            if (file.includes('.styles.')) {
+            // Stylesheet: keep .ss.styles.ts files
+            if (file.includes('.ss.styles.')) {
               copyFileWithImportFix(sourceFile, destFile, variantName);
             }
           } else if (variantName === 'hybrid') {
-            // Hybrid: keep both .styles and .variants files
-            if (file.includes('.styles.') || file.includes('.variants.')) {
+            // Hybrid: keep both .ss.styles.ts and .tw.styles.ts files
+            if (file.includes('.ss.styles.') || file.includes('.tw.styles.')) {
               copyFileWithImportFix(sourceFile, destFile, variantName);
             }
           }

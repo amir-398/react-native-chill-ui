@@ -1,4 +1,4 @@
-import { InputPropsTw } from '@types';
+import { InputProps } from '@types';
 import { Box } from '@components/box';
 import { Icon } from '@components/icon';
 import { String } from '@components/string';
@@ -8,7 +8,7 @@ import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 import { cn, getStringLength, isString, classNamePropsHandler, classNameHandler, styleHandler } from '@utils';
 
 import { inputDefaultProps } from '../utils/defaultProps';
-import { inputContainerSv, inputSv, styles } from '../styles/Input.styles';
+import { inputContainerSv, inputSv, styles } from '../styles/Input.ss.styles';
 import {
   inputContainerTv,
   inputFieldTv,
@@ -19,7 +19,7 @@ import {
   rightIconClassName,
   bottomInputContainerClassName,
   bottomInputContainerShowLengthClassName,
-} from '../styles/Input.variants';
+} from '../styles/Input.tw.styles';
 
 /**
  * Input component with Hybrid styling (Tailwind + StyleSheet).
@@ -54,6 +54,8 @@ import {
  * @param customRegex - Custom regex pattern for input validation
  * @param editable - Whether the input is editable (default: true)
  * @param errorClassName - Custom CSS classes for error state
+ * @param errorStyle - Custom CSS classes for the error message
+ * @param inputStyle - Custom CSS classes for the input field
  * @param errorIconName - Icon name to display with error message
  * @param errorMessage - Error message to display below input
  * @param errorStringProps - Props for the error message String component
@@ -78,7 +80,7 @@ import {
  * @param wrapperRef - Ref for the input container wrapper
  * @returns Styled input component with validation and icon support
  */
-const Input = forwardRef<TextInput, InputPropsTw>((props, ref) => {
+const Input = forwardRef<TextInput, InputProps>((props, ref) => {
   classNamePropsHandler(props, 'Input');
   const {
     allow = inputDefaultProps.allow,
@@ -90,10 +92,12 @@ const Input = forwardRef<TextInput, InputPropsTw>((props, ref) => {
     errorIconName,
     errorMessage,
     errorStringProps,
+    errorStyle,
     hasClearIcon = inputDefaultProps.hasClearIcon,
     hasError,
     hasSecureTextEntry,
     inputClassName,
+    inputStyle,
     isDisabled,
     isStretchable,
     label,
@@ -202,14 +206,20 @@ const Input = forwardRef<TextInput, InputPropsTw>((props, ref) => {
         ref={wrapperRef}
         {...styleHandler({
           defaultStyle: [styles.inputContainer, inputContainerSv({ hasError: !!hasError, isDisabled: !!isDisabled })],
-          style: clickableAs === 'scale' ? { transform: [{ scale: scaleAnim }] } : undefined,
+          style: [clickableAs === 'scale' ? { transform: [{ scale: scaleAnim }] } : undefined, hasError && errorStyle],
         })}
-        {...classNameHandler(cn(inputContainerTv({ hasError: !!hasError, isDisabled: !!isDisabled }), className))}
+        {...classNameHandler(
+          cn(
+            inputContainerTv({ hasError: !!hasError, isDisabled: !!isDisabled }),
+            hasError && errorClassName,
+            className,
+          ),
+        )}
       >
         {!!leftIconAction?.iconName && !leftIconAction?.customIcon && (
           <Icon
             name={leftIconAction?.iconName as any}
-            size={leftIconAction?.iconSize || 'sm'}
+            size={leftIconAction?.iconSize || xmarkIconSize}
             color={leftIconAction?.iconColor}
             onPress={leftIconAction?.iconPress}
             {...classNameHandler(cn(leftIconClassName))}
@@ -233,13 +243,9 @@ const Input = forwardRef<TextInput, InputPropsTw>((props, ref) => {
           ref={ref}
           value={inputValue}
           {...classNameHandler(
-            cn(
-              inputFieldTv({ isStretchable: !!isStretchable, multiline: !!multiline, size }),
-              inputClassName,
-              hasError && errorClassName,
-            ),
+            cn(inputFieldTv({ isStretchable: !!isStretchable, multiline: !!multiline, size }), inputClassName),
           )}
-          {...styleHandler({ defaultStyle: [inputSv({ isStretchable, multiline, size })] })}
+          {...styleHandler({ defaultStyle: [inputSv({ isStretchable, multiline, size })], style: inputStyle })}
           onChangeText={handleOnChange}
           secureTextEntry={isSecureEntry}
           multiline={multiline}
@@ -259,7 +265,7 @@ const Input = forwardRef<TextInput, InputPropsTw>((props, ref) => {
           {!!rightIconAction?.iconName && !rightIconAction?.customIcon && (
             <Icon
               name={rightIconAction?.iconName as any}
-              size={rightIconAction?.iconSize || 'sm'}
+              size={rightIconAction?.iconSize || xmarkIconSize}
               color={rightIconAction?.iconColor}
               onPress={rightIconAction?.iconPress}
               {...classNameHandler(cn(rightIconClassName))}

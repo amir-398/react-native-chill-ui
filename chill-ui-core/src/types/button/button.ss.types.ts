@@ -1,18 +1,16 @@
-import type { VariantProps } from 'tailwind-variants';
+import type { TIcons } from '@constants';
 import type { StyleProp, ViewStyle } from 'react-native';
+import type { StringPropsSs, LoadingIndicatorProps, IconPropsSs } from '@types';
 
-import type { IconProps } from '../icon/icon.tw.types';
-import type { TIcons } from '../../constants/ICONS';
-import type { StringProps } from '../string/string.ss.types';
-import type { LoadingIndicatorProps } from '../loadingIndicator.types';
-import type { btnVariant, btnColorVariant, heightVr, positionVr } from '../../components/button/styles/Button.variants';
+import { VariantProps } from '@utils';
+import { ButtonSv } from '@components/button/styles/Button.ss.styles';
 
-type TouchableComponentType = 'TouchableOpacity' | 'Pressable' | 'RipplePressable' | 'ScalePressable';
+type TouchableComponentType = 'touchable-opacity' | 'pressable' | 'ripple-pressable' | 'scale-pressable';
 
 /**
  * Props for the Button component
  */
-export type BtnProps = {
+export type BtnProps = VariantProps<typeof ButtonSv> & {
   /** Button title text */
   title?: string;
 
@@ -35,33 +33,28 @@ export type BtnProps = {
   textClassName?: string;
 
   /** Props to pass to the String component */
-  stringProps?: StringProps;
+  stringProps?: StringPropsSs;
 
   /** Icon configuration with position support */
-  iconAction?: {
+  leftIconAction?: {
     customIcon?: React.ReactNode;
     position?: 'left' | 'right';
     name: keyof TIcons;
-    size: IconProps['size'];
+    size?: IconPropsSs['size'];
   };
 
-  /** Button size variant */
-  size?: VariantProps<typeof heightVr>['size'];
+  rightIconAction?: {
+    customIcon?: React.ReactNode;
+    position?: 'left' | 'right';
+    name: keyof TIcons;
+    size?: IconPropsSs['size'];
+  };
 
   /** Props to pass to the loading indicator */
-  loadingIndicatorProps?: LoadingIndicatorProps;
+  loadingIndicatorProps?: Partial<LoadingIndicatorProps>;
 
   /** Button style variant (contained/outlined/text) */
-  variant?: VariantProps<typeof btnVariant>['variant'];
-
-  /** Button color variant (primary/secondary/error/etc.) */
-  colorVariant?: VariantProps<typeof btnColorVariant>['colorVariant'];
-
-  /** Button position within its container */
-  position?: VariantProps<typeof positionVr>['position'];
-
-  /** Content position within the button (text + icon alignment) */
-  contentPosition?: 'left' | 'center' | 'right';
+  contentPosition?: StringPropsSs['position'];
 
   /** Type of touchable component to use */
   as?: TouchableComponentType;

@@ -4,7 +4,7 @@ import { AnimatedBoxSs } from '@components/animatedBox';
 import { View, Animated, Pressable } from 'react-native';
 import { useState, useRef, useEffect, PropsWithChildren, Children, isValidElement } from 'react';
 
-import styles from '../styles/RipplePressable.styles';
+import styles from '../styles/RipplePressable.ss.styles';
 
 interface RippleEffectProps {
   x: number;
@@ -184,11 +184,11 @@ function RipplePressable(props: PropsWithChildren<RipplePressablePropsSs>) {
 
   return (
     <Pressable
+      {...rest}
       ref={containerRef}
       onPress={handlePress}
       disabled={disabled}
       style={[{ ...styles.container, borderRadius: childBorderRadius }, disabled && styles.disabled, style]}
-      {...rest}
     >
       {children}
       {!disabled &&

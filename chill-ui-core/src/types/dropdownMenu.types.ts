@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { ModalProps, StyleProp, ViewStyle } from 'react-native';
 
 import { TIcons } from '../constants/ICONS';
-import { DropdownItemProps, InputDropdownListProps } from './dropdown.types';
+import { DropdownItemProps, InputDropdownListProps } from './inputDropdown/inputDropdown.tw.types';
 
 export type DropdownMenuTriggerType =
   | 'TouchableOpacity'

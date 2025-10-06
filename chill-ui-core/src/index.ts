@@ -1,3 +1,4 @@
-// Main entry point - Hybrid version (auto-detects NativeWind)
+// Main entry point
 export * from './components';
 export * from './utils';
+export * from './types';

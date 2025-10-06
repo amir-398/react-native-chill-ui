@@ -1,16 +1,16 @@
 import type { AccordionTriggerPropsSs } from '@types';
 
 import { isString } from '@utils';
-import Icon from '@components/icon';
 import { BoxSs } from '@components/box';
+import { IconSs } from '@components/icon';
 import { StringSs } from '@components/string';
 import { AnimatedBox } from '@components/animatedBox';
 import { RipplePressable } from '@components/ripplePressable';
 import { TouchableOpacity, Animated, Pressable } from 'react-native';
 import { useState, useEffect, cloneElement, isValidElement, Children, PropsWithChildren } from 'react';
 
-import styles from '../styles/Accordion.styles';
 import { useAccordion } from './AccordionContext';
+import styles from '../styles/Accordion.ss.styles';
 import { useAccordionItem } from './AccordionItemContext';
 
 /**
@@ -90,7 +90,7 @@ export default function AccordionTrigger(props: PropsWithChildren<AccordionTrigg
             transform: [{ rotate: animatedRotation }],
           }}
         >
-          <Icon
+          <IconSs
             name={isOpen ? (collapseIcon as any) || 'angle-down-solid' : (expandIcon as any) || 'angle-down-solid'}
           />
         </AnimatedBox>
@@ -124,7 +124,7 @@ export default function AccordionTrigger(props: PropsWithChildren<AccordionTrigg
             transform: [{ rotate: animatedRotation }],
           }}
         >
-          <Icon
+          <IconSs
             name={isOpen ? (collapseIcon as any) || 'angle-down-solid' : (expandIcon as any) || 'angle-down-solid'}
           />
         </AnimatedBox>

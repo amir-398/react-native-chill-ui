@@ -3,7 +3,7 @@ import type { AccordionItemPropsTw } from '@types';
 import { Box } from '@components/box';
 import { classNameHandler, styleHandler, classNamePropsHandler } from '@utils';
 
-import styles from '../styles/Accordion.styles';
+import styles from '../styles/Accordion.ss.styles';
 import { AccordionItemProvider } from './AccordionItemContext';
 
 /**

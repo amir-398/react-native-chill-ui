@@ -1,330 +1,355 @@
 # HighlightString Component
 
-A flexible text highlighting component for React Native applications that automatically highlights specific terms within text content. **Automatically detects NativeWind availability and falls back to StyleSheet if needed.**
+A flexible and performant text highlighting component for React Native that highlights specific terms within text content across three different styling approaches.
+
+## Available Versions
+
+This component comes in three versions to match your project's styling approach. You choose the version during installation, but the import statement remains consistent across all versions:
+
+### 1. **StyleSheet Version**
+
+- Uses React Native's built-in StyleSheet API
+- Perfect for projects that don't use CSS-in-JS libraries
+- Lightweight and performant
+- Install: `npm install react-native-chill-ui@stylesheet`
+
+### 2. **Tailwind Version**
+
+- Uses NativeWind/Tailwind CSS classes
+- Ideal for projects already using Tailwind CSS
+- Requires NativeWind setup and Tailwind configuration
+- Install: `npm install react-native-chill-ui@tailwind`
+
+### 3. **Hybrid Version**
+
+- Automatically detects if NativeWind is available
+- Falls back to StyleSheet if NativeWind is not installed
+- Best for component libraries or projects that need flexibility
+- Install: `npm install react-native-chill-ui@hybrid`
+
+**Note**: Regardless of the version you choose, the import statement remains the same: `import { HighlightString } from 'react-native-chill-ui'`
 
 ## Features
 
-- **Smart Highlighting**: Automatically highlights all occurrences of a specified term within text
-- **Case-Insensitive**: Highlights terms regardless of case differences
-- **Regex Safe**: Properly escapes special regex characters in highlight terms
-- **Flexible Styling**: Support for both NativeWind classes and StyleSheet styles
-- **Performance Optimized**: Uses memoization for better performance
-- **TypeScript**: Complete type safety with proper interfaces
-- **NativeWind Compatible**: Automatically adapts to NativeWind or StyleSheet environments
-- **Smart Styling**: Uses Tailwind classes when NativeWind is available, falls back to StyleSheet otherwise
+- **Smart Highlighting**: Automatically highlights specified terms within text content
+- **Case Insensitive**: Highlighting works regardless of case differences
+- **Regex Safe**: Automatically escapes special regex characters in highlight terms
+- **Customizable Styling**: Support for custom colors, fonts, and CSS classes
+- **Performance Optimized**: Uses memoization and efficient text splitting
+- **TypeScript Support**: Fully typed for a better development experience
 
-## NativeWind Compatibility
-
-The HighlightString component automatically detects whether NativeWind is installed in your project:
-
-- **With NativeWind**: Uses Tailwind CSS classes via the `className` and `highlightClassName` props for styling
-- **Without NativeWind**: Falls back to StyleSheet-based styling with the `style` and `highlightStyle` props
-
-**Note**: The `className` and `highlightClassName` props are only available when NativeWind is installed. When using StyleSheet, use the `style` and `highlightStyle` props instead.
-
-## Basic Usage
+## Quick Start
 
 ```tsx
-import { HighlightString } from 'chill-ui';
+import { HighlightString } from 'react-native-chill-ui';
 
-function Example() {
+// Basic highlighting
+<HighlightString
+  content="Hello world, welcome to the world of programming"
+  highlightTerm="world"
+/>
+
+// With custom styling (Tailwind)
+<HighlightString
+  content="Search results for 'React Native'"
+  highlightTerm="React Native"
+  className="text-base text-gray-800"
+  highlightClassName="bg-yellow-200 font-bold text-yellow-900"
+/>
+
+// With custom styling (StyleSheet)
+<HighlightString
+  content="Search results for 'React Native'"
+  highlightTerm="React Native"
+  style={{ fontSize: 16, color: '#374151' }}
+  highlightStyle={{ backgroundColor: '#FEF3C7', fontWeight: 'bold', color: '#92400E' }}
+/>
+```
+
+## Choosing the Right Version
+
+Select the appropriate version during installation based on your project's needs:
+
+| Version        | Installation Command                           | Use When                                                                                             | Pros                                                                            | Cons                                                  |
+| -------------- | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| **StyleSheet** | `npm install react-native-chill-ui@stylesheet` | • No CSS-in-JS dependencies<br/>• Maximum performance needed<br/>• Simple styling requirements       | • Lightweight<br/>• Fast performance<br/>• No external dependencies             | • Less flexible<br/>• Manual theme management         |
+| **Tailwind**   | `npm install react-native-chill-ui@tailwind`   | • Already using NativeWind<br/>• Team familiar with Tailwind<br/>• Design system based on utilities  | • Consistent with web Tailwind<br/>• Powerful utility system<br/>• Easy theming | • Requires NativeWind setup<br/>• Larger bundle size  |
+| **Hybrid**     | `npm install react-native-chill-ui@hybrid`     | • Building component library<br/>• Uncertain about styling approach<br/>• Want maximum compatibility | • Works in any environment<br/>• Future-proof<br/>• Automatic detection         | • Slightly larger bundle<br/>• More complex internals |
+
+## Configuration
+
+### For Tailwind and Hybrid Versions
+
+When using the Tailwind or Hybrid versions, you must define your application's color palette in your `tailwind.config.js` file.
+
+### Default Highlight Style
+
+The component comes with a default highlight style:
+
+- **StyleSheet**: Light orange background (`#FFE4B5`)
+- **Tailwind**: `bg-[#FFE4B5]` class
+
+## Examples
+
+### Basic Usage
+
+```tsx
+import { HighlightString } from 'react-native-chill-ui';
+
+const BasicHighlight = () => {
+  return <HighlightString content="Hello world, welcome to the world of programming" highlightTerm="world" />;
+};
+
+const CustomStyledHighlight = () => {
   return (
     <HighlightString
-      text="Hello world, welcome to the world of programming"
-      highlightTerm="world"
-      className="text-base text-gray-800"
-      highlightClassName="bg-yellow-200 font-bold"
+      content="Search results for 'React Native'"
+      highlightTerm="React Native"
+      className="text-lg font-medium"
+      highlightClassName="bg-blue-100 text-blue-800 font-bold"
     />
   );
-}
+};
+```
+
+### Search Results Highlighting
+
+```tsx
+import { HighlightString } from 'react-native-chill-ui';
+
+const SearchResults = ({ query, results }) => {
+  return (
+    <Box className="space-y-2">
+      {results.map((result, index) => (
+        <HighlightString
+          key={index}
+          content={result.title}
+          highlightTerm={query}
+          className="text-lg font-medium"
+          highlightClassName="bg-yellow-200 text-yellow-900 font-bold"
+        />
+      ))}
+    </Box>
+  );
+};
+```
+
+### Multi-term Highlighting
+
+```tsx
+import { HighlightString } from 'react-native-chill-ui';
+
+const MultiHighlight = ({ text, terms }) => {
+  return (
+    <Box className="space-y-1">
+      {terms.map((term, index) => (
+        <HighlightString
+          key={index}
+          content={text}
+          highlightTerm={term}
+          className="text-base"
+          highlightClassName={`${index === 0 ? 'bg-yellow-200' : 'bg-green-200'} font-bold`}
+        />
+      ))}
+    </Box>
+  );
+};
+```
+
+### Custom Styling with StyleSheet
+
+```tsx
+import { HighlightString } from 'react-native-chill-ui';
+
+const CustomHighlight = () => (
+  <HighlightString
+    content="This is a custom styled highlight example"
+    highlightTerm="custom styled"
+    style={{
+      fontSize: 18,
+      lineHeight: 24,
+      color: '#1F2937',
+    }}
+    highlightStyle={{
+      backgroundColor: '#FEF3C7',
+      color: '#92400E',
+      fontWeight: 'bold',
+      paddingHorizontal: 4,
+      borderRadius: 4,
+    }}
+  />
+);
+```
+
+### With String Component Props
+
+```tsx
+import { HighlightString } from 'react-native-chill-ui';
+
+const AdvancedHighlight = () => (
+  <HighlightString
+    content="Advanced highlighting with custom string props"
+    highlightTerm="highlighting"
+    className="text-xl font-semibold"
+    highlightClassName="bg-purple-200 text-purple-900"
+    stringProps={{
+      size: 'lg',
+      colorVariant: 'primary',
+    }}
+    highlightStringProps={{
+      size: 'lg',
+      colorVariant: 'secondary',
+    }}
+  />
+);
+```
+
+## Styling Guidelines
+
+### Best Practices
+
+1. **Contrast**: Ensure sufficient contrast between highlight and text colors
+2. **Accessibility**: Don't rely solely on color for highlighting
+3. **Performance**: Use `useFastText={false}` for highlighted text (automatically applied)
+4. **Consistency**: Use consistent highlight styles across your app
+
+### Color Recommendations
+
+```tsx
+// Good contrast combinations
+highlightClassName = 'bg-yellow-200 text-yellow-900'; // Yellow
+highlightClassName = 'bg-blue-100 text-blue-800'; // Blue
+highlightClassName = 'bg-green-100 text-green-800'; // Green
+highlightClassName = 'bg-purple-100 text-purple-800'; // Purple
+
+// Avoid low contrast
+highlightClassName = 'bg-yellow-100 text-yellow-200'; // Too light
+highlightClassName = 'bg-gray-200 text-gray-300'; // Too similar
 ```
 
 ## Props
 
-### HighlightStringProps
+| Prop                   | Type                   | Default      | Description                                               |
+| ---------------------- | ---------------------- | ------------ | --------------------------------------------------------- |
+| `content`              | `string`               | **Required** | The full text to display                                  |
+| `highlightTerm`        | `string`               | **Required** | The term to highlight within the text                     |
+| `className`            | `string`               | -            | Custom CSS classes for the container (NativeWind only)    |
+| `highlightClassName`   | `string`               | -            | Custom CSS classes for highlighted text (NativeWind only) |
+| `style`                | `StyleProp<TextStyle>` | -            | Custom styles for the container                           |
+| `highlightStyle`       | `StyleProp<TextStyle>` | -            | Custom styles for the highlighted text                    |
+| `stringProps`          | `StringProps`          | -            | Props for the main string component                       |
+| `highlightStringProps` | `StringProps`          | -            | Props for the highlighted string component                |
 
-| Prop                   | Type                                                      | Required | Default                          | Description                                               |
-| ---------------------- | --------------------------------------------------------- | -------- | -------------------------------- | --------------------------------------------------------- |
-| `text`                 | `string`                                                  | ✅       | -                                | The full text to display                                  |
-| `highlightTerm`        | `string`                                                  | ✅       | -                                | The term to highlight within the text                     |
-| `className`            | `string`                                                  | ❌       | -                                | Custom CSS classes (NativeWind only)                      |
-| `highlightClassName`   | `string`                                                  | ❌       | -                                | Custom CSS classes for highlighted text (NativeWind only) |
-| `style`                | `StyleProp<TextStyle>`                                    | ❌       | -                                | Custom styles (StyleSheet only)                           |
-| `highlightStyle`       | `StyleProp<TextStyle>`                                    | ❌       | `{ backgroundColor: '#FFE4B5' }` | Custom styles for highlighted text (StyleSheet only)      |
-| `stringProps`          | `Omit<StringProps, 'children' \| 'style' \| 'className'>` | ✅       | -                                | Props for the main string component                       |
-| `highlightStringProps` | `Omit<StringProps, 'children' \| 'style' \| 'className'>` | ❌       | -                                | Props for the highlighted string component                |
+### StyleSheet Version Props
 
-## Examples
+| Prop                   | Type                   | Default      | Description                                |
+| ---------------------- | ---------------------- | ------------ | ------------------------------------------ |
+| `content`              | `string`               | **Required** | The full text to display                   |
+| `highlightTerm`        | `string`               | **Required** | The term to highlight within the text      |
+| `style`                | `StyleProp<TextStyle>` | -            | Custom styles for the container            |
+| `highlightStyle`       | `StyleProp<TextStyle>` | -            | Custom styles for the highlighted text     |
+| `stringProps`          | `StringProps`          | -            | Props for the main string component        |
+| `highlightStringProps` | `StringProps`          | -            | Props for the highlighted string component |
 
-### Basic Highlighting
+### Tailwind Version Props
 
-```tsx
-<HighlightString
-  text="Hello world, welcome to the world of programming"
-  highlightTerm="world"
-  className="text-base text-gray-800"
-  highlightClassName="bg-yellow-200 font-bold"
-/>
-```
-
-### Custom Highlight Style
-
-```tsx
-<HighlightString
-  text="Search results for 'react native'"
-  highlightTerm="react native"
-  className="text-lg text-gray-900"
-  highlightClassName="bg-blue-100 text-blue-800 underline"
-/>
-```
-
-### Without NativeWind (StyleSheet Fallback)
-
-```tsx
-<HighlightString
-  text="Important information about security"
-  highlightTerm="security"
-  style={{ fontSize: 16, color: '#374151' }}
-  highlightStyle={{
-    backgroundColor: '#FEF3C7',
-    fontWeight: 'bold',
-    color: '#92400E',
-  }}
-/>
-```
-
-### Custom String Props
-
-```tsx
-<HighlightString
-  text="Click here to learn more about our services"
-  highlightTerm="click here"
-  className="text-base text-gray-700"
-  highlightClassName="bg-green-100 text-green-800 cursor-pointer"
-  stringProps={{
-    onPress: () => console.log('Text pressed'),
-    selectable: true,
-  }}
-  highlightStringProps={{
-    onPress: () => console.log('Highlighted text pressed'),
-    selectable: true,
-  }}
-/>
-```
-
-### Multiple Highlight Terms
-
-```tsx
-// To highlight multiple terms, you can chain the component
-<HighlightString
-  text="Welcome to our amazing platform"
-  highlightTerm="amazing"
-  className="text-lg text-gray-800"
-  highlightClassName="bg-purple-100 text-purple-800"
-  stringProps={{
-    children: (
-      <HighlightString
-        text="Welcome to our amazing platform"
-        highlightTerm="platform"
-        highlightClassName="bg-blue-100 text-blue-800"
-      />
-    ),
-  }}
-/>
-```
-
-## Styling with NativeWind vs StyleSheet
-
-### With NativeWind (Recommended)
-
-```tsx
-<HighlightString
-  text="Highlight important keywords in this text"
-  highlightTerm="important keywords"
-  className="text-base leading-relaxed text-gray-800"
-  highlightClassName="bg-yellow-200 text-yellow-900 font-semibold px-1 rounded"
-/>
-```
-
-### Without NativeWind (Fallback)
-
-```tsx
-<HighlightString
-  text="Highlight important keywords in this text"
-  highlightTerm="important keywords"
-  style={{
-    fontSize: 16,
-    color: '#374151',
-    lineHeight: 24,
-  }}
-  highlightStyle={{
-    backgroundColor: '#FEF3C7',
-    color: '#92400E',
-    fontWeight: '600',
-    paddingHorizontal: 4,
-    borderRadius: 4,
-  }}
-/>
-```
-
-## Best Practices
-
-### 1. Performance Optimization
-
-```tsx
-// ✅ Good: Use memo for the component
-const MemoizedHighlight = memo(HighlightString);
-
-// ✅ Good: Avoid recreating highlight terms on every render
-const highlightTerm = useMemo(() => 'important', []);
-```
-
-### 2. Accessibility
-
-```tsx
-// ✅ Good: Provide meaningful highlight terms
-<HighlightString
-  text="Your search for 'react native' returned 15 results"
-  highlightTerm="react native"
-  highlightClassName="bg-blue-100 text-blue-800 font-semibold"
-/>
-
-// ❌ Avoid: Highlighting every word
-<HighlightString
-  text="This is a sample text"
-  highlightTerm="is" // Too generic
-/>
-```
-
-### 3. Styling Strategy
-
-```tsx
-// ✅ Good: Use className when NativeWind is available
-<HighlightString
-  text="Highlight this text"
-  highlightTerm="this"
-  className="text-base text-gray-800"
-  highlightClassName="bg-yellow-200 font-bold"
-/>
-
-// ✅ Good: Use style when NativeWind is not available
-<HighlightString
-  text="Highlight this text"
-  highlightTerm="this"
-  style={{ fontSize: 16, color: '#374151' }}
-  highlightStyle={{ backgroundColor: '#FEF3C7', fontWeight: 'bold' }}
-/>
-```
-
-### 4. Text Content
-
-```tsx
-// ✅ Good: Meaningful text with relevant highlights
-<HighlightString
-  text="Your order #12345 has been shipped"
-  highlightTerm="#12345"
-  highlightClassName="bg-green-100 text-green-800 font-mono"
-/>
-
-// ❌ Avoid: Highlighting very long terms
-<HighlightString
-  text="This is a very long text that might be hard to read"
-  highlightTerm="This is a very long text that might be hard to read"
-  // This makes the highlight less effective
-/>
-```
-
-## TypeScript
-
-The component is fully typed with TypeScript:
-
-```tsx
-interface HighlightStringProps {
-  text: string;
-  highlightTerm: string;
-  className?: string; // NativeWind only
-  highlightClassName?: string; // NativeWind only
-  style?: StyleProp<TextStyle>; // StyleSheet only
-  highlightStyle?: StyleProp<TextStyle>; // StyleSheet only
-  stringProps: Omit<StringProps, 'children' | 'style' | 'className'>;
-  highlightStringProps?: Omit<StringProps, 'children' | 'style' | 'className'>;
-}
-```
+| Prop                   | Type                   | Default      | Description                                |
+| ---------------------- | ---------------------- | ------------ | ------------------------------------------ |
+| `content`              | `string`               | **Required** | The full text to display                   |
+| `highlightTerm`        | `string`               | **Required** | The term to highlight within the text      |
+| `className`            | `string`               | -            | Custom CSS classes for the container       |
+| `highlightClassName`   | `string`               | -            | Custom CSS classes for highlighted text    |
+| `style`                | `StyleProp<TextStyle>` | -            | Custom styles for the container            |
+| `highlightStyle`       | `StyleProp<TextStyle>` | -            | Custom styles for the highlighted text     |
+| `stringProps`          | `StringProps`          | -            | Props for the main string component        |
+| `highlightStringProps` | `StringProps`          | -            | Props for the highlighted string component |
 
 ## Performance Considerations
 
-- **Memoization**: The component is wrapped with `memo` to prevent unnecessary re-renders
-- **Regex Compilation**: Regex is compiled once per render, optimized for performance
-- **String Splitting**: Efficient string splitting algorithm for highlighting
-- **Conditional Rendering**: NativeWind detection is memoized for performance
+- The component uses `React.memo` for optimal re-rendering
+- Text splitting is performed efficiently with regex
+- Special regex characters are automatically escaped
+- `useFastText={false}` is applied to highlighted segments for proper rendering
 
-## Dependencies
+## TypeScript Support
 
-- **React Native**: Core components (Text)
-- **String**: For text rendering and styling
-- **NativeWind**: For Tailwind CSS support (optional)
-- **Utils**: For NativeWind detection
-
-## Accessibility
-
-The component supports standard accessibility features:
-
-- **Text Selection**: Configurable text selection via `stringProps.selectable`
-- **Screen Reader**: Compatible with screen readers
-- **Touch Interaction**: Supports press events via `stringProps.onPress`
-- **Color Contrast**: Ensure highlight colors provide sufficient contrast
-
-## Migration Notes
-
-If you're upgrading from a previous version:
-
-- **Styling**: The component now automatically detects NativeWind and adapts accordingly
-- **Props**: `className` and `highlightClassName` are now NativeWind-only, `style` and `highlightStyle` are StyleSheet-only
-- **Performance**: Improved performance with better memoization and conditional rendering
-- **Fallback**: Automatic fallback to StyleSheet when NativeWind is not available
-
-## Common Use Cases
-
-### Search Results
+The component is fully typed with comprehensive TypeScript definitions:
 
 ```tsx
+import { HighlightStringProps, HighlightStringPropsTw, HighlightStringPropsSs } from 'react-native-chill-ui';
+
+// Type-safe props
+const props: HighlightStringProps = {
+  content: 'Hello world',
+  highlightTerm: 'world',
+  className: 'text-base',
+  highlightClassName: 'bg-yellow-200',
+};
+```
+
+## Migration Guide
+
+### From Custom Highlighting Solutions
+
+If you're migrating from a custom highlighting solution:
+
+1. Replace your custom highlighting logic with `HighlightString`
+2. Move your highlight styles to `highlightClassName` or `highlightStyle`
+3. Update your text content to use the `content` prop
+4. Set your search terms in the `highlightTerm` prop
+
+### Between Versions
+
+Switching between versions is straightforward:
+
+```tsx
+// StyleSheet to Tailwind
+// Before
 <HighlightString
-  text={`Found ${results.length} results for "${searchQuery}"`}
-  highlightTerm={searchQuery}
-  className="text-sm text-gray-600"
-  highlightClassName="bg-blue-100 text-blue-800 font-medium"
+  content="text"
+  highlightTerm="term"
+  style={{ fontSize: 16 }}
+  highlightStyle={{ backgroundColor: '#yellow' }}
+/>
+
+// After
+<HighlightString
+  content="text"
+  highlightTerm="term"
+  className="text-base"
+  highlightClassName="bg-yellow-200"
 />
 ```
 
-### Form Validation
+## Troubleshooting
+
+### Common Issues
+
+1. **Highlighting not working**: Ensure `highlightTerm` is not empty and matches text in `content`
+2. **Styling not applied**: Check that your CSS classes are properly configured (Tailwind version)
+3. **Performance issues**: The component is optimized, but avoid very long text content
+
+### Debug Tips
 
 ```tsx
+// Debug highlighting
 <HighlightString
-  text="Please enter a valid email address"
-  highlightTerm="valid email address"
-  className="text-sm text-red-600"
-  highlightClassName="bg-red-100 text-red-800 font-semibold"
+  content="Debug this text"
+  highlightTerm="Debug"
+  highlightClassName="bg-red-200 border border-red-500" // Visual debug
 />
 ```
 
-### Code Documentation
+## Contributing
 
-```tsx
-<HighlightString
-  text="Use the useState hook to manage component state"
-  highlightTerm="useState"
-  className="font-mono text-sm text-gray-700"
-  highlightClassName="bg-purple-100 text-purple-800 font-bold"
-/>
-```
+When contributing to this component:
 
-### User Notifications
+1. Maintain consistency across all three versions
+2. Update TypeScript definitions
+3. Add comprehensive tests
+4. Update documentation and examples
+5. Follow the established patterns for styling approaches
 
-```tsx
-<HighlightString
-  text="User John Doe has joined the channel"
-  highlightTerm="John Doe"
-  className="text-sm text-gray-600"
-  highlightClassName="bg-green-100 text-green-800 font-medium"
-/>
-```
+## License
+
+This component is part of the react-native-chill-ui library and follows the same licensing terms.
