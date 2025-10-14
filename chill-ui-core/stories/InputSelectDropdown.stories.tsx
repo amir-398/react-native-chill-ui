@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
 
 import { Text } from 'react-native';
 
@@ -65,6 +66,11 @@ const meta: Meta<typeof InputSelectDropdown> = {
       control: 'object',
       description: 'Dropdown items configuration',
     },
+    itemClickableAs: {
+      control: 'select',
+      description: 'Type of touchable component for items',
+      options: ['touchable-opacity', 'pressable', 'touchable-highlight'],
+    },
 
     // Customization
     customDropdownItem: {
@@ -100,8 +106,21 @@ const meta: Meta<typeof InputSelectDropdown> = {
       description: 'Callback when selecting an item',
     },
 
-    // Other options
+    // State management
+    open: {
+      control: 'boolean',
+      description: 'Whether the dropdown is open (controlled mode)',
+    },
+    onOpenChange: {
+      control: false,
+      description: 'Callback when dropdown open state changes',
+    },
+    defaultOpen: {
+      control: 'boolean',
+      description: 'Default open state (uncontrolled mode)',
+    },
 
+    // Other options
     closeModalWhenSelectedItem: {
       control: 'boolean',
       description: 'Close modal when selecting an item',
@@ -188,6 +207,7 @@ export const Default: Story = {
     inputProps: {
       placeholder: 'Select an option',
     },
+    itemClickableAs: 'touchable-opacity',
     onSelectItem: (item: any) => console.log('Selected:', item),
     valueField: 'value',
   },
@@ -373,5 +393,138 @@ export const ComplexExample: Story = {
       placeholder: 'Search for a country...',
     },
     valueField: 'name',
+  },
+};
+
+// New stories for controlled/uncontrolled modes
+export const UncontrolledWithDefaultOpen: Story = {
+  args: {
+    dataSet: basicData,
+    defaultOpen: true,
+    hasSearch: true,
+    inputProps: {
+      placeholder: 'Opens by default (uncontrolled)',
+    },
+    onSelectItem: (item: any) => console.log('Selected:', item),
+    valueField: 'value',
+  },
+};
+
+export const UncontrolledWithDefaultClosed: Story = {
+  args: {
+    dataSet: basicData,
+    defaultOpen: false,
+    hasSearch: true,
+    inputProps: {
+      placeholder: 'Closed by default (uncontrolled)',
+    },
+    onSelectItem: (item: any) => console.log('Selected:', item),
+    valueField: 'value',
+  },
+};
+
+export const ControlledMode: Story = {
+  args: {
+    dataSet: basicData,
+    hasSearch: true,
+    inputProps: {
+      placeholder: 'Controlled mode - use controls to toggle',
+    },
+    onSelectItem: (item: any) => console.log('Selected:', item),
+    valueField: 'value',
+    // Note: open and onOpenChange are controlled by Storybook controls
+  },
+  render: args => {
+    const [isOpen, setIsOpen] = React.useState(false);
+
+    return <InputSelectDropdown {...args} open={isOpen} onOpenChange={setIsOpen} />;
+  },
+};
+
+export const AlwaysOpenControlled: Story = {
+  args: {
+    dataSet: basicData,
+    hasSearch: true,
+    inputProps: {
+      placeholder: 'Always open (controlled)',
+    },
+    onSelectItem: (item: any) => console.log('Selected:', item),
+    valueField: 'value',
+    open: true,
+    onOpenChange: () => {}, // Prevent closing
+  },
+};
+
+export const ConditionalOpen: Story = {
+  args: {
+    dataSet: countriesData,
+    hasSearch: true,
+    inputProps: {
+      placeholder: 'Conditional opening',
+    },
+    onSelectItem: (item: any) => console.log('Selected:', item),
+    searchField: 'name',
+    valueField: 'name',
+  },
+  render: args => {
+    const [isOpen, setIsOpen] = React.useState(false);
+    const [selectedCountry, setSelectedCountry] = React.useState(null);
+
+    return (
+      <Box>
+        <Box style={{ marginBottom: 10 }}>
+          <Text>Selected: {selectedCountry?.name || 'None'}</Text>
+        </Box>
+        <InputSelectDropdown
+          {...args}
+          open={isOpen}
+          onOpenChange={setIsOpen}
+          onSelectItem={item => {
+            setSelectedCountry(item);
+            setIsOpen(false); // Close after selection
+          }}
+        />
+      </Box>
+    );
+  },
+};
+
+// Touch component type examples
+export const TouchableOpacity: Story = {
+  args: {
+    dataSet: basicData,
+    hasSearch: true,
+    inputProps: {
+      placeholder: 'TouchableOpacity (default)',
+    },
+    itemClickableAs: 'touchable-opacity',
+    onSelectItem: (item: any) => console.log('Selected:', item),
+    valueField: 'value',
+  },
+};
+
+export const Pressable: Story = {
+  args: {
+    dataSet: basicData,
+    hasSearch: true,
+    inputProps: {
+      placeholder: 'Pressable touch feedback',
+    },
+    itemClickableAs: 'pressable',
+    onSelectItem: (item: any) => console.log('Selected:', item),
+    valueField: 'value',
+  },
+};
+
+export const TouchableHighlight: Story = {
+  args: {
+    dataSet: basicData,
+    hasSearch: true,
+    inputProps: {
+      placeholder: 'TouchableHighlight feedback',
+    },
+    itemClickableAs: 'touchable-highlight',
+    onSelectItem: (item: any) => console.log('Selected:', item),
+    valueField: 'value',
   },
 };

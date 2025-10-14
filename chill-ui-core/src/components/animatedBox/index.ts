@@ -19,9 +19,9 @@
 //   }
 //   return null;
 // };
-export { default as AnimatedBox } from './components/animatedBox/AnimatedBox';
-export { default as AnimatedBoxSs } from './components/animatedBox/AnimatedBox.ss';
-export { default as AnimatedBoxTw } from './components/animatedBox/AnimatedBox.tw';
+export { AnimatedBox } from './components/animatedBox/AnimatedBox';
+export { AnimatedBox as AnimatedBoxSs } from './components/animatedBox/AnimatedBox.ss';
+export { AnimatedBox as AnimatedBoxTw } from './components/animatedBox/AnimatedBox.tw';
 // export { getConditionalExport as AnimatedBoxTw };
 
 //* * fade in box */

@@ -6,37 +6,14 @@ import { cn, get, isEqual, debounce } from '@utils';
 import { InputDropdown } from '@components/inputDropdown';
 import { HighlightString } from '@components/highlightString';
 import { AutocompleteDropdownProps, AutocompleteDropdownRefProps } from '@types';
-import { useCallback, useEffect, useImperativeHandle, useRef, memo, useMemo, useState, forwardRef } from 'react';
+import { useCallback, useEffect, useImperativeHandle, useRef, useMemo, useState, forwardRef } from 'react';
 
-import { DEFAULT_CONFIG } from '../types';
 import useDropdownActions from '../hooks/useDropdownActions';
 import useDropdownKeyboard from '../hooks/useDropdownKeyboard';
 import useGetDropdownPosition from '../hooks/useGetDropdownPosition';
+import { autocompleteDropdownDefaultProps } from '../utils/defaultProps';
+import { useAutocompleteDropdownState } from '../hooks/useCompleteDropdownState';
 import useAutocompleteDropdownProvider from '../hooks/useAutocompleteDropdownProvider';
-
-// State interface for AutocompleteDropdown
-interface AutocompleteDropdownState {
-  listData: any[];
-  searchText: string;
-  keyboardHeight: number;
-  currentValue: any | null;
-}
-
-// Hook for managing AutocompleteDropdown state
-const useAutocompleteDropdownState = (dataSet: any[]) => {
-  const [state, setState] = useState<AutocompleteDropdownState>({
-    currentValue: null,
-    keyboardHeight: 0,
-    listData: dataSet || [],
-    searchText: '',
-  });
-
-  const updateState = useCallback((newState: Partial<AutocompleteDropdownState>) => {
-    setState((prev: AutocompleteDropdownState) => ({ ...prev, ...newState }));
-  }, []);
-
-  return { state, updateState };
-};
 
 /**
  * AutocompleteDropdown component with Hybrid styling (Tailwind + StyleSheet).
@@ -80,37 +57,43 @@ const useAutocompleteDropdownState = (dataSet: any[]) => {
  * @param onChangeText - Callback function when the input text changes
  * @param onConfirmSelectItem - Callback for confirmed selection
  * @param onFocus - Callback when input gains focus
+ * @param onOpenChange - Callback when open state changes
  * @param onSelectItem - Callback function when an item is selected
+ * @param open - Controlled open state
+ * @param defaultOpen - Default open state (uncontrolled)
  * @param searchField - Field to search in (defaults to valueField)
  * @param searchQuery - Custom search function for filtering items
  * @returns Styled autocomplete dropdown component with search and selection functionality
  */
-const AutocompleteDropdown = forwardRef<AutocompleteDropdownRefProps, AutocompleteDropdownProps<any>>(
+export const AutocompleteDropdown = forwardRef<AutocompleteDropdownRefProps, AutocompleteDropdownProps<any>>(
   (props, currentRef) => {
     const {
-      closeModalWhenSelectedItem = true,
+      closeModalWhenSelectedItem = autocompleteDropdownDefaultProps.closeModalWhenSelectedItem,
       confirmSelectItem,
       customDropdownItem,
-      dataSet = [],
+      dataSet = autocompleteDropdownDefaultProps.dataSet,
+      defaultOpen = autocompleteDropdownDefaultProps.defaultOpen,
       dropdownItemProps,
       dropdownListProps,
       dropdownPosition,
       dropdownProps,
-      excludeItems = [],
-      hasHighlightString = true,
-      hasPerformSearch = true,
+      excludeItems = autocompleteDropdownDefaultProps.excludeItems,
+      hasHighlightString = autocompleteDropdownDefaultProps.hasHighlightString,
+      hasPerformSearch = autocompleteDropdownDefaultProps.hasPerformSearch,
       highlightProps,
       inputProps,
       isLoading,
-      maxHeight = DEFAULT_CONFIG.MAX_HEIGHT,
+      maxHeight = autocompleteDropdownDefaultProps.maxHeight,
       minHeight,
-      offsetX = 0,
-      offsetY = 0,
+      offsetX = autocompleteDropdownDefaultProps.offsetX,
+      offsetY = autocompleteDropdownDefaultProps.offsetY,
       onBlur,
       onChangeText,
       onConfirmSelectItem,
       onFocus,
+      onOpenChange,
       onSelectItem,
+      open,
       searchField,
       searchQuery,
       valueField,
@@ -118,14 +101,8 @@ const AutocompleteDropdown = forwardRef<AutocompleteDropdownRefProps, Autocomple
 
     const instanceId = useRef(`autocomplete-${Math.random().toString(36).slice(2, 11)}`).current;
 
-    const {
-      getInstance,
-      registerInstance,
-      setDropdownContent,
-      setDropdownPosition,
-      setShowDropdown,
-      unregisterInstance,
-    } = useAutocompleteDropdownProvider();
+    const { registerInstance, setDropdownContent, setDropdownPosition, setShowDropdown, unregisterInstance } =
+      useAutocompleteDropdownProvider();
 
     const inputRef = useRef<TextInput>(null);
     const inputContainerRef = useRef<any>(null);
@@ -137,13 +114,32 @@ const AutocompleteDropdown = forwardRef<AutocompleteDropdownRefProps, Autocomple
       };
     }, [instanceId, registerInstance, unregisterInstance, offsetX, offsetY]);
 
-    const instance = getInstance(instanceId);
-
     const { state, updateState } = useAutocompleteDropdownState(dataSet);
+
+    // Handle controlled/uncontrolled open state
+    const isControlled = open !== undefined;
+    const [internalOpen, setInternalOpen] = useState(defaultOpen);
+    const isOpen = isControlled ? open : internalOpen;
+
+    const handleOpenChange = useCallback(
+      (newOpen: boolean) => {
+        if (isControlled) {
+          onOpenChange?.(newOpen);
+        } else {
+          setInternalOpen(newOpen);
+        }
+      },
+      [isControlled, onOpenChange],
+    );
 
     useEffect(() => {
       updateState({ listData: dataSet });
     }, [dataSet, updateState]);
+
+    // Sync external open state with internal provider state
+    useEffect(() => {
+      setShowDropdown(instanceId, isOpen);
+    }, [isOpen, instanceId, setShowDropdown]);
 
     const { getDropdownPosition } = useGetDropdownPosition({
       inputContainerRef,
@@ -195,8 +191,9 @@ const AutocompleteDropdown = forwardRef<AutocompleteDropdownRefProps, Autocomple
       },
       setShowDropdown: show => {
         setShowDropdown(instanceId, show);
+        handleOpenChange(show);
       },
-      state: { ...state, showDropdown: instance?.showDropdown ?? false },
+      state: { ...state, showDropdown: isOpen },
     });
 
     useImperativeHandle(
@@ -239,7 +236,7 @@ const AutocompleteDropdown = forwardRef<AutocompleteDropdownRefProps, Autocomple
         onSelectItem?.(item);
 
         if (closeModalWhenSelectedItem) {
-          setShowDropdown(instanceId, false);
+          handleOpenChange(false);
           performSearch('');
           onBlur?.();
         }
@@ -253,8 +250,7 @@ const AutocompleteDropdown = forwardRef<AutocompleteDropdownRefProps, Autocomple
         closeModalWhenSelectedItem,
         onBlur,
         updateState,
-        setShowDropdown,
-        instanceId,
+        handleOpenChange,
       ],
     );
 
@@ -265,17 +261,16 @@ const AutocompleteDropdown = forwardRef<AutocompleteDropdownRefProps, Autocomple
           searchText: text,
         });
         onChangeText?.(text);
-        const showDropdown = instance?.showDropdown ?? false;
 
         if (hasPerformSearch) {
           const searchResults = performSearch(text);
           updateState({ listData: searchResults });
         }
 
-        if (!showDropdown && text.length > 0) {
+        if (!isOpen && text.length > 0) {
           eventOpen();
         } else if (text.length === 0) {
-          setShowDropdown(instanceId, false);
+          handleOpenChange(false);
         }
       },
       [
@@ -285,9 +280,8 @@ const AutocompleteDropdown = forwardRef<AutocompleteDropdownRefProps, Autocomple
         state.currentValue,
         onChangeText,
         hasPerformSearch,
-        setShowDropdown,
-        instanceId,
-        instance?.showDropdown,
+        handleOpenChange,
+        isOpen,
       ],
     );
 
@@ -351,22 +345,23 @@ const AutocompleteDropdown = forwardRef<AutocompleteDropdownRefProps, Autocomple
         instanceId,
         <InputDropdown
           {...dropdownProps}
-          visible={instance?.showDropdown ?? false}
+          visible={isOpen}
           maxHeight={maxHeight}
           minHeight={minHeight}
+          itemClickableAs="touchable-opacity"
           data={state.listData}
           onSelectItem={selectItem}
           dropdownItemProps={dropdownItemProps}
           DropdownItemRender={renderDropdownItem}
           dropdownListProps={dropdownListProps}
-          emptyText={dropdownProps?.emptyText ?? DEFAULT_CONFIG.EMPTY_TEXT}
+          emptyText={dropdownProps?.emptyText ?? autocompleteDropdownDefaultProps.emptyText}
           isLoading={isLoading}
         />,
       );
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
       instanceId,
-      instance?.showDropdown,
+      isOpen,
       maxHeight,
       minHeight,
       dropdownProps,
@@ -383,16 +378,16 @@ const AutocompleteDropdown = forwardRef<AutocompleteDropdownRefProps, Autocomple
       <Input
         ref={inputRef}
         wrapperRef={inputContainerRef}
-        placeholder={inputProps?.placeholder ?? DEFAULT_CONFIG.PLACEHOLDER}
+        placeholder={inputProps?.placeholder ?? autocompleteDropdownDefaultProps.placeholder}
         value={displayValue}
         onBlur={() => {
-          setShowDropdown(instanceId, false);
+          handleOpenChange(false);
           onBlur?.();
         }}
         onFocus={() => {
           onFocus?.();
           if (displayValue.length > 0) {
-            setShowDropdown(instanceId, true);
+            handleOpenChange(true);
           }
         }}
         onChangeText={handleSearchTextChange}
@@ -452,7 +447,10 @@ AutocompleteDropdown.displayName = 'AutocompleteDropdown';
  * @param dropdownPosition - Dropdown positioning: 'auto', 'top', or 'bottom'
  * @param onBlur - Callback when input loses focus
  * @param onFocus - Callback when input gains focus
+ * @param onOpenChange - Callback when open state changes
  * @param onConfirmSelectItem - Callback for confirmed selection
+ * @param open - Controlled open state
+ * @param defaultOpen - Default open state (uncontrolled)
  * @param searchQuery - Custom search function for filtering items
  * @param customDropdownItem - Custom renderer for dropdown items
  * @param inputProps - Props to pass to the input component
@@ -463,6 +461,3 @@ AutocompleteDropdown.displayName = 'AutocompleteDropdown';
  *
  * @see {@link https://github.com/your-repo/chill-ui/tree/main/src/components/AutocompleteDropdown/README.md Documentation}
  */
-const MemoizedAutocompleteDropdown = memo(AutocompleteDropdown);
-
-export default MemoizedAutocompleteDropdown;

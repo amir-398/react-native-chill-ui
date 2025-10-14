@@ -39,6 +39,15 @@
     /* Types */
     // "types": ["nativewind/types"]
   },
-  "include": ["**/*.ts", "**/*.tsx", "nativewind-env.d.ts", "global.d.ts", "scripts/test.js", "chill-ui-core/src/types/utils/index.ts"],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "nativewind-env.d.ts",
+    "global.d.ts",
+    "scripts/test.js",
+    "chill-ui-core/src/types/utils/index.ts",
+    "chill-ui-core/src/components/maskedInput/utils/index.s",
+    "chill-ui-core/src/components/segmented-control/components/SegmentedControlProvider.tsw"
+  ],
   "exclude": ["node_modules"]
 }

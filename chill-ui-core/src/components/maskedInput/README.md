@@ -1,534 +1,497 @@
 # MaskedInput Component
 
-A specialized input component that automatically applies formatting masks to user input. Perfect for phone numbers, credit cards, dates, and other formatted data entry.
+A comprehensive and performant masked text input component for React Native that provides automatic text formatting, validation, and customizable mask patterns across three different styling approaches.
+
+## Available Versions
+
+This component comes in three versions to match your project's styling approach. You choose the version during installation, but the import statement remains consistent across all versions:
+
+### 1. **StyleSheet Version**
+
+- Uses React Native's built-in StyleSheet API
+- Perfect for projects that don't use CSS-in-JS libraries
+- Lightweight and performant
+- Install: `npm install react-native-chill-ui@stylesheet`
+
+### 2. **Tailwind Version**
+
+- Uses NativeWind/Tailwind CSS classes
+- Ideal for projects already using Tailwind CSS
+- Requires NativeWind setup and Tailwind configuration
+- Install: `npm install react-native-chill-ui@tailwind`
+
+### 3. **Hybrid Version**
+
+- Automatically detects if NativeWind is available
+- Falls back to StyleSheet if NativeWind is not installed
+- Best for component libraries or projects that need flexibility
+- Install: `npm install react-native-chill-ui@hybrid`
+
+**Note**: Regardless of the version you choose, the import statement remains the same: `import { MaskedInput } from 'react-native-chill-ui'`
 
 ## Features
 
-- ✅ **Automatic formatting**: Applies masks in real-time as user types
-- ✅ **Flexible mask patterns**: Support for any mask format using '9' for digits
-- ✅ **Dual output**: Provides both masked and unmasked text
-- ✅ **Built-in validation**: Only allows digits in masked positions
-- ✅ **Inherits Input features**: All features from the base Input component
-- ✅ **TypeScript support**: Full type safety with detailed interfaces
-- ✅ **Accessibility**: Full accessibility support inherited from Input
+- **Automatic Masking**: Real-time text formatting as user types
+- **Multiple Mask Patterns**: Support for phone numbers, credit cards, SSN, dates, and custom patterns
+- **Input Validation**: Built-in filtering of non-numeric characters
+- **Controlled/Uncontrolled**: Support for both controlled and uncontrolled input modes
+- **Customizable Styling**: Support for custom fonts, colors, and CSS classes
+- **TypeScript Support**: Fully typed for a better development experience
+- **Performance Optimized**: Efficient masking algorithms with minimal re-renders
 
 ## Quick Start
 
 ```tsx
-import MaskedInput from '@/components/inputs/MaskedInput';
+import { MaskedInput } from 'react-native-chill-ui';
 
-// Basic phone number mask
+// Basic phone number input
 <MaskedInput
   mask="(999) 999-9999"
   placeholder="Enter phone number"
   onChangeText={({ maskedText, unmaskedText }) => {
-    console.log('Formatted:', maskedText); // "(123) 456-7890"
-    console.log('Digits only:', unmaskedText); // "1234567890"
+    console.log('Formatted:', maskedText);
+    console.log('Raw:', unmaskedText);
   }}
-/>;
+/>
+
+// Credit card input
+<MaskedInput
+  mask="9999 9999 9999 9999"
+  placeholder="Enter card number"
+  label="Credit Card"
+  onChangeText={handleCardChange}
+/>
+```
+
+## Installation Guide
+
+Choose the version that matches your project's styling approach:
+
+| Version        | Command                                        | When to Use                                                                                          | Pros                                                                            | Cons                                                  |
+| -------------- | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| **StyleSheet** | `npm install react-native-chill-ui@stylesheet` | • No CSS-in-JS dependencies<br/>• Maximum performance priority<br/>• Simple React Native project     | • Lightweight<br/>• Fast<br/>• No dependencies                                  | • Limited styling flexibility                         |
+| **Tailwind**   | `npm install react-native-chill-ui@tailwind`   | • Already using NativeWind<br/>• Team familiar with Tailwind<br/>• Design system based on utilities  | • Consistent with web Tailwind<br/>• Powerful utility system<br/>• Easy theming | • Requires NativeWind setup<br/>• Larger bundle size  |
+| **Hybrid**     | `npm install react-native-chill-ui@hybrid`     | • Building component library<br/>• Uncertain about styling approach<br/>• Want maximum compatibility | • Works in any environment<br/>• Future-proof<br/>• Automatic detection         | • Slightly larger bundle<br/>• More complex internals |
+
+## Configuration
+
+### For Tailwind and Hybrid Versions
+
+When using the Tailwind or Hybrid versions, you must define your application's color palette in your `tailwind.config.js` file.
+
+### Colors
+
+The `className` prop is only available for **Tailwind** and **Hybrid** versions when NativeWind is installed.
+
+### For All Versions
+
+All versions support custom colors through the `style` prop:
+
+```tsx
+<MaskedInput
+  style={{ backgroundColor: '#fff', borderColor: '#ccc' }}
+  mask="(999) 999-9999"
+  placeholder="Enter phone number"
+/>
+```
+
+## Mask Patterns
+
+The MaskedInput component supports various mask patterns using the `9` character to represent digits:
+
+### Common Patterns
+
+| Pattern               | Description            | Example             |
+| --------------------- | ---------------------- | ------------------- |
+| `(999) 999-9999`      | US Phone Number        | (555) 123-4567      |
+| `999-99-9999`         | Social Security Number | 123-45-6789         |
+| `9999 9999 9999 9999` | Credit Card            | 1234 5678 9012 3456 |
+| `99/99/9999`          | Date (MM/DD/YYYY)      | 12/31/2023          |
+| `$999,999.99`         | Currency               | $1,234.56           |
+| `99999`               | ZIP Code               | 12345               |
+| `999 999 9999`        | Phone with spaces      | 555 123 4567        |
+
+### Custom Patterns
+
+You can create custom patterns by combining `9` (for digits) with any other characters:
+
+```tsx
+// Custom pattern: ABC-123-XYZ
+<MaskedInput
+  mask="ABC-999-XYZ"
+  placeholder="Enter code"
+  onChangeText={handleChange}
+/>
+
+// License plate pattern
+<MaskedInput
+  mask="999-AAA"
+  placeholder="Enter license plate"
+  onChangeText={handleChange}
+/>
 ```
 
 ## Examples
 
-### Phone Number Input
+### Basic Usage
 
 ```tsx
-const [phoneNumber, setPhoneNumber] = useState('');
+import React, { useState } from 'react';
+import { MaskedInput } from 'react-native-chill-ui';
 
-<MaskedInput
-  label="Phone Number"
-  mask="(999) 999-9999"
-  placeholder="Enter phone number"
-  value={phoneNumber}
-  onChangeText={({ maskedText, unmaskedText }) => {
-    setPhoneNumber(maskedText);
-    // Store only digits for API calls
-    setPhoneDigits(unmaskedText);
-  }}
-  leftIconAction={{
-    iconName: 'phone-solid',
-    iconSize: 'sm',
-  }}
-/>;
+const BasicMaskedInput = () => {
+  const [phone, setPhone] = useState('');
+
+  return (
+    <MaskedInput
+      mask="(999) 999-9999"
+      placeholder="Enter phone number"
+      label="Phone Number"
+      value={phone}
+      onChangeText={({ maskedText, unmaskedText }) => {
+        setPhone(maskedText);
+        console.log('Raw digits:', unmaskedText);
+      }}
+    />
+  );
+};
 ```
 
 ### Credit Card Input
 
 ```tsx
-const [cardNumber, setCardNumber] = useState('');
+const CreditCardInput = () => {
+  const [cardNumber, setCardNumber] = useState('');
 
-<MaskedInput
-  label="Card Number"
-  mask="9999 9999 9999 9999"
-  placeholder="0000 0000 0000 0000"
-  value={cardNumber}
-  onChangeText={({ maskedText, unmaskedText }) => {
-    setCardNumber(maskedText);
-    // Validate card number with digits only
-    validateCard(unmaskedText);
-  }}
-  leftIconAction={{
-    iconName: 'credit-card-solid',
-    iconSize: 'sm',
-  }}
-  hasError={!!cardError}
-  errorMessage={cardError}
-/>;
+  return (
+    <MaskedInput
+      mask="9999 9999 9999 9999"
+      placeholder="Enter card number"
+      label="Credit Card"
+      value={cardNumber}
+      onChangeText={({ maskedText, unmaskedText }) => {
+        setCardNumber(maskedText);
+        // Validate card number
+        if (unmaskedText.length === 16) {
+          validateCard(unmaskedText);
+        }
+      }}
+    />
+  );
+};
 ```
 
 ### Date Input
 
 ```tsx
-const [birthDate, setBirthDate] = useState('');
+const DateInput = () => {
+  const [birthDate, setBirthDate] = useState('');
 
-<MaskedInput
-  label="Birth Date"
-  mask="99/99/9999"
-  placeholder="MM/DD/YYYY"
-  value={birthDate}
-  onChangeText={({ maskedText, unmaskedText }) => {
-    setBirthDate(maskedText);
-    // Validate date format
-    if (unmaskedText.length === 8) {
-      validateDate(maskedText);
-    }
-  }}
-  leftIconAction={{
-    iconName: 'calendar-solid',
-    iconSize: 'sm',
-  }}
-/>;
+  return (
+    <MaskedInput
+      mask="99/99/9999"
+      placeholder="MM/DD/YYYY"
+      label="Birth Date"
+      value={birthDate}
+      onChangeText={({ maskedText, unmaskedText }) => {
+        setBirthDate(maskedText);
+        // Validate date
+        if (unmaskedText.length === 8) {
+          validateDate(maskedText);
+        }
+      }}
+    />
+  );
+};
 ```
 
-### Social Security Number
+### Currency Input
 
 ```tsx
-const [ssn, setSsn] = useState('');
+const CurrencyInput = () => {
+  const [amount, setAmount] = useState('');
 
-<MaskedInput
-  label="Social Security Number"
-  mask="999-99-9999"
-  placeholder="000-00-0000"
-  value={ssn}
-  onChangeText={({ maskedText, unmaskedText }) => {
-    setSsn(maskedText);
-  }}
-  hasSecureTextEntry
-  leftIconAction={{
-    iconName: 'shield-solid',
-    iconSize: 'sm',
-  }}
-/>;
+  return (
+    <MaskedInput
+      mask="$999,999.99"
+      placeholder="Enter amount"
+      label="Amount"
+      value={amount}
+      onChangeText={({ maskedText, unmaskedText }) => {
+        setAmount(maskedText);
+        // Convert to number for calculations
+        const numericValue = parseFloat(unmaskedText) / 100;
+        console.log('Numeric value:', numericValue);
+      }}
+    />
+  );
+};
 ```
 
-### ZIP Code
+### With Error Handling
 
 ```tsx
-const [zipCode, setZipCode] = useState('');
+const ErrorHandlingInput = () => {
+  const [ssn, setSsn] = useState('');
+  const [hasError, setHasError] = useState(false);
 
-<MaskedInput
-  label="ZIP Code"
-  mask="99999"
-  placeholder="12345"
-  value={zipCode}
-  onChangeText={({ maskedText, unmaskedText }) => {
-    setZipCode(maskedText);
-  }}
-  leftIconAction={{
-    iconName: 'location-solid',
-    iconSize: 'sm',
-  }}
-/>;
+  const validateSSN = (unmaskedText: string) => {
+    const isValid = unmaskedText.length === 9;
+    setHasError(!isValid && unmaskedText.length > 0);
+  };
+
+  return (
+    <MaskedInput
+      mask="999-99-9999"
+      placeholder="Enter SSN"
+      label="Social Security Number"
+      value={ssn}
+      hasError={hasError}
+      errorMessage="Please enter a valid SSN"
+      onChangeText={({ maskedText, unmaskedText }) => {
+        setSsn(maskedText);
+        validateSSN(unmaskedText);
+      }}
+    />
+  );
+};
 ```
 
-### International Phone Number
+### Controlled vs Uncontrolled
 
 ```tsx
-const [internationalPhone, setInternationalPhone] = useState('');
+// Controlled component
+const ControlledInput = () => {
+  const [value, setValue] = useState('');
 
-<MaskedInput
-  label="International Phone"
-  mask="+99 999 999 9999"
-  placeholder="+1 234 567 8900"
-  value={internationalPhone}
-  onChangeText={({ maskedText, unmaskedText }) => {
-    setInternationalPhone(maskedText);
-  }}
-  leftIconAction={{
-    iconName: 'phone-solid',
-    iconSize: 'sm',
-  }}
-/>;
+  return <MaskedInput mask="(999) 999-9999" value={value} onChangeText={({ maskedText }) => setValue(maskedText)} />;
+};
+
+// Uncontrolled component
+const UncontrolledInput = () => {
+  return (
+    <MaskedInput
+      mask="(999) 999-9999"
+      defaultValue="5551234567"
+      onChangeText={({ maskedText, unmaskedText }) => {
+        console.log('Formatted:', maskedText);
+        console.log('Raw:', unmaskedText);
+      }}
+    />
+  );
+};
 ```
 
-## Props Reference
-
-### MaskedInput Specific Props
-
-| Prop           | Type                                                     | Required | Description                               |
-| -------------- | -------------------------------------------------------- | -------- | ----------------------------------------- |
-| `mask`         | `string`                                                 | ✅       | The mask pattern (use '9' for digits)     |
-| `onChangeText` | `({ maskedText: string, unmaskedText: string }) => void` | ✅       | Callback with both formatted and raw text |
-
-### Inherited Props from Input
-
-All props from the Input component are available:
-
-#### Core Props
-
-| Prop          | Type                           | Default | Description            |
-| ------------- | ------------------------------ | ------- | ---------------------- |
-| `value`       | `string`                       | -       | Current input value    |
-| `label`       | `string`                       | -       | Label text above input |
-| `placeholder` | `string`                       | -       | Placeholder text       |
-| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg'` | `'md'`  | Input size variant     |
-
-#### Validation Props
-
-| Prop             | Type      | Default | Description                        |
-| ---------------- | --------- | ------- | ---------------------------------- |
-| `hasError`       | `boolean` | `false` | Whether input has error            |
-| `errorMessage`   | `string`  | -       | Error message to display           |
-| `errorIconName`  | `string`  | -       | Icon name for error state          |
-| `errorClassName` | `string`  | -       | Custom CSS classes for error state |
-
-#### Icon Props
-
-| Prop              | Type         | Default | Description                |
-| ----------------- | ------------ | ------- | -------------------------- |
-| `leftIconAction`  | `IconAction` | -       | Left icon configuration    |
-| `rightIconAction` | `IconAction` | -       | Right icon configuration   |
-| `hasClearIcon`    | `boolean`    | `true`  | Whether to show clear icon |
-
-#### Styling Props
-
-| Prop             | Type      | Default | Description                    |
-| ---------------- | --------- | ------- | ------------------------------ |
-| `className`      | `string`  | -       | Custom CSS classes for wrapper |
-| `inputClassName` | `string`  | -       | Custom CSS classes for input   |
-| `labelClassName` | `string`  | -       | Custom CSS classes for label   |
-| `isDisabled`     | `boolean` | `false` | Whether input is disabled      |
-
-#### Behavior Props
-
-| Prop                 | Type         | Default | Description                       |
-| -------------------- | ------------ | ------- | --------------------------------- |
-| `hasSecureTextEntry` | `boolean`    | `false` | Whether to show secure text entry |
-| `showLength`         | `boolean`    | `false` | Whether to show character count   |
-| `onPress`            | `() => void` | -       | Callback when input is pressed    |
-
-## Mask Pattern Guide
-
-### Basic Patterns
-
-- **`9`**: Represents a digit (0-9)
-- **Any other character**: Literal character that appears in the output
-
-### Common Mask Examples
-
-| Use Case            | Mask Pattern          | Example Input      | Example Output        |
-| ------------------- | --------------------- | ------------------ | --------------------- |
-| US Phone            | `(999) 999-9999`      | `1234567890`       | `(123) 456-7890`      |
-| Credit Card         | `9999 9999 9999 9999` | `1234567890123456` | `1234 5678 9012 3456` |
-| Date (MM/DD/YYYY)   | `99/99/9999`          | `12312023`         | `12/31/2023`          |
-| SSN                 | `999-99-9999`         | `123456789`        | `123-45-6789`         |
-| ZIP Code            | `99999`               | `12345`            | `12345`               |
-| International Phone | `+99 999 999 9999`    | `12345678901`      | `+12 345 678 9012`    |
-| Currency            | `$999,999.99`         | `1234567`          | `$1,234,567.00`       |
-| Time                | `99:99`               | `1430`             | `14:30`               |
-
-### Custom Patterns
-
-You can create any mask pattern you need:
+### With Icons
 
 ```tsx
-// License plate
-<MaskedInput mask="AAA-999" /> // ABC-123
+const IconMaskedInput = () => {
+  const [phone, setPhone] = useState('');
 
-// Product code
-<MaskedInput mask="PRD-9999-AAA" /> // PRD-1234-XYZ
-
-// Custom format
-<MaskedInput mask="###-###-####" /> // 123-456-7890
+  return (
+    <MaskedInput
+      mask="(999) 999-9999"
+      placeholder="Enter phone number"
+      label="Phone Number"
+      value={phone}
+      onChangeText={({ maskedText }) => setPhone(maskedText)}
+      leftIconAction={{
+        iconName: 'phone-solid',
+        iconSize: 'md',
+      }}
+      rightIconAction={{
+        iconName: 'checkmark-solid',
+        iconPress: () => console.log('Phone validated'),
+        hasPressEffect: true,
+      }}
+    />
+  );
+};
 ```
 
-## TypeScript Interfaces
+## API Reference
 
 ### MaskedInputProps
 
-```tsx
-interface MaskedInputProps {
-  /** The mask pattern (use '9' for digits, other characters are literals) */
-  mask: string;
-  /** Callback with both masked and unmasked text */
-  onChangeText: ({ maskedText, unmaskedText }: {
-    maskedText: string;
-    unmaskedText: string;
-  }) => void;
-  /** All other props from Input component */
-  ...InputProps;
-}
-```
+| Prop               | Type                                                             | Default      | Description                                  |
+| ------------------ | ---------------------------------------------------------------- | ------------ | -------------------------------------------- |
+| `mask`             | `string`                                                         | **required** | Mask pattern (use 9 for digits)              |
+| `onChangeText`     | `(result: { maskedText: string; unmaskedText: string }) => void` | -            | Callback when text changes                   |
+| `value`            | `string`                                                         | -            | Controlled input value                       |
+| `defaultValue`     | `string`                                                         | -            | Default input value (uncontrolled)           |
+| `placeholder`      | `string`                                                         | -            | Placeholder text                             |
+| `label`            | `string`                                                         | -            | Label text above input                       |
+| `hasError`         | `boolean`                                                        | -            | Whether input is in error state              |
+| `errorMessage`     | `string`                                                         | -            | Error message to display                     |
+| `isDisabled`       | `boolean`                                                        | -            | Whether input is disabled                    |
+| `editable`         | `boolean`                                                        | `true`       | Whether input is editable                    |
+| `maxLength`        | `number`                                                         | -            | Maximum length (auto-calculated from mask)   |
+| `className`        | `string`                                                         | -            | Custom CSS classes (Tailwind/Hybrid only)    |
+| `style`            | `StyleProp<ViewStyle>`                                           | -            | Custom style object                          |
+| `inputClassName`   | `string`                                                         | -            | Custom CSS classes for input field           |
+| `errorClassName`   | `string`                                                         | -            | Custom CSS classes for error state           |
+| `labelStringProps` | `StringProps`                                                    | -            | Props for the label String component         |
+| `errorStringProps` | `StringProps`                                                    | -            | Props for the error message String component |
+| `leftIconAction`   | `IconActionProps`                                                | -            | Configuration for left icon                  |
+| `rightIconAction`  | `IconActionProps`                                                | -            | Configuration for right icon                 |
+| `size`             | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                           | `'md'`       | Input size variant                           |
+| `wrapperRef`       | `RefObject<View>`                                                | -            | Ref for the input container wrapper          |
 
-### Callback Structure
+### IconActionProps
+
+| Prop             | Type                                   | Description                                       |
+| ---------------- | -------------------------------------- | ------------------------------------------------- |
+| `iconName`       | `string`                               | Name of the icon to display                       |
+| `iconSize`       | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | Size of the icon                                  |
+| `iconColor`      | `string`                               | Color of the icon                                 |
+| `iconPress`      | `() => void`                           | Callback when icon is pressed                     |
+| `customIcon`     | `ReactNode`                            | Custom icon component                             |
+| `hasPressEffect` | `boolean`                              | Whether to show press effect when icon is pressed |
+
+### Size Variants
+
+| Size | Font Size | Padding | Use Case                    |
+| ---- | --------- | ------- | --------------------------- |
+| `xs` | 12px      | 6px     | Compact forms, small spaces |
+| `sm` | 14px      | 8px     | Small forms, mobile layouts |
+| `md` | 16px      | 12px    | Default size, most common   |
+| `lg` | 18px      | 14px    | Large forms, desktop        |
+| `xl` | 20px      | 16px    | Extra large, accessibility  |
+
+## Utility Functions
+
+The MaskedInput component exports utility functions for advanced usage:
 
 ```tsx
-type MaskedInputCallback = ({
-  maskedText, // Formatted text with mask applied
-  unmaskedText, // Raw text with only digits
-}: {
-  maskedText: string;
-  unmaskedText: string;
-}) => void;
+import { applyMask, removeMask, handleApplyMask } from 'react-native-chill-ui';
+
+// Apply mask to text
+const formatted = applyMask('1234567890', '(999) 999-9999');
+// Result: "(123) 456-7890"
+
+// Remove mask from text
+const raw = removeMask('(123) 456-7890');
+// Result: "1234567890"
+
+// Handle mask application with validation
+const result = handleApplyMask('abc123def456', '(999) 999-9999');
+// Result: "(123) 456-"
 ```
 
 ## Best Practices
 
-### 1. Choose Appropriate Masks
+### Performance
+
+1. **Use controlled components** for better state management:
 
 ```tsx
-// ✅ Good - Clear and intuitive
-<MaskedInput mask="(999) 999-9999" placeholder="(555) 123-4567" />
+const [value, setValue] = useState('');
 
-// ❌ Avoid - Confusing or unclear
-<MaskedInput mask="9999999999" placeholder="Enter phone" />
+<MaskedInput mask="(999) 999-9999" value={value} onChangeText={({ maskedText }) => setValue(maskedText)} />;
 ```
 
-### 2. Provide Clear Placeholders
+2. **Debounce validation** for better UX:
 
 ```tsx
-// ✅ Good - Shows expected format
-<MaskedInput
-  mask="99/99/9999"
-  placeholder="MM/DD/YYYY"
-/>
+const debouncedValidate = useDebounce(validateInput, 300);
 
-// ❌ Avoid - Generic placeholder
-<MaskedInput
-  mask="99/99/9999"
-  placeholder="Enter date"
-/>
+const handleChange = ({ maskedText, unmaskedText }) => {
+  setValue(maskedText);
+  debouncedValidate(unmaskedText);
+};
 ```
 
-### 3. Handle Both Text Versions
+### Accessibility
+
+1. **Add accessibility labels**:
 
 ```tsx
-// ✅ Good - Use both masked and unmasked text
 <MaskedInput
   mask="(999) 999-9999"
-  onChangeText={({ maskedText, unmaskedText }) => {
-    setDisplayPhone(maskedText);     // For display
-    setPhoneForAPI(unmaskedText);    // For API calls
-  }}
-/>
-
-// ❌ Avoid - Only using one version
-<MaskedInput
-  mask="(999) 999-9999"
-  onChangeText={(text) => setPhone(text)}
+  placeholder="Enter phone number"
+  accessibilityLabel="Phone number input"
+  accessibilityHint="Enter your 10-digit phone number"
 />
 ```
 
-### 4. Validate When Complete
+2. **Use semantic labels**:
 
 ```tsx
-// ✅ Good - Validate when input is complete
 <MaskedInput
   mask="999-99-9999"
-  onChangeText={({ maskedText, unmaskedText }) => {
-    setSsn(maskedText);
-    if (unmaskedText.length === 9) {
-      validateSSN(unmaskedText);
-    }
-  }}
-/>
-```
-
-### 5. Use Appropriate Icons
-
-```tsx
-// ✅ Good - Meaningful icons
-<MaskedInput
-  mask="9999 9999 9999 9999"
-  leftIconAction={{ iconName: 'credit-card-solid' }}
-/>
-
-// ❌ Avoid - Generic icons
-<MaskedInput
-  mask="9999 9999 9999 9999"
-  leftIconAction={{ iconName: 'question-solid' }}
-/>
-```
-
-## Advanced Usage
-
-### Form Integration
-
-```tsx
-const [formData, setFormData] = useState({
-  phone: '',
-  card: '',
-  ssn: '',
-});
-
-const handleMaskedChange = (field: string) => ({ maskedText, unmaskedText }) => {
-  setFormData(prev => ({
-    ...prev,
-    [field]: maskedText,
-    [`${field}Digits`]: unmaskedText
-  }));
-};
-
-<MaskedInput
-  label="Phone Number"
-  mask="(999) 999-9999"
-  value={formData.phone}
-  onChangeText={handleMaskedChange('phone')}
-/>
-
-<MaskedInput
-  label="Card Number"
-  mask="9999 9999 9999 9999"
-  value={formData.card}
-  onChangeText={handleMaskedChange('card')}
-/>
-
-<MaskedInput
-  label="SSN"
-  mask="999-99-9999"
-  value={formData.ssn}
-  onChangeText={handleMaskedChange('ssn')}
-  hasSecureTextEntry
-/>
-```
-
-### Validation with Masks
-
-```tsx
-const [phoneNumber, setPhoneNumber] = useState('');
-const [phoneError, setPhoneError] = useState('');
-
-const validatePhone = (digits: string) => {
-  if (digits.length < 10) {
-    return 'Phone number must be at least 10 digits';
-  }
-  if (digits.length > 10) {
-    return 'Phone number cannot exceed 10 digits';
-  }
-  return '';
-};
-
-<MaskedInput
-  label="Phone Number"
-  mask="(999) 999-9999"
-  value={phoneNumber}
-  onChangeText={({ maskedText, unmaskedText }) => {
-    setPhoneNumber(maskedText);
-    const error = validatePhone(unmaskedText);
-    setPhoneError(error);
-  }}
-  hasError={!!phoneError}
-  errorMessage={phoneError}
-/>;
-```
-
-### Dynamic Mask Based on Input
-
-```tsx
-const [countryCode, setCountryCode] = useState('US');
-const [phoneNumber, setPhoneNumber] = useState('');
-
-const getPhoneMask = (country: string) => {
-  switch (country) {
-    case 'US':
-      return '(999) 999-9999';
-    case 'UK':
-      return '+44 999 999 9999';
-    case 'FR':
-      return '+33 9 99 99 99 99';
-    default:
-      return '999 999 9999';
-  }
-};
-
-<MaskedInput
-  label="Phone Number"
-  mask={getPhoneMask(countryCode)}
-  value={phoneNumber}
-  onChangeText={({ maskedText, unmaskedText }) => {
-    setPhoneNumber(maskedText);
-  }}
-  placeholder={getPhoneMask(countryCode).replace(/9/g, '0')}
-/>;
-```
-
-## Accessibility
-
-The MaskedInput component inherits all accessibility features from the Input component:
-
-- **Screen reader support**: Proper labeling and announcements
-- **Keyboard navigation**: Full keyboard support
-- **Focus management**: Proper focus handling
-- **Error announcements**: Screen readers announce validation errors
-- **Semantic markup**: Correct ARIA attributes
-
-### Accessibility Best Practices
-
-```tsx
-// Always provide labels
-<MaskedInput
   label="Social Security Number"
-  mask="999-99-9999"
-  onChangeText={handleSSNChange}
-/>
-
-// Provide clear error messages
-<MaskedInput
-  label="Credit Card"
-  mask="9999 9999 9999 9999"
-  hasError={!!cardError}
-  errorMessage={cardError}
-  onChangeText={handleCardChange}
-/>
-
-// Use appropriate icons for context
-<MaskedInput
-  label="Phone Number"
-  mask="(999) 999-9999"
-  leftIconAction={{ iconName: 'phone-solid' }}
-  onChangeText={handlePhoneChange}
+  accessibilityLabel="Social Security Number"
+  errorMessage="Please enter a valid SSN"
 />
 ```
 
-## Performance Considerations
+### Styling
 
-- The component uses `useCallback` for the change handler to prevent unnecessary re-renders
-- Mask application is optimized for real-time input
-- The component automatically calculates `maxLength` based on the mask pattern
-- State updates are batched for better performance
+1. **Use consistent spacing**:
+
+```tsx
+// Tailwind/Hybrid version
+<MaskedInput className="mx-4 my-2 bg-white rounded-lg border" />
+
+// StyleSheet version
+<MaskedInput style={{ margin: 16, backgroundColor: 'white', borderRadius: 8 }} />
+```
+
+2. **Handle different screen sizes**:
+
+```tsx
+const screenWidth = Dimensions.get('window').width;
+const inputWidth = screenWidth * 0.8;
+
+<MaskedInput style={{ width: inputWidth }} mask="(999) 999-9999" />;
+```
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **Mask not applying**: Ensure you're using '9' for digit positions
-2. **Callback not receiving data**: Check that `onChangeText` expects the correct structure
-3. **Validation issues**: Use `unmaskedText` for validation, `maskedText` for display
-4. **Length restrictions**: The component automatically sets `maxLength` based on mask
+1. **Mask not applying**
+   - Ensure mask pattern uses `9` for digits
+   - Check if `onChangeText` callback is provided
+   - Verify input is not disabled
 
-### Debug Example
+2. **Characters not filtering**
+   - MaskedInput automatically filters non-digit characters
+   - Only digits are processed according to the mask pattern
+   - Other characters are ignored
 
-```tsx
-<MaskedInput
-  mask="(999) 999-9999"
-  onChangeText={({ maskedText, unmaskedText }) => {
-    console.log('Debug:', {
-      mask: '(999) 999-9999',
-      maskedText,
-      unmaskedText,
-      maskedLength: maskedText.length,
-      unmaskedLength: unmaskedText.length,
-    });
-  }}
-/>
-```
+3. **Performance issues**
+   - Use controlled components for better state management
+   - Implement debouncing for validation
+   - Avoid complex calculations in `onChangeText`
+
+4. **Styling not applying**
+   - Check if you're using the correct version (StyleSheet vs Tailwind)
+   - Verify CSS classes are available in Tailwind version
+   - Use `style` prop for custom styling
+
+### Version-Specific Issues
+
+**Tailwind Version:**
+
+- Ensure NativeWind is properly configured
+- Check if required Tailwind classes are available
+- Verify `tailwind.config.js` includes necessary utilities
+
+**StyleSheet Version:**
+
+- Custom styles may override default styles
+- Use `StyleSheet.flatten()` for complex style combinations
+
+**Hybrid Version:**
+
+- Component automatically detects NativeWind availability
+- Falls back gracefully to StyleSheet if Tailwind is not available
+
+## Contributing
+
+We welcome contributions! Please see our [Contributing Guide](../../CONTRIBUTING.md) for details.
+
+## License
+
+This component is part of the react-native-chill-ui library. See [LICENSE](../../LICENSE.md) for details.

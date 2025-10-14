@@ -268,7 +268,7 @@ const TouchTypeDropdown = () => {
       visible={isOpen}
       data={options}
       maxHeight={300}
-      itemClickableAs="RipplePressable" // Creates ripple effect on touch
+      itemClickableAs="touchable-highlight" // Creates highlight effect on touch
       onSelectItem={handleItemSelect}
     />
   );
@@ -306,29 +306,29 @@ The InputDropdown component is composed of several sub-components:
 
 ### InputDropdownProps
 
-| Prop                     | Type                                                                                       | Default                | Description                               |
-| ------------------------ | ------------------------------------------------------------------------------------------ | ---------------------- | ----------------------------------------- |
-| `visible`                | `boolean`                                                                                  | **required**           | Whether the dropdown is visible           |
-| `data`                   | `any[]`                                                                                    | **required**           | Array of data items to display            |
-| `maxHeight`              | `number`                                                                                   | **required**           | Maximum height of the dropdown            |
-| `minHeight`              | `number`                                                                                   | -                      | Minimum height of the dropdown            |
-| `onSelectItem`           | `(item: any) => void`                                                                      | -                      | Callback when an item is selected         |
-| `className`              | `string`                                                                                   | -                      | Custom CSS classes (Tailwind/Hybrid only) |
-| `style`                  | `StyleProp<ViewStyle>`                                                                     | -                      | Custom style object                       |
-| `hasShadow`              | `boolean`                                                                                  | -                      | Whether to show shadow                    |
-| `hasSearch`              | `boolean`                                                                                  | -                      | Whether to show search input              |
-| `hasAnimation`           | `boolean`                                                                                  | `true`                 | Whether to enable animations              |
-| `searchInputProps`       | `InputProps`                                                                               | -                      | Props for the search input                |
-| `customSearchInput`      | `React.ReactNode`                                                                          | -                      | Custom search input component             |
-| `emptyText`              | `string`                                                                                   | -                      | Text to show when list is empty           |
-| `isLoading`              | `boolean`                                                                                  | -                      | Whether the list is loading               |
-| `customEmpty`            | `() => React.ReactNode`                                                                    | -                      | Custom empty state component              |
-| `dropdownItemProps`      | `DropdownItemProps`                                                                        | -                      | Props for dropdown items                  |
-| `loadingIndicatorProps`  | `LoadingIndicatorProps`                                                                    | -                      | Props for loading indicator               |
-| `customLoadingIndicator` | `() => React.ReactNode`                                                                    | -                      | Custom loading indicator component        |
-| `DropdownItemRender`     | `(item: any) => React.ReactNode`                                                           | -                      | Custom render function for items          |
-| `dropdownListProps`      | `Omit<FlatListProps<any>, 'renderItem' \| 'data'>`                                         | -                      | Props for the FlatList component          |
-| `itemClickableAs`        | `'TouchableOpacity' \| 'Pressable' \| 'TouchableHighlight' \| 'RipplePressable' \| 'none'` | `'TouchableHighlight'` | Type of touchable component for items     |
+| Prop                     | Type                                                          | Default                 | Description                               |
+| ------------------------ | ------------------------------------------------------------- | ----------------------- | ----------------------------------------- |
+| `visible`                | `boolean`                                                     | **required**            | Whether the dropdown is visible           |
+| `data`                   | `any[]`                                                       | **required**            | Array of data items to display            |
+| `maxHeight`              | `number`                                                      | **required**            | Maximum height of the dropdown            |
+| `minHeight`              | `number`                                                      | -                       | Minimum height of the dropdown            |
+| `onSelectItem`           | `(item: any) => void`                                         | -                       | Callback when an item is selected         |
+| `className`              | `string`                                                      | -                       | Custom CSS classes (Tailwind/Hybrid only) |
+| `style`                  | `StyleProp<ViewStyle>`                                        | -                       | Custom style object                       |
+| `hasShadow`              | `boolean`                                                     | -                       | Whether to show shadow                    |
+| `hasSearch`              | `boolean`                                                     | -                       | Whether to show search input              |
+| `hasAnimation`           | `boolean`                                                     | `true`                  | Whether to enable animations              |
+| `searchInputProps`       | `InputProps`                                                  | -                       | Props for the search input                |
+| `customSearchInput`      | `React.ReactNode`                                             | -                       | Custom search input component             |
+| `emptyText`              | `string`                                                      | -                       | Text to show when list is empty           |
+| `isLoading`              | `boolean`                                                     | -                       | Whether the list is loading               |
+| `customEmpty`            | `() => React.ReactNode`                                       | -                       | Custom empty state component              |
+| `dropdownItemProps`      | `DropdownItemProps`                                           | -                       | Props for dropdown items                  |
+| `loadingIndicatorProps`  | `LoadingIndicatorProps`                                       | -                       | Props for loading indicator               |
+| `customLoadingIndicator` | `() => React.ReactNode`                                       | -                       | Custom loading indicator component        |
+| `DropdownItemRender`     | `(item: any) => React.ReactNode`                              | -                       | Custom render function for items          |
+| `dropdownListProps`      | `Omit<FlatListProps<any>, 'renderItem' \| 'data'>`            | -                       | Props for the FlatList component          |
+| `itemClickableAs`        | `'touchable-opacity' \| 'pressable' \| 'touchable-highlight'` | `'touchable-highlight'` | Type of touchable component for items     |
 
 ### InputDropdownModalProps
 
@@ -351,13 +351,11 @@ The InputDropdown component is composed of several sub-components:
 
 ### Touch Component Types
 
-| Type                 | Description                                 | Use Case                           |
-| -------------------- | ------------------------------------------- | ---------------------------------- |
-| `TouchableOpacity`   | Standard opacity feedback on touch          | General purpose, iOS-like feel     |
-| `Pressable`          | Modern pressable with customizable feedback | Custom feedback, modern apps       |
-| `TouchableHighlight` | Highlight background on touch (default)     | Material Design, Android-like feel |
-| `RipplePressable`    | Ripple effect on touch                      | Material Design, premium feel      |
-| `none`               | No touch feedback                           | Custom handling, read-only items   |
+| Type                  | Description                                 | Use Case                           |
+| --------------------- | ------------------------------------------- | ---------------------------------- |
+| `touchable-opacity`   | Standard opacity feedback on touch          | General purpose, iOS-like feel     |
+| `pressable`           | Modern pressable with customizable feedback | Custom feedback, modern apps       |
+| `touchable-highlight` | Highlight background on touch (default)     | Material Design, Android-like feel |
 
 ## Best Practices
 
@@ -444,7 +442,7 @@ const maxHeight = screenHeight * 0.4; // 40% of screen height
 
 3. **Items not selectable**
    - Verify `onSelectItem` callback is provided
-   - Check if `itemClickableAs` is not set to `'none'`
+   - Check if `itemClickableAs` is properly configured
    - Ensure item data structure matches your render function
 
 4. **Performance issues**

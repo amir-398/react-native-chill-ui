@@ -35,6 +35,12 @@ export interface AutocompleteDropdownProps<T> {
   minHeight?: number;
   /** Items to exclude from dropdown */
   excludeItems?: T[];
+  /** Controlled open state */
+  open?: boolean;
+  /** Callback when open state changes */
+  onOpenChange?: (open: boolean) => void;
+  /** Default open state (uncontrolled) */
+  defaultOpen?: boolean;
   /** Field to use as the display value and identifier */
   valueField: keyof T;
   /** Callback when input loses focus */

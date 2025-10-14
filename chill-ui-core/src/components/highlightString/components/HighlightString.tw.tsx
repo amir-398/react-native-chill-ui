@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { StringTw } from '@components/string';
 import { HighlightStringPropsTw } from '@types';
 
-import { defaultHighlightClassName } from '../styles/HightlightString.variants';
+import { twStyles } from '../styles/HightlightString.variants';
 
 /**
  * HighlightString component that highlights specific terms within text.
@@ -59,7 +59,7 @@ function HighlightString(props: HighlightStringPropsTw) {
             <StringTw
               key={i}
               useFastText={false}
-              className={highlightClassName ?? defaultHighlightClassName}
+              className={highlightClassName ?? twStyles.defaultHighlightClassName}
               style={highlightStyle}
               {...highlightStringProps}
             >

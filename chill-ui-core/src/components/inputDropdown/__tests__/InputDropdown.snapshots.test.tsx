@@ -3,7 +3,7 @@ import { render } from '@testing-library/react-native';
 import InputDropdown from '../components/InputDropdown';
 
 // Mocks simples
-jest.mock('../styles/InputDropdownBase.styles', () => ({
+jest.mock('../styles/InputDropdownBase.ss.styles', () => ({
   styles: {},
 }));
 

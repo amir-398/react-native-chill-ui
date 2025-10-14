@@ -3,7 +3,7 @@ import { Animated } from 'react-native';
 
 import DEFAULT_ANIMATION_CONFIGS from '../constants';
 
-const useSliderAnimation = (
+export const useSliderAnimation = (
   values: (number | Animated.Value)[],
   setValues: (val: any) => void,
   animationType: 'spring' | 'timing',
@@ -54,5 +54,3 @@ const useSliderAnimation = (
     setCurrentValueAnimated,
   };
 };
-
-export default useSliderAnimation;

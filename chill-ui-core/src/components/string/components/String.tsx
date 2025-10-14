@@ -51,8 +51,10 @@ export default function String(props: StringPropsTw) {
   classNamePropsHandler(props, 'String');
   colorVariantPropsHandler(props, 'String');
 
+  console.log('color', color);
+
   const dynamicClasses = cn(
-    stringTv({ color: colorVariant, font, position, size, variant }),
+    stringTv({ colorVariant, font, position, size, variant }),
     !onPress && twStyles.pointerEventsNone,
     className,
   );
@@ -62,7 +64,10 @@ export default function String(props: StringPropsTw) {
   return (
     <NativeText
       {...classNameHandler(dynamicClasses)}
-      {...styleHandler({ defaultStyle: [stringStyle, !onPress && styles.pointerEventsNone], style })}
+      {...styleHandler({
+        defaultStyle: [stringStyle, !onPress && styles.pointerEventsNone],
+        style: [color && { color }, style],
+      })}
       onPress={onPress}
       {...rest}
     >

@@ -1,5 +1,5 @@
-import type { ViewProps } from 'react-native';
 import type { VariantProps } from 'tailwind-variants';
+import type { StyleProp, ViewProps, ViewStyle } from 'react-native';
 
 import { dialogTv } from '@components/dialog/styles/Dialog.tw.styles';
 
@@ -12,8 +12,16 @@ import { StringProps } from '../string/string.tw.types';
  * Props for the root Dialog component
  */
 export interface DialogProps {
-  /** Dialog content and triggers */
-  children: React.ReactNode;
+  /** Open state */
+  open?: boolean;
+  /** Callback when dialog opens */
+  onOpen?: () => void;
+  /** Callback when dialog closes */
+  onClose?: () => void;
+  /** Callback when open state changes */
+  onOpenChange?: (open: boolean) => void;
+  /** Initial open state */
+  defaultOpen?: boolean;
 }
 
 /**
@@ -28,6 +36,8 @@ export interface DialogTriggerProps {
   children: React.ReactElement<{ onPress?: () => void }>;
   /** Type of touchable component to use */
   as?: 'pressable' | 'touchable-opacity' | 'ripple-pressable';
+  /** Style object for the trigger */
+  style?: StyleProp<ViewStyle>;
 }
 
 /**
@@ -83,14 +93,6 @@ export type DialogBackdropProps = {
 export type DialogContentProps = ViewProps & {
   /** Custom CSS classes for dialog content */
   className?: string;
-  /** Callback when dialog is shown */
-  onShow?: () => void;
-  /** Show overlay behind the dialog */
-  hasOverlay?: boolean;
-  /** Initial open state */
-  defaultOpen?: boolean;
-  /** Custom backdrop color */
-  backdropColor?: string;
   /** Close when back button is pressed */
   closeOnGoBack?: boolean;
   /** Dialog content */
@@ -99,14 +101,14 @@ export type DialogContentProps = ViewProps & {
   onRequestClose?: () => void;
   /** Use default white container */
   useDefaultContainer?: boolean;
-  /** Close when backdrop is pressed */
-  closeOnBackdropPress?: boolean;
   /** Animation type for the dialog */
   animation?: 'fade' | 'slide' | 'none';
-  /** Callback when open state changes */
-  onOpenChange?: (open: boolean) => void;
   /** Size variant for the dialog */
   size?: VariantProps<typeof dialogTv>['size'];
-  /** Border radius variant for the dialog */
-  rounded?: VariantProps<typeof dialogTv>['rounded'];
+  /** Whether to show backdrop */
+  hasBackdrop?: boolean;
+  /** Custom backdrop color */
+  backdropColor?: string;
+  /** Whether to close dialog when backdrop is pressed */
+  closeOnBackdropPress?: boolean;
 };

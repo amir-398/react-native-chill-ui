@@ -8,24 +8,11 @@ import { Animated, Pressable, TextInput } from 'react-native';
 import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 
 import { inputDefaultProps } from '../utils/defaultProps';
-import {
-  inputContainerTv,
-  inputFieldTv,
-  labelClassName,
-  leftIconClassName,
-  rightIconClassName,
-  errorContainerClassName,
-  lengthTextClassName,
-  bottomInputContainerShowLengthClassName,
-  iconContainerClassName,
-  bottomInputContainerClassName,
-} from '../styles/Input.tw.styles';
+import { inputContainerTv, inputFieldTv, twStyles } from '../styles/Input.tw.styles';
 
 /**
  * Input component with Tailwind styling.
  * Provides a comprehensive text input with validation, icons, error handling, and customizable styling.
- * Uses Tailwind CSS utility classes for flexible and responsive design.
- * Ideal for projects using NativeWind or similar Tailwind CSS implementations for React Native.
  *
  * @example
  * ```tsx
@@ -194,7 +181,7 @@ const Input = forwardRef<TextInput, InputPropsTw>((props, ref) => {
   return (
     <BoxTw>
       {!!label && (
-        <StringTw size="sm" className={labelClassName} {...labelStringProps}>
+        <StringTw size="sm" className={twStyles.label} {...labelStringProps}>
           {label}
         </StringTw>
       )}
@@ -213,11 +200,12 @@ const Input = forwardRef<TextInput, InputPropsTw>((props, ref) => {
             size={leftIconAction?.iconSize || xmarkIconSize}
             color={leftIconAction?.iconColor}
             onPress={leftIconAction?.iconPress}
-            className={leftIconClassName}
+            className={twStyles.leftIcon}
+            hasPressEffect={leftIconAction?.hasPressEffect}
           />
         )}
         {leftIconAction?.customIcon && (
-          <Pressable onPress={leftIconAction?.iconPress} className={leftIconClassName}>
+          <Pressable onPress={leftIconAction?.iconPress} className={twStyles.leftIcon}>
             {leftIconAction?.customIcon}
           </Pressable>
         )}
@@ -240,7 +228,7 @@ const Input = forwardRef<TextInput, InputPropsTw>((props, ref) => {
           {...rest}
         />
 
-        <BoxTw className={iconContainerClassName}>
+        <BoxTw className={twStyles.iconContainer}>
           {inputValue.length > 0 && hasClearIcon && (
             <IconTw onPress={handleClearInput} name="xmark-solid" size={xmarkIconSize} {...clearIconProps} />
           )}
@@ -251,11 +239,12 @@ const Input = forwardRef<TextInput, InputPropsTw>((props, ref) => {
               size={rightIconAction?.iconSize || xmarkIconSize}
               color={rightIconAction?.iconColor}
               onPress={rightIconAction?.iconPress}
-              className={rightIconClassName}
+              hasPressEffect={rightIconAction?.hasPressEffect}
+              className={twStyles.rightIcon}
             />
           )}
           {rightIconAction?.customIcon && (
-            <Pressable onPress={rightIconAction?.iconPress} className={rightIconClassName}>
+            <Pressable onPress={rightIconAction?.iconPress} className={twStyles.rightIcon}>
               {rightIconAction?.customIcon}
             </Pressable>
           )}
@@ -271,12 +260,12 @@ const Input = forwardRef<TextInput, InputPropsTw>((props, ref) => {
         </BoxTw>
       </AnimatedBoxTw>
       <BoxTw
-        className={cn(bottomInputContainerClassName, {
-          [bottomInputContainerShowLengthClassName]: showLength && !errorMessage,
+        className={cn(twStyles.bottomInputContainer, {
+          [twStyles.bottomInputContainerShowLength]: showLength && !errorMessage,
         })}
       >
         {!!errorMessage && (
-          <BoxTw className={errorContainerClassName}>
+          <BoxTw className={twStyles.errorContainer}>
             {!!errorIconName && <IconTw name={errorIconName as any} size="xs" color="#FF0000" />}
             <StringTw size="xs" colorVariant="error" {...errorStringProps}>
               {errorMessage}
@@ -284,7 +273,7 @@ const Input = forwardRef<TextInput, InputPropsTw>((props, ref) => {
           </BoxTw>
         )}
         {showLength && (
-          <StringTw size="xs" className={lengthTextClassName} {...lengthStringProps}>
+          <StringTw size="xs" className={twStyles.lengthText} {...lengthStringProps}>
             {maxLength ? `${getStringLength(inputValue ?? '')}/${maxLength}` : getStringLength(inputValue ?? '')}
           </StringTw>
         )}

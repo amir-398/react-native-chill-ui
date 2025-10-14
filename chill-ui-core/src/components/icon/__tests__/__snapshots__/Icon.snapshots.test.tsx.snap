@@ -28,49 +28,51 @@ exports[`Icon Component Snapshots should match snapshot for icon with size 1`] =
 `;
 
 exports[`Icon Component Snapshots should match snapshot for pressable icon 1`] = `
-<View
-  accessibilityState={
-    {
-      "busy": undefined,
-      "checked": undefined,
-      "disabled": undefined,
-      "expanded": undefined,
-      "selected": undefined,
+<View>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
     }
-  }
-  accessibilityValue={
-    {
-      "max": undefined,
-      "min": undefined,
-      "now": undefined,
-      "text": undefined,
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
     }
-  }
-  accessible={true}
-  className="self-start shrink rounded-full active:bg-[rgba(0,0,0,0.1)] p-[8px]"
-  collapsable={false}
-  focusable={true}
-  onBlur={[Function]}
-  onClick={[Function]}
-  onFocus={[Function]}
-  onResponderGrant={[Function]}
-  onResponderMove={[Function]}
-  onResponderRelease={[Function]}
-  onResponderTerminate={[Function]}
-  onResponderTerminationRequest={[Function]}
-  onStartShouldSetResponder={[Function]}
-  style={
-    [
-      false,
-      undefined,
-    ]
-  }
->
-  <div
-    data-color="#000"
-    testID="icon-heart-solid"
+    accessible={true}
+    className="self-start rounded-full active:bg-[rgba(0,0,0,0.1)] p-[8px]"
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        false,
+        undefined,
+      ]
+    }
   >
-    heart-solid
-  </div>
+    <div
+      data-color="#000"
+      testID="icon-heart-solid"
+    >
+      heart-solid
+    </div>
+  </View>
 </View>
 `;

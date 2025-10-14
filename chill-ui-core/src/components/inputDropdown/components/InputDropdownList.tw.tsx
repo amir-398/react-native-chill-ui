@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 import { BoxTw } from '@components/box';
 import { StringTw } from '@components/string';
-import { RipplePressable } from '@components/ripplePressable';
 import { FlatList, TouchableOpacity, Pressable, TouchableHighlight } from 'react-native';
 
 import { LoadingIndicator } from '@/components/loadingIndicatorsKit';
@@ -49,7 +48,7 @@ export default function InputDropdownList({
   dropdownListProps,
   emptyText,
   isLoading,
-  itemClickableAs = 'TouchableHighlight',
+  itemClickableAs,
   loadingIndicatorProps,
   onSelectItem,
 }: InputDropdownListProps) {
@@ -59,7 +58,7 @@ export default function InputDropdownList({
     ({ index, item }: { item: any; index: number }): React.ReactElement | null => {
       if (DropdownItemRender?.(item)) {
         switch (itemClickableAs) {
-          case 'TouchableOpacity':
+          case 'touchable-opacity':
             return (
               <TouchableOpacity
                 key={item?.id ?? index.toString()}
@@ -70,7 +69,7 @@ export default function InputDropdownList({
               </TouchableOpacity>
             );
 
-          case 'Pressable':
+          case 'pressable':
             return (
               <Pressable
                 key={item?.id ?? index.toString()}
@@ -81,7 +80,7 @@ export default function InputDropdownList({
               </Pressable>
             );
 
-          case 'TouchableHighlight':
+          case 'touchable-highlight':
             return (
               <TouchableHighlight
                 key={item?.id ?? index.toString()}
@@ -90,13 +89,6 @@ export default function InputDropdownList({
               >
                 {DropdownItemRender(item)}
               </TouchableHighlight>
-            );
-
-          case 'RipplePressable':
-            return (
-              <RipplePressable key={item?.id ?? index.toString()} onPress={() => onSelectItem?.(item)}>
-                {DropdownItemRender(item)}
-              </RipplePressable>
             );
 
           default:

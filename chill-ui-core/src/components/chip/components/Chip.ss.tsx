@@ -1,4 +1,4 @@
-import type { ChipPropsSs } from '@types';
+import type { ChipPropsSs, IconPropsSs } from '@types';
 
 import { BoxSs } from '@components/box';
 import { IconSs } from '@components/icon';
@@ -13,7 +13,6 @@ import { chipSv, styles } from '../styles/Chip.ss.styles';
 /**
  * Chip component displays compact elements that represent an input, attribute, or action.
  * Supports both text and icon content with customizable colors, sizes, and style variants (contained/outlined).
- * StyleSheet version using React Native StyleSheet for styling.
  *
  * @example
  * ```tsx
@@ -80,7 +79,11 @@ export default function Chip(props: ChipPropsSs) {
     if (iconAction.name) {
       return (
         <BoxSs style={[iconStyle, styles.pointerEventsNone]}>
-          <IconSs name={iconAction.name} size={iconAction.size ?? size ?? 'sm'} color={iconAction.color} />
+          <IconSs
+            name={iconAction.name}
+            size={iconAction.size ?? (size as IconPropsSs['size']) ?? 'sm'}
+            color={iconAction.color}
+          />
         </BoxSs>
       );
     }

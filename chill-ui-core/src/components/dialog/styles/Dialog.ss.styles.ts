@@ -42,18 +42,14 @@ export const styles = StyleSheet.create({
   footer: {
     borderColor: '#E5E7EB',
     borderTopWidth: 1,
-    paddingHorizontal: 24,
-    paddingVertical: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
   },
   title: {
     fontWeight: '600',
   },
   triggerBase: {
-    position: 'relative',
-    zIndex: 50,
-  },
-  triggerRipple: {
-    backgroundColor: 'white',
+    alignSelf: 'flex-start',
   },
 });
 
@@ -68,29 +64,6 @@ export const dialogSv = sv({
     position: 'relative',
   },
   variants: {
-    rounded: {
-      '2xl': {
-        borderRadius: 16,
-      },
-      '3xl': {
-        borderRadius: 24,
-      },
-      full: {
-        borderRadius: 9999,
-      },
-      lg: {
-        borderRadius: 8,
-      },
-      md: {
-        borderRadius: 6,
-      },
-      sm: {
-        borderRadius: 2,
-      },
-      xl: {
-        borderRadius: 12,
-      },
-    },
     size: {
       full: {
         width: '100%',
@@ -128,11 +101,19 @@ export const dialogHeaderSv = sv({
         alignItems: 'center',
         borderBottomColor: '#E5E7EB',
         borderBottomWidth: 1,
-        flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingHorizontal: 24,
-        paddingVertical: 12,
-        position: 'relative',
+        paddingHorizontal: 12,
+        paddingVertical: 8,
+      },
+    },
+    {
+      children: true,
+      hasCloseMark: false,
+      style: {
+        borderBottomColor: '#E5E7EB',
+        borderBottomWidth: 1,
+        paddingHorizontal: 12,
+        paddingVertical: 8,
       },
     },
     {

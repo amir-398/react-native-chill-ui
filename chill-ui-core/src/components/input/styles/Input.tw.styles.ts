@@ -1,7 +1,7 @@
 import { tv } from 'tailwind-variants';
 
 export const inputContainerTv = tv({
-  base: 'flex flex-row items-center rounded-lg border border-[#D1D5DB] bg-[#FFFFFF] px-3',
+  base: 'flex flex-row items-center rounded-lg border border-[#D1D5DB] bg-[#FFF] px-3',
   variants: {
     hasError: {
       true: 'border-red-500',
@@ -13,7 +13,7 @@ export const inputContainerTv = tv({
 });
 
 export const inputFieldTv = tv({
-  base: 'flex-1 ',
+  base: 'flex-1',
   defaultVariants: {
     size: 'md',
   },
@@ -63,18 +63,13 @@ export const inputFieldTv = tv({
   },
 });
 
-export const labelClassName = 'ml-[4px]';
-
-export const errorContainerClassName = 'flex-row items-center gap-[4px] pl-[4px]';
-
-export const bottomInputContainerClassName = 'flex-row items-center justify-between gap-[4px]';
-
-export const iconContainerClassName = 'flex-row items-center gap-[4px]';
-
-export const leftIconClassName = 'mr-[6px]';
-
-export const rightIconClassName = 'ml-[6px]';
-
-export const bottomInputContainerShowLengthClassName = 'justify-end';
-
-export const lengthTextClassName = 'mr-[2px]';
+export const twStyles = {
+  bottomInputContainer: 'flex-row items-center justify-between gap-[4px]',
+  bottomInputContainerShowLength: 'justify-end',
+  errorContainer: 'flex-row items-center gap-[4px] pl-[4px]',
+  iconContainer: 'flex-row items-center gap-[4px]',
+  label: 'ml-[4px]',
+  leftIcon: 'mr-[6px]',
+  lengthText: 'mr-[2px]',
+  rightIcon: 'ml-[6px]',
+};

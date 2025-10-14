@@ -6,6 +6,7 @@ export type {
   DialogProps as DialogPropsSs,
   DialogTitleProps as DialogTitlePropsSs,
   DialogTriggerProps as DialogTriggerPropsSs,
+  DialogHeaderProps as DialogHeaderPropsSs,
 } from './dialog.ss.types';
 
 export type {

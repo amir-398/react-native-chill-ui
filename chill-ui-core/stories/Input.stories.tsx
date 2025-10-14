@@ -11,6 +11,7 @@ const meta: Meta<typeof Input> = {
     multiline: { control: 'boolean', description: 'Whether the input is multiline' },
     placeholder: { control: 'text', description: 'The placeholder text' },
     value: { control: 'text', description: 'The value of the input' },
+    onChangeText: { action: 'onChangeText', description: 'Callback when input text changes' },
 
     // Label and error
     allow: {
@@ -22,6 +23,7 @@ const meta: Meta<typeof Input> = {
     errorClassName: { control: 'text', description: 'Custom class for error message (NativeWind only)' },
     errorIconName: { control: 'text', description: 'Icon name for error state' },
     errorMessage: { control: 'text', description: 'Error message to display' },
+    errorStyle: { control: 'object', description: 'Custom style for error message (StyleSheet only)' },
     hasError: { control: 'boolean', description: 'Whether the input has an error' },
     label: { control: 'text', description: 'Label text above the input' },
     labelStringProps: { control: 'object', description: 'Props for the label String component' },
@@ -31,13 +33,14 @@ const meta: Meta<typeof Input> = {
     eyeIconProps: { control: 'object', description: 'Props for the eye/eye-slash icon component' },
     hasClearIcon: { control: 'boolean', description: 'Whether to show clear icon' },
     inputClassName: { control: 'text', description: 'Custom class for the input field (NativeWind only)' },
+    inputStyle: { control: 'object', description: 'Custom style for the input field (StyleSheet only)' },
     leftIconAction: {
       control: 'object',
       description: 'Configuration for left icon action',
       table: {
         type: {
           summary:
-            '{ iconName?: string, iconColor?: string, iconSize?: string, customIcon?: ReactNode, iconPress?: () => void }',
+            '{ iconName?: string, iconColor?: string, iconSize?: string, customIcon?: ReactNode, iconPress?: () => void, hasPressEffect?: boolean }',
         },
       },
     },
@@ -47,7 +50,7 @@ const meta: Meta<typeof Input> = {
       table: {
         type: {
           summary:
-            '{ iconName?: string, iconColor?: string, iconSize?: string, customIcon?: ReactNode, iconPress?: () => void }',
+            '{ iconName?: string, iconColor?: string, iconSize?: string, customIcon?: ReactNode, iconPress?: () => void, hasPressEffect?: boolean }',
         },
       },
     },
@@ -334,5 +337,29 @@ export const WithCustomStringProps: Story = {
     placeholder: 'Enter your text',
     showLength: true,
     value: 'Sample text',
+  },
+};
+
+export const WithPressEffectIcons: Story = {
+  args: {
+    label: 'Input with Press Effect Icons',
+    leftIconAction: {
+      iconName: 'magnifying-glass-solid',
+      iconPress: () => {
+        // eslint-disable-next-line no-alert
+        alert('Search icon pressed!');
+      },
+      hasPressEffect: true,
+    },
+    placeholder: 'Search with press effect',
+    rightIconAction: {
+      iconName: 'xmark-solid',
+      iconPress: () => {
+        // eslint-disable-next-line no-alert
+        alert('Clear icon pressed!');
+      },
+      hasPressEffect: true,
+    },
+    value: 'Search text',
   },
 };

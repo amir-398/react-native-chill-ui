@@ -47,6 +47,7 @@ export default function InputDropdownBase({
   maxHeight,
   minHeight,
   searchInputProps,
+  style,
   visible,
 }: InputDropdownBaseProps) {
   const animatedHeight = useRef(new Animated.Value(minHeight ?? 0)).current;
@@ -76,6 +77,7 @@ export default function InputDropdownBase({
           shadowOpacity: 0.2,
           shadowRadius: 1.41,
         },
+        style,
       ]}
     >
       {hasSearch &&

@@ -203,6 +203,7 @@ const Button = forwardRef<any, PropsWithChildren<BtnPropsSs>>((props, ref) => {
     isLoading,
     leftIconAction,
     loadingIndicatorProps,
+    onPress,
     position = 'center',
     rightIconAction,
     size = 'md',
@@ -231,6 +232,7 @@ const Button = forwardRef<any, PropsWithChildren<BtnPropsSs>>((props, ref) => {
   return (
     <TouchableComponent
       ref={ref}
+      onPress={onPress}
       style={[
         ButtonSv({
           isDisabled: !!isDisabled,

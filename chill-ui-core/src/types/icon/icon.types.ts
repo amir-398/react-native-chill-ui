@@ -1,6 +1,7 @@
 import type { TIcons } from '@constants';
 import type { VariantProps } from 'tailwind-variants';
 import type { StyleProp, ViewStyle } from 'react-native';
+
 import type { iconSizeTv, iconPaddingTv } from '@/components/icon/styles/Icon.tw.styles';
 
 /**

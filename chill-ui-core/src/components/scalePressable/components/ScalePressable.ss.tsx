@@ -1,9 +1,10 @@
 import { ScalePressablePropsSs } from '@types';
-import { useRef, PropsWithChildren } from 'react';
 import { Animated, Pressable } from 'react-native';
 import { AnimatedBoxSs } from '@components/animatedBox';
+import { useRef, PropsWithChildren, forwardRef } from 'react';
 
 import { styles } from '../styles/ScalePressable.ss.styles';
+import { scalePressableDefaultProps } from '../utils/defaultProps';
 
 /**
  * ScalePressable component that provides a scale effect on press.
@@ -11,13 +12,11 @@ import { styles } from '../styles/ScalePressable.ss.styles';
  * When pressed, the component scales down to give a tactile feedback effect,
  * making it feel like you're physically pressing a button.
  *
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
- *
  * @example
  * ```tsx
  * // Basic usage with scale effect
  * <ScalePressable onPress={() => console.log('Pressed!')}>
- *   <Box className="p-4 bg-blue-500 rounded-lg">
+ *   <Box style={{ padding: 16, backgroundColor: '#3B82F6', borderRadius: 8 }}>
  *     <String color="white">Press me</String>
  *   </Box>
  * </ScalePressable>
@@ -31,12 +30,15 @@ import { styles } from '../styles/ScalePressable.ss.styles';
  * @returns ScalePressable component with scale animation
  * @throws Error if no children are provided
  */
-export default function ScalePressable(props: PropsWithChildren<ScalePressablePropsSs>) {
-  const { children, className, duration = 100, onPress, scaleValue = 0.95, style, ...rest } = props;
-
-  if (!children) {
-    throw new Error('ScalePressable must have children');
-  }
+export const ScalePressable = forwardRef<any, PropsWithChildren<ScalePressablePropsSs>>((props, ref) => {
+  const {
+    children,
+    duration = scalePressableDefaultProps.duration,
+    onPress,
+    scaleValue = scalePressableDefaultProps.scaleValue,
+    style,
+    ...rest
+  } = props;
 
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
@@ -69,6 +71,7 @@ export default function ScalePressable(props: PropsWithChildren<ScalePressablePr
   return (
     <AnimatedBoxSs style={animatedStyle}>
       <Pressable
+        ref={ref}
         onPress={handlePress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
@@ -79,4 +82,6 @@ export default function ScalePressable(props: PropsWithChildren<ScalePressablePr
       </Pressable>
     </AnimatedBoxSs>
   );
-}
+});
+
+ScalePressable.displayName = 'ScalePressable';

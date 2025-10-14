@@ -275,6 +275,7 @@ const Button = forwardRef<any, PropsWithChildren<BtnPropsTw>>((props, ref) => {
     isLoading,
     leftIconAction,
     loadingIndicatorProps,
+    onPress,
     position = 'center',
     rightIconAction,
     size = 'md',
@@ -316,6 +317,7 @@ const Button = forwardRef<any, PropsWithChildren<BtnPropsTw>>((props, ref) => {
   return (
     <TouchableComponent
       ref={ref}
+      onPress={onPress}
       as={as}
       {...classNameHandler(
         cn(

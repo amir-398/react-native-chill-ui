@@ -4,7 +4,7 @@ import { HighlightStringPropsTw } from '@types';
 import { classNamePropsHandler, classNameHandler, styleHandler } from '@utils';
 
 import { styles } from '../styles/HightlightString.styles';
-import { defaultHighlightClassName } from '../styles/HightlightString.variants';
+import { twStyles } from '../styles/HightlightString.variants';
 
 /**
  * HighlightString component that highlights specific terms within text.
@@ -73,7 +73,7 @@ function HighlightString(props: HighlightStringPropsTw) {
             <String
               key={i}
               useFastText={false}
-              {...classNameHandler(highlightClassName ?? defaultHighlightClassName)}
+              {...classNameHandler(highlightClassName ?? twStyles.defaultHighlightClassName)}
               {...styleHandler({ defaultStyle: highlightStyle ?? styles.defaultHighlightStyle, style: highlightStyle })}
               {...highlightStringProps}
             >

@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Separator Snapshots should match snapshot with accessibility props 1`] = `
+<View
+  accessibilityLabel="Content separator"
+  accessible={true}
+  testID="separator"
+/>
+`;
+
+exports[`Separator Snapshots should match snapshot with all props combined 1`] = `
+<View
+  accessibilityLabel="Custom separator"
+  accessible={true}
+  testID="custom-separator"
+/>
+`;
+
+exports[`Separator Snapshots should match snapshot with basic props 1`] = `
+<View
+  testID="box"
+/>
+`;
+
+exports[`Separator Snapshots should match snapshot with custom className 1`] = `
+<View
+  testID="box"
+/>
+`;
+
+exports[`Separator Snapshots should match snapshot with custom color 1`] = `
+<View
+  testID="box"
+/>
+`;
+
+exports[`Separator Snapshots should match snapshot with custom style 1`] = `
+<View
+  testID="box"
+/>
+`;
+
+exports[`Separator Snapshots should match snapshot with custom styling 1`] = `
+<View
+  testID="box"
+/>
+`;
+
+exports[`Separator Snapshots should match snapshot with thick separator 1`] = `
+<View
+  testID="box"
+/>
+`;

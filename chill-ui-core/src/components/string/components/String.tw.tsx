@@ -49,7 +49,7 @@ export default function String(props: PropsWithChildren<StringPropsTw>) {
   } = props;
 
   const dynamicClasses = cn(
-    stringTv({ color: colorVariant, font, position, size, variant }),
+    stringTv({ colorVariant, font, position, size, variant }),
     !onPress && twStyles.pointerEventsNone,
     className,
   );

@@ -30,6 +30,13 @@ export interface AutocompleteDropdownProps<T> {
   /** Vertical offset for dropdown positioning (default: 0) */
   offsetY?: number;
   /** Maximum height of dropdown (default: 300) */
+  /** Controlled open state */
+  open?: boolean;
+  /** Callback when open state changes */
+  onOpenChange?: (open: boolean) => void;
+  /** Default open state (uncontrolled) */
+  defaultOpen?: boolean;
+  /** Maximum height of dropdown (default: 300) */
   maxHeight?: number;
   /** Minimum height of dropdown (default: 0) */
   minHeight?: number;

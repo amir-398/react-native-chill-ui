@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from '@testing-library/react-native';
 import Input from '../components/Input';
 
 // Mocks simples
-jest.mock('../styles/Input.styles', () => ({
+jest.mock('../styles/Input.ss.styles', () => ({
   inputContainerSv: jest.fn(() => ({})),
   inputSv: jest.fn(() => ({})),
   styles: {},

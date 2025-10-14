@@ -36,7 +36,7 @@ import { AnimatedView as AnimatedViewNative } from '../../../box/components/View
  * @param props - All other View props are supported
  * @returns Optimized animated view component ready for custom animations
  */
-export default function AnimatedBox(props: AnimatedBoxPropsTw) {
+export function AnimatedBox(props: AnimatedBoxPropsTw) {
   classNamePropsHandler(props, 'AnimatedBox');
   const { className, ...rest } = props;
 

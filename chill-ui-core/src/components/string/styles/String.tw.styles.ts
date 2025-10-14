@@ -23,7 +23,7 @@ export const stringTv = tv({
     variant: 'body-1',
   },
   variants: {
-    color: {
+    colorVariant: {
       danger: 'text-danger',
       dark: 'text-black',
       disabled: 'text-disabled',

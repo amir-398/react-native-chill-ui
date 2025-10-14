@@ -6,37 +6,14 @@ import { get, isEqual, debounce } from '@utils';
 import { InputDropdownSs } from '@components/inputDropdown';
 import { HighlightStringSs } from '@components/highlightString';
 import { AutocompleteDropdownRefPropsSs, AutocompleteDropdownPropsSs } from '@types';
-import { useCallback, useEffect, useImperativeHandle, useRef, memo, useMemo, useState, forwardRef } from 'react';
+import { useCallback, useEffect, useImperativeHandle, useRef, useMemo, forwardRef } from 'react';
 
-import { DEFAULT_CONFIG } from '../types';
 import useDropdownActions from '../hooks/useDropdownActions';
 import useDropdownKeyboard from '../hooks/useDropdownKeyboard';
 import useGetDropdownPosition from '../hooks/useGetDropdownPosition';
+import { autocompleteDropdownDefaultProps } from '../utils/defaultProps';
+import { useAutocompleteDropdownState } from '../hooks/useCompleteDropdownState';
 import useAutocompleteDropdownProvider from '../hooks/useAutocompleteDropdownProvider';
-
-// State interface for AutocompleteDropdown
-interface AutocompleteDropdownState {
-  listData: any[];
-  searchText: string;
-  keyboardHeight: number;
-  currentValue: any | null;
-}
-
-// Hook for managing AutocompleteDropdown state
-const useAutocompleteDropdownState = (dataSet: any[]) => {
-  const [state, setState] = useState<AutocompleteDropdownState>({
-    currentValue: null,
-    keyboardHeight: 0,
-    listData: dataSet || [],
-    searchText: '',
-  });
-
-  const updateState = useCallback((newState: Partial<AutocompleteDropdownState>) => {
-    setState((prev: AutocompleteDropdownState) => ({ ...prev, ...newState }));
-  }, []);
-
-  return { state, updateState };
-};
 
 /**
  * AutocompleteDropdown component with StyleSheet styling.
@@ -83,27 +60,27 @@ const useAutocompleteDropdownState = (dataSet: any[]) => {
  * @param highlightProps - Props for text highlighting configuration
  * @returns Styled autocomplete dropdown component with search and selection functionality using StyleSheet
  */
-const AutocompleteDropdown = forwardRef<AutocompleteDropdownRefPropsSs, AutocompleteDropdownPropsSs<any>>(
+export const AutocompleteDropdown = forwardRef<AutocompleteDropdownRefPropsSs, AutocompleteDropdownPropsSs<any>>(
   (props, currentRef) => {
     const {
-      closeModalWhenSelectedItem = true,
+      closeModalWhenSelectedItem = autocompleteDropdownDefaultProps.closeModalWhenSelectedItem,
       confirmSelectItem,
       customDropdownItem,
-      dataSet = [],
+      dataSet = autocompleteDropdownDefaultProps.dataSet,
       dropdownItemProps,
       dropdownListProps,
       dropdownPosition,
       dropdownProps,
-      excludeItems = [],
-      hasHighlightString = true,
-      hasPerformSearch = true,
+      excludeItems = autocompleteDropdownDefaultProps.excludeItems,
+      hasHighlightString = autocompleteDropdownDefaultProps.hasHighlightString,
+      hasPerformSearch = autocompleteDropdownDefaultProps.hasPerformSearch,
       highlightProps,
       inputProps,
       isLoading,
-      maxHeight = DEFAULT_CONFIG.MAX_HEIGHT,
+      maxHeight = autocompleteDropdownDefaultProps.maxHeight,
       minHeight,
-      offsetX = 0,
-      offsetY = 0,
+      offsetX = autocompleteDropdownDefaultProps.offsetX,
+      offsetY = autocompleteDropdownDefaultProps.offsetY,
       onBlur,
       onChangeText,
       onConfirmSelectItem,
@@ -352,11 +329,12 @@ const AutocompleteDropdown = forwardRef<AutocompleteDropdownRefPropsSs, Autocomp
           maxHeight={maxHeight}
           minHeight={minHeight}
           data={state.listData}
+          itemClickableAs="touchable-opacity"
           onSelectItem={selectItem}
           dropdownItemProps={dropdownItemProps}
           DropdownItemRender={renderDropdownItem}
           dropdownListProps={dropdownListProps}
-          emptyText={dropdownProps?.emptyText ?? DEFAULT_CONFIG.EMPTY_TEXT}
+          emptyText={dropdownProps?.emptyText ?? autocompleteDropdownDefaultProps.emptyText}
           isLoading={isLoading}
         />,
       );
@@ -380,7 +358,7 @@ const AutocompleteDropdown = forwardRef<AutocompleteDropdownRefPropsSs, Autocomp
       <InputSs
         ref={inputRef}
         wrapperRef={inputContainerRef}
-        placeholder={inputProps?.placeholder ?? DEFAULT_CONFIG.PLACEHOLDER}
+        placeholder={inputProps?.placeholder ?? autocompleteDropdownDefaultProps.placeholder}
         value={displayValue}
         onBlur={() => {
           setShowDropdown(instanceId, false);
@@ -400,7 +378,3 @@ const AutocompleteDropdown = forwardRef<AutocompleteDropdownRefPropsSs, Autocomp
 );
 
 AutocompleteDropdown.displayName = 'AutocompleteDropdown';
-
-const MemoizedAutocompleteDropdown = memo(AutocompleteDropdown);
-
-export default MemoizedAutocompleteDropdown;

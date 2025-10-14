@@ -51,7 +51,9 @@
     "src/components/select/react-native-element-dropdown/src/components/Dropdown",
     "src/components/select/react-native-element-dropdown/src/components/InputSelectDropdown",
     "src/types/utils/index.ts",
-    "src/types/inputDropdown/index.ts"
+    "src/types/inputDropdown/index.ts",
+    "src/components/maskedInput/utils/index.ts",
+    "src/components/segmentedControl/components/SegmentedControlProvider.tsx"
   ],
   "exclude": [
     "node_modules",

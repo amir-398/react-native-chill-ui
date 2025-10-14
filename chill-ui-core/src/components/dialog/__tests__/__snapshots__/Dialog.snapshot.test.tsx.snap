@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Dialog Snapshots renders Dialog correctly 1`] = `null`;
+
+exports[`Dialog Snapshots renders DialogClose 1`] = `null`;
+
+exports[`Dialog Snapshots renders DialogContent with all props 1`] = `null`;
+
+exports[`Dialog Snapshots renders DialogFooter 1`] = `null`;
+
+exports[`Dialog Snapshots renders DialogHeader with close mark 1`] = `null`;
+
+exports[`Dialog Snapshots renders DialogTitle with string 1`] = `null`;
+
+exports[`Dialog Snapshots renders DialogTrigger 1`] = `null`;
+
+exports[`Dialog Snapshots renders complete dialog structure 1`] = `null`;
+
+exports[`Dialog Snapshots renders with custom styling 1`] = `null`;
+
+exports[`Dialog Snapshots renders with different sizes 1`] = `null`;

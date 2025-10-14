@@ -53,6 +53,8 @@ export interface InputProps extends TextInputProps {
     customIcon?: React.ReactNode;
     /** Callback when icon is pressed */
     iconPress?: () => void;
+    /** Whether to show press effect when icon is pressed */
+    hasPressEffect?: boolean;
   };
   /** Right icon configuration */
   rightIconAction?: {
@@ -66,8 +68,9 @@ export interface InputProps extends TextInputProps {
     customIcon?: React.ReactNode;
     /** Callback when icon is pressed */
     iconPress?: () => void;
+    /** Whether to show press effect when icon is pressed */
+    hasPressEffect?: boolean;
   };
-
   // Security
   /** Whether to show secure text entry */
   hasSecureTextEntry?: boolean;
@@ -105,13 +108,3 @@ export interface InputProps extends TextInputProps {
   /** Custom CSS classes for the length text */
   lengthStringProps?: StringPropsTw;
 }
-
-/**
- * Props for the MaskedInput component
- */
-export type MaskedInputProps = {
-  /** Mask pattern for the input */
-  mask: string;
-  /** Callback with masked and unmasked text */
-  onChangeText: ({ maskedText, unmaskedText }: { maskedText: string; unmaskedText: string }) => void;
-} & Omit<InputProps, 'onChangeText'>;

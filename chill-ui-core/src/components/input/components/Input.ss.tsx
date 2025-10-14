@@ -13,8 +13,6 @@ import { inputContainerSv, inputSv, styles } from '../styles/Input.ss.styles';
 /**
  * Input component with StyleSheet styling.
  * Provides a comprehensive text input with validation, icons, error handling, and customizable styling.
- * Uses React Native StyleSheet for optimal performance and consistent styling across platforms.
- * Ideal for projects that prefer traditional React Native styling over utility classes.
  *
  * @example
  * ```tsx
@@ -99,6 +97,7 @@ const Input = forwardRef<TextInput, InputPropsSs>((props, ref) => {
     rightIconAction,
     showLength,
     size = inputDefaultProps.size,
+    style,
     value,
     wrapperRef,
     ...rest
@@ -191,6 +190,7 @@ const Input = forwardRef<TextInput, InputPropsSs>((props, ref) => {
           inputContainerSv({ hasError, isDisabled }),
           clickableAs === 'scale' ? { transform: [{ scale: scaleAnim }] } : undefined,
           hasError && errorStyle,
+          style,
         ]}
       >
         {!!leftIconAction?.iconName && !leftIconAction?.customIcon && (
@@ -200,6 +200,7 @@ const Input = forwardRef<TextInput, InputPropsSs>((props, ref) => {
             color={leftIconAction?.iconColor}
             onPress={leftIconAction?.iconPress}
             style={styles.leftIcon}
+            hasPressEffect={leftIconAction?.hasPressEffect}
           />
         )}
         {leftIconAction?.customIcon && (
@@ -209,12 +210,12 @@ const Input = forwardRef<TextInput, InputPropsSs>((props, ref) => {
         )}
 
         <TextInput
+          style={[inputSv({ font, isStretchable, multiline, size }), inputStyle]}
           onPress={onPress}
           onPressIn={handlePressIn}
           onPressOut={handlePressOut}
           ref={ref}
           value={inputValue}
-          style={[inputSv({ font, isStretchable, multiline, size }), inputStyle]}
           onChangeText={handleOnChange}
           secureTextEntry={isSecureEntry}
           multiline={multiline}
@@ -234,6 +235,7 @@ const Input = forwardRef<TextInput, InputPropsSs>((props, ref) => {
               size={rightIconAction?.iconSize || xmarkIconSize}
               color={rightIconAction?.iconColor}
               onPress={rightIconAction?.iconPress}
+              hasPressEffect={rightIconAction?.hasPressEffect}
               style={styles.rightIcon}
             />
           )}

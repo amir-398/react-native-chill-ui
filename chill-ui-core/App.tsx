@@ -1,6 +1,15 @@
-import { useState } from 'react';
+import Test from 'Test';
 import { useFonts } from 'expo-font';
-import { ButtonTw } from '@components/button';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {
+  Box,
+  TimePickerContentTw,
+  TimePickerScrollerTw,
+  TimePickerTitleTw,
+  TimePickerTw,
+  TimePickerItemTw,
+  ToastProvider,
+} from '@components';
 import {
   Poppins_700Bold,
   Poppins_800ExtraBold,
@@ -23,28 +32,6 @@ import {
   Montserrat_600SemiBold,
   Montserrat_100Thin,
 } from '@expo-google-fonts/montserrat';
-import {
-  Box,
-  Dialog,
-  DialogClose,
-  DialogCloseSs,
-  DialogCloseTw,
-  DialogContent,
-  DialogContentSs,
-  DialogContentTw,
-  DialogFooter,
-  DialogFooterSs,
-  DialogFooterTw,
-  DialogHeader,
-  DialogHeaderSs,
-  DialogHeaderTw,
-  DialogSs,
-  DialogTrigger,
-  DialogTriggerSs,
-  DialogTriggerTw,
-  DialogTw,
-  StringTw,
-} from '@components';
 
 // Import global.css only if NativeWind is available
 try {
@@ -55,27 +42,7 @@ try {
   console.log('NativeWind not available, skipping global.css import');
 }
 
-const sampleImages = [
-  {
-    id: '1',
-    title: 'Première image',
-    uri: 'https://picsum.photos/800/600?random=1',
-  },
-  {
-    id: '2',
-    title: 'Première image',
-    uri: 'https://picsum.photos/800/600?random=1',
-  },
-  {
-    id: '3',
-    title: 'Première image',
-    uri: 'https://picsum.photos/800/600?random=1',
-  },
-];
-
 export default function App() {
-  const [isChecked, setIsChecked] = useState(false);
-  console.log('isChecked=>', isChecked);
   const [fontsLoaded] = useFonts({
     primary_bold_font: Poppins_700Bold,
     primary_extra_bold_font: Poppins_800ExtraBold,
@@ -114,91 +81,41 @@ export default function App() {
   // });
 
   return (
-    <Box className="m-1 mt-16 flex-1 items-center justify-center bg-slate-100">
-      <DialogTw>
-        <DialogTriggerTw asChild>
-          <ButtonTw title="Open Dialog Tailwind" />
-        </DialogTriggerTw>
-        <DialogContentTw>
-          <DialogHeaderTw hasCloseMark />
+    <SafeAreaProvider>
+      <ToastProvider
+        variants={{
+          info: {
+            backgroundColor: 'red',
+            contentColor: 'blue',
+            titleColor: 'green',
+          },
+        }}
+      >
+        <Box className="mb-5 mt-16 flex-1 p-5">
+          <TimePickerTw>
+            <TimePickerContentTw>
+              <TimePickerTitleTw>Hours</TimePickerTitleTw>
+              <TimePickerScrollerTw mode="hour">
+                <TimePickerItemTw />
+              </TimePickerScrollerTw>
+            </TimePickerContentTw>
+            <TimePickerContentTw>
+              <TimePickerTitleTw>minutes</TimePickerTitleTw>
+              <TimePickerScrollerTw mode="minute">
+                <TimePickerItemTw />
+              </TimePickerScrollerTw>
+            </TimePickerContentTw>
+            <TimePickerContentTw>
+              <TimePickerTitleTw>seconds</TimePickerTitleTw>
+              <TimePickerScrollerTw mode="second">
+                <TimePickerItemTw />
+              </TimePickerScrollerTw>
+            </TimePickerContentTw>
+          </TimePickerTw>
+        </Box>
 
-          <Box className="p-6">
-            <StringTw className="text-gray-700">
-              Are you sure you want to proceed with this action? This cannot be undone.
-            </StringTw>
-          </Box>
-
-          <DialogFooterTw>
-            <Box className="flex-row justify-end gap-3">
-              <DialogCloseTw asChild>
-                <ButtonTw title="Cancel" />
-              </DialogCloseTw>
-              <ButtonTw
-                variant="contained"
-                colorVariant="primary"
-                onPress={() => console.log('Confirmed!')}
-                title="Confirm"
-              />
-            </Box>
-          </DialogFooterTw>
-        </DialogContentTw>
-      </DialogTw>
-      <DialogSs>
-        <DialogTriggerSs asChild>
-          <ButtonTw title="Open Dialog StyleSheet" />
-        </DialogTriggerSs>
-        <DialogContentSs>
-          <DialogHeaderSs hasCloseMark />
-
-          <Box className="p-6">
-            <StringTw className="text-gray-700">
-              Are you sure you want to proceed with this action? This cannot be undone.
-            </StringTw>
-          </Box>
-
-          <DialogFooterSs>
-            <Box className="flex-row justify-end gap-3">
-              <DialogCloseSs asChild>
-                <ButtonTw title="Cancel" />
-              </DialogCloseSs>
-              <ButtonTw
-                variant="contained"
-                colorVariant="primary"
-                onPress={() => console.log('Confirmed!')}
-                title="Confirm"
-              />
-            </Box>
-          </DialogFooterSs>
-        </DialogContentSs>
-      </DialogSs>
-      <Dialog>
-        <DialogTrigger asChild>
-          <ButtonTw title="Open Dialog HYBRID" />
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader hasCloseMark />
-
-          <Box className="p-6">
-            <StringTw className="text-gray-700">
-              Are you sure you want to proceed with this action? This cannot be undone.
-            </StringTw>
-          </Box>
-
-          <DialogFooter>
-            <Box className="flex-row justify-end gap-3">
-              <DialogClose asChild>
-                <ButtonTw title="Cancel" />
-              </DialogClose>
-              <ButtonTw
-                variant="contained"
-                colorVariant="primary"
-                onPress={() => console.log('Confirmed!')}
-                title="Confirm"
-              />
-            </Box>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </Box>
+        <Test />
+      </ToastProvider>
+    </SafeAreaProvider>
   );
 }

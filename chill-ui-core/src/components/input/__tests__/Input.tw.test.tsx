@@ -7,6 +7,7 @@ jest.mock('../../../utils', () => ({
   cn: jest.fn((...args) => args.filter(Boolean).join(' ')),
   getStringLength: jest.fn(str => str?.length || 0),
   isString: jest.fn(value => typeof value === 'string'),
+  isNativeWindInstalled: jest.fn(() => true),
 }));
 
 jest.mock('../../../components', () => ({

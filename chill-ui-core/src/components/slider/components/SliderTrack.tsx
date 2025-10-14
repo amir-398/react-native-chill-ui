@@ -1,71 +1,54 @@
-import { Animated, ViewStyle } from 'react-native';
+import { Box } from '@components/box';
+import { SliderTrackPropsTw } from '@types';
+import { PropsWithChildren, useEffect } from 'react';
+import { cn, classNameHandler, classNamePropsHandler, styleHandler } from '@utils';
 
-import { cn } from '@utils';
-import { Box } from '../../box';
+import { styles } from '../styles/Slider.ss.styles';
+import { twStyles } from '../styles/Slider.tw.styles';
+import { sliderDefaultProps } from '../utils/defaultProps';
+import { useSliderActions } from '../context/SliderContext';
 
-interface SliderTrackProps {
-  trackClassName?: string;
-  maximumTrackColor: string;
-  minimumTrackColor: string;
-  minimumTrackStyle: ViewStyle;
-  maximumTrackClassName?: string;
-  minimumTrackClassName?: string;
-  measureTrack: (e: any) => void;
-  valueVisibleStyle: { opacity?: number };
-  interpolatedTrackMarksValues?: Animated.Value[];
-  renderMaximumTrackComponent?: () => React.ReactNode;
-  renderMinimumTrackComponent?: () => React.ReactNode;
-  renderTrackMarkComponent?: (index: number) => React.ReactNode;
-}
+/**
+ * Track container for the slider
+ *
+ * This component serves as the background track for the slider and contains
+ * the range indicator. It handles click interactions to jump to a specific value.
+ * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ *
+ * @example
+ * ```tsx
+ * <SliderTrack clickable={true}>
+ *   <SliderRange />
+ * </SliderTrack>
+ * ```
+ *
+ * @param children - Child components (SliderRange)
+ * @param className - Custom CSS classes for styling (NativeWind)
+ * @param clickable - Whether clicking on the track moves the thumb (default: true)
+ * @param style - Style object for additional styling (React Native)
+ * @returns SliderTrack component serving as the slider background
+ * @throws Error if used outside of SliderProvider context
+ */
+export function SliderTrack(props: PropsWithChildren<SliderTrackPropsTw>) {
+  classNamePropsHandler(props, 'SliderTrack');
+  const { children, className, clickable = sliderDefaultProps.trackClickable, style, ...rest } = props;
+  const { measureTrack, setTrackClickable } = useSliderActions();
 
-export default function SliderTrack({
-  interpolatedTrackMarksValues,
-  maximumTrackClassName,
-  maximumTrackColor,
-  measureTrack,
-  minimumTrackClassName,
-  minimumTrackColor,
-  minimumTrackStyle,
-  renderMaximumTrackComponent,
-  renderMinimumTrackComponent,
-  renderTrackMarkComponent,
-  trackClassName,
-  valueVisibleStyle,
-}: SliderTrackProps) {
+  useEffect(() => {
+    setTrackClickable(clickable);
+  }, [clickable, setTrackClickable]);
+
   return (
-    <>
-      <Box
-        onLayout={measureTrack}
-        renderToHardwareTextureAndroid
-        className={cn('h-1 rounded-full', trackClassName, maximumTrackClassName)}
-        style={[{ backgroundColor: maximumTrackColor }]}
-      >
-        {renderMaximumTrackComponent?.()}
-      </Box>
-
-      <Animated.View
-        renderToHardwareTextureAndroid
-        className={cn('absolute h-1.5 rounded-full', trackClassName, minimumTrackClassName)}
-        style={[minimumTrackStyle, { ...(minimumTrackColor && { backgroundColor: minimumTrackColor }) }]}
-      >
-        {renderMinimumTrackComponent?.()}
-      </Animated.View>
-
-      {renderTrackMarkComponent &&
-        interpolatedTrackMarksValues?.map((val, i) => (
-          <Animated.View
-            key={`track-mark-${i}`}
-            className="absolute"
-            style={[
-              {
-                transform: [{ translateX: val }, { translateY: 0 }],
-                ...valueVisibleStyle,
-              } as ViewStyle,
-            ]}
-          >
-            {renderTrackMarkComponent?.(i)}
-          </Animated.View>
-        ))}
-    </>
+    <Box
+      {...rest}
+      onLayout={measureTrack}
+      renderToHardwareTextureAndroid
+      {...classNameHandler(cn(twStyles.track, className))}
+      {...styleHandler({ defaultStyle: styles.track, style })}
+    >
+      {children}
+    </Box>
   );
 }
+
+SliderTrack.displayName = 'SliderTrack';

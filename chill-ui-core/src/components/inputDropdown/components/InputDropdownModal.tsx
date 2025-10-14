@@ -1,8 +1,10 @@
-import { classNamePropsHandler } from '@utils';
 import { InputDropdownModalProps } from '@types';
-import { Modal, TouchableWithoutFeedback, View } from 'react-native';
+import { Modal, Pressable, View } from 'react-native';
+import { classNameHandler, classNamePropsHandler, styleHandler } from '@utils';
 
 import InputDropdown from './InputDropdown';
+import { styles } from '../styles/InputDropdownModal.ss.styles';
+import { twStyles } from '../styles/InputDropdownModal.tw.styles';
 
 /**
  * Wraps an InputDropdown in a modal overlay for positioning and backdrop interaction.
@@ -25,7 +27,7 @@ import InputDropdown from './InputDropdown';
  *
  * @param dropdownProps - Props to pass to the underlying InputDropdown component
  * @param dropdownPosition - Position and dimensions for the dropdown (top, left, width, height)
- * @param toggleDropdown - Function to toggle the dropdown visibility
+ * @param backdropPress - Function to handle backdrop press
  * @param modalProps - Props to pass to the React Native Modal component
  * @param dropdownRef - Ref for the dropdown container element
  * @param wrapperRef - Ref for the modal wrapper element
@@ -33,38 +35,34 @@ import InputDropdown from './InputDropdown';
  */
 export default function InputDropdownModal(props: InputDropdownModalProps) {
   classNamePropsHandler(props, 'InputDropdownModal');
-  const { dropdownPosition, dropdownProps, dropdownRef, modalProps, toggleDropdown, wrapperRef } = props;
+  const { backdropPress, dropdownPosition, dropdownProps, dropdownRef, modalProps, wrapperRef } = props;
 
   const handleBackdropPress = () => {
-    if (dropdownProps?.itemClickableAs === 'none') {
-      return;
-    }
-    toggleDropdown();
-  };
-
-  const handleDropdownPress = () => {
-    if (dropdownProps?.itemClickableAs === 'none') {
-      //
-    }
+    backdropPress?.();
   };
 
   return (
     <Modal transparent statusBarTranslucent {...modalProps}>
-      <TouchableWithoutFeedback onPress={handleBackdropPress}>
-        <View style={{ flex: 1 }} ref={wrapperRef}>
-          <TouchableWithoutFeedback onPress={handleDropdownPress}>
-            <View
-              ref={dropdownRef}
-              style={{
-                position: 'absolute',
-                ...dropdownPosition,
-              }}
-            >
-              <InputDropdown {...dropdownProps} />
-            </View>
-          </TouchableWithoutFeedback>
+      <View
+        {...classNameHandler(twStyles.wrapper)}
+        {...styleHandler({ defaultStyle: styles.wrapper })}
+        ref={wrapperRef}
+      >
+        <Pressable
+          {...classNameHandler(twStyles.backdrop)}
+          {...styleHandler({ defaultStyle: styles.backdrop })}
+          onPress={handleBackdropPress}
+        />
+        <View
+          ref={dropdownRef}
+          style={{
+            position: 'absolute',
+            ...dropdownPosition,
+          }}
+        >
+          <InputDropdown {...dropdownProps} />
         </View>
-      </TouchableWithoutFeedback>
+      </View>
     </Modal>
   );
 }

@@ -9,22 +9,11 @@ import { cn, getStringLength, isString, classNamePropsHandler, classNameHandler,
 
 import { inputDefaultProps } from '../utils/defaultProps';
 import { inputContainerSv, inputSv, styles } from '../styles/Input.ss.styles';
-import {
-  inputContainerTv,
-  inputFieldTv,
-  labelClassName,
-  errorContainerClassName,
-  iconContainerClassName,
-  leftIconClassName,
-  rightIconClassName,
-  bottomInputContainerClassName,
-  bottomInputContainerShowLengthClassName,
-} from '../styles/Input.tw.styles';
+import { inputContainerTv, inputFieldTv, twStyles } from '../styles/Input.tw.styles';
 
 /**
  * Input component with Hybrid styling (Tailwind + StyleSheet).
  * Provides a comprehensive text input with validation, icons, error handling, and customizable styling.
- * Combines the flexibility of Tailwind classes with the performance of StyleSheet for optimal rendering.
  * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
  *
  * @example
@@ -111,6 +100,7 @@ const Input = forwardRef<TextInput, InputProps>((props, ref) => {
     rightIconAction,
     showLength,
     size = inputDefaultProps.size,
+    style,
     value,
     wrapperRef,
     ...rest
@@ -195,7 +185,7 @@ const Input = forwardRef<TextInput, InputProps>((props, ref) => {
       {!!label && (
         <String
           size="sm"
-          {...classNameHandler(labelClassName)}
+          {...classNameHandler(twStyles.label)}
           {...styleHandler({ defaultStyle: styles.label })}
           {...labelStringProps}
         >
@@ -206,7 +196,11 @@ const Input = forwardRef<TextInput, InputProps>((props, ref) => {
         ref={wrapperRef}
         {...styleHandler({
           defaultStyle: [styles.inputContainer, inputContainerSv({ hasError: !!hasError, isDisabled: !!isDisabled })],
-          style: [clickableAs === 'scale' ? { transform: [{ scale: scaleAnim }] } : undefined, hasError && errorStyle],
+          style: [
+            clickableAs === 'scale' ? { transform: [{ scale: scaleAnim }] } : undefined,
+            hasError && errorStyle,
+            style,
+          ],
         })}
         {...classNameHandler(
           cn(
@@ -222,14 +216,15 @@ const Input = forwardRef<TextInput, InputProps>((props, ref) => {
             size={leftIconAction?.iconSize || xmarkIconSize}
             color={leftIconAction?.iconColor}
             onPress={leftIconAction?.iconPress}
-            {...classNameHandler(cn(leftIconClassName))}
+            hasPressEffect={leftIconAction?.hasPressEffect}
+            {...classNameHandler(cn(twStyles.leftIcon))}
             {...styleHandler({ defaultStyle: styles.leftIcon })}
           />
         )}
         {leftIconAction?.customIcon && (
           <Pressable
             onPress={leftIconAction?.iconPress}
-            {...classNameHandler(cn(leftIconClassName))}
+            {...classNameHandler(cn(twStyles.leftIcon))}
             {...styleHandler({ defaultStyle: styles.leftIcon })}
           >
             {leftIconAction?.customIcon}
@@ -255,7 +250,7 @@ const Input = forwardRef<TextInput, InputProps>((props, ref) => {
         />
 
         <Box
-          {...classNameHandler(cn(iconContainerClassName))}
+          {...classNameHandler(cn(twStyles.iconContainer))}
           {...styleHandler({ defaultStyle: styles.iconContainer })}
         >
           {inputValue.length > 0 && hasClearIcon && (
@@ -268,14 +263,15 @@ const Input = forwardRef<TextInput, InputProps>((props, ref) => {
               size={rightIconAction?.iconSize || xmarkIconSize}
               color={rightIconAction?.iconColor}
               onPress={rightIconAction?.iconPress}
-              {...classNameHandler(cn(rightIconClassName))}
+              hasPressEffect={rightIconAction?.hasPressEffect}
+              {...classNameHandler(cn(twStyles.rightIcon))}
               {...styleHandler({ defaultStyle: styles.rightIcon })}
             />
           )}
           {rightIconAction?.customIcon && (
             <Pressable
               onPress={rightIconAction?.iconPress}
-              {...classNameHandler(cn(rightIconClassName))}
+              {...classNameHandler(cn(twStyles.rightIcon))}
               {...styleHandler({ defaultStyle: styles.rightIcon })}
             >
               {rightIconAction?.customIcon}
@@ -293,8 +289,8 @@ const Input = forwardRef<TextInput, InputProps>((props, ref) => {
       </AnimatedBox>
       <Box
         {...classNameHandler(
-          cn(bottomInputContainerClassName, {
-            [bottomInputContainerShowLengthClassName]: showLength && !errorMessage,
+          cn(twStyles.bottomInputContainer, {
+            [twStyles.bottomInputContainerShowLength]: showLength && !errorMessage,
           }),
         )}
         {...styleHandler({
@@ -304,7 +300,7 @@ const Input = forwardRef<TextInput, InputProps>((props, ref) => {
       >
         {!!errorMessage && (
           <Box
-            {...classNameHandler(cn(errorContainerClassName))}
+            {...classNameHandler(cn(twStyles.errorContainer))}
             {...styleHandler({ defaultStyle: styles.errorContainer })}
           >
             {!!errorIconName && <Icon name={errorIconName as any} size="xs" color="#FF0000" />}

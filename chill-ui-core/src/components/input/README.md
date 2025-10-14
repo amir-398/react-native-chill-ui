@@ -182,6 +182,7 @@ const IconInput = () => {
       rightIconAction={{
         iconName: 'xmark-solid',
         iconPress: () => setSearch(''),
+        hasPressEffect: true,
       }}
     />
   );
@@ -319,13 +320,14 @@ const CharacterCountInput = () => {
 
 ### IconActionProps
 
-| Prop         | Type                                   | Description                   |
-| ------------ | -------------------------------------- | ----------------------------- |
-| `iconName`   | `string`                               | Name of the icon to display   |
-| `iconSize`   | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | Size of the icon              |
-| `iconColor`  | `string`                               | Color of the icon             |
-| `iconPress`  | `() => void`                           | Callback when icon is pressed |
-| `customIcon` | `ReactNode`                            | Custom icon component         |
+| Prop             | Type                                   | Description                                       |
+| ---------------- | -------------------------------------- | ------------------------------------------------- |
+| `iconName`       | `string`                               | Name of the icon to display                       |
+| `iconSize`       | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | Size of the icon                                  |
+| `iconColor`      | `string`                               | Color of the icon                                 |
+| `iconPress`      | `() => void`                           | Callback when icon is pressed                     |
+| `customIcon`     | `ReactNode`                            | Custom icon component                             |
+| `hasPressEffect` | `boolean`                              | Whether to show press effect when icon is pressed |
 
 ### Size Variants
 

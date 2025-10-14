@@ -72,13 +72,11 @@ const styles = (theme: TimePickerOptionsProps) =>
 function TimePicker(props: TimePickerProps<MinuteInterval>) {
   const { minuteInterval = 5, onTimeChange, options: propsOptions } = props;
 
-  /** Merged options combining defaults with custom props */
   const timePickerOptions = {
     ...options,
     ...propsOptions,
   };
 
-  /** Generated styles based on theme options */
   const style = styles(timePickerOptions);
 
   return (
@@ -88,4 +86,4 @@ function TimePicker(props: TimePickerProps<MinuteInterval>) {
   );
 }
 
-export default TimePicker;
+export { TimePicker };

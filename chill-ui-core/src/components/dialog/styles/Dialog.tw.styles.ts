@@ -4,13 +4,12 @@ import { tv } from 'tailwind-variants';
  * Tailwind utility classes for Dialog component
  */
 export const twStyles = {
-  backdrop: 'absolute inset-0 flex-1 items-center justify-center bg-black/50',
+  backdrop: 'absolute inset-0 flex-1 items-center justify-center bg-[#000]/50',
   container: 'flex-1 items-center justify-center',
-  dialogBase: 'relative w-5/6 border bg-[#FFF]',
-  footer: 'border-t border-gray-200 px-6 py-3',
+  dialogBase: 'relative w-5/6 border bg-[#FFF] rounded-lg',
+  footer: 'flex-row justify-between items-center border-t border-[#E5E7EB] px-3 py-2',
   title: 'font-semibold',
-  triggerBase: 'relative z-50',
-  triggerRipple: 'bg-white',
+  triggerBase: 'self-start',
 };
 
 export const dialogHeaderTv = tv({
@@ -18,8 +17,13 @@ export const dialogHeaderTv = tv({
   compoundVariants: [
     {
       children: true,
-      className: 'relative border-b border-[#E5E7EB] px-6 py-3 flex-row items-center justify-between',
+      className: 'border-b border-[#E5E7EB] px-3 py-2 justify-between',
       hasCloseMark: true,
+    },
+    {
+      children: true,
+      className: 'border-b border-[#E5E7EB] px-3 py-2',
+      hasCloseMark: false,
     },
     {
       children: false,
@@ -45,19 +49,9 @@ export const dialogHeaderTv = tv({
 export const dialogTv = tv({
   base: twStyles.dialogBase,
   defaultVariants: {
-    rounded: 'lg',
     size: 'md',
   },
   variants: {
-    rounded: {
-      '2xl': 'rounded-2xl',
-      '3xl': 'rounded-3xl',
-      full: 'rounded-full',
-      lg: 'rounded-lg',
-      md: 'rounded-md',
-      sm: 'rounded-sm',
-      xl: 'rounded-xl',
-    },
     size: {
       full: 'w-full',
       lg: 'w-4/5',

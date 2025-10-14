@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { AnimatedBox } from '@components/animatedBox';
 import { StyleSheet, Animated, FlatList, ListRenderItem } from 'react-native';
 
 import { Box } from '../box';
@@ -223,7 +224,7 @@ function SelectTime({
   }, [time, onTimeChange]);
 
   return (
-    <Animated.View style={style.container}>
+    <AnimatedBox style={style.container}>
       <TimeScroller
         title="Heures"
         data={Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0'))}
@@ -236,7 +237,7 @@ function SelectTime({
         onChange={minute => setTime({ ...time, minute })}
         options={options}
       />
-    </Animated.View>
+    </AnimatedBox>
   );
 }
 

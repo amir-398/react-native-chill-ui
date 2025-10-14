@@ -1,1 +1,1 @@
-export { ToastProvider, useToast } from './ToastProvider';
+export { ToastProvider, useToast } from './components/ToastProvider';

@@ -1,5 +1,7 @@
 import { styles } from '../styles/HightlightString.styles';
-import { defaultHighlightClassName } from '../styles/HightlightString.variants';
+import { twStyles } from '../styles/HightlightString.variants';
+
+const { defaultHighlightClassName } = twStyles;
 
 describe('HighlightString Styles', () => {
   describe('StyleSheet styles', () => {

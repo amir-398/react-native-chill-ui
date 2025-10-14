@@ -61,7 +61,7 @@ const meta: Meta<typeof InputDropdown> = {
     itemClickableAs: {
       control: 'select',
       description: 'Type of touchable component for items',
-      options: ['TouchableOpacity', 'Pressable', 'TouchableHighlight', 'RipplePressable', 'none'],
+      options: ['touchable-opacity', 'pressable', 'touchable-highlight'],
     },
     loadingIndicatorProps: { control: 'object', description: 'Props for loading indicator' },
   },
@@ -197,19 +197,10 @@ export const TouchableHighlight: Story = {
   },
 };
 
-export const RipplePressable: Story = {
+export const TouchableHighlight: Story = {
   args: {
     data: sampleData,
-    itemClickableAs: 'RipplePressable',
-    maxHeight: 300,
-    visible: true,
-  },
-};
-
-export const NonClickable: Story = {
-  args: {
-    data: sampleData,
-    itemClickableAs: 'none',
+    itemClickableAs: 'touchable-highlight',
     maxHeight: 300,
     visible: true,
   },
@@ -374,7 +365,7 @@ export const SearchableWithAnimation: Story = {
     hasAnimation: true,
     hasSearch: true,
     hasShadow: true,
-    itemClickableAs: 'RipplePressable',
+    itemClickableAs: 'touchable-highlight',
     maxHeight: 300,
     searchInputProps: {
       leftIconAction: {

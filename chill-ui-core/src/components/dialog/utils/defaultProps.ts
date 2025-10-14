@@ -1,16 +1,14 @@
-import { DialogContentProps } from '@types';
+import { DialogContentPropsTw } from '@types';
 
 /**
  * Default props for Dialog component
  */
 export const dialogDefaultProps = {
-  animation: 'fade' as DialogContentProps['animation'],
+  animation: 'fade' as DialogContentPropsTw['animation'],
   as: 'pressable' as const,
-  closeMarkPosition: 'right' as DialogContentProps['closeMarkPosition'],
   closeOnBackdropPress: true,
   closeOnGoBack: true,
-  hasOverlay: true,
-  rounded: 'lg' as DialogContentProps['rounded'],
-  size: 'md' as DialogContentProps['size'],
+  hasBackdrop: true,
+  size: 'md' as DialogContentPropsTw['size'],
   useDefaultContainer: true,
 };

@@ -1,1 +1,3 @@
-export const defaultHighlightClassName = 'bg-[#FFE4B5]';
+export const twStyles = {
+  defaultHighlightClassName: 'bg-[#FFE4B5]',
+};

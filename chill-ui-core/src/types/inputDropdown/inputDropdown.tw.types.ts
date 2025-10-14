@@ -1,6 +1,6 @@
-import { View, FlatListProps, ModalProps } from 'react-native';
+import { View, FlatListProps, ModalProps, StyleProp, ViewStyle } from 'react-native';
 
-import type { LoadingIndicatorProps } from '../loadingIndicator.types';
+import type { LoadingIndicatorProps } from '../loadingIndicator/loadingIndicator.types';
 
 import { InputPropsTw } from '../input';
 import { StringPropsTw } from '../string';
@@ -9,8 +9,6 @@ import { StringPropsTw } from '../string';
  * Props for dropdown items
  */
 export interface DropdownItemProps {
-  /** Custom CSS classes for the dropdown item */
-  className?: string;
   /** Props for the string component within the item */
   stringItemProps?: StringPropsTw;
   /** Background color when item is active/selected */
@@ -19,17 +17,20 @@ export interface DropdownItemProps {
 
 // InputDropdown ----------
 /**
- * Base props for input dropdown components
+ * Base props for input dropdown componentsp
+ *
  */
 export interface InputDropdownBaseProps {
   /** Whether the dropdown is visible */
   visible: boolean;
   /** Maximum height of the dropdown */
-  maxHeight: number;
+  maxHeight?: number;
   /** Minimum height of the dropdown */
   minHeight?: number;
   /** Custom CSS classes for the dropdown */
   className?: string;
+  /** Style for the dropdown */
+  style?: StyleProp<ViewStyle>;
   /** Whether to show shadow */
   hasShadow?: boolean;
   /** Whether to show search input */
@@ -69,7 +70,7 @@ export interface InputDropdownListProps {
   /** Props for the FlatList component */
   dropdownListProps?: Omit<FlatListProps<any>, 'renderItem' | 'data'>;
   /** Type of touchable component to use for items */
-  itemClickableAs?: 'TouchableOpacity' | 'Pressable' | 'TouchableHighlight' | 'RipplePressable' | 'none';
+  itemClickableAs?: 'touchable-opacity' | 'pressable' | 'touchable-highlight';
 }
 
 /**
@@ -81,6 +82,8 @@ export type InputDropdownProps = Omit<InputDropdownBaseProps, 'children'> & Inpu
  * Props for InputDropdownModal component
  */
 export type InputDropdownModalProps = {
+  /** Function to handle backdrop press */
+  backdropPress?: () => void;
   /** Reference to the dropdown view */
   dropdownRef?: React.RefObject<View | null>;
   /** Reference to the wrapper view */
@@ -100,6 +103,4 @@ export type InputDropdownModalProps = {
     /** Bottom position */
     bottom?: number;
   } | null;
-  /** Function to toggle dropdown visibility */
-  toggleDropdown: () => void;
 };

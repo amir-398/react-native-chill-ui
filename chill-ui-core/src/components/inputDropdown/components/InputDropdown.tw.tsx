@@ -59,6 +59,7 @@ export default function InputDropdown(props: InputDropdownPropsTw) {
     minHeight,
     onSelectItem,
     searchInputProps,
+    style,
     visible,
   } = props;
 
@@ -68,6 +69,7 @@ export default function InputDropdown(props: InputDropdownPropsTw) {
       maxHeight={maxHeight}
       minHeight={minHeight}
       className={className}
+      style={style}
       hasShadow={hasShadow}
       hasAnimation={hasAnimation}
       hasSearch={hasSearch}

@@ -59,6 +59,12 @@ export interface AutocompleteDropdownProps<T> {
 
   /** Callback function when an item is selected */
   onSelectItem?: (item: T) => void;
+  /** Controlled open state */
+  open?: boolean;
+  /** Callback when open state changes */
+  onOpenChange?: (open: boolean) => void;
+  /** Default open state (uncontrolled) */
+  defaultOpen?: boolean;
   /** Close dropdown after selection (default: true) */
   closeModalWhenSelectedItem?: boolean;
   /** Callback for confirmed selection */

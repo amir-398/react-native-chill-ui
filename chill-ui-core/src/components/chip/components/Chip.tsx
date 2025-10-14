@@ -1,4 +1,4 @@
-import type { ChipPropsTw } from '@types';
+import type { ChipPropsTw, IconProps } from '@types';
 
 import { Box } from '@components/box';
 import { Icon } from '@components/icon';
@@ -99,7 +99,11 @@ export default function Chip(props: ChipPropsTw) {
           {...classNameHandler(cn(iconClassName, twStyles.pointerEventsNone))}
           {...styleHandler({ defaultStyle: [iconStyle, styles.pointerEventsNone] })}
         >
-          <Icon name={iconAction.name} size={iconAction.size ?? size ?? 'sm'} color={iconAction.color} />
+          <Icon
+            name={iconAction.name}
+            size={iconAction.size ?? (size as IconProps['size']) ?? 'sm'}
+            color={iconAction.color}
+          />
         </Box>
       );
     }

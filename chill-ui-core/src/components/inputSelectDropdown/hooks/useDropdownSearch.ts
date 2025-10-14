@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo } from 'react';
 
-import { SearchConfig, DEFAULT_CONFIG } from '../types';
+import { SearchConfig } from '../types';
 import { get, debounce, differenceWith, isEqual } from '../../../utils';
+import { inputSelectDropdownDefaultProps } from '../utils/defaultProps';
 
 interface DropdownSearchParams extends SearchConfig {
   dataSet: any[];
@@ -81,7 +82,10 @@ export default function useDropdownSearch({
   );
 
   // Debounced search
-  const debouncedSearch = useMemo(() => debounce(performSearch, DEFAULT_CONFIG.DEBOUNCE_DELAY), [performSearch]);
+  const debouncedSearch = useMemo(
+    () => debounce(performSearch, inputSelectDropdownDefaultProps.debounceDelay),
+    [performSearch],
+  );
 
   useEffect(() => {
     if (dataSet && searchText.length === 0) {

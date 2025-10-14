@@ -1,4 +1,4 @@
-import type { ChipPropsTw } from '@types';
+import type { ChipPropsTw, IconPropsTw } from '@types';
 
 import { cn, isString } from '@utils';
 import { BoxTw } from '@components/box';
@@ -14,7 +14,6 @@ import { chipTv, chipTextTv, twStyles } from '../styles/Chip.tw.styles';
 /**
  * Chip component displays compact elements that represent an input, attribute, or action.
  * Supports both text and icon content with customizable colors, sizes, and style variants (contained/outlined).
- * Tailwind version using NativeWind for styling.
  *
  * @example
  * ```tsx
@@ -86,7 +85,11 @@ export default function Chip(props: ChipPropsTw) {
     if (iconAction.name) {
       return (
         <BoxTw className={cn(iconClassName, twStyles.pointerEventsNone)}>
-          <IconTw name={iconAction.name} size={iconAction.size ?? size ?? 'sm'} color={iconAction.color} />
+          <IconTw
+            name={iconAction.name}
+            size={iconAction.size ?? (size as IconPropsTw['size']) ?? 'sm'}
+            color={iconAction.color}
+          />
         </BoxTw>
       );
     }

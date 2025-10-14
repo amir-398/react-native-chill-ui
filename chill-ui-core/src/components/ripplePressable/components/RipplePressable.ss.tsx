@@ -2,9 +2,10 @@ import type { RipplePressablePropsSs } from '@types';
 
 import { AnimatedBoxSs } from '@components/animatedBox';
 import { View, Animated, Pressable } from 'react-native';
-import { useState, useRef, useEffect, PropsWithChildren, Children, isValidElement } from 'react';
+import { useState, useRef, useEffect, PropsWithChildren } from 'react';
 
 import styles from '../styles/RipplePressable.ss.styles';
+import { extractBorderRadius } from '../utils/extractBorder';
 
 interface RippleEffectProps {
   x: number;
@@ -66,28 +67,6 @@ function RippleEffect({ containerHeight, containerWidth, duration, effectColor, 
 }
 
 /**
- * Utility function to extract borderRadius from children styles
- */
-function extractBorderRadius(children: React.ReactNode): number {
-  if (!children) return 0;
-
-  const firstChild = Children.toArray(children)[0];
-  if (!isValidElement(firstChild)) return 0;
-
-  const { style } = firstChild.props as { style?: any };
-  if (!style) return 0;
-
-  // Handle array of styles
-  if (Array.isArray(style)) {
-    const styleWithBorderRadius = style.find(styleObj => styleObj?.borderRadius);
-    return styleWithBorderRadius?.borderRadius || 0;
-  }
-
-  // Handle single style object
-  return style.borderRadius || 0;
-}
-
-/**
  * RipplePressable component that provides a ripple effect on press.
  *
  * @example
@@ -97,18 +76,6 @@ function extractBorderRadius(children: React.ReactNode): number {
  *   <Box style={{ padding: 16, backgroundColor: '#3B82F6', borderRadius: 8 }}>
  *     <String color="white">Press me</String>
  *   </Box>
- * </RipplePressable>
- *
- * // With custom styling and speed
- * <RipplePressable
- *   style={{ padding: 16, backgroundColor: '#3B82F6', borderRadius: 8 }}
- *   effectColor="rgba(255, 255, 255, 0.8)"
- *   speed={300}
- *   onPress={() => handleButtonPress()}
- * >
- *   <String color="white" style={{ fontWeight: 'bold' }}>
- *     Fast Ripple Button
- *   </String>
  * </RipplePressable>
  * ```
  *

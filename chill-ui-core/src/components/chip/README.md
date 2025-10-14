@@ -127,6 +127,105 @@ import { Chip } from 'react-native-chill-ui';
 - `white`
 - `disabled`
 
+## ⚠️ NativeWind Requirements
+
+**Important:** The following props are **only available with NativeWind**:
+
+- `className` - Custom CSS classes
+- `colorVariant` - All color variants except `primary`
+
+Without NativeWind:
+
+- Only the `primary` color variant is available
+- All other color variants will fallback to `primary` with a development warning
+- You need to configure your `tailwind.config.js` with the chip color tokens
+
+## Color Variants Setup (NativeWind Required)
+
+To use all available color variants, you need to configure your `tailwind.config.js` file with the chip color tokens:
+
+```javascript
+// tailwind.config.js
+module.exports = {
+  // ... other config
+  theme: {
+    extend: {
+      colors: {
+        chip: {
+          // Primary colors
+          primary: {
+            background: '#7DD3FC',
+            text: '#000',
+          },
+          secondary: {
+            background: '#CBD2D9',
+            text: '#333',
+          },
+          accent: {
+            background: '#CBD2D9',
+            text: '#FF0000',
+          },
+
+          // Semantic colors
+          success: {
+            background: '#10B981',
+            text: '#FFF',
+          },
+          error: {
+            background: '#FF0000',
+            text: '#FFF',
+          },
+          warning: {
+            background: '#FCD34D',
+            text: '#000',
+          },
+          info: {
+            background: '#6EE7B7',
+            text: '#000',
+          },
+
+          // Additional variants
+          danger: {
+            background: '#FF0000',
+            text: '#FFF',
+          },
+          dark: {
+            background: '#323F4B',
+            text: '#FFF',
+          },
+          light: {
+            background: '#F5F7FA',
+            text: '#000',
+          },
+          neutral: {
+            background: '#CBD2D9',
+            text: '#333',
+          },
+          muted: {
+            background: '#CBD2D9',
+            text: '#666',
+          },
+          inverted: {
+            background: '#F5F7FA',
+            text: '#000',
+          },
+          white: {
+            background: '#F5F7FA',
+            text: '#000',
+          },
+
+          // Disabled state
+          disabled: {
+            background: '#CBD2D9',
+            text: '#666',
+          },
+        },
+      },
+    },
+  },
+};
+```
+
 ### TouchableComponentType Options
 
 - `touchable-opacity` (default) - Standard fade effect on press
@@ -163,13 +262,28 @@ Select the appropriate version during installation based on your project's needs
 ### Color Variants (NativeWind only)
 
 ```tsx
-<Chip colorVariant="primary">Primary</Chip>
-<Chip colorVariant="secondary">Secondary</Chip>
-<Chip colorVariant="accent">Accent</Chip>
-<Chip colorVariant="danger">Danger</Chip>
-<Chip colorVariant="warning">Warning</Chip>
-<Chip colorVariant="info">Info</Chip>
-<Chip colorVariant="success">Success</Chip>
+<Box className="gap-4">
+  {/* Primary colors */}
+  <Chip colorVariant="primary">Primary</Chip>
+  <Chip colorVariant="secondary">Secondary</Chip>
+  <Chip colorVariant="accent">Accent</Chip>
+
+  {/* Semantic colors */}
+  <Chip colorVariant="success">Success</Chip>
+  <Chip colorVariant="error">Error</Chip>
+  <Chip colorVariant="warning">Warning</Chip>
+  <Chip colorVariant="info">Info</Chip>
+
+  {/* Additional variants */}
+  <Chip colorVariant="danger">Danger</Chip>
+  <Chip colorVariant="dark">Dark</Chip>
+  <Chip colorVariant="light">Light</Chip>
+  <Chip colorVariant="neutral">Neutral</Chip>
+  <Chip colorVariant="muted">Muted</Chip>
+  <Chip colorVariant="inverted">Inverted</Chip>
+  <Chip colorVariant="white">White</Chip>
+  <Chip colorVariant="disabled">Disabled</Chip>
+</Box>
 ```
 
 ### With Icons

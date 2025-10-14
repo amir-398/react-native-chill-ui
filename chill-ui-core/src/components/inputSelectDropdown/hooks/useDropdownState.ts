@@ -2,14 +2,14 @@ import { useCallback, useState } from 'react';
 
 import { DropdownState } from '../types';
 
-export default function useDropdownState(initialData: any[] = []) {
+export default function useDropdownState(initialData: any[] = [], defaultOpen: boolean = false) {
   const [state, setState] = useState<DropdownState>({
     currentValue: null,
     keyboardHeight: 0,
     listData: initialData,
     position: null,
     searchText: '',
-    visible: false,
+    visible: defaultOpen,
   });
 
   const updateState = useCallback((newState: Partial<DropdownState>) => {

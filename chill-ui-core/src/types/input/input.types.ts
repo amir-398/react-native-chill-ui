@@ -4,6 +4,7 @@ import type { TextInputProps, View } from 'react-native';
 import type { IconPropsTw, StringPropsTw } from '@types';
 
 import { StyleProp, ViewStyle } from 'react-native';
+
 import { inputSv } from '@/components/input/styles/Input.ss.styles';
 
 import { StrictOmit, OptionalProp } from '../utils';
@@ -61,6 +62,9 @@ export type InputProps = TextInputProps &
       customIcon?: React.ReactNode;
       /** Callback when icon is pressed */
       iconPress?: () => void;
+
+      /** Whether to show press effect when icon is pressed */
+      hasPressEffect?: boolean;
     };
     /** Right icon configuration */
     rightIconAction?: {
@@ -74,6 +78,9 @@ export type InputProps = TextInputProps &
       customIcon?: React.ReactNode;
       /** Callback when icon is pressed */
       iconPress?: () => void;
+
+      /** Whether to show press effect when icon is pressed */
+      hasPressEffect?: boolean;
     };
 
     // Security
@@ -108,13 +115,3 @@ export type InputProps = TextInputProps &
     /** Custom CSS classes for the length text */
     lengthStringProps?: StringPropsTw;
   };
-
-/**
- * Props for the MaskedInput component
- */
-export type MaskedInputProps = {
-  /** Mask pattern for the input */
-  mask: string;
-  /** Callback with masked and unmasked text */
-  onChangeText: ({ maskedText, unmaskedText }: { maskedText: string; unmaskedText: string }) => void;
-} & Omit<InputProps, 'onChangeText'>;
