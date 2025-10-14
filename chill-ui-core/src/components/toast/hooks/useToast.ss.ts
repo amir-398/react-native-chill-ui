@@ -1,9 +1,9 @@
 import { useCallback, useMemo } from 'react';
-import { ToastVariantPropsTw, ToastPositionPropsTw } from '@types';
+import { ToastVariantPropsSs, ToastPositionPropsSs } from '@types';
 
-import { useToastState } from './useToastState';
-import { variantTitles } from '../utils/toastConfig';
+import { useToastState } from './useToastState.tw';
 import { useToastAnimation } from './useToastAnimation';
+import { variantTitles, variantConfig } from '../utils/toastConfig.tw';
 
 export const useToast = (variants: any) => {
   const {
@@ -28,15 +28,45 @@ export const useToast = (variants: any) => {
     translateYAnim,
   } = useToastAnimation();
 
-  const getConfig = useCallback((variantType: ToastVariantPropsTw) => variants[variantType], [variants]);
+  const getConfig = useCallback(
+    (variantType: ToastVariantPropsSs) => {
+      const defaultConfig = variantConfig[variantType];
+      const customConfig = variants[variantType];
+
+      if (!customConfig) {
+        return defaultConfig;
+      }
+
+      if (!defaultConfig) {
+        return customConfig;
+      }
+      return {
+        ...defaultConfig,
+        ...customConfig,
+        iconProps: {
+          ...defaultConfig.iconProps,
+          ...customConfig.iconProps,
+        },
+        messageStringProps: {
+          ...defaultConfig.messageStringProps,
+          ...customConfig.messageStringProps,
+        },
+        titleStringProps: {
+          ...defaultConfig.titleStringProps,
+          ...customConfig.titleStringProps,
+        },
+      };
+    },
+    [variants],
+  );
 
   const showToast = useCallback(
     (
       msg: string,
       toastTitle?: string,
       render?: React.ReactNode,
-      variantType: ToastVariantPropsTw = 'info',
-      position: ToastPositionPropsTw = 'bottom',
+      variantType: ToastVariantPropsSs = 'info',
+      position: ToastPositionPropsSs = 'bottom',
       duration: number = 3000,
     ) => {
       resetState();

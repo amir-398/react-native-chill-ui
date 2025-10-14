@@ -1,8 +1,8 @@
-import { ToastPropsTw, ToastProviderPropsTw } from '@types';
+import { ToastPropsSs, ToastProviderPropsSs } from '@types';
 import { createContext, useContext, useRef, useCallback, useMemo, PropsWithChildren } from 'react';
 
-import Toast from './Toast';
-import { ToastRefProps, ToastContextPropsType } from '../types/toast.tw.types';
+import Toast from './Toast.ss';
+import { ToastRefProps, ToastContextPropsType } from '../types/toast.ss.types';
 
 /** Context for providing toast functionality throughout the app */
 const ToastContext = createContext<ToastContextPropsType | null>(null);
@@ -61,7 +61,7 @@ export function ToastProvider({
   offsetY = 0,
   swipeable = false,
   variants,
-}: PropsWithChildren<ToastProviderPropsTw>) {
+}: PropsWithChildren<ToastProviderPropsSs>) {
   /** Reference to the Toast component for programmatic control */
   const toastRef = useRef<ToastRefProps>(null);
 
@@ -84,7 +84,7 @@ export function ToastProvider({
       title,
       titleStringProps,
       variant = 'info',
-    }: ToastPropsTw) => {
+    }: ToastPropsSs) => {
       toastRef.current?.showToast(
         message,
         variant,

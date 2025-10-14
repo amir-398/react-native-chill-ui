@@ -1,6 +1,7 @@
 import { StyleProp, ViewStyle } from 'react-native';
 
-import { TIcons } from '@/constants';
+import { IconProps } from '../icon/icon.tw.types';
+import { StringProps } from '../string/string.tw.types';
 
 /**
  * Toast variant type definition
@@ -13,22 +14,26 @@ export type ToastVariantProps = 'success' | 'error' | 'info' | 'warning';
 export type ToastPositionProps = 'top' | 'bottom';
 
 export interface ToastVariantConfig {
-  /** Background color for toast */
-  backgroundColor?: string;
-  /** Icon name for toast */
-  icon?: keyof TIcons;
+  /** Style object for the entire toast container */
+  style?: StyleProp<ViewStyle>;
+  /** ClassName for the entire toast container */
+  className?: string;
+  /** Props for the title String component */
+  titleStringProps?: StringProps;
+  /** Props for the message String component */
+  messageStringProps?: StringProps;
+  /** Props for the Icon component */
+  iconProps?: IconProps;
   /** Custom icon component for toast */
   customIcon?: React.ReactNode;
-  /** Title text color for toast */
-  titleColor?: string;
-  /** Content text color for toast */
-  contentColor?: string;
+  /** Custom render function for toast content */
+  render?: React.ReactNode;
   /** Progress bar color for toast */
   progressBarColor?: string;
 }
 
 export type ToastVariantTypeProps = {
-  [key in ToastVariantProps]: ToastVariantConfig;
+  [key in ToastVariantProps]?: ToastVariantConfig;
 };
 
 /**
@@ -77,4 +82,10 @@ export type ToastProps = {
   offsetY?: number;
   /** Style object for additional styling */
   style?: StyleProp<ViewStyle>;
+  /** Props for the title String component */
+  titleStringProps?: StringProps;
+  /** Props for the message String component */
+  messageStringProps?: StringProps;
+  /** Props for the Icon component */
+  iconProps?: IconProps;
 };

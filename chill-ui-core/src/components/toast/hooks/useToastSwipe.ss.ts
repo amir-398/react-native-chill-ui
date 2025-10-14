@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { Animated, PanResponder } from 'react-native';
 
-import { UseToastSwipeOptionsProps } from '../types';
+import { UseToastSwipeOptionsProps } from '../types/toast.ss.types';
 
 export const useToastSwipe = ({ enabled = true, onDismiss, position, threshold = 50 }: UseToastSwipeOptionsProps) => {
   const swipeY = useRef(new Animated.Value(0)).current;

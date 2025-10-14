@@ -1,17 +1,17 @@
-import { cn } from '@utils';
-import { BoxTw } from '@components/box';
+import { styleHandler } from '@utils';
+import { BoxSs } from '@components/box';
 import { Animated } from 'react-native';
-import { IconTw } from '@components/icon';
+import { IconSs } from '@components/icon';
 import { useEffect, useMemo } from 'react';
-import { StringTw } from '@components/string';
-import { AnimatedBoxTw } from '@components/animatedBox';
+import { StringSs } from '@components/string';
+import { AnimatedBoxSs } from '@components/animatedBox';
 
-import type { ToastItemProps } from '../types/toast.tw.types';
+import type { ToastItemProps } from '../types/toast.ss.types';
 
 import { useToast, useToastSwipe } from '../hooks';
-import { twStyles } from '../styles/Toast.tw.styles';
+import { styles } from '../styles/Toast.ss.styles';
 import { toastDefaultProps } from '../utils/defaultProps';
-import { variantConfig, variantTitles, PROGRESS_BAR_HEIGHT } from '../utils/toastConfig.tw';
+import { variantConfig, variantTitles, PROGRESS_BAR_HEIGHT } from '../utils/toastConfig.ss';
 
 /**
  * ToastItem component representing a single toast
@@ -29,7 +29,6 @@ function ToastItem({
 }: ToastItemProps) {
   const {
     config,
-    customRender,
     isVisible,
     message,
     opacityAnim,
@@ -40,6 +39,8 @@ function ToastItem({
     toastPosition,
     translateYAnim,
   } = useToast(variants);
+
+  const customRender = toast.render;
 
   const { bottom, top } = safeAreaInsets;
 
@@ -86,57 +87,58 @@ function ToastItem({
   if (!isVisible) return null;
 
   return (
-    <AnimatedBoxTw
+    <AnimatedBoxSs
       {...(swipeable ? panResponder.panHandlers : {})}
-      style={[
-        {
-          opacity: Animated.multiply(opacityAnim, stackOpacity),
-          transform: [
-            { translateY: Animated.add(translateYAnim, swipeY) },
-            { scale: Animated.multiply(scaleAnim, scale) },
-          ],
-          ...positionStyle,
-        },
-      ]}
-      className={cn(twStyles.container, !(customRender || config.render) && twStyles.containerWithPadding)}
+      {...styleHandler({
+        defaultStyle: [styles.container, !(customRender || config.render) && styles.containerWithPadding],
+        style: [
+          {
+            opacity: Animated.multiply(opacityAnim, stackOpacity),
+            transform: [
+              { translateY: Animated.add(translateYAnim, swipeY) },
+              { scale: Animated.multiply(scaleAnim, scale) },
+            ],
+            ...positionStyle,
+          },
+          styles.container,
+          !(customRender || config.render) && styles.containerWithPadding,
+        ],
+      })}
       pointerEvents={swipeable && stackIndex === 0 ? 'auto' : 'none'}
     >
-      {!(customRender || config.render) && (
-        <BoxTw style={config.style} className={cn(twStyles.background, config.className)} />
-      )}
+      {!(customRender || config.render) && <BoxSs style={[config.style, styles.background]} />}
 
       {customRender || config.render ? (
-        <BoxTw className={twStyles.customContent}>{customRender || config.render}</BoxTw>
+        <BoxSs style={styles.customContent}>{customRender || config.render}</BoxSs>
       ) : (
-        <BoxTw className={twStyles.contentRow}>
-          {config.customIcon || (
-            <IconTw {...config.iconProps} {...toast.iconProps} size="lg" className={twStyles.icon} />
-          )}
+        <BoxSs style={styles.contentRow}>
+          {config.customIcon || <IconSs {...config.iconProps} {...toast.iconProps} size="lg" style={styles.icon} />}
 
-          <BoxTw className={twStyles.textContainer}>
-            <StringTw {...config.titleStringProps} {...toast.titleStringProps}>
+          <BoxSs style={styles.textContainer}>
+            <StringSs {...config.titleStringProps} {...toast.titleStringProps}>
               {title}
-            </StringTw>
-            <StringTw size="sm" {...config.messageStringProps} {...toast.messageStringProps}>
+            </StringSs>
+            <StringSs size="sm" {...config.messageStringProps} {...toast.messageStringProps}>
               {message}
-            </StringTw>
-          </BoxTw>
-        </BoxTw>
+            </StringSs>
+          </BoxSs>
+        </BoxSs>
       )}
 
       {!(customRender || config.render) && (
-        <AnimatedBoxTw
+        <AnimatedBoxSs
           style={[
             {
               backgroundColor: config.progressBarColor,
               height: PROGRESS_BAR_HEIGHT,
               width: progressWidthAnim,
             },
+            styles.progressBar,
+            styles.progressBarHeight,
           ]}
-          className={cn(twStyles.progressBar, twStyles.progressBarHeight)}
         />
       )}
-    </AnimatedBoxTw>
+    </AnimatedBoxSs>
   );
 }
 

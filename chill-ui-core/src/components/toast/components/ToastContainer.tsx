@@ -1,7 +1,7 @@
 import { forwardRef, useImperativeHandle, useEffect } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import ToastItem from './ToastItem.tw';
+import ToastItem from './ToastItem';
 import { variantConfig } from '../utils/toastConfig.tw';
 import { useToastQueue } from '../hooks/useToastQueue.tw';
 import { toastDefaultProps } from '../utils/defaultProps';

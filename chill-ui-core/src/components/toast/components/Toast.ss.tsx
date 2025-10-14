@@ -1,9 +1,8 @@
 import { forwardRef } from 'react';
 
-import ToastContainer from './ToastContainer.tw';
-import { variantConfig } from '../utils/toastConfig.tw';
-import { toastDefaultProps } from '../utils/defaultProps';
-import { ToastProps, ToastRefProps } from '../types/toast.tw.types';
+import ToastContainer from './ToastContainer.ss';
+import { variantConfig } from '../utils/toastConfig.ss';
+import { ToastProps, ToastRefProps } from '../types/toast.ss.types';
 
 /**
  * Toast component with native React Native animations
@@ -14,16 +13,7 @@ import { ToastProps, ToastRefProps } from '../types/toast.tw.types';
  * @param swipeable - If true, toasts can be dismissed by swiping (default: false)
  */
 const Toast = forwardRef<ToastRefProps, ToastProps>(
-  (
-    {
-      allowMultiple = toastDefaultProps.allowMultiple,
-      maxToasts = toastDefaultProps.maxToasts,
-      offsetY = toastDefaultProps.offsetY,
-      swipeable = toastDefaultProps.swipeable,
-      variants = variantConfig,
-    },
-    ref,
-  ) => (
+  ({ allowMultiple = false, maxToasts = 4, offsetY = 0, swipeable = false, variants = variantConfig }, ref) => (
     <ToastContainer
       ref={ref}
       variants={variants}

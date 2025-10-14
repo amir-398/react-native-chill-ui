@@ -1,33 +1,24 @@
 import { forwardRef, useImperativeHandle, useEffect } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import ToastItem from './ToastItem.tw';
-import { variantConfig } from '../utils/toastConfig.tw';
-import { useToastQueue } from '../hooks/useToastQueue.tw';
-import { toastDefaultProps } from '../utils/defaultProps';
-import { ToastContainerProps, ToastRefProps } from '../types/toast.tw.types';
+import ToastItem from './ToastItem.ss';
+import { variantConfig } from '../utils/toastConfig.ss';
+import { useToastQueue } from '../hooks/useToastQueue.ss';
+import { ToastContainerProps, ToastRefProps } from '../types/toast.ss.types';
 
 /**
  * ToastContainer component that manages a queue of toasts
  * Supports single or multiple toasts with customizable behavior
  */
 const ToastContainer = forwardRef<ToastRefProps, ToastContainerProps>(
-  (
-    {
-      allowMultiple = toastDefaultProps.allowMultiple,
-      maxToasts = toastDefaultProps.maxToasts,
-      offsetY = toastDefaultProps.offsetY,
-      swipeable = toastDefaultProps.swipeable,
-      variants = variantConfig,
-    },
-    ref,
-  ) => {
+  ({ allowMultiple = false, maxToasts = 4, offsetY = 0, swipeable = false, variants = variantConfig }, ref) => {
     const { activeToasts, addToQueue, processQueue, queue, removeToast } = useToastQueue({
       allowMultiple,
       maxToasts,
     });
     const { bottom, top } = useSafeAreaInsets();
 
+    // Process queue when it changes or when a toast is removed
     useEffect(() => {
       if (queue.length > 0 && activeToasts.length < maxToasts) {
         processQueue();
@@ -83,8 +74,8 @@ const ToastContainer = forwardRef<ToastRefProps, ToastContainerProps>(
 
           // Calculate stacking effect: each toast behind is slightly scaled down and offset
           const stackIndex = activeToasts.length - 1 - index;
-          const scale = 1 - stackIndex * 0.05; // Chaque toast derrière est 5% plus petit
-          const yOffset = stackIndex * -8; // Décalage vertical de 8px
+          const scale = 1 - stackIndex * 0.05; // Each toast behind is 5% smaller
+          const yOffset = stackIndex * -8; // Vertical offset of 8px
 
           return (
             <ToastItem

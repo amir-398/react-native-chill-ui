@@ -12,10 +12,10 @@ export default function Test() {
           toast({
             allowMultiple: true,
             maxToasts: 3,
-            message: 'Hello, world!',
+
             position: 'bottom',
             swipeable: true,
-            title: 'Hello, world!',
+
             variant: 'info',
           });
         }}

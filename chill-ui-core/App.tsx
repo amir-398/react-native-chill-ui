@@ -82,15 +82,7 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <ToastProvider
-        variants={{
-          info: {
-            backgroundColor: 'red',
-            contentColor: 'blue',
-            titleColor: 'green',
-          },
-        }}
-      >
+      <ToastProvider variants={{}}>
         <Box className="mb-5 mt-16 flex-1 p-5">
           <TimePickerTw>
             <TimePickerContentTw>

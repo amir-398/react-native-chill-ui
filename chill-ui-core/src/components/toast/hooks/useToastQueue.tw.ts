@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from 'react';
-import { ToastPropsTw, ToastVariantPropsTw, ToastPositionPropsTw } from '@types';
+import { ToastPropsTw, ToastVariantPropsTw, ToastPositionPropsTw, IconPropsTw, StringPropsTw } from '@types';
 
 interface UseToastQueueOptions {
   maxToasts?: number;
@@ -16,27 +16,33 @@ export const useToastQueue = (options: UseToastQueueOptions = {}) => {
   const addToQueue = useCallback(
     (
       message: string,
-      variant: ToastVariantPropsTw = 'info',
-      position: ToastPositionPropsTw = 'bottom',
-      duration: number = 3000,
       title?: string,
       render?: React.ReactNode,
       swipeable?: boolean,
       toastAllowMultiple?: boolean,
       toastMaxToasts?: number,
       offsetY?: number,
+      titleStringProps?: StringPropsTw,
+      messageStringProps?: StringPropsTw,
+      iconProps?: IconPropsTw,
+      variant: ToastVariantPropsTw = 'info',
+      position: ToastPositionPropsTw = 'bottom',
+      duration: number = 3000,
     ) => {
       const newToast: ToastPropsTw = {
         allowMultiple: toastAllowMultiple,
         duration,
+        iconProps,
         id: `${Date.now()}-${Math.random()}`,
         maxToasts: toastMaxToasts,
         message,
+        messageStringProps,
         offsetY,
         position,
         render,
         swipeable,
         title,
+        titleStringProps,
         variant,
       };
 
