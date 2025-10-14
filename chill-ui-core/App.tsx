@@ -1,15 +1,6 @@
-import Test from 'Test';
+import { useState } from 'react';
 import { useFonts } from 'expo-font';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import {
-  Box,
-  TimePickerContentTw,
-  TimePickerScrollerTw,
-  TimePickerTitleTw,
-  TimePickerTw,
-  TimePickerItemTw,
-  ToastProvider,
-} from '@components';
+import { String, WrapperKeyboardAwareScrollViewTw, WrapperTw } from '@components';
 import {
   Poppins_700Bold,
   Poppins_800ExtraBold,
@@ -63,7 +54,7 @@ export default function App() {
     secondary_semi_bold_font: Montserrat_600SemiBold,
     secondary_thin_font: Montserrat_100Thin,
   });
-
+  const [isEnabled, setIsEnabled] = useState(false);
   if (!fontsLoaded) {
     return null; // ou un composant de chargement
   }
@@ -81,33 +72,60 @@ export default function App() {
   // });
 
   return (
-    <SafeAreaProvider>
-      <ToastProvider variants={{}}>
-        <Box className="mb-5 mt-16 flex-1 p-5">
-          <TimePickerTw>
-            <TimePickerContentTw>
-              <TimePickerTitleTw>Hours</TimePickerTitleTw>
-              <TimePickerScrollerTw mode="hour">
-                <TimePickerItemTw />
-              </TimePickerScrollerTw>
-            </TimePickerContentTw>
-            <TimePickerContentTw>
-              <TimePickerTitleTw>minutes</TimePickerTitleTw>
-              <TimePickerScrollerTw mode="minute">
-                <TimePickerItemTw />
-              </TimePickerScrollerTw>
-            </TimePickerContentTw>
-            <TimePickerContentTw>
-              <TimePickerTitleTw>seconds</TimePickerTitleTw>
-              <TimePickerScrollerTw mode="second">
-                <TimePickerItemTw />
-              </TimePickerScrollerTw>
-            </TimePickerContentTw>
-          </TimePickerTw>
-        </Box>
-
-        <Test />
-      </ToastProvider>
-    </SafeAreaProvider>
+    <WrapperTw className="bg-red-500">
+      <WrapperKeyboardAwareScrollViewTw className="bg-blue-500">
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+        <String>soazkjpok</String>
+      </WrapperKeyboardAwareScrollViewTw>
+    </WrapperTw>
   );
 }

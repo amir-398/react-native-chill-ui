@@ -15,4 +15,5 @@ export const inputSelectDropdownDefaultProps = {
   minHeight: 0,
   offsetX: 0,
   offsetY: 5,
+  placeholder: 'Select item',
 };

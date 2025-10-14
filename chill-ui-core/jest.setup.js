@@ -17,3 +17,9 @@ jest.mock('expo-constants', () => ({
     },
   },
 }));
+
+// Mock React Native Switch component
+jest.mock('react-native/Libraries/Components/Switch/Switch', () => ({
+  __esModule: true,
+  default: 'Switch',
+}));

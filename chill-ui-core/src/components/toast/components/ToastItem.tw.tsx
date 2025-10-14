@@ -11,7 +11,7 @@ import type { ToastItemProps } from '../types/toast.tw.types';
 import { useToast, useToastSwipe } from '../hooks';
 import { twStyles } from '../styles/Toast.tw.styles';
 import { toastDefaultProps } from '../utils/defaultProps';
-import { variantConfig, variantTitles, PROGRESS_BAR_HEIGHT } from '../utils/toastConfig.tw';
+import { variantConfig, PROGRESS_BAR_HEIGHT } from '../utils/toastConfig.tw';
 
 /**
  * ToastItem component representing a single toast
@@ -52,14 +52,7 @@ function ToastItem({
 
   // Trigger toast animation
   useEffect(() => {
-    showToast(
-      toast.message,
-      toast.title || variantTitles[toast.variant || toastDefaultProps.variant],
-      toast.render,
-      toast.variant,
-      toast.position,
-      toast.duration,
-    );
+    showToast(toast.message ?? '', toast.title, toast.render, toast.variant, toast.position, toast.duration);
   }, [toast, showToast]);
 
   useEffect(() => {
@@ -114,12 +107,16 @@ function ToastItem({
           )}
 
           <BoxTw className={twStyles.textContainer}>
-            <StringTw {...config.titleStringProps} {...toast.titleStringProps}>
-              {title}
-            </StringTw>
-            <StringTw size="sm" {...config.messageStringProps} {...toast.messageStringProps}>
-              {message}
-            </StringTw>
+            {title && (
+              <StringTw {...config.titleStringProps} {...toast.titleStringProps}>
+                {title}
+              </StringTw>
+            )}
+            {message && (
+              <StringTw size="sm" {...config.messageStringProps} {...toast.messageStringProps}>
+                {message}
+              </StringTw>
+            )}
           </BoxTw>
         </BoxTw>
       )}

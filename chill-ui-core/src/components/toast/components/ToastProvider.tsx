@@ -17,40 +17,15 @@ const ToastContext = createContext<ToastContextPropsType | null>(null);
  * <ToastProvider>
  *   <App />
  * </ToastProvider>
- *
- * // Allow multiple toasts (max 4)
- * <ToastProvider allowMultiple maxToasts={4}>
- *   <App />
- * </ToastProvider>
- *
- * // Enable swipe to dismiss
- * <ToastProvider swipeable>
- *   <App />
- * </ToastProvider>
- *
- * // With custom variants and duration
- * <ToastProvider
- *   defaultDuration={5000}
- *   allowMultiple={true}
- *   variants={{
- *     success: {
- *       backgroundColor: '#10B981',
- *       icon: 'check-circle-solid',
- *       titleColor: '#FFFFFF',
- *       contentColor: '#FFFFFF',
- *     }
- *   }}
- * >
- *   <App />
- * </ToastProvider>
  * ```
  *
- * @param children - Child components that will have access to toast functionality
+ * @param allowMultiple - Whether to allow multiple toasts simultaneously. If false, only one toast at a time (default: false)
+ * @param children - Child components that will have access to toast functionality (required)
  * @param defaultDuration - Default duration in milliseconds for toasts (default: 3000)
- * @param variants - Custom styling variants for different toast types
- * @param allowMultiple - If true, multiple toasts can be shown simultaneously. If false, only one toast at a time (default: false)
  * @param maxToasts - Maximum number of toasts to show simultaneously when allowMultiple is true (default: 4)
- * @param swipeable - If true, toasts can be dismissed by swiping up/down (default: false)
+ * @param offsetY - Vertical offset in pixels for toast positioning (default: 0)
+ * @param swipeable - Whether toasts can be dismissed by swiping up/down (default: false)
+ * @param variants - Custom styling variants for different toast types
  * @returns ToastProvider component with context and Toast component
  */
 export function ToastProvider({
@@ -67,7 +42,20 @@ export function ToastProvider({
 
   /**
    * Toast function that can be called to show notifications
-   * @param params - Toast parameters including message, variant, position, and duration
+   * @param params - Toast parameters
+   * @param params.message - The message to display in the toast
+   * @param params.title - Optional title for the toast
+   * @param params.variant - Toast variant type (default: 'info')
+   * @param params.position - Toast position on screen (default: 'bottom')
+   * @param params.duration - Toast display duration in milliseconds
+   * @param params.render - Custom render function for toast content
+   * @param params.swipeable - Whether the toast can be dismissed by swiping
+   * @param params.allowMultiple - Whether to allow multiple toasts simultaneously
+   * @param params.maxToasts - Maximum number of toasts when allowMultiple is true
+   * @param params.offsetY - Vertical offset for toast positioning
+   * @param params.titleStringProps - Props to pass to the title String component
+   * @param params.messageStringProps - Props to pass to the message String component
+   * @param params.iconProps - Props to pass to the icon component
    */
   const toast = useCallback(
     ({
@@ -86,7 +74,7 @@ export function ToastProvider({
       variant = 'info',
     }: ToastPropsTw) => {
       toastRef.current?.showToast(
-        message,
+        message ?? '',
         variant,
         position,
         duration ?? defaultDuration,
@@ -131,12 +119,22 @@ export function ToastProvider({
  * ```tsx
  * const { toast } = useToast();
  *
- * // Show different types of toasts
+ * // Basic toast
  * toast({ message: 'Success!', variant: 'success' });
- * toast({ message: 'Error occurred!', variant: 'error', position: 'top' });
- * toast({ message: 'Info message', variant: 'info', duration: 5000 });
  * ```
- *
+ * @param params.message - The message to display in the toast
+ * @param params.title - Optional title for the toast
+ * @param params.variant - Toast variant type (default: 'info')
+ * @param params.position - Toast position on screen (default: 'bottom')
+ * @param params.duration - Toast display duration in milliseconds
+ * @param params.render - Custom render function for toast content
+ * @param params.swipeable - Whether the toast can be dismissed by swiping
+ * @param params.allowMultiple - Whether to allow multiple toasts simultaneously
+ * @param params.maxToasts - Maximum number of toasts when allowMultiple is true
+ * @param params.offsetY - Vertical offset for toast positioning
+ * @param params.titleStringProps - Props to pass to the title String component
+ * @param params.messageStringProps - Props to pass to the message String component
+ * @param params.iconProps - Props to pass to the icon component
  * @returns Object with toast function for showing notifications
  * @throws Error if used outside of ToastProvider
  */

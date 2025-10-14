@@ -1,591 +1,332 @@
-# Toast
+# Toast Component
 
-A React Native component that provides animated notification messages with progress bars, customizable styling, and automatic dismissal. Features smooth animations, multiple variants, and a context-based API for easy integration.
+A React Native component that provides a flexible and customizable toast notification system with smooth animations, multiple variants, and customizable styling. Built with React Native's Animated API for native performance, featuring automatic dismissal, swipe gestures, and support for custom content across three different styling approaches.
+
+## Available Versions
+
+This component comes in three versions to match your project's styling approach. You choose the version during installation, but the import statement remains consistent across all versions:
+
+### 1. **StyleSheet Version**
+
+- Uses React Native's built-in StyleSheet API
+- Perfect for projects that don't use CSS-in-JS libraries
+- Lightweight and performant
+- Install: `npm install react-native-chill-ui@stylesheet`
+
+### 2. **Tailwind Version**
+
+- Uses NativeWind/Tailwind CSS classes
+- Ideal for projects already using Tailwind CSS
+- Requires NativeWind setup and Tailwind configuration
+- Install: `npm install react-native-chill-ui@tailwind`
+
+### 3. **Hybrid Version**
+
+- Automatically detects if NativeWind is available
+- Falls back to StyleSheet if NativeWind is not installed
+- Best for component libraries or projects that need flexibility
+- Install: `npm install react-native-chill-ui@hybrid`
+
+**Note**: Regardless of the version you choose, the import statement remains the same: `import { ToastProvider, useToast } from 'react-native-chill-ui'`
 
 ## Features
 
-- ✅ **Animated Notifications**: Smooth slide-in/out animations with progress bars
-- ✅ **Multiple Variants**: Success, error, info, and warning toast types
-- ✅ **Customizable Styling**: Full control over colors, icons, and appearance
-- ✅ **Context API**: Easy-to-use hook-based API with ToastProvider
-- ✅ **Progress Bar**: Visual indicator showing time until dismissal
-- ✅ **Safe Area Support**: Proper positioning with safe area insets
-- ✅ **Auto Dismiss**: Automatic dismissal with configurable duration
-- ✅ **Position Options**: Top or bottom positioning
-- ✅ **TypeScript**: Full type safety with detailed interfaces
-- ✅ **Performance**: Optimized with React Native Reanimated
+- **Multiple Variants**: Success, error, warning, info with customizable styling
+- **Smooth Animations**: Native driver animations with customizable duration
+- **Automatic Dismissal**: Configurable duration with progress bar indicator
+- **Swipe Gestures**: Dismiss toasts by swiping up or down
+- **Multiple Toasts**: Support for stacking multiple toasts simultaneously
+- **Custom Content**: Support for custom render functions and components
+- **Flexible Styling**: Support for NativeWind classes and StyleSheet objects
+- **Position Control**: Top or bottom positioning with offset support
+- **TypeScript Support**: Fully typed for a better development experience
+- **Accessibility**: Inherits all React Native accessibility features
+- **Memory Efficient**: Automatic cleanup to prevent memory leaks
 
 ## Quick Start
 
 ```tsx
-import { ToastProvider, useToast } from '@/components/toast';
+import { ToastProvider, useToast } from 'react-native-chill-ui';
 
 // Wrap your app with ToastProvider
-<ToastProvider>
-  <App />
-</ToastProvider>;
+function App() {
+  return (
+    <ToastProvider>
+      <YourAppContent />
+    </ToastProvider>
+  );
+}
 
 // Use toast in any component
-const { toast } = useToast();
+function MyComponent() {
+  const { toast } = useToast();
 
-// Show different types of toasts
-toast({ message: 'Success!', variant: 'success' });
-toast({ message: 'Error occurred!', variant: 'error' });
-toast({ message: 'Info message', variant: 'info' });
+  const showSuccess = () => {
+    toast({ message: 'Success!', variant: 'success' });
+  };
+
+  const showError = () => {
+    toast({
+      title: 'Error',
+      message: 'Something went wrong',
+      variant: 'error',
+    });
+  };
+
+  return (
+    <View>
+      <Button onPress={showSuccess} title="Show Success" />
+      <Button onPress={showError} title="Show Error" />
+    </View>
+  );
+}
 ```
 
-## Examples
+## Installation Guide
+
+Choose the version that matches your project's styling approach:
+
+| Version        | Command                                        | When to Use                                                                                          | Pros                                                                            | Cons                                                  |
+| -------------- | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| **StyleSheet** | `npm install react-native-chill-ui@stylesheet` | • No CSS-in-JS dependencies<br/>• Maximum performance priority<br/>• Simple React Native project     | • Lightweight<br/>• Fast<br/>• No dependencies                                  | • Limited styling flexibility                         |
+| **Tailwind**   | `npm install react-native-chill-ui@tailwind`   | • Already using NativeWind<br/>• Team familiar with Tailwind<br/>• Design system based on utilities  | • Consistent with web Tailwind<br/>• Powerful utility system<br/>• Easy theming | • Requires NativeWind setup<br/>• Larger bundle size  |
+| **Hybrid**     | `npm install react-native-chill-ui@hybrid`     | • Building component library<br/>• Uncertain about styling approach<br/>• Want maximum compatibility | • Works in any environment<br/>• Future-proof<br/>• Automatic detection         | • Slightly larger bundle<br/>• More complex internals |
+
+## Configuration
+
+### For Tailwind and Hybrid Versions
+
+When using the Tailwind or Hybrid versions, you must define your application's color palette in your `tailwind.config.js` file.
+
+### Colors
+
+The `className` prop is only available for **Tailwind** and **Hybrid** versions when NativeWind is installed.
+
+### For All Versions
+
+All versions support custom colors through the `style` prop and variant configuration:
+
+```tsx
+<ToastProvider
+  variants={{
+    success: {
+      backgroundColor: '#10B981',
+      iconProps: { color: '#FFFFFF' },
+      titleStringProps: { color: '#FFFFFF' },
+      messageStringProps: { color: '#FFFFFF' },
+    },
+  }}
+>
+  <YourAppContent />
+</ToastProvider>
+```
+
+## Props
+
+### ToastProviderProps
+
+| Prop              | Type                    | Default | Description                                                                         |
+| ----------------- | ----------------------- | ------- | ----------------------------------------------------------------------------------- |
+| `allowMultiple`   | `boolean`               | `false` | Whether to allow multiple toasts simultaneously. If false, only one toast at a time |
+| `children`        | `ReactNode`             | -       | Child components that will have access to toast functionality (required)            |
+| `defaultDuration` | `number`                | `3000`  | Default duration in milliseconds for toasts                                         |
+| `maxToasts`       | `number`                | `4`     | Maximum number of toasts to show simultaneously when allowMultiple is true          |
+| `offsetY`         | `number`                | `0`     | Vertical offset in pixels for toast positioning                                     |
+| `swipeable`       | `boolean`               | `false` | Whether toasts can be dismissed by swiping up/down                                  |
+| `variants`        | `ToastVariantTypeProps` | -       | Custom styling variants for different toast types                                   |
+
+### Toast Function Parameters
+
+| Parameter            | Type                                          | Default    | Description                                         |
+| -------------------- | --------------------------------------------- | ---------- | --------------------------------------------------- |
+| `message`            | `string`                                      | -          | The message to display in the toast (required)      |
+| `title`              | `string`                                      | -          | Optional title for the toast                        |
+| `variant`            | `'success' \| 'error' \| 'warning' \| 'info'` | `'info'`   | Toast variant type                                  |
+| `position`           | `'top' \| 'bottom'`                           | `'bottom'` | Toast position on screen                            |
+| `duration`           | `number`                                      | -          | Toast display duration in milliseconds              |
+| `render`             | `ReactNode`                                   | -          | Custom render function for toast content            |
+| `swipeable`          | `boolean`                                     | -          | Whether the toast can be dismissed by swiping       |
+| `allowMultiple`      | `boolean`                                     | -          | Whether to allow multiple toasts simultaneously     |
+| `maxToasts`          | `number`                                      | -          | Maximum number of toasts when allowMultiple is true |
+| `offsetY`            | `number`                                      | -          | Vertical offset for toast positioning               |
+| `titleStringProps`   | `StringProps`                                 | -          | Props to pass to the title String component         |
+| `messageStringProps` | `StringProps`                                 | -          | Props to pass to the message String component       |
+| `iconProps`          | `IconProps`                                   | -          | Props to pass to the icon component                 |
+
+## Usage Examples
 
 ### Basic Usage
 
 ```tsx
-import { ToastProvider, useToast } from '@/components/toast';
+import { ToastProvider, useToast } from 'react-native-chill-ui';
 
-const App = () => {
+function App() {
   return (
     <ToastProvider>
-      <MainApp />
+      <MyComponent />
     </ToastProvider>
   );
-};
+}
 
-const MainApp = () => {
+function MyComponent() {
   const { toast } = useToast();
 
-  const handleSuccess = () => {
-    toast({ message: 'Operation completed successfully!', variant: 'success' });
-  };
-
-  const handleError = () => {
-    toast({ message: 'Something went wrong!', variant: 'error' });
-  };
-
-  const handleInfo = () => {
-    toast({ message: 'Here is some information.', variant: 'info' });
-  };
-
-  const handleWarning = () => {
-    toast({ message: 'Please review your input.', variant: 'warning' });
-  };
-
   return (
-    <Box className="space-y-4 p-4">
-      <Button onPress={handleSuccess}>Show Success</Button>
-      <Button onPress={handleError}>Show Error</Button>
-      <Button onPress={handleInfo}>Show Info</Button>
-      <Button onPress={handleWarning}>Show Warning</Button>
-    </Box>
+    <View>
+      <Button title="Show Success" onPress={() => toast({ message: 'Operation successful!', variant: 'success' })} />
+      <Button title="Show Error" onPress={() => toast({ message: 'Something went wrong!', variant: 'error' })} />
+    </View>
   );
-};
+}
 ```
 
-### Custom Duration and Position
+### With Title and Custom Duration
 
 ```tsx
 const { toast } = useToast();
 
-// Custom duration (5 seconds)
 toast({
-  message: 'This will show for 5 seconds',
-  variant: 'info',
-  duration: 5000,
-});
-
-// Top position
-toast({
-  message: 'Toast at the top',
+  title: 'Success!',
+  message: 'Your data has been saved successfully.',
   variant: 'success',
-  position: 'top',
-});
-
-// Custom duration and position
-toast({
-  message: 'Custom toast',
-  variant: 'warning',
-  position: 'top',
-  duration: 4000,
+  duration: 5000,
 });
 ```
 
 ### Custom Styling
 
 ```tsx
-// Custom variants in ToastProvider
 <ToastProvider
   variants={{
     success: {
       backgroundColor: '#10B981',
-      icon: 'check-circle-solid',
-      titleColor: '#FFFFFF',
-      contentColor: '#FFFFFF',
-      progressBarColor: '#FFFFFF',
+      iconProps: { color: '#FFFFFF', name: 'check-circle-solid' },
+      titleStringProps: { color: '#FFFFFF', weight: 'bold' },
+      messageStringProps: { color: '#FFFFFF' },
     },
     error: {
       backgroundColor: '#EF4444',
-      icon: 'xmark-circle-solid',
-      titleColor: '#FFFFFF',
-      contentColor: '#FFFFFF',
-      progressBarColor: '#FEE2E2',
-    },
-    info: {
-      backgroundColor: '#3B82F6',
-      icon: 'circle-info-solid',
-      titleColor: '#FFFFFF',
-      contentColor: '#FFFFFF',
-      progressBarColor: '#DBEAFE',
-    },
-    warning: {
-      backgroundColor: '#F59E0B',
-      icon: 'warning-solid',
-      titleColor: '#FFFFFF',
-      contentColor: '#FFFFFF',
-      progressBarColor: '#FEF3C7',
+      iconProps: { color: '#FFFFFF', name: 'x-circle-solid' },
+      titleStringProps: { color: '#FFFFFF', weight: 'bold' },
+      messageStringProps: { color: '#FFFFFF' },
     },
   }}
 >
-  <App />
+  <YourAppContent />
 </ToastProvider>
 ```
 
-### Custom Icons
+### Multiple Toasts
 
 ```tsx
-<ToastProvider
-  variants={{
-    success: {
-      backgroundColor: '#10B981',
-      customIcon: <CustomSuccessIcon />,
-      titleColor: '#FFFFFF',
-      contentColor: '#FFFFFF',
-    },
-    error: {
-      backgroundColor: '#EF4444',
-      customIcon: <CustomErrorIcon />,
-      titleColor: '#FFFFFF',
-      contentColor: '#FFFFFF',
-    },
-  }}
->
-  <App />
-</ToastProvider>
+<ToastProvider allowMultiple maxToasts={3}>
+  <YourAppContent />
+</ToastProvider>;
+
+// Usage
+const { toast } = useToast();
+
+// These will stack
+toast({ message: 'First toast', variant: 'info' });
+toast({ message: 'Second toast', variant: 'success' });
+toast({ message: 'Third toast', variant: 'warning' });
 ```
 
-### Integration with Forms
+### Swipeable Toasts
 
 ```tsx
-const LoginForm = () => {
-  const { toast } = useToast();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+<ToastProvider swipeable>
+  <YourAppContent />
+</ToastProvider>;
 
-  const handleLogin = async () => {
-    try {
-      // Simulate API call
-      await loginUser(email, password);
-      toast({
-        message: 'Login successful! Welcome back.',
-        variant: 'success',
-      });
-    } catch (error) {
-      toast({
-        message: 'Login failed. Please check your credentials.',
-        variant: 'error',
-        duration: 5000,
-      });
-    }
-  };
-
-  return (
-    <Box className="space-y-4 p-4">
-      <Input placeholder="Email" value={email} onChangeText={setEmail} />
-      <Input placeholder="Password" value={password} onChangeText={setPassword} secureTextEntry />
-      <Button onPress={handleLogin}>Login</Button>
-    </Box>
-  );
-};
-```
-
-### Error Handling
-
-```tsx
-const DataFetcher = () => {
-  const { toast } = useToast();
-
-  const fetchData = async () => {
-    try {
-      const response = await fetch('/api/data');
-      if (!response.ok) {
-        throw new Error('Failed to fetch data');
-      }
-      const data = await response.json();
-
-      toast({
-        message: `Loaded ${data.length} items successfully`,
-        variant: 'success',
-      });
-    } catch (error) {
-      toast({
-        message: 'Failed to load data. Please try again.',
-        variant: 'error',
-        duration: 6000,
-      });
-    }
-  };
-
-  return <Button onPress={fetchData}>Fetch Data</Button>;
-};
-```
-
-## Props Reference
-
-### ToastProvider Props
-
-| Prop              | Type               | Default | Description                                                   |
-| ----------------- | ------------------ | ------- | ------------------------------------------------------------- |
-| `children`        | `ReactNode`        | -       | Child components that will have access to toast functionality |
-| `defaultDuration` | `number`           | `3000`  | Default duration in milliseconds for toasts                   |
-| `variants`        | `ToastVariantType` | -       | Custom styling variants for different toast types             |
-
-### Toast Props
-
-| Prop       | Type               | Default           | Description                                       |
-| ---------- | ------------------ | ----------------- | ------------------------------------------------- |
-| `variants` | `ToastVariantType` | `defaultVariants` | Custom styling variants for different toast types |
-
-### useToast Hook
-
-| Return  | Type                           | Description                          |
-| ------- | ------------------------------ | ------------------------------------ |
-| `toast` | `(params: ToastProps) => void` | Function to show toast notifications |
-
-### ToastProps (for toast function)
-
-| Prop       | Type                                          | Default           | Description                                  |
-| ---------- | --------------------------------------------- | ----------------- | -------------------------------------------- |
-| `message`  | `string`                                      | -                 | Message to display in the toast              |
-| `variant`  | `'success' \| 'error' \| 'info' \| 'warning'` | `'info'`          | Type of toast to display                     |
-| `position` | `'top' \| 'bottom'`                           | `'bottom'`        | Position of the toast                        |
-| `duration` | `number`                                      | `defaultDuration` | Duration in milliseconds before auto-dismiss |
-
-### ToastVariantType
-
-| Property  | Type                | Description                |
-| --------- | ------------------- | -------------------------- |
-| `success` | `ToastVariantProps` | Styling for success toasts |
-| `error`   | `ToastVariantProps` | Styling for error toasts   |
-| `info`    | `ToastVariantProps` | Styling for info toasts    |
-| `warning` | `ToastVariantProps` | Styling for warning toasts |
-
-### ToastVariantProps
-
-| Prop               | Type        | Description                   |
-| ------------------ | ----------- | ----------------------------- |
-| `backgroundColor`  | `string`    | Background color of the toast |
-| `contentColor`     | `string`    | Color of the message text     |
-| `icon`             | `string`    | Icon name to display          |
-| `customIcon`       | `ReactNode` | Custom icon component         |
-| `titleColor`       | `string`    | Color of the title text       |
-| `progressBarColor` | `string`    | Color of the progress bar     |
-
-## Best Practices
-
-### 1. Use Appropriate Variants
-
-```tsx
-// ✅ Good - Semantic variant usage
-toast({ message: 'Operation completed successfully!', variant: 'success' });
-toast({ message: 'An error occurred', variant: 'error' });
-toast({ message: 'Please review your input', variant: 'warning' });
-toast({ message: 'Here is some information', variant: 'info' });
-
-// ❌ Avoid - Wrong variant for message type
-toast({ message: 'Error occurred!', variant: 'success' });
-toast({ message: 'Success!', variant: 'error' });
-```
-
-### 2. Keep Messages Concise
-
-```tsx
-// ✅ Good - Clear and concise messages
-toast({ message: 'Profile updated successfully', variant: 'success' });
-toast({ message: 'Please check your internet connection', variant: 'error' });
-
-// ❌ Avoid - Long, verbose messages
+// Or per toast
 toast({
-  message:
-    'Your profile has been successfully updated and all changes have been saved to our database. You can now continue using the application with your new profile settings.',
-  variant: 'success',
+  message: 'Swipe me away!',
+  variant: 'info',
+  swipeable: true,
 });
 ```
 
-### 3. Use Appropriate Duration
+### Custom Content
 
 ```tsx
-// ✅ Good - Appropriate duration for message importance
-toast({ message: 'Success!', variant: 'success', duration: 3000 }); // Quick success
-toast({ message: 'Error occurred', variant: 'error', duration: 5000 }); // Longer for errors
-toast({ message: 'Important info', variant: 'info', duration: 4000 }); // Medium for info
+const { toast } = useToast();
 
-// ❌ Avoid - Too short or too long
-toast({ message: 'Error!', variant: 'error', duration: 1000 }); // Too short for error
-toast({ message: 'Success!', variant: 'success', duration: 10000 }); // Too long for success
+toast({
+  message: 'Custom content',
+  variant: 'info',
+  render: (
+    <View style={{ padding: 20, backgroundColor: '#3B82F6', borderRadius: 8 }}>
+      <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Custom Toast Content</Text>
+      <Text style={{ color: 'white', fontSize: 14, marginTop: 4 }}>This is completely custom!</Text>
+    </View>
+  ),
+});
 ```
 
-### 4. Consider Position Based on Context
+### Position Control
 
 ```tsx
-// ✅ Good - Appropriate position for context
-toast({ message: 'Form submitted', variant: 'success', position: 'bottom' }); // Bottom for forms
-toast({ message: 'New message received', variant: 'info', position: 'top' }); // Top for notifications
+// Top position
+toast({
+  message: 'Top toast',
+  variant: 'info',
+  position: 'top',
+});
 
-// ❌ Avoid - Inconsistent positioning
-toast({ message: 'Error!', variant: 'error', position: 'top' }); // When user expects bottom
+// With offset
+<ToastProvider offsetY={50}>
+  <YourAppContent />
+</ToastProvider>;
 ```
 
-### 5. Handle Multiple Toasts Appropriately
+### String Component Props
 
 ```tsx
-// ✅ Good - Toast system handles multiple calls automatically
-const handleMultipleActions = () => {
-  toast({ message: 'Action 1 completed', variant: 'success' });
-  // Second toast will wait for first to complete
-  setTimeout(() => {
-    toast({ message: 'Action 2 completed', variant: 'success' });
-  }, 1000);
-};
-
-// ❌ Avoid - Don't spam multiple toasts
-const handleSpam = () => {
-  for (let i = 0; i < 10; i++) {
-    toast({ message: `Toast ${i}`, variant: 'info' });
-  }
-};
+toast({
+  title: 'Custom Title',
+  message: 'Custom Message',
+  variant: 'success',
+  titleStringProps: {
+    color: 'red',
+    weight: 'bold',
+    size: 'lg',
+  },
+  messageStringProps: {
+    color: 'blue',
+    size: 'sm',
+  },
+  iconProps: {
+    color: 'green',
+    size: 'xl',
+  },
+});
 ```
 
-## Advanced Usage
+## Performance Notes
 
-### Custom Toast Component
+- The component uses React Native's Animated API with native driver for optimal performance
+- Toasts are automatically cleaned up to prevent memory leaks
+- Multiple toasts are limited by `maxToasts` to prevent performance issues
+- Custom render functions should be optimized to avoid unnecessary re-renders
+
+## TypeScript Support
+
+All components are fully typed with TypeScript interfaces:
 
 ```tsx
-// Create a custom toast component
-const CustomToast = () => {
-  const toastRef = useRef<ToastRef>(null);
-
-  const showCustomToast = (message: string) => {
-    toastRef.current?.showToast(message, 'info', 'bottom', 4000);
-  };
-
-  return (
-    <>
-      <Button onPress={() => showCustomToast('Custom toast!')}>Show Custom Toast</Button>
-      <Toast
-        ref={toastRef}
-        variants={{
-          info: {
-            backgroundColor: '#6366F1',
-            icon: 'star-solid',
-            titleColor: '#FFFFFF',
-            contentColor: '#FFFFFF',
-          },
-        }}
-      />
-    </>
-  );
-};
+import { ToastProviderProps, ToastProps, ToastVariantTypeProps, StringProps, IconProps } from '@types';
 ```
-
-### Toast with Actions
-
-```tsx
-// Custom toast with action buttons
-const ActionToast = () => {
-  const { toast } = useToast();
-
-  const showActionToast = () => {
-    // Note: This is a conceptual example - actual implementation would require custom toast component
-    toast({
-      message: 'File uploaded. Undo?',
-      variant: 'success',
-      duration: 6000,
-    });
-  };
-
-  return <Button onPress={showActionToast}>Show Action Toast</Button>;
-};
-```
-
-### Toast Queue Management
-
-```tsx
-const ToastManager = () => {
-  const { toast } = useToast();
-  const [isProcessing, setIsProcessing] = useState(false);
-
-  const processWithToasts = async () => {
-    setIsProcessing(true);
-
-    toast({ message: 'Starting process...', variant: 'info' });
-
-    try {
-      await step1();
-      toast({ message: 'Step 1 completed', variant: 'success' });
-
-      await step2();
-      toast({ message: 'Step 2 completed', variant: 'success' });
-
-      await step3();
-      toast({ message: 'Process completed!', variant: 'success' });
-    } catch (error) {
-      toast({ message: 'Process failed', variant: 'error', duration: 5000 });
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  return (
-    <Button onPress={processWithToasts} disabled={isProcessing}>
-      {isProcessing ? 'Processing...' : 'Start Process'}
-    </Button>
-  );
-};
-```
-
-### Performance Optimization
-
-```tsx
-import React from 'react';
-import { ToastProvider } from '@/components/toast';
-
-// Memoized toast provider for performance
-const MemoizedToastProvider = React.memo(({ children, variants }) => (
-  <ToastProvider variants={variants}>{children}</ToastProvider>
-));
-
-// Usage
-<MemoizedToastProvider variants={customVariants}>
-  <App />
-</MemoizedToastProvider>;
-```
-
-## Performance Considerations
-
-- **Animated Components**: Uses React Native Reanimated for smooth performance
-- **Context Optimization**: Memoized context value to prevent unnecessary re-renders
-- **Single Toast**: Only one toast can be displayed at a time to prevent UI clutter
-- **Memory Management**: Proper cleanup of animations and timers
 
 ## Accessibility
 
-The Toast component includes accessibility features:
+The component supports React Native accessibility features:
 
-- **Screen reader support**: Proper accessibility labels and hints
-- **Visual feedback**: Clear visual indicators for different toast types
-- **Auto-dismiss**: Automatic dismissal to prevent blocking the interface
-- **Safe area support**: Proper positioning that respects device safe areas
+- `accessibilityLabel` for screen readers
+- `accessibilityRole` for proper semantic meaning
+- `accessibilityState` for disabled states
+- `testID` for testing purposes
 
-### Accessibility Best Practices
+## Examples
 
-```tsx
-// Always provide meaningful messages
-toast({
-  message: 'Your profile has been successfully updated',
-  variant: 'success',
-});
-
-// Use appropriate variants for message types
-toast({
-  message: 'Please check your internet connection and try again',
-  variant: 'error',
-});
-
-// Consider duration for accessibility
-toast({
-  message: 'Important system message',
-  variant: 'warning',
-  duration: 5000, // Longer duration for important messages
-});
-```
-
-## Troubleshooting
-
-### Common Issues
-
-1. **Toast not showing**: Ensure ToastProvider wraps your component
-2. **Multiple toasts not working**: Only one toast can be displayed at a time
-3. **Styling not applying**: Check variants object structure
-4. **Position issues**: Verify safe area insets are properly configured
-5. **Performance issues**: Ensure proper memoization for frequently re-rendered components
-
-### Debug Example
-
-```tsx
-const [debugInfo, setDebugInfo] = useState({});
-
-const { toast } = useToast();
-
-const showDebugToast = () => {
-  const toastInfo = {
-    message: 'Debug toast',
-    variant: 'info' as const,
-    position: 'bottom' as const,
-    duration: 3000,
-    timestamp: Date.now(),
-  };
-
-  setDebugInfo(toastInfo);
-  toast(toastInfo);
-};
-
-<Box className="space-y-4 p-4">
-  <Button onPress={showDebugToast}>Show Debug Toast</Button>
-
-  {debugInfo.message && (
-    <Box className="rounded bg-gray-100 p-4">
-      <String size="sm">Debug: {JSON.stringify(debugInfo)}</String>
-    </Box>
-  )}
-</Box>;
-```
-
-## Migration from Other Libraries
-
-### From react-native-toast-message
-
-```tsx
-// Old (react-native-toast-message)
-import Toast from 'react-native-toast-message';
-
-Toast.show({
-  type: 'success',
-  text1: 'Success',
-  text2: 'Operation completed',
-});
-
-// New (Toast)
-const { toast } = useToast();
-
-toast({
-  message: 'Operation completed',
-  variant: 'success',
-});
-```
-
-### From custom toast implementation
-
-```tsx
-// Old (custom implementation)
-const showToast = (message, type) => {
-  setToastMessage(message);
-  setToastType(type);
-  setToastVisible(true);
-  setTimeout(() => setToastVisible(false), 3000);
-};
-
-// New (Toast)
-const { toast } = useToast();
-
-toast({
-  message: 'Your message',
-  variant: 'success',
-});
-```
+Check the `App.tsx` file for complete working examples of all Toast features and usage patterns.

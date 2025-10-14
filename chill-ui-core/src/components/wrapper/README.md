@@ -1,244 +1,153 @@
-# Wrapper Component
+# Wrapper Components
 
-A flexible and powerful container component for React Native that provides multiple behavior options including safe area handling, keyboard avoidance, scrolling, and customizable styling.
+Une collection de composants wrapper flexibles pour gérer différents scénarios de layout et de clavier.
 
-## Features
+## Composants disponibles
 
-- **Multiple Container Behaviors**: Choose between View, ScrollView, KeyboardAvoidingView, and KeyboardAwareScrollView
-- **Safe Area Support**: Automatic safe area handling with customizable edges
-- **Keyboard Handling**: Built-in keyboard avoidance and awareness
-- **NativeWind & StyleSheet Support**: Automatically detects NativeWind availability and falls back to StyleSheet
-- **TypeScript Support**: Fully typed for a better development experience
-- **Performance Optimized**: Efficient rendering with proper fallbacks
+### 1. `Wrapper` - Conteneur de base
 
-## Quick Start
+Conteneur flexible de base avec styling par défaut.
 
 ```tsx
-import Wrapper from './Wrapper';
+import { Wrapper } from '@components/wrapper';
 
-// Basic wrapper with default styling
-<Wrapper>
-  <Text>Your content here</Text>
-</Wrapper>
-
-// Scrollable wrapper
-<Wrapper hasScrollView>
-  <Text>Scrollable content</Text>
-</Wrapper>
-
-// Safe area wrapper with keyboard avoidance
-<Wrapper hasSafeAreaView hasKeyboardAvoidingView>
-  <TextInput placeholder="Type here" />
-</Wrapper>
-
-// Advanced wrapper with all features
-<Wrapper
-  hasSafeAreaView
-  hasKeyboardAwareScrollView
-  className="bg-gray-100"
->
-  <Text>Advanced content</Text>
-</Wrapper>
+<Wrapper className="bg-gray-100 p-4">
+  <String>Content</String>
+</Wrapper>;
 ```
 
-## Container Behaviors
+### 2. `WrapperScrollView` - ScrollView avec gestion du clavier
 
-The Wrapper component automatically determines which container to render based on the props you provide:
-
-### 1. Basic View (Default)
-
-Renders a simple `Box` component with `flex-grow: 1` styling.
+Conteneur scrollable avec gestion automatique du clavier.
 
 ```tsx
-<Wrapper>
-  <Text>Basic content</Text>
-</Wrapper>
+import { WrapperScrollView } from '@components/wrapper';
+
+<WrapperScrollView contentContainerClassName="p-4" nestedScrollEnabled={false} keyboardShouldPersistTaps="always">
+  <String>Scrollable content</String>
+</WrapperScrollView>;
 ```
 
-### 2. ScrollView
+### 3. `WrapperSafeAreaView` - Gestion des zones sécurisées
 
-Renders a `ScrollView` when `hasScrollView` is true.
+Conteneur avec gestion automatique des safe areas (notch, home indicator, etc.).
 
 ```tsx
-<Wrapper hasScrollView>
-  <Text>Scrollable content</Text>
-</Wrapper>
+import { WrapperSafeAreaView } from '@components/wrapper';
+
+<WrapperSafeAreaView edges={['top', 'bottom']}>
+  <String>Safe area content</String>
+</WrapperSafeAreaView>;
 ```
 
-### 3. KeyboardAvoidingView
+**Dépendance requise:** `react-native-safe-area-context`
 
-Renders a `KeyboardAvoidingView` when `hasKeyboardAvoidingView` is true.
+### 4. `WrapperKeyboardAvoidingView` - Évitement du clavier
+
+Conteneur qui ajuste automatiquement sa position pour éviter le clavier.
 
 ```tsx
-<Wrapper hasKeyboardAvoidingView>
-  <TextInput placeholder="Input field" />
-</Wrapper>
+import { WrapperKeyboardAvoidingView } from '@components/wrapper';
+
+<WrapperKeyboardAvoidingView behavior="padding" keyboardVerticalOffset={10}>
+  <Input placeholder="Type here" />
+</WrapperKeyboardAvoidingView>;
 ```
 
-### 4. KeyboardAwareScrollView
+**Dépendance requise:** `react-native-keyboard-controller`
 
-Renders a `KeyboardAwareScrollView` when `hasKeyboardAwareScrollView` is true.
+### 5. `WrapperKeyboardAwareScrollView` - Scroll intelligent avec clavier
+
+ScrollView intelligent qui gère automatiquement le scroll lors de l'apparition du clavier.
 
 ```tsx
-<Wrapper hasKeyboardAwareScrollView>
-  <Text>Keyboard-aware scrollable content</Text>
-</Wrapper>
+import { WrapperKeyboardAwareScrollView } from '@components/wrapper';
+
+<WrapperKeyboardAwareScrollView bottomOffset={20} keyboardShouldPersistTaps="handled">
+  <Input placeholder="Type here" />
+</WrapperKeyboardAwareScrollView>;
 ```
 
-### 5. SafeAreaView
+**Dépendance requise:** `react-native-keyboard-controller`
 
-Renders a `SafeAreaView` when `hasSafeAreaView` is true or when `edges` are specified.
+## Composition
+
+Les composants peuvent être composés ensemble pour des cas d'usage complexes :
 
 ```tsx
-<Wrapper hasSafeAreaView>
-  <Text>Content with safe area</Text>
-</Wrapper>
+<WrapperSafeAreaView edges={['top']}>
+  <WrapperKeyboardAwareScrollView bottomOffset={20}>
+    <Input placeholder="First input" />
+    <Input placeholder="Second input" />
+  </WrapperKeyboardAwareScrollView>
+</WrapperSafeAreaView>
 ```
 
-## Dependencies
+## Variantes
 
-The Wrapper component has optional dependencies that provide enhanced functionality:
+Chaque composant existe en 3 variantes :
 
-### react-native-keyboard-controller
+### Hybrid (Recommandé)
 
-Required for `hasKeyboardAvoidingView` and `hasKeyboardAwareScrollView` props.
+Auto-détecte NativeWind et utilise StyleSheet en fallback.
+
+```tsx
+import { Wrapper } from '@components/wrapper';
+```
+
+### StyleSheet uniquement
+
+```tsx
+import { WrapperSs } from '@components/wrapper';
+```
+
+### NativeWind uniquement
+
+```tsx
+import { WrapperTw } from '@components/wrapper';
+```
+
+## Props communes
+
+### Wrapper
+
+- `className` (string): Classes CSS personnalisées (TailwindCSS/NativeWind)
+
+### WrapperScrollView
+
+- `className` (string): Classes CSS pour le ScrollView
+- `contentContainerClassName` (string): Classes CSS pour le container de contenu
+- `nestedScrollEnabled` (boolean): Active le scroll imbriqué
+- `keyboardShouldPersistTaps` ('always' | 'never' | 'handled'): Comportement du clavier
+
+### WrapperSafeAreaView
+
+- `className` (string): Classes CSS personnalisées
+- `edges` (Array<'top' | 'right' | 'bottom' | 'left'>): Bords à protéger
+
+### WrapperKeyboardAvoidingView
+
+- `className` (string): Classes CSS personnalisées
+- `behavior` ('height' | 'position' | 'padding'): Type d'évitement
+- `keyboardVerticalOffset` (number): Offset vertical (défaut: 10)
+
+### WrapperKeyboardAwareScrollView
+
+- `className` (string): Classes CSS pour le ScrollView
+- `contentContainerClassName` (string): Classes CSS pour le container
+- `bottomOffset` (number): Offset du bas (défaut: 20)
+- `keyboardShouldPersistTaps` ('always' | 'never' | 'handled'): Comportement du clavier
+
+## Dépendances optionnelles
+
+Certains composants nécessitent des dépendances supplémentaires :
 
 ```bash
+# Pour WrapperSafeAreaView
+npm install react-native-safe-area-context
+
+# Pour WrapperKeyboardAvoidingView et WrapperKeyboardAwareScrollView
 npm install react-native-keyboard-controller
 ```
 
-### react-native-safe-area-context
-
-Required for `hasSafeAreaView` and `edges` props.
-
-```bash
-npm install react-native-safe-area-context
-```
-
-## Props
-
-| Prop                         | Type                                         | Default                              | Description                                            |
-| ---------------------------- | -------------------------------------------- | ------------------------------------ | ------------------------------------------------------ |
-| `children`                   | `ReactNode`                                  | -                                    | Content to render inside the wrapper.                  |
-| `className`                  | `string`                                     | -                                    | Custom CSS classes for styling (used with NativeWind). |
-| `edges`                      | `('top' \| 'right' \| 'bottom' \| 'left')[]` | `['top', 'bottom', 'left', 'right']` | Safe area edges to apply when using SafeAreaView.      |
-| `hasKeyboardAvoidingView`    | `boolean`                                    | `false`                              | Whether to wrap content in a KeyboardAvoidingView.     |
-| `hasKeyboardAwareScrollView` | `boolean`                                    | `false`                              | Whether to wrap content in a KeyboardAwareScrollView.  |
-| `hasSafeAreaView`            | `boolean`                                    | `false`                              | Whether to wrap content in a SafeAreaView.             |
-| `hasScrollView`              | `boolean`                                    | `false`                              | Whether to wrap content in a ScrollView.               |
-| `nestedScrollEnabled`        | `boolean`                                    | `false`                              | Whether nested scrolling is enabled (for ScrollView).  |
-
-## Behavior Priority
-
-The component follows a specific priority order when determining which container to render:
-
-1. **SafeAreaView** (if `hasSafeAreaView` is true or `edges` are specified)
-2. **KeyboardAwareScrollView** (if `hasKeyboardAwareScrollView` is true)
-3. **KeyboardAvoidingView** (if `hasKeyboardAvoidingView` is true)
-4. **ScrollView** (if `hasScrollView` is true)
-5. **Basic View** (default fallback)
-
-## Examples
-
-### Basic Layout
-
-```tsx
-<Wrapper className="bg-white">
-  <Text>Simple content</Text>
-</Wrapper>
-```
-
-### Scrollable Content
-
-```tsx
-<Wrapper hasScrollView nestedScrollEnabled>
-  {Array.from({ length: 20 }, (_, i) => (
-    <Text key={i}>Item {i + 1}</Text>
-  ))}
-</Wrapper>
-```
-
-### Form with Keyboard Handling
-
-```tsx
-<Wrapper hasSafeAreaView hasKeyboardAvoidingView>
-  <TextInput placeholder="Name" />
-  <TextInput placeholder="Email" />
-  <TextInput placeholder="Phone" />
-  <Button title="Submit" />
-</Wrapper>
-```
-
-### Custom Safe Area Edges
-
-```tsx
-<Wrapper hasSafeAreaView edges={['top', 'bottom']}>
-  <Text>Content with top and bottom safe areas only</Text>
-</Wrapper>
-```
-
-### Keyboard-Aware Scrolling
-
-```tsx
-<Wrapper hasKeyboardAwareScrollView>
-  {Array.from({ length: 10 }, (_, i) => (
-    <TextInput key={i} placeholder={`Input ${i + 1}`} />
-  ))}
-</Wrapper>
-```
-
-## Styling
-
-### With NativeWind
-
-When NativeWind is available, you can use Tailwind CSS classes:
-
-```tsx
-<Wrapper hasSafeAreaView className="rounded-lg bg-gray-100 p-4">
-  <Text>Styled content</Text>
-</Wrapper>
-```
-
-### Without NativeWind
-
-The component automatically falls back to StyleSheet with basic styling:
-
-```tsx
-<Wrapper hasScrollView>
-  <Text>Content with fallback styling</Text>
-</Wrapper>
-```
-
-## Performance Considerations
-
-- The component automatically detects NativeWind availability
-- Optional dependencies are loaded dynamically to avoid bundle bloat
-- Proper fallbacks ensure the component works in all environments
-- Efficient rendering with minimal re-renders
-
-## Error Handling
-
-The component gracefully handles missing dependencies:
-
-- **Missing `react-native-keyboard-controller`**: Falls back to ScrollView or View
-- **Missing `react-native-safe-area-context`**: Falls back to scroll components
-- **Console warnings** are displayed to guide developers on required installations
-
-## Migration from Previous Versions
-
-If you're upgrading from a previous version, note these prop changes:
-
-- `safeAreaView` → `hasSafeAreaView`
-- `scrollView` → `hasScrollView`
-- `keyboardAvoidingView` → `hasKeyboardAvoidingView`
-- `keyboardAwareScrollView` → `hasKeyboardAwareScrollView`
-- Removed: `px`, `py`, `pt`, `my`, `itemsCenter`, `justifyBetween`
-
-## Best Practices
-
-1. **Use `hasSafeAreaView`** for screens that need safe area handling
-2. **Use `hasKeyboardAvoidingView`** for forms and input-heavy screens
-3. **Use `hasScrollView`** for content that might overflow
-4. **Use `hasKeyboardAwareScrollView`** for scrollable forms
-5. **Combine props** for complex layouts (e.g., `hasSafeAreaView` + `hasKeyboardAvoidingView`)
-6. **Use `className`** for custom styling when NativeWind is available
+Si une dépendance n'est pas installée, le composant affichera un avertissement et utilisera un fallback approprié.

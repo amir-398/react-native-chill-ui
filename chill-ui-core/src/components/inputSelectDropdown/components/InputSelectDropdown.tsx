@@ -7,8 +7,8 @@ import { HighlightString } from '@components/highlightString';
 import { InputDropdownModal } from '@components/inputDropdown';
 import { classNameHandler, cn, get, isEqual, styleHandler } from '@utils';
 
+import { IDropdownRef } from '../types';
 import { useInputSelectDropdown } from '../hooks';
-import { IDropdownRef, DEFAULT_CONFIG } from '../types';
 import { styles } from '../styles/InputSelectDropdown.ss.styles';
 import { twStyles } from '../styles/InputSelectDropdown.tw.styles';
 import { inputSelectDropdownDefaultProps } from '../utils/defaultProps';
@@ -126,7 +126,7 @@ export const InputSelectDropdown = forwardRef<IDropdownRef, InputSelectDropdownP
       onOpenChange,
       onSelectItem,
       open,
-      position: dropdownPosition,
+      position: dropdownPosition ?? 'auto',
       searchField,
       searchQuery,
       valueField,
@@ -193,7 +193,7 @@ export const InputSelectDropdown = forwardRef<IDropdownRef, InputSelectDropdownP
         wrapperRef={inputRef}
         editable={false}
         onPress={toggleDropdown}
-        placeholder={inputProps?.placeholder ?? DEFAULT_CONFIG.PLACEHOLDER}
+        placeholder={inputProps?.placeholder ?? inputSelectDropdownDefaultProps.placeholder}
         value={isSelected ? get(state.currentValue, valueField) : undefined}
         rightIconAction={{
           iconColor: 'black',

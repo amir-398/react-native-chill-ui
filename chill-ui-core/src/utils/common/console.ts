@@ -4,4 +4,9 @@ export const customConsole = {
       console.error(message);
     }
   },
+  warn: (message: string) => {
+    if (__DEV__) {
+      console.warn(message);
+    }
+  },
 };

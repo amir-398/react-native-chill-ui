@@ -63,7 +63,7 @@ export type ToastProps = {
   /** Toast variant type */
   variant?: ToastVariantProps;
   /** Toast message content */
-  message: string;
+  message?: string;
   /** Position of the toast */
   position?: ToastPositionProps;
   /** Duration in milliseconds */

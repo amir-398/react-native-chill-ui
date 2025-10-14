@@ -1,9 +1,9 @@
 import { View } from 'react-native';
-import { useToast } from '@components';
+import { useToastSs } from '@components';
 import { Button } from '@components/button';
 
 export default function Test() {
-  const { toast } = useToast();
+  const { toast } = useToastSs();
   return (
     <View className="flex-1 items-center justify-center">
       <Button
@@ -12,10 +12,10 @@ export default function Test() {
           toast({
             allowMultiple: true,
             maxToasts: 3,
-
+            message: 'Hello, world!',
             position: 'bottom',
-            swipeable: true,
 
+            title: 'Hello, world!',
             variant: 'info',
           });
         }}

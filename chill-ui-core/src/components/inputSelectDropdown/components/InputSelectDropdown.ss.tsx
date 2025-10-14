@@ -8,8 +8,8 @@ import { HighlightStringSs } from '@components/highlightString';
 
 import { InputDropdownModalSs } from '@/components/inputDropdown';
 
+import { IDropdownRef } from '../types';
 import { useInputSelectDropdown } from '../hooks';
-import { IDropdownRef, DEFAULT_CONFIG } from '../types';
 import { styles } from '../styles/InputSelectDropdown.ss.styles';
 import { inputSelectDropdownDefaultProps } from '../utils/defaultProps';
 
@@ -126,7 +126,7 @@ export const InputSelectDropdown = React.forwardRef<IDropdownRef, InputSelectDro
         onOpenChange,
         onSelectItem,
         open,
-        position: dropdownPosition,
+        position: dropdownPosition ?? 'auto',
         searchField,
         searchQuery,
         valueField,
@@ -190,7 +190,7 @@ export const InputSelectDropdown = React.forwardRef<IDropdownRef, InputSelectDro
           wrapperRef={inputRef}
           editable={false}
           onPress={toggleDropdown}
-          placeholder={inputProps?.placeholder ?? DEFAULT_CONFIG.PLACEHOLDER}
+          placeholder={inputProps?.placeholder ?? inputSelectDropdownDefaultProps.placeholder}
           value={isSelected ? get(state.currentValue, valueField) : undefined}
           rightIconAction={{
             iconColor: 'black',

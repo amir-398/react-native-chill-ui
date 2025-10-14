@@ -28,4 +28,6 @@ export * from './skeleton';
 export * from './slider';
 export * from './timePicker';
 export * from './toast';
+export * from './toggle';
+export * from './wrapper';
 export * from './utils';

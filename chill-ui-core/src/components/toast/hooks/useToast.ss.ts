@@ -3,7 +3,7 @@ import { ToastVariantPropsSs, ToastPositionPropsSs } from '@types';
 
 import { useToastState } from './useToastState.tw';
 import { useToastAnimation } from './useToastAnimation';
-import { variantTitles, variantConfig } from '../utils/toastConfig.tw';
+import { variantConfig } from '../utils/toastConfig.tw';
 
 export const useToast = (variants: any) => {
   const {
@@ -71,7 +71,7 @@ export const useToast = (variants: any) => {
     ) => {
       resetState();
 
-      updateToastData(msg, variantType, position, toastTitle || variantTitles[variantType], render);
+      updateToastData(msg, variantType, position, toastTitle, render);
 
       setTimeout(() => {
         showToastState();

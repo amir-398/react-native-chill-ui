@@ -3,7 +3,6 @@ export * from './toast';
 export * from './loadingIndicatorsKit';
 export * from './accordion';
 export * from './dialog';
-export * from './tooltip';
 export * from './ripplePressable';
 export * from './animatedBox';
 export * from './icon';
@@ -24,5 +23,5 @@ export * from './segmentedControl';
 export * from './separator';
 export * from './skeletons';
 export * from './timePicker';
-
-export { default as Toggle } from './toggle';
+export * from './toggle';
+export * from './wrapper';
