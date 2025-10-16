@@ -52,7 +52,7 @@
     "@babel/plugin-transform-class-static-block": "^7.27.1",
     "@storybook/addon-docs": "^9.1.12",
     "@storybook/addon-ondevice-actions": "^8.6.4",
-    "@storybook/addon-ondevice-backgrounds": "^8.6.4",
+    "@storybook/addon-ondevice-backgrounds": "^9.1.4",
     "@storybook/addon-ondevice-controls": "^8.6.4",
     "@storybook/addon-ondevice-notes": "^8.6.4",
     "@storybook/react-native-server": "^6.5.8",
