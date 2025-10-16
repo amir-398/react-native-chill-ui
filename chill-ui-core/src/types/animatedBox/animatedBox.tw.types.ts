@@ -10,6 +10,8 @@ import { Animated } from 'react-native';
 export type AnimatedViewProps = React.ComponentProps<typeof Animated.View>;
 
 export interface AnimatedBoxProps extends AnimatedViewProps {
-  /** Additional className for the animated box */
+  /** Additional className for the animated box (Nativewind only) */
   className?: string;
+  /** Use optimized RCTView component for better performance  */
+  useFastView?: boolean;
 }

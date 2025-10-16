@@ -11,45 +11,39 @@ import { inputDefaultProps } from '../utils/defaultProps';
 import { inputContainerSv, inputSv, styles } from '../styles/Input.ss.styles';
 
 /**
- * Input component with StyleSheet styling.
- * Provides a comprehensive text input with validation, icons, error handling, and customizable styling.
+ * The `<Input />` component provides a comprehensive text input with validation, icons, error handling, and customizable styling.
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { Input } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic input with label
  * <Input
  *   label="Email"
  *   placeholder="Enter your email"
- *   value={email}
- *   onChangeText={setEmail}
- * />
- *
- * // Input with validation and error handling
- * <Input
- *   label="Password"
- *   placeholder="Enter password"
- *   hasSecureTextEntry
- *   hasError={hasError}
- *   errorMessage="Password is required"
- *   allow="lettersWithoutSpecialCharacters"
+ *   value={emailValue}
+ *   onChangeText={setEmailValue}
  * />
  * ```
  *
- * @param allow - Input validation type ('all' | 'numbers' | 'letters' | 'lettersWithoutSpecialCharacters')
+ * @param allow - Input validation type: 'all' | 'numbers' | 'letters' | 'lettersWithoutSpecialCharacters' (default: 'all')
  * @param clearIconProps - Props for the clear icon component
- * @param clickableAs - Animation type when input is pressed ('scale' | undefined)
+ * @param clickableAs - Animation type when input is pressed: 'scale' | undefined
  * @param customRegex - Custom regex pattern for input validation
  * @param editable - Whether the input is editable (default: true)
- * @param errorStyle - Custom CSS classes for the error message
  * @param errorIconName - Icon name to display with error message
  * @param errorMessage - Error message to display below input
  * @param errorStringProps - Props for the error message String component
+ * @param errorStyle - Custom style for the error message
  * @param eyeIconProps - Props for the eye/eye-slash icon component
  * @param font - Font family variant for the input text
  * @param hasClearIcon - Whether to show clear icon when input has value (default: true)
  * @param hasError - Whether input is in error state
  * @param hasSecureTextEntry - Whether input should hide text (password field)
- * @param inputStyle - Custom CSS classes for the input field
+ * @param inputStyle - Custom style for the input field
  * @param isDisabled - Whether input is disabled
  * @param isStretchable - Whether input should stretch to full width
  * @param label - Label text to display above input
@@ -62,10 +56,10 @@ import { inputContainerSv, inputSv, styles } from '../styles/Input.ss.styles';
  * @param onPress - Callback when input is pressed
  * @param rightIconAction - Configuration for right icon (iconName, iconSize, iconColor, iconPress, customIcon)
  * @param showLength - Whether to show character count
- * @param size - Input size variant ('xs' | 'sm' | 'md' | 'lg' | 'xl')
+ * @param size - Input size variant: 'xs' | 'sm' | 'md' | 'lg' | 'xl' (default: 'md')
+ * @param style - Style object for the input container
  * @param value - Current input value
  * @param wrapperRef - Ref for the input container wrapper
- * @returns Styled input component with validation and icon support using StyleSheet
  */
 const Input = forwardRef<TextInput, InputPropsSs>((props, ref) => {
   const {
@@ -221,6 +215,7 @@ const Input = forwardRef<TextInput, InputPropsSs>((props, ref) => {
           multiline={multiline}
           maxLength={maxLength}
           editable={isDisabled ? false : !!editable}
+          placeholderTextColor={inputDefaultProps.placeholderTextColor}
           {...rest}
         />
 

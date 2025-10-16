@@ -1,52 +1,70 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { action } from '@storybook/addon-actions';
-
-import Toggle from '../src/components/toggle/toggle';
+import { Toggle } from '../src/components';
 import UiPresentation from './storybook/UiPresentation';
 
 const meta: Meta<typeof Toggle> = {
+  args: {
+    isDisabled: false,
+    isLoading: false,
+    size: 'md',
+    thumbColorOff: '#f3f3f3',
+    thumbColorOn: '#FFF',
+    trackColorOff: '#CBCFD3',
+    trackColorOn: '#3f83f8',
+  },
   argTypes: {
-    className: {
-      control: 'text',
-      description: 'The class name of the toggle',
-    },
     isDisabled: {
-      control: 'boolean',
-      description: 'Whether the toggle is disabled',
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
     },
     isLoading: {
-      control: 'boolean',
-      description: 'Whether the toggle is in loading state',
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
     },
     onChange: {
       action: 'onChange',
-      description: 'The function to call when the toggle is changed',
     },
     size: {
-      control: 'select',
-      description: 'The size of the toggle',
-      options: ['small', 'large'],
+      table: {
+        defaultValue: {
+          summary: 'md',
+        },
+      },
     },
     thumbColorOff: {
-      control: 'color',
-      description: 'The color of the thumb when the toggle is off',
+      table: {
+        defaultValue: {
+          summary: '#f3f3f3',
+        },
+      },
     },
     thumbColorOn: {
-      control: 'color',
-      description: 'The color of the thumb when the toggle is on',
+      table: {
+        defaultValue: {
+          summary: '#FFF',
+        },
+      },
     },
     trackColorOff: {
-      control: 'color',
-      description: 'The color of the track when the toggle is off',
+      table: {
+        defaultValue: {
+          summary: '#CBCFD3',
+        },
+      },
     },
     trackColorOn: {
-      control: 'color',
-      description: 'The color of the track when the toggle is on',
-    },
-    value: {
-      control: 'boolean',
-      description: 'The value of the toggle',
+      table: {
+        defaultValue: {
+          summary: '#3f83f8',
+        },
+      },
     },
   },
   component: Toggle,

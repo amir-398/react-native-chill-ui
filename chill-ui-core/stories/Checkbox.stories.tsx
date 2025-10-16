@@ -1,71 +1,70 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
 import UiPresentation from './storybook';
-import Checkbox from '../src/components/checkbox/Checkbox';
+import { Checkbox } from '../src/components';
 
 const meta: Meta<typeof Checkbox> = {
+  args: {
+    iconColor: '#FFF',
+    iconName: 'check-solid',
+    isChecked: false,
+    isDisabled: false,
+    isLabelPressable: true,
+    size: 'md',
+    variant: 'square',
+  },
   argTypes: {
-    checkboxSize: {
-      control: 'number',
-      description: 'Custom size for the checkbox',
-    },
-    checkedClassName: {
-      control: 'text',
-      description: 'Additional CSS classes when checked',
-    },
-    checkedColor: {
-      control: 'color',
-      description: 'Background color when checked',
-    },
-    className: {
-      control: 'text',
-      description: 'Additional CSS classes for the checkbox container',
-    },
-    customIcon: {
-      control: 'object',
-      description: 'Custom icon component to use instead of default',
-    },
     iconColor: {
-      control: 'color',
-      description: 'Color of the check icon',
+      table: {
+        defaultValue: {
+          summary: '#FFF',
+        },
+      },
     },
     iconName: {
-      control: 'text',
-      description: 'Name of the icon to use',
+      table: {
+        defaultValue: {
+          summary: 'check-solid',
+        },
+      },
     },
     isChecked: {
-      control: 'boolean',
-      description: 'Whether the checkbox is checked',
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
     },
     isDisabled: {
-      control: 'boolean',
-      description: 'Whether the checkbox is disabled',
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
     },
-    label: {
-      control: 'text',
-      description: 'Label text for the checkbox',
-    },
-    labelClassName: {
-      control: 'text',
-      description: 'Additional CSS classes for the label',
+    isLabelPressable: {
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
     },
     onChange: {
       action: 'changed',
-      description: 'Callback when checkbox state changes',
     },
     size: {
-      control: 'select',
-      description: 'Size variant of the checkbox',
-      options: ['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'],
-    },
-    uncheckedColor: {
-      control: 'color',
-      description: 'Background color when unchecked',
+      table: {
+        defaultValue: {
+          summary: 'md',
+        },
+      },
     },
     variant: {
-      control: 'select',
-      description: 'Visual variant of the checkbox',
-      options: ['square', 'circle'],
+      table: {
+        defaultValue: {
+          summary: 'square',
+        },
+      },
     },
   },
   component: Checkbox,

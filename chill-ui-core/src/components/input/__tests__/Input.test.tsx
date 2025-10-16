@@ -10,12 +10,12 @@ jest.mock('../styles/Input.ss.styles', () => ({
 }));
 
 jest.mock('../../../utils', () => ({
-  classNamePropsHandler: jest.fn(),
   classNameHandler: jest.fn(() => ({})),
-  styleHandler: jest.fn(() => ({})),
+  classNamePropsHandler: jest.fn(),
   cn: jest.fn((...args) => args.filter(Boolean).join(' ')),
   getStringLength: jest.fn(str => str?.length || 0),
   isString: jest.fn(value => typeof value === 'string'),
+  styleHandler: jest.fn(() => ({})),
 }));
 
 jest.mock('../../../components/box', () => ({
@@ -24,7 +24,9 @@ jest.mock('../../../components/box', () => ({
 
 jest.mock('../../../components/icon', () => ({
   Icon: ({ name, onPress }: any) => {
-    const MockIcon = () => <div data-testid={`icon-${name}`} onClick={onPress} />;
+    function MockIcon() {
+      return <div data-testid={`icon-${name}`} onClick={onPress} />;
+    }
     return <MockIcon />;
   },
 }));
@@ -54,12 +56,12 @@ describe('Input Component (Hybrid)', () => {
   });
 
   it('should render without crashing', () => {
-    const { root } = render(<Input hasError={true} errorMessage="This is an error" />);
+    const { root } = render(<Input hasError errorMessage="This is an error" />);
     expect(root).toBeTruthy();
   });
 
   it('should handle disabled state', () => {
-    render(<Input isDisabled={true} placeholder="Disabled input" />);
+    render(<Input isDisabled placeholder="Disabled input" />);
     const input = screen.getByPlaceholderText('Disabled input');
     expect(input.props.editable).toBe(false);
   });

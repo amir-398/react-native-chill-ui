@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { Button } from '@components/button';
-import { String } from '@components/string';
-import { Box } from '@components/box';
 import {
+  Box,
+  Button,
+  String,
   Dialog,
   DialogTrigger,
   DialogContent,
@@ -11,26 +11,21 @@ import {
   DialogTitle,
   DialogFooter,
   DialogClose,
-} from '@components/dialog';
+} from '../../src/components';
 
 const meta: Meta<typeof DialogClose> = {
-  title: 'Components/Dialog/DialogClose',
-  component: DialogClose,
-  parameters: {
-    layout: 'centered',
-  },
-  tags: ['autodocs'],
   argTypes: {
     as: {
       control: 'select',
-      options: ['pressable', 'touchable-opacity', 'ripple-pressable'],
       description: 'Type of touchable component',
+      options: ['pressable', 'touchable-opacity', 'ripple-pressable'],
     },
     asChild: {
       control: 'boolean',
       description: 'Whether to clone the child element',
     },
   },
+  component: DialogClose,
   decorators: [
     Story => (
       <Dialog>
@@ -49,6 +44,11 @@ const meta: Meta<typeof DialogClose> = {
       </Dialog>
     ),
   ],
+  parameters: {
+    layout: 'centered',
+  },
+  tags: ['autodocs'],
+  title: 'Components/Dialog/DialogClose',
 };
 
 export default meta;
@@ -59,7 +59,7 @@ export const Default: Story = {
     as: 'pressable',
     asChild: false,
   },
-  render: args => (
+  render: (args: any) => (
     <DialogClose {...args}>
       <Button title="Close" />
     </DialogClose>
@@ -71,7 +71,7 @@ export const RipplePressable: Story = {
     as: 'ripple-pressable',
     asChild: false,
   },
-  render: args => (
+  render: (args: any) => (
     <DialogClose {...args}>
       <Button title="Ripple Close" />
     </DialogClose>
@@ -83,7 +83,7 @@ export const TouchableOpacity: Story = {
     as: 'touchable-opacity',
     asChild: false,
   },
-  render: args => (
+  render: (args: any) => (
     <DialogClose {...args}>
       <Button title="Touchable Close" />
     </DialogClose>
@@ -95,7 +95,7 @@ export const AsChild: Story = {
     as: 'pressable',
     asChild: true,
   },
-  render: args => (
+  render: (args: any) => (
     <DialogClose {...args}>
       <Button title="As Child Close" />
     </DialogClose>
@@ -107,7 +107,7 @@ export const CustomStyled: Story = {
     as: 'pressable',
     asChild: true,
   },
-  render: args => (
+  render: (args: any) => (
     <DialogClose {...args}>
       <Button title="Custom Close" variant="danger" />
     </DialogClose>
@@ -119,7 +119,7 @@ export const WithCustomElement: Story = {
     as: 'pressable',
     asChild: true,
   },
-  render: args => (
+  render: (args: any) => (
     <DialogClose {...args}>
       <Box className="rounded-lg bg-red-500 p-3">
         <String className="font-semibold text-white">Custom Close Element</String>
@@ -129,6 +129,24 @@ export const WithCustomElement: Story = {
 };
 
 export const MultipleCloseButtons: Story = {
+  decorators: [
+    (StoryBox: any) => (
+      <Dialog>
+        <DialogTrigger>
+          <Button title="Open Dialog" />
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader hasCloseMark>
+            <DialogTitle>Multiple Close Buttons</DialogTitle>
+          </DialogHeader>
+          <String>Any of the close buttons below can close this dialog.</String>
+          <DialogFooter>
+            <StoryBox />
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    ),
+  ],
   render: () => (
     <Box className="flex flex-col gap-4">
       <String className="text-lg font-semibold">Multiple Close Buttons</String>
@@ -145,27 +163,27 @@ export const MultipleCloseButtons: Story = {
       </Box>
     </Box>
   ),
+};
+
+export const DifferentVariants: Story = {
   decorators: [
-    Story => (
+    (StoryBox: any) => (
       <Dialog>
         <DialogTrigger>
           <Button title="Open Dialog" />
         </DialogTrigger>
         <DialogContent>
           <DialogHeader hasCloseMark>
-            <DialogTitle>Multiple Close Buttons</DialogTitle>
+            <DialogTitle>Different Close Variants</DialogTitle>
           </DialogHeader>
-          <String>Any of the close buttons below can close this dialog.</String>
+          <String>Try different close button variants below.</String>
           <DialogFooter>
-            <Story />
+            <StoryBox />
           </DialogFooter>
         </DialogContent>
       </Dialog>
     ),
   ],
-};
-
-export const DifferentVariants: Story = {
   render: () => (
     <Box className="flex flex-col gap-4">
       <String className="text-lg font-semibold">Different Button Variants</String>
@@ -185,27 +203,27 @@ export const DifferentVariants: Story = {
       </Box>
     </Box>
   ),
+};
+
+export const WithIcons: Story = {
   decorators: [
-    Story => (
+    (StoryBox: any) => (
       <Dialog>
         <DialogTrigger>
           <Button title="Open Dialog" />
         </DialogTrigger>
         <DialogContent>
           <DialogHeader hasCloseMark>
-            <DialogTitle>Different Close Variants</DialogTitle>
+            <DialogTitle>Close with Icons</DialogTitle>
           </DialogHeader>
-          <String>Try different close button variants below.</String>
+          <String>Close buttons with different icons.</String>
           <DialogFooter>
-            <Story />
+            <StoryBox />
           </DialogFooter>
         </DialogContent>
       </Dialog>
     ),
   ],
-};
-
-export const WithIcons: Story = {
   render: () => (
     <Box className="flex flex-row gap-2">
       <DialogClose asChild>
@@ -219,22 +237,4 @@ export const WithIcons: Story = {
       </DialogClose>
     </Box>
   ),
-  decorators: [
-    Story => (
-      <Dialog>
-        <DialogTrigger>
-          <Button title="Open Dialog" />
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader hasCloseMark>
-            <DialogTitle>Close with Icons</DialogTitle>
-          </DialogHeader>
-          <String>Close buttons with different icons.</String>
-          <DialogFooter>
-            <Story />
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    ),
-  ],
 };

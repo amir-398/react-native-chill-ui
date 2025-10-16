@@ -13,25 +13,34 @@ import { buttonIconDefaultProps } from '../utils/defaultProps';
 import { buttonIconTv, twStyles } from '../styles/buttonIcon.tw.styles';
 
 /**
- * ButtonIcon component with support for multiple touchable types, loading states, and icon customization.
- * Provides a flexible and accessible icon button implementation with support for different interaction patterns.
+ * The `<ButtonIcon />` component provides a flexible and accessible icon button implementation.
+ * Supports multiple touchable types, loading states, and icon customization using NativeWind.
+ *
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { ButtonIcon } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic usage
  * <ButtonIcon iconName="bell-solid" onPress={handlePress} />
  * ```
  *
- * @param as - Type of touchable component to use (default: 'Pressable')
- * @param className - Custom CSS classes for the button container
+ * @param as - Type of touchable component to use: 'touchable-opacity' | 'pressable' | 'ripple-pressable' | 'scale-pressable' (default: 'touchable-opacity')
+ * @param className - Custom CSS classes for the button container (NativeWind)
+ * @param colorVariant - Button color variant: 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success' | 'accent' | 'dark' | 'light' | 'danger' | 'neutral' | 'muted' | 'tertiary' | 'inverted' | 'white' (default: 'primary')
  * @param iconColor - Color of the icon
  * @param iconName - Name of the icon to display (required)
  * @param isDisabled - Whether the button is disabled
  * @param isLoading - Whether the button is in loading state
  * @param loadingIndicatorProps - Props to pass to the loading indicator
  * @param onPress - Press callback function
- * @param size - Icon size variant (default: 'md')
+ * @param rounded - Button shape: 'circle' | 'square' (default: 'square')
+ * @param size - Icon size variant: '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' (default: 'md')
  * @param style - Style object for the button container
+ * @param variant - Button style variant: 'contained' | 'outlined' (default: 'contained')
  */
 export default function ButtonIcon(props: ButtonIconPropsTw) {
   const {

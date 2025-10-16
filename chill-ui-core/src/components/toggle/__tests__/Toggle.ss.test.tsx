@@ -1,6 +1,7 @@
-import { render } from '@testing-library/react-native';
-import { Toggle } from '../components/toggle.ss';
 import { View, StyleSheet } from 'react-native';
+import { render } from '@testing-library/react-native';
+
+import { Toggle } from '../components/toggle.ss';
 
 // Mocks
 jest.mock('../../../utils', () => ({
@@ -40,14 +41,14 @@ describe('Toggle.ss', () => {
   it('supports complex StyleSheet styles', () => {
     const styles = StyleSheet.create({
       toggle: {
+        borderRadius: 8,
+        elevation: 5,
         margin: 16,
         padding: 8,
-        borderRadius: 8,
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
+        shadowOffset: { height: 2, width: 0 },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-        elevation: 5,
       },
     });
 

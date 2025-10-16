@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react-native';
-import { Text } from 'react-native';
 
 import HighlightString from '../components/HighlightString';
 
@@ -14,9 +13,9 @@ jest.mock('../../string', () => ({
 
 // Mock the hybrid utils
 jest.mock('@utils', () => ({
-  classNamePropsHandler: jest.fn(),
   classNameHandler: (className: string) => ({ className }),
-  styleHandler: ({ style, defaultStyle }: any) => ({ style: style || defaultStyle }),
+  classNamePropsHandler: jest.fn(),
+  styleHandler: ({ defaultStyle, style }: any) => ({ style: style || defaultStyle }),
 }));
 
 describe('HighlightString Component', () => {
@@ -62,7 +61,7 @@ describe('HighlightString Component', () => {
     });
 
     it('applies custom style and highlightStyle', () => {
-      const customStyle = { fontSize: 18, color: 'red' };
+      const customStyle = { color: 'red', fontSize: 18 };
       const customHighlightStyle = { backgroundColor: 'yellow', fontWeight: 'bold' };
 
       render(<HighlightString {...defaultProps} style={customStyle} highlightStyle={customHighlightStyle} />);
@@ -123,8 +122,8 @@ describe('HighlightString Component', () => {
 
   describe('Integration', () => {
     it('works with stringProps and highlightStringProps', () => {
-      const stringProps = { size: 'lg' as const, colorVariant: 'primary' as const };
-      const highlightStringProps = { size: 'sm' as const, colorVariant: 'secondary' as const };
+      const stringProps = { colorVariant: 'primary' as const, size: 'lg' as const };
+      const highlightStringProps = { colorVariant: 'secondary' as const, size: 'sm' as const };
 
       render(
         <HighlightString {...defaultProps} stringProps={stringProps} highlightStringProps={highlightStringProps} />,
@@ -149,7 +148,7 @@ describe('HighlightString Component', () => {
     });
 
     it('maintains performance with large content', () => {
-      const largeContent = 'word '.repeat(100) + 'target ' + 'word '.repeat(100);
+      const largeContent = `${'word '.repeat(100)}target ${'word '.repeat(100)}`;
       const startTime = Date.now();
 
       render(<HighlightString content={largeContent} highlightTerm="target" />);

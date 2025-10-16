@@ -38,7 +38,7 @@ describe('Separator Component', () => {
   });
 
   it('should render with custom style', () => {
-    const { getByTestId } = render(<Separator style={{ height: 2, backgroundColor: 'blue' }} />);
+    const { getByTestId } = render(<Separator style={{ backgroundColor: 'blue', height: 2 }} />);
     expect(getByTestId('box')).toBeTruthy();
   });
 
@@ -59,12 +59,12 @@ describe('Separator Component', () => {
   });
 
   it('should render with margin styles', () => {
-    const { getByTestId } = render(<Separator style={{ marginVertical: 16, marginHorizontal: 8 }} />);
+    const { getByTestId } = render(<Separator style={{ marginHorizontal: 8, marginVertical: 16 }} />);
     expect(getByTestId('box')).toBeTruthy();
   });
 
   it('should render with custom height and color', () => {
-    const { getByTestId } = render(<Separator style={{ height: 2, backgroundColor: '#3B82F6' }} />);
+    const { getByTestId } = render(<Separator style={{ backgroundColor: '#3B82F6', height: 2 }} />);
     expect(getByTestId('box')).toBeTruthy();
   });
 
@@ -74,10 +74,10 @@ describe('Separator Component', () => {
       <Separator
         className="custom-separator"
         style={{
-          height: 2,
           backgroundColor: '#EF4444',
-          marginVertical: 12,
           borderRadius: 1,
+          height: 2,
+          marginVertical: 12,
           opacity: 0.8,
         }}
         accessible

@@ -4,8 +4,14 @@ import styles from '../../styles/AnimatedBox.ss.styles';
 import { AnimatedView as AnimatedViewNative } from '../../../box/components/View.ss';
 
 /**
- * AnimatedBox - Base animated container component.
- * Provides optimal performance using React Native's internal ViewNativeComponent.
+ * The `<AnimatedBox />` component provides a base animated container with optimal performance.
+ * Uses React Native's internal ViewNativeComponent.
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { AnimatedBox } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
@@ -15,11 +21,11 @@ import { AnimatedView as AnimatedViewNative } from '../../../box/components/View
  *
  * ```
  *
- * @param style - Inline styles for traditional styling or style overrides
- * @param children - Content to be rendered inside the animated container
- * @param props - All other View props are supported
- * @returns Optimized animated view component ready for custom animations
+ * @param useFastView - Use optimized RCTView component for better performance (default: `true`)
+ * @param AnimatedViewProps - Any other props accepted by the native `Animated.View` component
  */
 export function AnimatedBox(props: AnimatedBoxPropsSs) {
   return <AnimatedViewNative style={[styles.baseAnimated]} {...props} />;
 }
+
+AnimatedBox.displayName = 'AnimatedBox';

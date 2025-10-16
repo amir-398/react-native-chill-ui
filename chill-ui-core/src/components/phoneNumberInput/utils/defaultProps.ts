@@ -1,7 +1,7 @@
 import { InputDropdownProps, PhoneNumberInputProps } from '@types';
 
 export const phoneNumberInputDefaultProps = {
-  defaultCountry: 'US',
+  defaultCountry: 'FR',
   defaultErrorMessage: 'the phone number is invalid',
   defaultLanguage: 'en',
   defaultOpen: false,

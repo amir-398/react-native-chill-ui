@@ -1,32 +1,33 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 
 import { Icon } from '../src/components/icon';
 import UiPresentation from './storybook/UiPresentation';
 
 const meta: Meta<typeof Icon> = {
+  args: {
+    color: '#000',
+    hasPressEffect: true,
+    size: 'md',
+  },
   argTypes: {
-    as: {
-      control: 'select',
-      description: 'Component to use when pressable',
-      options: ['pressable', 'touchable-opacity', 'ripple-pressable'],
-    },
-    className: {
-      control: 'text',
-      description: 'Custom CSS classes (only used with NativeWind)',
-    },
     color: {
-      control: 'color',
-      description: 'The color of the icon',
+      table: {
+        defaultValue: {
+          summary: '#000',
+        },
+      },
     },
     hasPressEffect: {
-      control: 'boolean',
-      description: 'Whether to show press effect when pressed',
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
     },
     name: {
       control: 'select',
-      description: 'The name of the icon',
       options: [
         'angle-down-solid',
         'angle-left-solid',
@@ -42,25 +43,17 @@ const meta: Meta<typeof Icon> = {
     },
     onPress: {
       action: 'onPress',
-      description: 'Callback function when icon is pressed',
     },
     pressEffectSize: {
       control: 'select',
-      description: 'Size of the press effect padding',
       options: ['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'],
-    },
-    pressEffectStyle: {
-      control: 'object',
-      description: 'Custom styles for the press effect (only works with NativeWind and Hybrid versions)',
     },
     size: {
-      control: 'select',
-      description: 'The size of the icon',
-      options: ['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'],
-    },
-    style: {
-      control: 'object',
-      description: 'Additional inline styles',
+      table: {
+        defaultValue: {
+          summary: 'md',
+        },
+      },
     },
   },
   component: Icon,

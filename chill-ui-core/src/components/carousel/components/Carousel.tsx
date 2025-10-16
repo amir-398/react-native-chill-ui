@@ -19,9 +19,14 @@ import { carouselDefaultProps } from '../utils/defaultProps';
 import { CarouselProvider, useCarousel } from './CarouselContext';
 
 /**
- * CarouselItem component represents a single slide in the carousel.
+ * The `<CarouselItem />` component represents a single slide in the carousel.
  *
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { CarouselItem } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
@@ -32,8 +37,8 @@ import { CarouselProvider, useCarousel } from './CarouselContext';
  * </CarouselItem>
  * ```
  *
- * @param className - (only NativeWind) Custom CSS classes for the item container
  * @param children - Content to render inside the carousel item
+ * @param className - Custom CSS classes for the item container (NativeWind)
  * @param style - Custom style object for the item container
  */
 function CarouselItem(props: CarouselItemPropsTw) {
@@ -43,15 +48,18 @@ function CarouselItem(props: CarouselItemPropsTw) {
 }
 
 /**
- * Carousel component for displaying a scrollable collection of items with navigation controls.
+ * The `<Carousel />` component displays a scrollable collection of items with navigation controls.
+ * Provides a flexible carousel implementation with support for dots, arrows, and auto-play.
  *
- * Provides a flexible carousel implementation inspired by shadcn/ui with support for dots, arrows, and auto-play.
  *
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { Carousel } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic usage
  * <Carousel>
  *   <CarouselContent orientation="horizontal">
  *     <CarouselItem><String>Slide 1</String></CarouselItem>
@@ -63,17 +71,10 @@ function CarouselItem(props: CarouselItemPropsTw) {
  *   <CarouselPrevious />
  *   <CarouselNext />
  * </Carousel>
- *
- * // With auto-play
- * <Carousel>
- *   <CarouselContent autoPlay autoPlayLoop autoPlayInterval={3000}>
- *     {items.map(item => <CarouselItem key={item.id}>{item.content}</CarouselItem>)}
- *   </CarouselContent>
- * </Carousel>
  * ```
  *
  * @param children - Carousel sub-components (CarouselContent, CarouselElement, etc.)
- * @param className - (only NativeWind) Custom CSS classes for the carousel container
+ * @param className - Custom CSS classes for the carousel container (NativeWind)
  * @param initialIndex - Initial slide index to display (default: 0)
  * @param onScrollChange - Callback fired when the active slide changes
  * @param style - Custom style object for the carousel container
@@ -94,33 +95,19 @@ export function Carousel(props: PropsWithChildren<CarouselPropsTw>) {
 }
 
 /**
- * CarouselContent component manages the scrollable content area of the carousel.
- *
+ * The `<CarouselContent />` component manages the scrollable content area of the carousel.
  * Handles the FlatList implementation, viewability tracking, and auto-play functionality.
  *
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { CarouselContent } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Horizontal carousel
  * <CarouselContent orientation="horizontal">
- *   <CarouselItem>Slide 1</CarouselItem>
- *   <CarouselItem>Slide 2</CarouselItem>
- * </CarouselContent>
- *
- * // With auto-play
- * <CarouselContent
- *   autoPlay
- *   autoPlayLoop
- *   autoPlayInterval={3000}
- *   autoPlayDirection="forward"
- * >
- *   <CarouselItem>Slide 1</CarouselItem>
- *   <CarouselItem>Slide 2</CarouselItem>
- * </CarouselContent>
- *
- * // Vertical carousel
- * <CarouselContent orientation="vertical">
  *   <CarouselItem>Slide 1</CarouselItem>
  *   <CarouselItem>Slide 2</CarouselItem>
  * </CarouselContent>
@@ -131,7 +118,7 @@ export function Carousel(props: PropsWithChildren<CarouselPropsTw>) {
  * @param autoPlayInterval - Auto-play interval in milliseconds (default: 3000)
  * @param autoPlayLoop - Whether to loop auto-play (default: true)
  * @param children - CarouselItem components to display
- * @param className - (only NativeWind) Custom CSS classes for the FlatList container
+ * @param className - Custom CSS classes for the FlatList container (NativeWind)
  * @param orientation - Scroll orientation: 'horizontal' | 'vertical' (default: 'horizontal')
  */
 function CarouselContent(props: CarouselContentPropsTw) {
@@ -196,28 +183,25 @@ function CarouselContent(props: CarouselContentPropsTw) {
 }
 
 /**
- * CarouselElement component for positioning custom elements over the carousel.
- *
+ * The `<CarouselElement />` component positions custom elements over the carousel.
  * Typically used to position navigation dots or custom controls at the top or bottom of the carousel.
+ *
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { CarouselElement } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Position dots at bottom
  * <CarouselElement position="bottom" offset={16}>
  *   <CarouselDots />
- * </CarouselElement>
- *
- * // Position controls at top
- * <CarouselElement position="top" offset={20}>
- *   <Box className="flex-row gap-2">
- *     <Button title="Prev" />
- *     <Button title="Next" />
- *   </Box>
  * </CarouselElement>
  * ```
  *
  * @param children - Content to render (typically CarouselDots or custom controls)
- * @param className - (only NativeWind) Custom CSS classes for the element container
+ * @param className - Custom CSS classes for the element container (NativeWind)
  * @param offset - Distance from the edge in pixels (default: 16)
  * @param position - Position relative to carousel: 'top' | 'bottom' (default: 'bottom')
  * @param style - Custom style object for the element container
@@ -243,32 +227,23 @@ export function CarouselElement(props: PropsWithChildren<CarouselElementPropsTw>
 }
 
 /**
- * CarouselDots component displays navigation dots indicating the current slide.
- *
+ * The `<CarouselDots />` component displays navigation dots indicating the current slide.
  * Automatically reflects the current slide and total number of slides from the carousel context.
+ *
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { CarouselDots } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic usage
  * <CarouselDots />
- *
- * // Custom colors and size
- * <CarouselDots
- *   activeColor="blue"
- *   inactiveColor="gray"
- *   size="lg"
- * />
- *
- * // With custom styling
- * <CarouselDots
- *   className="gap-4"
- *   activeColor="#3b82f6"
- *   inactiveColor="#d1d5db"
- * />
  * ```
  *
  * @param activeColor - Color of the active dot (default: 'white')
- * @param className - (only NativeWind) Custom CSS classes for the dots container
+ * @param className - Custom CSS classes for the dots container (NativeWind)
  * @param inactiveColor - Color of inactive dots (default: 'gray')
  * @param size - Dot icon size: '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' (default: 'xs')
  * @param style - Custom style object for the dots container
@@ -302,32 +277,23 @@ function CarouselDots(props: CarouselDotsPropsTw) {
 }
 
 /**
- * CarouselPrevious component displays a button to navigate to the previous slide.
- *
+ * The `<CarouselPrevious />` component displays a button to navigate to the previous slide.
  * Automatically disables when at the first slide. Can render custom children or default icon.
+ *
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { CarouselPrevious } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Default icon button
  * <CarouselPrevious />
- *
- * // Custom icon
- * <CarouselPrevious iconName="arrow-left-solid" />
- *
- * // Custom content
- * <CarouselPrevious>
- *   <String>← Previous</String>
- * </CarouselPrevious>
- *
- * // With custom styling
- * <CarouselPrevious
- *   className="bg-blue-500"
- *   iconProps={{ color: 'white', size: 'lg' }}
- * />
  * ```
  *
  * @param children - Custom content to render instead of the default icon
- * @param className - (only NativeWind) Custom CSS classes for the button container
+ * @param className - Custom CSS classes for the button container (NativeWind)
  * @param iconName - Icon name to display (default: 'chevron-left-solid')
  * @param iconProps - Additional props to pass to the Icon component
  * @param style - Custom style object for the button container
@@ -390,32 +356,23 @@ function CarouselPrevious(props: PropsWithChildren<CarouselButtonPropsTw>) {
 }
 
 /**
- * CarouselNext component displays a button to navigate to the next slide.
- *
+ * The `<CarouselNext />` component displays a button to navigate to the next slide.
  * Automatically disables when at the last slide. Can render custom children or default icon.
+ *
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { CarouselNext } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Default icon button
  * <CarouselNext />
- *
- * // Custom icon
- * <CarouselNext iconName="arrow-right-solid" />
- *
- * // Custom content
- * <CarouselNext>
- *   <String>Next →</String>
- * </CarouselNext>
- *
- * // With custom styling
- * <CarouselNext
- *   className="bg-blue-500"
- *   iconProps={{ color: 'white', size: 'lg' }}
- * />
  * ```
  *
  * @param children - Custom content to render instead of the default icon
- * @param className - (only NativeWind) Custom CSS classes for the button container
+ * @param className - Custom CSS classes for the button container (NativeWind)
  * @param iconName - Icon name to display (default: 'chevron-right-solid')
  * @param iconProps - Additional props to pass to the Icon component
  * @param style - Custom style object for the button container

@@ -1,10 +1,11 @@
 import { render } from '@testing-library/react-native';
+
 import { Checkbox, CheckboxSs, CheckboxTw } from '../index';
 
 // Mocks
 jest.mock('../../../utils', () => ({
-  classNamePropsHandler: jest.fn(),
   classNameHandler: jest.fn(() => ({})),
+  classNamePropsHandler: jest.fn(),
   cn: jest.fn((...args) => args.filter(Boolean).join(' ')),
   isUndefined: jest.fn(value => value === undefined),
   styleHandler: jest.fn(() => ({})),
@@ -59,7 +60,7 @@ describe('Checkbox Component (Integration)', () => {
   it('should handle form scenario with multiple checkboxes', () => {
     const { root } = render(
       <div>
-        <Checkbox label="Accept terms" isChecked={true} />
+        <Checkbox label="Accept terms" isChecked />
         <Checkbox label="Subscribe" isChecked={false} />
         <Checkbox label="Notifications" isDisabled />
       </div>,

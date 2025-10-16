@@ -1,5 +1,6 @@
-import { IconPropsSs } from '@types';
 import { FlatListProps, StyleProp, ViewProps, ViewStyle } from 'react-native';
+
+import { IconProps } from '../icon/icon.ss.types';
 
 export interface CarouselProps {
   initialIndex?: number;
@@ -20,14 +21,14 @@ export type CarouselItemProps = ViewProps;
 export interface CarouselDotsProps {
   activeColor?: string;
   inactiveColor?: string;
-  size?: IconPropsSs['size'];
+  size?: IconProps['size'];
   style?: StyleProp<ViewStyle>;
 }
 
 export interface CarouselButtonProps {
   style?: StyleProp<ViewStyle>;
-  iconName?: IconPropsSs['name'];
-  iconProps?: Partial<IconPropsSs>;
+  iconName?: IconProps['name'];
+  iconProps?: Partial<IconProps>;
 }
 
 export interface CarouselElementProps {

@@ -3,19 +3,21 @@ import { render, screen } from '@testing-library/react-native';
 import Icon from '../components/Icon.tw';
 
 // Mock du composant CustomIcon
-jest.mock('../components/CustomIcon.tw', () => {
-  return function MockCustomIcon({ name, color, style, className }: any) {
-    return (
-      <div testID={`icon-${name}`} style={style} className={className} data-color={color}>
-        {name}
-      </div>
-    );
-  };
-});
+jest.mock(
+  '../components/CustomIcon.tw',
+  () =>
+    function MockCustomIcon({ className, color, name, style }: any) {
+      return (
+        <div testID={`icon-${name}`} style={style} className={className} data-color={color}>
+          {name}
+        </div>
+      );
+    },
+);
 
 // Mock du composant RipplePressable
 jest.mock('../../ripplePressable', () => ({
-  RipplePressable: ({ children, onPress, style, className, ...props }: any) => (
+  RipplePressable: ({ children, className, onPress, style, ...props }: any) => (
     <div testID="ripple-pressable-tw" onPress={onPress} style={style} className={className} {...props}>
       {children}
     </div>

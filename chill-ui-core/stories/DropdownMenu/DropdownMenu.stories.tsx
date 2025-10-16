@@ -1,11 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
 import { useState } from 'react';
 
-import Icon from '../../src/components/icon';
-import { Box } from '../../src/components/box';
-import { Button } from '../../src/components/button';
-import { String } from '../../src/components/string';
+import { Box, Icon, Button, String } from '../../src/components';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,21 +14,8 @@ import {
 
 const meta: Meta<typeof DropdownMenu> = {
   argTypes: {
-    children: {
-      control: false,
-      description: 'DropdownMenu content and triggers',
-    },
-    defaultOpen: {
-      control: 'boolean',
-      description: 'Initial open state',
-    },
     onOpenChange: {
       action: 'onOpenChange',
-      description: 'Callback when open state changes',
-    },
-    open: {
-      control: 'boolean',
-      description: 'Controlled open state',
     },
   },
   component: DropdownMenu,

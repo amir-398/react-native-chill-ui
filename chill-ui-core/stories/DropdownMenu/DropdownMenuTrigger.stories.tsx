@@ -1,10 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import Icon from '../../src/components/icon';
-import { Box } from '../../src/components/box';
-import { Button } from '../../src/components/button';
-import { String } from '../../src/components/string';
-import { DropdownMenuTrigger } from '../../src/components/dropdownMenu';
+import { Box, Button, String, Icon, DropdownMenuTrigger } from '../../src/components';
 
 const meta: Meta<typeof DropdownMenuTrigger> = {
   argTypes: {

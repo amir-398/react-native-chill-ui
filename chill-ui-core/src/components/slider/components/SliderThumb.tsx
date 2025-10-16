@@ -1,13 +1,12 @@
-import { Animated } from 'react-native';
+import { memo } from 'react';
 import { SliderThumbPropsTw } from '@types';
-import { useEffect, useMemo, useRef } from 'react';
 import { AnimatedBox } from '@components/animatedBox';
 import { cn, classNameHandler, classNamePropsHandler, styleHandler } from '@utils';
 
 import { styles } from '../styles/Slider.ss.styles';
 import { twStyles } from '../styles/Slider.tw.styles';
+import { useSliderThumb } from '../hooks/useSliderThumb';
 import { sliderDefaultProps } from '../utils/defaultProps';
-import { useSliderState, useSliderActions } from '../context/SliderContext';
 
 /**
  * Draggable thumb for the slider
@@ -35,7 +34,7 @@ import { useSliderState, useSliderActions } from '../context/SliderContext';
  * @returns SliderThumb component with draggable functionality
  * @throws Error if used outside of SliderProvider context
  */
-export function SliderThumb(props: SliderThumbPropsTw) {
+function SliderThumbComponent(props: SliderThumbPropsTw) {
   classNamePropsHandler(props, 'SliderThumb');
   const {
     animationType = sliderDefaultProps.animationTypeThumb,
@@ -45,30 +44,12 @@ export function SliderThumb(props: SliderThumbPropsTw) {
     touchSize = sliderDefaultProps.touchSize,
     ...rest
   } = props;
-  const { interpolatedThumbValues, isSliding, valueVisibleStyle } = useSliderState();
-  const { measureThumb, setThumbTouchSize } = useSliderActions();
 
-  useEffect(() => {
-    setThumbTouchSize(touchSize);
-  }, [touchSize, setThumbTouchSize]);
-
-  const val = interpolatedThumbValues[index];
-  const scale = useRef(new Animated.Value(1)).current;
-
-  useEffect(() => {
-    if (animationType === 'none') return;
-
-    Animated.timing(scale, {
-      duration: 100,
-      toValue: isSliding ? 1.5 : 1,
-      useNativeDriver: false,
-    }).start();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSliding]);
-
-  const scaleTransform = useMemo(() => (animationType === 'scale' ? scale : 1), [animationType, scale]);
-  const hasExtendAnimation = animationType === 'extend';
+  const { hasExtendAnimation, measureThumb, scale, scaleTransform, val, valueVisibleStyle } = useSliderThumb({
+    animationType,
+    index,
+    touchSize,
+  });
 
   if (!val) {
     return null;
@@ -110,4 +91,6 @@ export function SliderThumb(props: SliderThumbPropsTw) {
   );
 }
 
-SliderThumb.displayName = 'SliderThumb';
+SliderThumbComponent.displayName = 'SliderThumb';
+
+export const SliderThumb = memo(SliderThumbComponent);

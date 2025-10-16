@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { Button } from '@components/button';
-import { String } from '@components/string';
-import { Box } from '@components/box';
 import {
+  Box,
+  Button,
+  String,
   Dialog,
   DialogTrigger,
   DialogContent,
@@ -11,37 +11,32 @@ import {
   DialogTitle,
   DialogFooter,
   DialogClose,
-} from '@components/dialog';
+} from '../../src/components';
 
 const meta: Meta<typeof DialogHeader> = {
-  title: 'Components/Dialog/DialogHeader',
-  component: DialogHeader,
-  parameters: {
-    layout: 'centered',
-  },
-  tags: ['autodocs'],
   argTypes: {
-    hasCloseMark: {
-      control: 'boolean',
-      description: 'Show close button in header',
+    className: {
+      control: 'text',
+      description: 'Custom CSS classes (NativeWind only)',
     },
     closeMarkProps: {
       control: 'object',
       description: 'Custom close mark props',
     },
-    className: {
-      control: 'text',
-      description: 'Custom CSS classes (NativeWind only)',
+    hasCloseMark: {
+      control: 'boolean',
+      description: 'Show close button in header',
     },
   },
+  component: DialogHeader,
   decorators: [
-    Story => (
+    (StoryBox: any) => (
       <Dialog>
         <DialogTrigger>
           <Button title="Open Dialog" />
         </DialogTrigger>
         <DialogContent>
-          <Story />
+          <StoryBox />
           <String>Dialog content goes here.</String>
           <DialogFooter>
             <DialogClose asChild>
@@ -52,6 +47,11 @@ const meta: Meta<typeof DialogHeader> = {
       </Dialog>
     ),
   ],
+  parameters: {
+    layout: 'centered',
+  },
+  tags: ['autodocs'],
+  title: 'Components/Dialog/DialogHeader',
 };
 
 export default meta;
@@ -61,7 +61,7 @@ export const Default: Story = {
   args: {
     hasCloseMark: false,
   },
-  render: args => (
+  render: (args: any) => (
     <DialogHeader {...args}>
       <DialogTitle>Default Header</DialogTitle>
     </DialogHeader>
@@ -72,7 +72,7 @@ export const WithCloseMark: Story = {
   args: {
     hasCloseMark: true,
   },
-  render: args => (
+  render: (args: any) => (
     <DialogHeader {...args}>
       <DialogTitle>Header with Close Mark</DialogTitle>
     </DialogHeader>
@@ -81,13 +81,13 @@ export const WithCloseMark: Story = {
 
 export const CustomCloseMark: Story = {
   args: {
-    hasCloseMark: true,
     closeMarkProps: {
-      size: 24,
       color: 'red',
+      size: 24,
     },
+    hasCloseMark: true,
   },
-  render: args => (
+  render: (args: any) => (
     <DialogHeader {...args}>
       <DialogTitle>Custom Close Mark</DialogTitle>
     </DialogHeader>
@@ -96,10 +96,10 @@ export const CustomCloseMark: Story = {
 
 export const CustomStyled: Story = {
   args: {
-    hasCloseMark: true,
     className: 'bg-blue-500 border-b-2 border-blue-600',
+    hasCloseMark: true,
   },
-  render: args => (
+  render: (args: any) => (
     <DialogHeader {...args}>
       <DialogTitle className="text-white">Custom Styled Header</DialogTitle>
     </DialogHeader>
@@ -110,7 +110,7 @@ export const WithMultipleElements: Story = {
   args: {
     hasCloseMark: true,
   },
-  render: args => (
+  render: (args: any) => (
     <DialogHeader {...args}>
       <Box className="flex flex-row items-center justify-between">
         <DialogTitle>Complex Header</DialogTitle>
@@ -127,7 +127,7 @@ export const WithoutTitle: Story = {
   args: {
     hasCloseMark: true,
   },
-  render: args => (
+  render: (args: any) => (
     <DialogHeader {...args}>
       <Box className="flex flex-row items-center justify-between">
         <String className="text-lg font-semibold">Custom Header Content</String>

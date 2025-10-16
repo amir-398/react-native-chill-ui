@@ -46,7 +46,7 @@ import useAutocompleteDropdownProvider from '../hooks/useAutocompleteDropdownPro
  * @param hasPerformSearch - Enable search functionality (default: true)
  * @param hasHighlightString - Highlight search terms in results (default: true)
  * @param confirmSelectItem - Require confirmation before selecting
- * @param closeModalWhenSelectedItem - Close dropdown after selection (default: true)
+ * @param closeDropdownWhenSelectedItem - Close dropdown after selection (default: true)
  * @param dropdownPosition - Dropdown positioning: 'auto', 'top', or 'bottom'
  * @param onBlur - Callback when input loses focus
  * @param onFocus - Callback when input gains focus
@@ -63,7 +63,7 @@ import useAutocompleteDropdownProvider from '../hooks/useAutocompleteDropdownPro
 export const AutocompleteDropdown = forwardRef<AutocompleteDropdownRefPropsTw, AutocompleteDropdownPropsTw<any>>(
   (props, currentRef) => {
     const {
-      closeModalWhenSelectedItem = autocompleteDropdownDefaultProps.closeModalWhenSelectedItem,
+      closeDropdownWhenSelectedItem = autocompleteDropdownDefaultProps.closeModalWhenSelectedItem,
       confirmSelectItem,
       customDropdownItem,
       dataSet = autocompleteDropdownDefaultProps.dataSet,
@@ -212,7 +212,7 @@ export const AutocompleteDropdown = forwardRef<AutocompleteDropdownRefPropsTw, A
         updateState({ currentValue: item, searchText: '' });
         onSelectItem?.(item);
 
-        if (closeModalWhenSelectedItem) {
+        if (closeDropdownWhenSelectedItem) {
           setShowDropdown(instanceId, false);
           performSearch('');
           onBlur?.();
@@ -224,7 +224,7 @@ export const AutocompleteDropdown = forwardRef<AutocompleteDropdownRefPropsTw, A
         onSelectItem,
         onConfirmSelectItem,
         performSearch,
-        closeModalWhenSelectedItem,
+        closeDropdownWhenSelectedItem,
         onBlur,
         updateState,
         setShowDropdown,

@@ -11,37 +11,31 @@ import { inputDefaultProps } from '../utils/defaultProps';
 import { inputContainerTv, inputFieldTv, twStyles } from '../styles/Input.tw.styles';
 
 /**
- * Input component with Tailwind styling.
- * Provides a comprehensive text input with validation, icons, error handling, and customizable styling.
+ * The `<Input />` component provides a comprehensive text input with validation, icons, error handling, and customizable styling.
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { Input } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic input with label
  * <Input
  *   label="Email"
  *   placeholder="Enter your email"
- *   value={email}
- *   onChangeText={setEmail}
- * />
- *
- * // Input with validation and error handling
- * <Input
- *   label="Password"
- *   placeholder="Enter password"
- *   hasSecureTextEntry
- *   hasError={hasError}
- *   errorMessage="Password is required"
- *   allow="lettersWithoutSpecialCharacters"
+ *   value={emailValue}
+ *   onChangeText={setEmailValue}
  * />
  * ```
  *
- * @param allow - Input validation type ('all' | 'numbers' | 'letters' | 'lettersWithoutSpecialCharacters')
- * @param className - Custom CSS classes for the input container
+ * @param allow - Input validation type: 'all' | 'numbers' | 'letters' | 'lettersWithoutSpecialCharacters' (default: 'all')
+ * @param className - Custom CSS classes for the input container (NativeWind)
  * @param clearIconProps - Props for the clear icon component
- * @param clickableAs - Animation type when input is pressed ('scale' | undefined)
+ * @param clickableAs - Animation type when input is pressed: 'scale' | undefined
  * @param customRegex - Custom regex pattern for input validation
  * @param editable - Whether the input is editable (default: true)
- * @param errorClassName - Custom CSS classes for error state
+ * @param errorClassName - Custom CSS classes for error state (NativeWind)
  * @param errorIconName - Icon name to display with error message
  * @param errorMessage - Error message to display below input
  * @param errorStringProps - Props for the error message String component
@@ -225,6 +219,7 @@ const Input = forwardRef<TextInput, InputPropsTw>((props, ref) => {
           multiline={multiline}
           maxLength={maxLength}
           editable={isDisabled ? false : !!editable}
+          placeholderTextColor={inputDefaultProps.placeholderTextColor}
           {...rest}
         />
 

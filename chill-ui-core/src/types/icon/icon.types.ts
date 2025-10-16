@@ -8,24 +8,37 @@ import type { iconSizeTv, iconPaddingTv } from '@/components/icon/styles/Icon.tw
  * Props for the Icon component
  */
 export type IconProps = {
+  /** Component to use when pressable:
+   * - `'pressable'`
+   * - `'touchable-opacity'`
+   * - `'ripple-pressable'`
+   */
+  as?: 'pressable' | 'touchable-opacity' | 'ripple-pressable';
+  /** Custom CSS classes for the icon container (NativeWind) */
+  className?: string;
+  /** Icon color (default: '#000') */
+  color?: string;
+  /** Whether to show press effect when pressed */
+  hasPressEffect?: boolean;
+  /** Icon name from the available icon set (required) */
+  name: keyof TIcons;
   /** Callback function when icon is pressed */
   onPress?: () => void;
-  /** Whether to show press effect when icon is pressed */
-  hasPressEffect?: boolean;
   /** Size of the press effect padding */
   pressEffectSize?: VariantProps<typeof iconPaddingTv>['size'];
-  /** Color of the icon (CSS color value) */
-  color?: string;
-  /** Icon name from the available icon set */
-  name: keyof TIcons;
-  /** Custom CSS classes for the icon */
-  className?: string;
-  /** Size variant for the icon */
-  size?: VariantProps<typeof iconSizeTv>['size'];
-  /** Inline styles for the icon */
-  style?: StyleProp<ViewStyle>;
-  /** Custom component to render instead of the default icon */
-  as?: 'pressable' | 'touchable-opacity' | 'ripple-pressable';
   /** Inline styles for the press effect */
   pressEffectStyle?: StyleProp<ViewStyle>;
+  /** Icon size variant:
+   * - `'2xs'`
+   * - `'xs'`
+   * - `'sm'`
+   * - `'md'`
+   * - `'lg'`
+   * - `'xl'`
+   * - `'2xl'`
+   * - `'3xl'`
+   */
+  size?: VariantProps<typeof iconSizeTv>['size'];
+  /** Additional inline styles */
+  style?: StyleProp<ViewStyle>;
 };

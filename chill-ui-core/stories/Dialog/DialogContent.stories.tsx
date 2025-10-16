@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { Button } from '@components/button';
-import { String } from '@components/string';
-import { Box } from '@components/box';
 import {
+  Box,
+  Button,
+  String,
   Dialog,
   DialogTrigger,
   DialogContent,
@@ -11,24 +11,22 @@ import {
   DialogTitle,
   DialogFooter,
   DialogClose,
-} from '@components/dialog';
+} from '../../src/components';
 
 const meta: Meta<typeof DialogContent> = {
-  title: 'Components/Dialog/DialogContent',
-  component: DialogContent,
-  parameters: {
-    layout: 'centered',
-  },
-  tags: ['autodocs'],
   argTypes: {
     animation: {
       control: 'select',
-      options: ['fade', 'slide', 'none'],
       description: 'Animation type for the dialog',
+      options: ['fade', 'slide', 'none'],
     },
-    hasBackdrop: {
-      control: 'boolean',
-      description: 'Show backdrop behind dialog',
+    backdropColor: {
+      control: 'color',
+      description: 'Custom backdrop color',
+    },
+    className: {
+      control: 'text',
+      description: 'Custom CSS classes (NativeWind only)',
     },
     closeOnBackdropPress: {
       control: 'boolean',
@@ -38,24 +36,21 @@ const meta: Meta<typeof DialogContent> = {
       control: 'boolean',
       description: 'Close when back button is pressed',
     },
-    backdropColor: {
-      control: 'color',
-      description: 'Custom backdrop color',
+    hasBackdrop: {
+      control: 'boolean',
+      description: 'Show backdrop behind dialog',
+    },
+    size: {
+      control: 'select',
+      description: 'Size variant for the dialog',
+      options: ['sm', 'md', 'lg', 'xl', 'full'],
     },
     useDefaultContainer: {
       control: 'boolean',
       description: 'Use default white container',
     },
-    size: {
-      control: 'select',
-      options: ['sm', 'md', 'lg', 'xl', 'full'],
-      description: 'Size variant for the dialog',
-    },
-    className: {
-      control: 'text',
-      description: 'Custom CSS classes (NativeWind only)',
-    },
   },
+  component: DialogContent,
   decorators: [
     Story => (
       <Dialog>
@@ -66,6 +61,11 @@ const meta: Meta<typeof DialogContent> = {
       </Dialog>
     ),
   ],
+  parameters: {
+    layout: 'centered',
+  },
+  tags: ['autodocs'],
+  title: 'Components/Dialog/DialogContent',
 };
 
 export default meta;
@@ -74,13 +74,13 @@ type Story = StoryObj<typeof DialogContent>;
 export const Default: Story = {
   args: {
     animation: 'fade',
-    hasBackdrop: true,
     closeOnBackdropPress: true,
     closeOnGoBack: true,
-    useDefaultContainer: true,
+    hasBackdrop: true,
     size: 'md',
+    useDefaultContainer: true,
   },
-  render: args => (
+  render: (args: any) => (
     <DialogContent {...args}>
       <DialogHeader>
         <DialogTitle>Default Dialog Content</DialogTitle>
@@ -98,13 +98,13 @@ export const Default: Story = {
 export const WithCloseMark: Story = {
   args: {
     animation: 'fade',
-    hasBackdrop: true,
     closeOnBackdropPress: true,
     closeOnGoBack: true,
-    useDefaultContainer: true,
+    hasBackdrop: true,
     size: 'md',
+    useDefaultContainer: true,
   },
-  render: args => (
+  render: (args: any) => (
     <DialogContent {...args}>
       <DialogHeader hasCloseMark>
         <DialogTitle>Dialog with Close Mark</DialogTitle>
@@ -120,13 +120,13 @@ export const WithCloseMark: Story = {
 export const SlideAnimation: Story = {
   args: {
     animation: 'slide',
-    hasBackdrop: true,
     closeOnBackdropPress: true,
     closeOnGoBack: true,
-    useDefaultContainer: true,
+    hasBackdrop: true,
     size: 'md',
+    useDefaultContainer: true,
   },
-  render: args => (
+  render: (args: any) => (
     <DialogContent {...args}>
       <DialogHeader hasCloseMark>
         <DialogTitle>Slide Animation</DialogTitle>
@@ -144,13 +144,13 @@ export const SlideAnimation: Story = {
 export const NoAnimation: Story = {
   args: {
     animation: 'none',
-    hasBackdrop: true,
     closeOnBackdropPress: true,
     closeOnGoBack: true,
-    useDefaultContainer: true,
+    hasBackdrop: true,
     size: 'md',
+    useDefaultContainer: true,
   },
-  render: args => (
+  render: (args: any) => (
     <DialogContent {...args}>
       <DialogHeader hasCloseMark>
         <DialogTitle>No Animation</DialogTitle>
@@ -168,14 +168,14 @@ export const NoAnimation: Story = {
 export const CustomBackdrop: Story = {
   args: {
     animation: 'fade',
-    hasBackdrop: true,
+    backdropColor: 'rgba(0, 0, 0, 0.8)',
     closeOnBackdropPress: true,
     closeOnGoBack: true,
-    useDefaultContainer: true,
+    hasBackdrop: true,
     size: 'md',
-    backdropColor: 'rgba(0, 0, 0, 0.8)',
+    useDefaultContainer: true,
   },
-  render: args => (
+  render: (args: any) => (
     <DialogContent {...args}>
       <DialogHeader hasCloseMark>
         <DialogTitle>Custom Backdrop</DialogTitle>
@@ -193,13 +193,13 @@ export const CustomBackdrop: Story = {
 export const NoBackdrop: Story = {
   args: {
     animation: 'fade',
-    hasBackdrop: false,
     closeOnBackdropPress: false,
     closeOnGoBack: true,
-    useDefaultContainer: true,
+    hasBackdrop: false,
     size: 'md',
+    useDefaultContainer: true,
   },
-  render: args => (
+  render: (args: any) => (
     <DialogContent {...args}>
       <DialogHeader hasCloseMark>
         <DialogTitle>No Backdrop</DialogTitle>
@@ -274,13 +274,13 @@ export const DifferentSizes: Story = {
 export const FullScreen: Story = {
   args: {
     animation: 'slide',
-    hasBackdrop: true,
     closeOnBackdropPress: true,
     closeOnGoBack: true,
-    useDefaultContainer: true,
+    hasBackdrop: true,
     size: 'full',
+    useDefaultContainer: true,
   },
-  render: args => (
+  render: (args: any) => (
     <DialogContent {...args}>
       <DialogHeader hasCloseMark>
         <DialogTitle>Full Screen Dialog</DialogTitle>
@@ -298,13 +298,13 @@ export const FullScreen: Story = {
 export const WithoutDefaultContainer: Story = {
   args: {
     animation: 'fade',
-    hasBackdrop: true,
     closeOnBackdropPress: true,
     closeOnGoBack: true,
-    useDefaultContainer: false,
+    hasBackdrop: true,
     size: 'md',
+    useDefaultContainer: false,
   },
-  render: args => (
+  render: (args: any) => (
     <DialogContent {...args}>
       <Box className="flex-1 items-center justify-center bg-blue-500 p-8">
         <DialogHeader hasCloseMark>
@@ -326,14 +326,14 @@ export const WithoutDefaultContainer: Story = {
 export const CustomStyled: Story = {
   args: {
     animation: 'fade',
-    hasBackdrop: true,
+    className: 'bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl shadow-2xl',
     closeOnBackdropPress: true,
     closeOnGoBack: true,
-    useDefaultContainer: true,
+    hasBackdrop: true,
     size: 'md',
-    className: 'bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl shadow-2xl',
+    useDefaultContainer: true,
   },
-  render: args => (
+  render: (args: any) => (
     <DialogContent {...args}>
       <DialogHeader hasCloseMark>
         <DialogTitle className="text-white">Custom Styled Dialog</DialogTitle>

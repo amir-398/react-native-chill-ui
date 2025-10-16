@@ -16,6 +16,16 @@ export const styles = StyleSheet.create({
 });
 
 export const wrapperSv = sv({
+  compoundVariants: [
+    {
+      fill: true,
+      grow: true,
+      style: {
+        flex: 0,
+        flexGrow: 1,
+      },
+    },
+  ],
   defaultVariants: {
     fill: true,
     px: 'md',
@@ -26,6 +36,14 @@ export const wrapperSv = sv({
         flex: 1,
       },
     },
+    grow: {
+      true: {
+        flexGrow: 1,
+      },
+    },
+    /**
+     * Padding horizontal
+     */
     px: {
       lg: {
         paddingHorizontal: 24,

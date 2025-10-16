@@ -1,9 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import Icon from '../../src/components/icon';
-import { Box } from '../../src/components/box';
-import { String } from '../../src/components/string';
-import { DropdownMenuLabel } from '../../src/components/dropdownMenu';
+import { String, Box, Icon, DropdownMenuLabel } from '../../src/components';
 
 const meta: Meta<typeof DropdownMenuLabel> = {
   argTypes: {
@@ -15,13 +12,13 @@ const meta: Meta<typeof DropdownMenuLabel> = {
       control: false,
       description: 'Label content (string or React element)',
     },
-    stringProps: {
-      control: 'object',
-      description: 'Props for String component when children is a string',
-    },
     className: {
       control: 'text',
       description: 'Custom CSS classes (NativeWind only)',
+    },
+    stringProps: {
+      control: 'object',
+      description: 'Props for String component when children is a string',
     },
     style: {
       control: 'object',
@@ -247,21 +244,21 @@ export const WithStatus: Story = {
       <Box className="flex flex-col gap-2">
         <DropdownMenuLabel asChild>
           <Box className="flex flex-row items-center gap-2">
-            <Box className="h-2 w-2 rounded-full bg-green-500"></Box>
+            <Box className="h-2 w-2 rounded-full bg-green-500" />
             <String>Online</String>
           </Box>
         </DropdownMenuLabel>
 
         <DropdownMenuLabel asChild>
           <Box className="flex flex-row items-center gap-2">
-            <Box className="h-2 w-2 rounded-full bg-yellow-500"></Box>
+            <Box className="h-2 w-2 rounded-full bg-yellow-500" />
             <String>Away</String>
           </Box>
         </DropdownMenuLabel>
 
         <DropdownMenuLabel asChild>
           <Box className="flex flex-row items-center gap-2">
-            <Box className="h-2 w-2 rounded-full bg-red-500"></Box>
+            <Box className="h-2 w-2 rounded-full bg-red-500" />
             <String>Offline</String>
           </Box>
         </DropdownMenuLabel>

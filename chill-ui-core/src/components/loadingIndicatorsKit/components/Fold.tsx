@@ -1,6 +1,7 @@
 import { Box } from '@components/box';
-import { Animated, Easing } from 'react-native';
+import { Easing } from 'react-native';
 import { LoadingIndicatorsProps } from '@types';
+import { AnimatedBox } from '@components/animatedBox';
 
 import { stagger } from '../utils/utils';
 import defaultProps from '../utils/defaultProps';
@@ -69,7 +70,7 @@ export default function Fold(props: LoadingIndicatorsProps) {
           {...rest}
         >
           {values?.fold?.map((value, index) => (
-            <Animated.View
+            <AnimatedBox
               renderToHardwareTextureAndroid
               key={index}
               style={{

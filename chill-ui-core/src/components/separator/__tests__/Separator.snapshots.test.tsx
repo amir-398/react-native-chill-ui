@@ -38,12 +38,12 @@ describe('Separator Snapshots', () => {
   });
 
   it('should match snapshot with custom style', () => {
-    const tree = render(<Separator style={{ height: 2, backgroundColor: '#3B82F6' }} />);
+    const tree = render(<Separator style={{ backgroundColor: '#3B82F6', height: 2 }} />);
     expect(tree).toMatchSnapshot();
   });
 
   it('should match snapshot with thick separator', () => {
-    const tree = render(<Separator style={{ height: 4, backgroundColor: '#10B981' }} />);
+    const tree = render(<Separator style={{ backgroundColor: '#10B981', height: 4 }} />);
     expect(tree).toMatchSnapshot();
   });
 
@@ -56,10 +56,10 @@ describe('Separator Snapshots', () => {
     const tree = render(
       <Separator
         style={{
-          height: 2,
           backgroundColor: '#8B5CF6',
-          marginVertical: 8,
           borderRadius: 1,
+          height: 2,
+          marginVertical: 8,
         }}
       />,
     );
@@ -76,10 +76,10 @@ describe('Separator Snapshots', () => {
       <Separator
         className="custom-separator"
         style={{
-          height: 2,
           backgroundColor: '#F59E0B',
-          marginVertical: 12,
           borderRadius: 1,
+          height: 2,
+          marginVertical: 12,
           opacity: 0.8,
         }}
         accessible

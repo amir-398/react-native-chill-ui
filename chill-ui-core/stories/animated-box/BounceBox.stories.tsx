@@ -1,42 +1,60 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { String } from '../../src/components';
+import { BounceBox, String } from '../../src/components';
 import UiPresentation from '../storybook/UiPresentation';
-import BounceBox from '../../src/components/animatedBox/components/BounceBox/BounceBox';
 
 const meta = {
+  args: {
+    autoStart: false,
+    bounceHeight: 20,
+    duration: 400,
+    useFastView: true,
+  },
   argTypes: {
+    AnimatedViewProps: {
+      control: 'object',
+      table: {
+        type: {
+          summary: 'Animated.ViewProps',
+        },
+      },
+    },
     autoStart: {
-      control: 'boolean',
-      description: 'Whether to start the bounce animation automatically',
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
     },
     bounceHeight: {
-      control: 'number',
-      description: 'Height of the bounce',
+      table: {
+        defaultValue: {
+          summary: 20,
+        },
+      },
     },
     bounceInterval: {
-      control: 'number',
-      description: 'Interval between bounces',
-    },
-    children: {
-      control: 'object',
-      description: 'Content to display inside the bounce box',
-    },
-    className: {
-      control: 'text',
-      description: 'Additional className for the bounce box',
+      table: {
+        defaultValue: {
+          summary: 2000,
+        },
+      },
     },
     duration: {
-      control: 'number',
-      description: 'Duration of the bounce animation',
+      table: {
+        defaultValue: {
+          summary: 400,
+        },
+      },
     },
-    infiniteLoop: {
+    useFastView: {
       control: 'boolean',
-      description: 'Whether to loop the animation infinitely',
-    },
-    onBounce: {
-      control: 'object',
-      description: 'Callback function to be called when the bounce animation starts',
+      description: 'Use optimized RCTView component for better performance',
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
     },
   },
   component: BounceBox,
@@ -51,7 +69,7 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  title: 'Components/AnimatedBox/BounceBox',
+  title: 'LAYOUT/AnimatedBox/BounceBox',
 } satisfies Meta<typeof BounceBox>;
 
 export default meta;
@@ -60,77 +78,59 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     autoStart: true,
-    children: (
-      <String size="lg" className="text-center">
-        Default Bounce
-      </String>
-    ),
     className: 'rounded-lg bg-secondary p-6',
     infiniteLoop: false,
   },
+  render: (args: any) => (
+    <BounceBox {...args}>
+      <String size="lg" className="text-center">
+        Default Bounce
+      </String>
+    </BounceBox>
+  ),
 };
 
 export const AutoBounce: Story = {
   args: {
     autoStart: true,
     bounceInterval: 2000,
-    children: (
+    className: 'rounded-lg bg-secondary p-6',
+  },
+  render: (args: any) => (
+    <BounceBox {...args}>
       <String size="lg" className="text-center">
         Auto Bounce Every 2s
       </String>
-    ),
-    className: 'rounded-lg bg-secondary p-6',
-  },
+    </BounceBox>
+  ),
 };
 
 export const HighBounce: Story = {
   args: {
     autoStart: true,
     bounceHeight: 40,
-    children: (
+    className: 'rounded-lg bg-secondary p-6',
+  },
+  render: (args: any) => (
+    <BounceBox {...args}>
       <String size="lg" className="text-center">
         High Bounce (40px)
       </String>
-    ),
-    className: 'rounded-lg bg-secondary p-6',
-  },
-};
-
-export const FastBounce: Story = {
-  args: {
-    children: (
-      <String size="lg" className="text-center text-black">
-        Fast Bounce
-      </String>
-    ),
-    className: 'rounded-lg bg-secondary p-6',
-    duration: 200,
-  },
-};
-
-export const FrequentBounce: Story = {
-  args: {
-    autoStart: true,
-    bounceInterval: 800,
-    children: (
-      <String size="lg" className="text-center text-black">
-        Frequent Bounce
-      </String>
-    ),
-    className: 'rounded-lg bg-secondary p-6',
-    infiniteLoop: true,
-  },
+    </BounceBox>
+  ),
 };
 
 export const InfiniteLoop: Story = {
   args: {
     bounceInterval: 1500,
-    children: (
-      <String size="lg" className="text-center text-black">
-        Infinite Bounce Loop
-      </String>
-    ),
     className: 'rounded-lg bg-secondary p-6',
     infiniteLoop: true,
   },
+  render: (args: any) => (
+    <BounceBox {...args}>
+      <String size="lg" className="text-center text-black">
+        Infinite Loop
+      </String>
+    </BounceBox>
+  ),
 };

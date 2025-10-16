@@ -1,11 +1,11 @@
 import { cn } from '@utils';
 import { BoxTw } from '@components/box';
+import { PropsWithChildren } from 'react';
 import { SliderTrackPropsTw } from '@types';
-import { PropsWithChildren, useEffect } from 'react';
 
 import { twStyles } from '../styles/Slider.tw.styles';
+import { useSliderTrack } from '../hooks/useSliderTrack';
 import { sliderDefaultProps } from '../utils/defaultProps';
-import { useSliderActions } from '../context/SliderContext';
 
 /**
  * Track container for the slider
@@ -23,11 +23,7 @@ import { useSliderActions } from '../context/SliderContext';
  */
 export function SliderTrack(props: PropsWithChildren<SliderTrackPropsTw>) {
   const { children, className, clickable = sliderDefaultProps.trackClickable, ...rest } = props;
-  const { measureTrack, setTrackClickable } = useSliderActions();
-
-  useEffect(() => {
-    setTrackClickable(clickable);
-  }, [clickable, setTrackClickable]);
+  const { measureTrack } = useSliderTrack(clickable);
 
   return (
     <BoxTw {...rest} onLayout={measureTrack} renderToHardwareTextureAndroid className={cn(twStyles.track, className)}>

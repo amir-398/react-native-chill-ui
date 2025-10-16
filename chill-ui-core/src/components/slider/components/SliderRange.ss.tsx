@@ -2,7 +2,7 @@ import { SliderRangePropsSs } from '@types';
 import { AnimatedBoxSs } from '@components/animatedBox';
 
 import { styles } from '../styles/Slider.ss.styles';
-import { useSliderActions } from '../context/SliderContext';
+import { useSliderRange } from '../hooks/useSliderRange';
 
 /**
  * Range indicator for the slider
@@ -18,9 +18,7 @@ import { useSliderActions } from '../context/SliderContext';
  */
 export function SliderRange(props: SliderRangePropsSs) {
   const { style, ...rest } = props;
-  const { getMinimumTrackStyle } = useSliderActions();
-
-  const minimumTrackStyle = getMinimumTrackStyle();
+  const { minimumTrackStyle } = useSliderRange();
 
   return <AnimatedBoxSs {...rest} renderToHardwareTextureAndroid style={[styles.range, minimumTrackStyle, style]} />;
 }

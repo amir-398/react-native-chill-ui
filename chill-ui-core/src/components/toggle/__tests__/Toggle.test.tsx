@@ -1,13 +1,14 @@
-import { render, screen } from '@testing-library/react-native';
-import { Toggle } from '../components/toggle';
 import { View, Text } from 'react-native';
+import { render, screen } from '@testing-library/react-native';
+
+import { Toggle } from '../components/toggle';
 
 // Mocks
 jest.mock('../../../utils', () => ({
   classNameHandler: jest.fn(() => ({})),
-  styleHandler: jest.fn(() => ({})),
   cn: jest.fn((...args) => args.filter(Boolean).join(' ')),
   isUndefined: jest.fn(value => value === undefined),
+  styleHandler: jest.fn(() => ({})),
 }));
 
 jest.mock('../../../components/box', () => ({
@@ -37,7 +38,7 @@ describe('Toggle', () => {
     const { rerender } = render(<Toggle value={false} />);
     expect(true).toBeTruthy();
 
-    rerender(<Toggle value={true} />);
+    rerender(<Toggle value />);
     expect(true).toBeTruthy();
   });
 
@@ -126,7 +127,7 @@ describe('Toggle', () => {
     const onChange = jest.fn();
     render(
       <Toggle
-        value={true}
+        value
         onChange={onChange}
         size="lg"
         isDisabled={false}
@@ -198,27 +199,27 @@ describe('Toggle', () => {
 
   it('supports value change from false to true', () => {
     const { rerender } = render(<Toggle value={false} />);
-    rerender(<Toggle value={true} />);
+    rerender(<Toggle value />);
     expect(true).toBeTruthy();
   });
 
   it('supports value change from true to false', () => {
-    const { rerender } = render(<Toggle value={true} />);
+    const { rerender } = render(<Toggle value />);
     rerender(<Toggle value={false} />);
     expect(true).toBeTruthy();
   });
 
   it('maintains state across re-renders', () => {
-    const { rerender } = render(<Toggle value={true} size="md" />);
-    rerender(<Toggle value={true} size="lg" />);
+    const { rerender } = render(<Toggle value size="md" />);
+    rerender(<Toggle value size="lg" />);
     expect(true).toBeTruthy();
   });
 
   it('handles rapid value changes', () => {
     const { rerender } = render(<Toggle value={false} />);
-    rerender(<Toggle value={true} />);
+    rerender(<Toggle value />);
     rerender(<Toggle value={false} />);
-    rerender(<Toggle value={true} />);
+    rerender(<Toggle value />);
     expect(true).toBeTruthy();
   });
 

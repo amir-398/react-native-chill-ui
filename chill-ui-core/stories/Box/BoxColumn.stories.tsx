@@ -1,10 +1,26 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
 import UiPresentation from '../storybook';
-import { BoxColumn } from '../../src/components';
-import String from '../../src/components/string';
+import { String, BoxColumn } from '../../src/components';
 
 const meta: Meta<typeof BoxColumn> = {
+  args: {
+    useFastView: true,
+  },
+  argTypes: {
+    useFastView: {
+      control: 'boolean',
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
+    },
+    ViewProps: {
+      description: 'Any other props accepted by the native `View` component',
+      type: 'object',
+    },
+  },
   component: BoxColumn,
   decorators: [
     Story => (
@@ -17,7 +33,7 @@ const meta: Meta<typeof BoxColumn> = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  title: 'Components/Box/BoxColumn',
+  title: 'LAYOUT/Box/BoxColumn',
 };
 
 export default meta;

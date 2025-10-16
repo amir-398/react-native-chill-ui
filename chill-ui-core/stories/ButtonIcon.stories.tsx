@@ -1,57 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 
+import { ButtonIcon } from '../src/components';
 import UiPresentation from './storybook/UiPresentation';
-import ButtonIcon from '../src/components/buttonIcon/buttonIcon';
 
 const meta: Meta<typeof ButtonIcon> = {
   argTypes: {
-    as: {
-      control: 'select',
-      description: 'Type of touchable component to use',
-      options: ['TouchableOpacity', 'Pressable', 'RipplePressable'],
-    },
-    iconColor: {
-      control: 'color',
-      description: 'Color of the icon',
-    },
-    iconName: {
-      control: 'select',
-      description: 'The name of the icon to display',
-      options: [
-        'angle-down-solid',
-        'angle-left-solid',
-        'angle-right-solid',
-        'angle-up-solid',
-        'angles-up-solid',
-        'arrow-left-solid',
-        'ban-solid',
-        'bank-solid',
-        'bell-solid',
-        'gear-solid',
-        'heart-solid',
-        'home-solid',
-        'star-solid',
-        'xmark-solid',
-      ],
-    },
-    isDisabled: {
-      control: 'boolean',
-      description: 'Whether the button is disabled',
-    },
-    isLoading: {
-      control: 'boolean',
-      description: 'Whether the button is in a loading state',
-    },
     onPress: {
       action: 'pressed',
-      description: 'Function called when the button is pressed',
-    },
-    size: {
-      control: 'select',
-      description: 'The size of the icon',
-      options: ['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'],
     },
   },
   component: ButtonIcon,

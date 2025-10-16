@@ -6,8 +6,14 @@ import type { AvatarSv } from '@/components/avatar/styles/Avatar.ss.styles';
 import type { StringPropsSs } from '../string';
 
 export type AvatarProps = VariantProps<typeof AvatarSv> & {
-  /** Callback when avatar is pressed */
-  onPress?: () => void;
+  /** Component to use when avatar is pressable:
+   * - `'pressable'`
+   * - `'touchable-opacity'`
+   * - `'ripple-pressable'`
+   */
+  as?: 'pressable' | 'touchable-opacity' | 'ripple-pressable';
+  /** Custom background color */
+  color?: string;
   /** User data for avatar display */
   data: {
     /** User's first name */
@@ -17,12 +23,25 @@ export type AvatarProps = VariantProps<typeof AvatarSv> & {
     /** User's profile image URL */
     image_url?: string;
   };
-  /** Custom background color */
-  color?: string;
+  /** Callback when avatar is pressed */
+  onPress?: () => void;
+  /** Avatar size variant:
+   * - `'2xs'`
+   * - `'xs'`
+   * - `'sm'`
+   * - `'md'`
+   * - `'lg'`
+   * - `'xl'`
+   * - `'2xl'`
+   */
+  size?: VariantProps<typeof AvatarSv>['size'];
   /** Props for the String component displaying initials */
   stringProps?: StringPropsSs;
   /** Custom inline styles */
   style?: StyleProp<ViewStyle>;
-  /** Component to use when avatar is pressable - default: 'Pressable' */
-  as?: 'pressable' | 'touchable-opacity' | 'ripple-pressable';
+  /** Avatar shape variant:
+   * - `'circle'`
+   * - `'square'`
+   */
+  variant?: VariantProps<typeof AvatarSv>['variant'];
 };

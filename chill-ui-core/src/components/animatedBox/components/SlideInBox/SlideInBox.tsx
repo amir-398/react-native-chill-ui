@@ -4,35 +4,41 @@ import { Animated } from 'react-native';
 import { classNameHandler, classNamePropsHandler } from '@utils';
 import { useRef, useEffect, useImperativeHandle, forwardRef, useCallback, PropsWithChildren } from 'react';
 
-import AnimatedBox from '../animatedBox/AnimatedBox';
+import { AnimatedBox } from '../animatedBox/AnimatedBox';
 
 /**
- * SlideInBox - Dynamic slide-in animation component
+ * The `<SlideInBox />` component creates smooth slide-in effects from any direction.
  *
- * Creates smooth slide-in effects from any direction (left, right, up, down). Perfect for
- * revealing content with directional motion, creating engaging transitions for cards, menus,
- * notifications, and other UI elements.
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { SlideInBox } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic slide in from left
- * <SlideInBox autoStart direction="left" className="bg-blue-500 p-6 rounded-lg">
+ * <SlideInBox
+ *   autoStart
+ *   direction="left"
+ *   distance={100}
+ *   duration={500}
+ *   className="bg-blue-500 p-6 rounded-lg"
+ * >
  *   <String className="text-white">Sliding in from left</String>
  * </SlideInBox>
  * ```
  *
- * @param direction - Direction to slide from: 'left', 'right', 'up', or 'down' (default: 'left')
- * @param distance - Distance to slide in pixels (default: 100)
- * @param autoStart - Automatically start animation when component mounts (default: false)
- * @param duration - Animation duration in milliseconds (default: 500)
- * @param delay - Delay before starting animation in milliseconds (default: 0)
- * @param infiniteLoop - Loop animation continuously (default: false)
- * @param className - CSS classes for NativeWind styling
- * @param style - Inline styles for traditional styling or style overrides
+ * @param autoStart - Automatically start animation when component mounts (default: `false`)
+ * @param delay - Delay before starting animation in milliseconds (default: `0`)
+ * @param direction - Direction to slide from: 'left', 'right', 'up', or 'down' (default: `'left'`)
+ * @param distance - Distance to slide in pixels (default: `100`)
+ * @param duration - Animation duration in milliseconds (default: `500`)
+ * @param infiniteLoop - Loop animation continuously (default: `false`)
  * @param children - Content to be animated
- * @param ref - Ref for manual animation control (start, stop methods)
- * @returns Animated component with slide-in effect
+ * @param className - CSS classes for NativeWind styling (NativeWind only)
+ * @param style - Inline styles for traditional styling or style overrides
+ * @param ref - Ref for manual animation control (start, stop)
+ * @param AnimatedBoxProps - Any other props accepted by the `AnimatedBox` component
  */
 const SlideInBox = forwardRef<SlideInBoxRefTw, PropsWithChildren<SlideInBoxPropsTw>>((props, ref) => {
   const {

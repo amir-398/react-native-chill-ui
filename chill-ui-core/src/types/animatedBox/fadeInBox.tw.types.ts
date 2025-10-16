@@ -8,16 +8,16 @@ import { AnimatedBoxProps } from './animatedBox.tw.types';
  *
  */
 export interface FadeInBoxProps extends AnimatedBoxProps {
-  /** Delay before starting the fade-in animation in milliseconds. @default 0 */
+  /** Delay before starting the fade-in animation in milliseconds. */
   delay?: number;
 
-  /** Duration of the fade-in animation in milliseconds. @default 1000 */
+  /** Duration of the fade-in animation in milliseconds. */
   duration?: number;
 
-  /** Whether to start the animation automatically. @default false */
+  /** Whether to start the animation automatically. */
   autoStart?: boolean;
 
-  /** Whether to loop the animation infinitely. @default false */
+  /** Whether to loop the animation infinitely. */
   infiniteLoop?: boolean;
 }
 

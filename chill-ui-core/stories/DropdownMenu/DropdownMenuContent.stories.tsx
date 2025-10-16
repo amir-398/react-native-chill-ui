@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
 import { Box } from '../../src/components/box';
 import { String } from '../../src/components/string';
@@ -15,33 +15,9 @@ const meta: Meta<typeof DropdownMenuContent> = {
       control: false,
       description: 'Dropdown content (typically DropdownMenuItem components)',
     },
-    width: {
-      control: 'number',
-      description: 'Width of the dropdown content',
-    },
-    offsetX: {
-      control: 'number',
-      description: 'Horizontal offset from trigger',
-    },
-    offsetY: {
-      control: 'number',
-      description: 'Vertical offset from trigger',
-    },
-    maxHeight: {
-      control: 'number',
-      description: 'Maximum height before scrolling',
-    },
-    minHeight: {
-      control: 'number',
-      description: 'Minimum height of the dropdown',
-    },
-    hasScroll: {
-      control: 'boolean',
-      description: 'Enable scrolling when content exceeds maxHeight',
-    },
-    hasAnimation: {
-      control: 'boolean',
-      description: 'Enable animations',
+    className: {
+      control: 'text',
+      description: 'Custom CSS classes (NativeWind only)',
     },
     closeDropdownWhenSelectedItem: {
       control: 'boolean',
@@ -51,23 +27,47 @@ const meta: Meta<typeof DropdownMenuContent> = {
       control: 'boolean',
       description: 'Close dropdown when clicking outside',
     },
-    verticalPosition: {
-      control: 'select',
-      description: 'Vertical positioning strategy',
-      options: ['auto', 'top', 'bottom'],
+    hasAnimation: {
+      control: 'boolean',
+      description: 'Enable animations',
+    },
+    hasScroll: {
+      control: 'boolean',
+      description: 'Enable scrolling when content exceeds maxHeight',
     },
     horizontalPosition: {
       control: 'select',
       description: 'Horizontal positioning strategy',
       options: ['auto', 'left', 'right'],
     },
-    className: {
-      control: 'text',
-      description: 'Custom CSS classes (NativeWind only)',
+    maxHeight: {
+      control: 'number',
+      description: 'Maximum height before scrolling',
+    },
+    minHeight: {
+      control: 'number',
+      description: 'Minimum height of the dropdown',
+    },
+    offsetX: {
+      control: 'number',
+      description: 'Horizontal offset from trigger',
+    },
+    offsetY: {
+      control: 'number',
+      description: 'Vertical offset from trigger',
     },
     style: {
       control: 'object',
       description: 'Custom style (StyleSheet only)',
+    },
+    verticalPosition: {
+      control: 'select',
+      description: 'Vertical positioning strategy',
+      options: ['auto', 'top', 'bottom'],
+    },
+    width: {
+      control: 'number',
+      description: 'Width of the dropdown content',
     },
   },
   component: DropdownMenuContent,
@@ -179,8 +179,10 @@ export const WithCloseBehaviors: Story = {
         <Box className="flex flex-col items-center gap-2">
           <String className="text-sm font-medium">No Close on Select</String>
           <DropdownMenuContent closeDropdownWhenSelectedItem={false}>
-            <DropdownMenuItem onSelect={() => console.log("Won't close")}>Won't Close</DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => console.log("Won't close either")}>Won't Close Either</DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => console.log('Won&apos;t close')}>Won&apos;t Close</DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => console.log('Won&apos;t close either')}>
+              Won&apos;t Close Either
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </Box>
       </Box>

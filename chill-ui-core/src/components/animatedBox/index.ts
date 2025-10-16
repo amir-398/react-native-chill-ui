@@ -1,28 +1,7 @@
-/**
- * Ready-to-use animated components for common animation patterns.
- * Each component is optimized for performance using React Native's internal ViewNativeComponent.
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
- *
- * @example
- * ```tsx
- * import { FadeInBox, ScaleInBox, BounceBox } from '@/components/animatedBox';
- *
- * <FadeInBox autoStart className="bg-blue-500 p-4 rounded-lg">
- *   <String className="text-white">Animated Content</String>
- * </FadeInBox>
- * ```
- */
-
-// const getConditionalExport = () => {
-//   if (isNativeWindInstalled()) {
-//     return require('./components/animatedBox/AnimatedBox.tw').default;
-//   }
-//   return null;
-// };
+//* * animated box */
 export { AnimatedBox } from './components/animatedBox/AnimatedBox';
 export { AnimatedBox as AnimatedBoxSs } from './components/animatedBox/AnimatedBox.ss';
 export { AnimatedBox as AnimatedBoxTw } from './components/animatedBox/AnimatedBox.tw';
-// export { getConditionalExport as AnimatedBoxTw };
 
 //* * fade in box */
 export { default as FadeInBox } from './components/FadeInBox/FadeInBox';

@@ -12,46 +12,40 @@ import { inputContainerSv, inputSv, styles } from '../styles/Input.ss.styles';
 import { inputContainerTv, inputFieldTv, twStyles } from '../styles/Input.tw.styles';
 
 /**
- * Input component with Hybrid styling (Tailwind + StyleSheet).
- * Provides a comprehensive text input with validation, icons, error handling, and customizable styling.
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ * The `<Input />` component provides a comprehensive text input with validation, icons, error handling, and customizable styling.
+ *
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { Input } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic input with label
  * <Input
  *   label="Email"
  *   placeholder="Enter your email"
- *   value={email}
- *   onChangeText={setEmail}
- * />
- *
- * // Input with validation and error handling
- * <Input
- *   label="Password"
- *   placeholder="Enter password"
- *   hasSecureTextEntry
- *   hasError={hasError}
- *   errorMessage="Password is required"
- *   allow="lettersWithoutSpecialCharacters"
+ *   value={emailValue}
+ *   onChangeText={setEmailValue}
  * />
  * ```
  *
- * @param allow - Input validation type ('all' | 'numbers' | 'letters' | 'lettersWithoutSpecialCharacters')
- * @param className - Custom CSS classes for the input container
- * @param clickableAs - Animation type when input is pressed ('scale' | undefined)
+ * @param allow - Input validation type: 'all' | 'numbers' | 'letters' | 'lettersWithoutSpecialCharacters' (default: 'all')
+ * @param className - Custom CSS classes for the input container (NativeWind)
+ * @param clickableAs - Animation type when input is pressed: 'scale' | undefined
  * @param customRegex - Custom regex pattern for input validation
  * @param editable - Whether the input is editable (default: true)
- * @param errorClassName - Custom CSS classes for error state
- * @param errorStyle - Custom CSS classes for the error message
- * @param inputStyle - Custom CSS classes for the input field
+ * @param errorClassName - Custom CSS classes for error state (NativeWind)
  * @param errorIconName - Icon name to display with error message
  * @param errorMessage - Error message to display below input
  * @param errorStringProps - Props for the error message String component
+ * @param errorStyle - Custom style for the error message
  * @param hasClearIcon - Whether to show clear icon when input has value (default: true)
  * @param hasError - Whether input is in error state
  * @param hasSecureTextEntry - Whether input should hide text (password field)
- * @param inputClassName - Custom CSS classes for the input field
+ * @param inputClassName - Custom CSS classes for the input field (NativeWind)
+ * @param inputStyle - Custom style for the input field
  * @param isDisabled - Whether input is disabled
  * @param isStretchable - Whether input should stretch to full width
  * @param label - Label text to display above input
@@ -64,10 +58,10 @@ import { inputContainerTv, inputFieldTv, twStyles } from '../styles/Input.tw.sty
  * @param onPress - Callback when input is pressed
  * @param rightIconAction - Configuration for right icon (iconName, iconSize, iconColor, iconPress, customIcon)
  * @param showLength - Whether to show character count
- * @param size - Input size variant ('xs' | 'sm' | 'md' | 'lg' | 'xl')
+ * @param size - Input size variant: 'xs' | 'sm' | 'md' | 'lg' | 'xl' (default: 'md')
+ * @param style - Style object for the input container
  * @param value - Current input value
  * @param wrapperRef - Ref for the input container wrapper
- * @returns Styled input component with validation and icon support
  */
 const Input = forwardRef<TextInput, InputProps>((props, ref) => {
   classNamePropsHandler(props, 'Input');
@@ -195,7 +189,7 @@ const Input = forwardRef<TextInput, InputProps>((props, ref) => {
       <AnimatedBox
         ref={wrapperRef}
         {...styleHandler({
-          defaultStyle: [styles.inputContainer, inputContainerSv({ hasError: !!hasError, isDisabled: !!isDisabled })],
+          defaultStyle: [inputContainerSv({ hasError: !!hasError, isDisabled: !!isDisabled })],
           style: [
             clickableAs === 'scale' ? { transform: [{ scale: scaleAnim }] } : undefined,
             hasError && errorStyle,
@@ -246,6 +240,7 @@ const Input = forwardRef<TextInput, InputProps>((props, ref) => {
           multiline={multiline}
           maxLength={maxLength}
           editable={isDisabled ? false : !!editable}
+          placeholderTextColor={inputDefaultProps.placeholderTextColor}
           {...rest}
         />
 

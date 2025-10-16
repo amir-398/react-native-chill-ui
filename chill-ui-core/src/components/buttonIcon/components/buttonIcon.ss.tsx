@@ -11,24 +11,19 @@ import { buttonIconDefaultProps } from '../utils/defaultProps';
 import { buttonIconSv, styles } from '../styles/buttonIcon.ss.styles';
 
 /**
- * ButtonIcon component with support for multiple touchable types, loading states, and icon customization.
- * Provides a flexible and accessible icon button implementation with support for different interaction patterns.
+ * The `<ButtonIcon />` component provides a flexible and accessible icon button implementation.
+ * Supports multiple touchable types, loading states, and icon customization using StyleSheet.
+ *
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { ButtonIcon } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic usage
  * <ButtonIcon iconName="bell-solid" onPress={handlePress} />
- *
- * // With different variants
- * <ButtonIcon iconName="heart-solid" variant="outlined" onPress={handlePress} />
- * <ButtonIcon iconName="star-solid" rounded="circle" onPress={handlePress} />
- *
- * // With different touchable types
- * <ButtonIcon iconName="settings-solid" as="ripple-pressable" onPress={handlePress} />
- * <ButtonIcon iconName="home-solid" as="scale-pressable" onPress={handlePress} />
- *
- * // With loading state
- * <ButtonIcon iconName="refresh-solid" isLoading onPress={handlePress} />
  * ```
  *
  * @param as - Type of touchable component to use: 'touchable-opacity' | 'pressable' | 'ripple-pressable' | 'scale-pressable' (default: 'touchable-opacity')
@@ -39,7 +34,7 @@ import { buttonIconSv, styles } from '../styles/buttonIcon.ss.styles';
  * @param loadingIndicatorProps - Props to pass to the loading indicator
  * @param onPress - Press callback function
  * @param rounded - Button shape: 'circle' | 'square' (default: 'square')
- * @param size - Icon size variant (default: 'md')
+ * @param size - Icon size variant: '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' (default: 'md')
  * @param style - Style object for the button container
  * @param variant - Button style variant: 'contained' | 'outlined' (default: 'contained')
  */

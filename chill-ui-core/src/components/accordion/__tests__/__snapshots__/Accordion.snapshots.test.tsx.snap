@@ -58,7 +58,7 @@ exports[`Accordion Snapshots should render accordion with custom icons correctly
     }
   >
     Question 1
-    Icon:chevron-down
+    Icon:angle-down-solid
   </View>,
   "Answer 1",
 ]

@@ -2,11 +2,11 @@ import { Text, View } from 'react-native';
 import { render, fireEvent } from '@testing-library/react-native';
 
 import { SegmentedControl } from '../components/SegmentedControl';
-import { SegmentedControlTrigger } from '../components/SegmentedControlTrigger';
-import { SegmentedControlTriggerContent } from '../components/SegmentedControlTriggerContent';
-import { SegmentedControlIndicator } from '../components/SegmentedControlIndicator';
 import { SegmentedControlPanel } from '../components/SegmentedControlPanel';
+import { SegmentedControlTrigger } from '../components/SegmentedControlTrigger';
+import { SegmentedControlIndicator } from '../components/SegmentedControlIndicator';
 import { SegmentedControlPanelContent } from '../components/SegmentedControlPanelContent';
+import { SegmentedControlTriggerContent } from '../components/SegmentedControlTriggerContent';
 
 // Mock utils
 jest.mock('../../../utils', () => ({
@@ -14,8 +14,8 @@ jest.mock('../../../utils', () => ({
   classNamePropsHandler: jest.fn(),
   cn: jest.fn((...args) => args.filter(Boolean).join(' ')),
   isString: jest.fn(value => typeof value === 'string'),
-  styleHandler: jest.fn(() => ({})),
   SlotTw: ({ children }: any) => children,
+  styleHandler: jest.fn(() => ({})),
 }));
 
 // Mock AnimatedBox
@@ -361,7 +361,7 @@ describe('SegmentedControl Component', () => {
         <SegmentedControlTriggerContent defaultValue="option1">
           <SegmentedControlTrigger
             value="option1"
-            stringProps={{ activeColor: 'blue', color: 'gray', activeClassName: 'active' }}
+            stringProps={{ activeClassName: 'active', activeColor: 'blue', color: 'gray' }}
           >
             Option 1
           </SegmentedControlTrigger>
@@ -482,7 +482,7 @@ describe('SegmentedControl Component', () => {
   });
 
   it('should handle mixed children types in trigger content', () => {
-    const { getByText, getByTestId } = render(
+    const { getByTestId, getByText } = render(
       <SegmentedControl>
         <SegmentedControlTriggerContent>
           <SegmentedControlTrigger value="option1">Option 1</SegmentedControlTrigger>

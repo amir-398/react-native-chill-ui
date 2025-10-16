@@ -127,9 +127,34 @@ The Box component is a flexible container that accepts all standard React Native
 
 ## Props
 
-| Prop        | Type                   | Default | Description                                              |
-| ----------- | ---------------------- | ------- | -------------------------------------------------------- |
-| `children`  | `ReactNode`            | -       | Content to display inside the box.                       |
-| `className` | `string`               | -       | Custom CSS classes (used with NativeWind).               |
-| `style`     | `StyleProp<ViewStyle>` | -       | Additional inline styles.                                |
-| `...rest`   | `ViewProps`            | -       | Any other props accepted by the native `View` component. |
+| Prop          | Type                   | Default | Description                                              |
+| ------------- | ---------------------- | ------- | -------------------------------------------------------- |
+| `children`    | `ReactNode`            | -       | Content to display inside the box.                       |
+| `className`   | `string`               | -       | Custom CSS classes (used with NativeWind).               |
+| `style`       | `StyleProp<ViewStyle>` | -       | Additional inline styles.                                |
+| `useFastView` | `boolean`              | `true`  | Use optimized RCTView component for better performance.  |
+| `...rest`     | `ViewProps`            | -       | Any other props accepted by the native `View` component. |
+
+### useFastView Performance Option
+
+The `useFastView` prop allows you to choose between two rendering approaches:
+
+- **`useFastView={true}` (default)**: Uses `createElement('RCTView')` for maximum performance
+  - **Benefits**: ~10-15% faster rendering, smaller bundle size, direct native component access
+  - **Best for**: Performance-critical apps, large lists, complex layouts
+
+- **`useFastView={false}`**: Uses React Native's standard `View` component
+  - **Benefits**: Full React Native compatibility, better debugging tools, more predictable behavior
+  - **Best for**: Debugging, compatibility issues, or when you need specific React Native View features
+
+```tsx
+// High performance (default)
+<Box useFastView={true}>
+  <String>Optimized for speed</String>
+</Box>
+
+// Standard React Native View
+<Box useFastView={false}>
+  <String>Standard compatibility</String>
+</Box>
+```

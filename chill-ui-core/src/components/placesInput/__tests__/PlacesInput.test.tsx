@@ -10,7 +10,6 @@ jest.mock('../../../utils', () => ({
   colorVariantPropsHandler: jest.fn(),
   debounce: jest.fn(fn => {
     const debouncedFn = jest.fn(fn);
-    debouncedFn.cancel = jest.fn();
     return debouncedFn;
   }),
   isString: jest.fn(value => typeof value === 'string'),
@@ -18,7 +17,6 @@ jest.mock('../../../utils', () => ({
 }));
 
 jest.mock('../../../components/AutocompleteDropdown', () => {
-  const React = require('react');
   const { Text, TextInput, TouchableOpacity, View } = require('react-native');
 
   function MockAutocompleteDropdown({ children, onChangeText, onSelectItem, ...props }: any) {
@@ -60,8 +58,6 @@ global.fetch = jest.fn();
 
 describe('PlacesInput Component', () => {
   const mockGoogleApiKey = 'test-api-key';
-  const mockOnSelect = jest.fn();
-  const mockOnError = jest.fn();
   const mockOnChangeText = jest.fn();
 
   beforeEach(() => {

@@ -4,31 +4,33 @@ import { Animated } from 'react-native';
 import { classNameHandler, classNamePropsHandler } from '@utils';
 import { useRef, useEffect, useImperativeHandle, forwardRef, useCallback, PropsWithChildren } from 'react';
 
-import AnimatedBox from '../animatedBox/AnimatedBox';
+import { AnimatedBox } from '../animatedBox/AnimatedBox';
 
 /**
- * ScaleInBox - Dynamic scale-in animation component
+ * The `<ScaleInBox />` component creates a smooth scale animation for its children.
  *
- * Creates an engaging scale-in effect using spring physics for natural feel. Animates scale
- * from 0.8 to 1.0 with smooth spring transition.
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { ScaleInBox } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic auto-start scale in
- * <ScaleInBox autoStart className="bg-green-500 p-6 rounded-xl">
- *   <String className="text-white font-bold">Scaling in smoothly</String>
+ * <ScaleInBox autoStart infiniteLoop duration={1000} className="w-8 h-8">
+ *   <Icon name="plus" className="text-blue-500" />
  * </ScaleInBox>
  * ```
  *
- * @param autoStart - Automatically start animation when component mounts (default: false)
- * @param delay - Delay before starting animation in milliseconds (default: 0)
- * @param infiniteLoop - Loop animation continuously (default: false)
- * @param className - CSS classes for NativeWind styling
- * @param style - Inline styles for traditional styling or style overrides
+ * @param autoStart - Automatically start animation when component mounts (default: `false`)
+ * @param delay - Delay before starting animation in milliseconds (default: `0`)
+ * @param duration - Duration of the scale animation in milliseconds (default: `800`)
+ * @param infiniteLoop - Loop animation continuously (default: `false`)
  * @param children - Content to be animated
- * @param ref - Ref for manual animation control (start, stop methods)
- * @returns Animated component with scale-in effect using spring physics
+ * @param className - CSS classes for NativeWind styling (NativeWind only)
+ * @param style - Inline styles for traditional styling or style overrides
+ * @param ref - Ref for manual animation control (start, stop)
+ * @param AnimatedBoxProps - Any other props accepted by the `AnimatedBox` component
  */
 const ScaleInBox = forwardRef<ScaleInBoxRefTw, PropsWithChildren<ScaleInBoxPropsTw>>((props, ref) => {
   const { autoStart = false, children, className, delay = 0, infiniteLoop = false, style, ...rest } = props;

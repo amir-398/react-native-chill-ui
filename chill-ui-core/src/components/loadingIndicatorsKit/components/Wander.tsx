@@ -1,5 +1,6 @@
 import { LoadingIndicatorsProps } from '@types';
-import { Animated, Easing, ViewStyle } from 'react-native';
+import { Easing, ViewStyle } from 'react-native';
+import { AnimatedBox } from '@components/animatedBox';
 
 import { loop } from '../utils/utils';
 import defaultProps from '../utils/defaultProps';
@@ -67,7 +68,7 @@ export default function Wander(props: LoadingIndicatorsProps) {
       animating={animating}
     >
       {values => (
-        <Animated.View
+        <AnimatedBox
           style={[
             {
               alignItems: 'center',
@@ -90,7 +91,7 @@ export default function Wander(props: LoadingIndicatorsProps) {
           ]}
           {...rest}
         >
-          <Animated.View
+          <AnimatedBox
             style={[
               circleStyle,
               {
@@ -107,7 +108,7 @@ export default function Wander(props: LoadingIndicatorsProps) {
               },
             ]}
           />
-          <Animated.View
+          <AnimatedBox
             style={[
               circleStyle,
               {
@@ -124,7 +125,7 @@ export default function Wander(props: LoadingIndicatorsProps) {
               },
             ]}
           />
-        </Animated.View>
+        </AnimatedBox>
       )}
     </AnimationContainer>
   );

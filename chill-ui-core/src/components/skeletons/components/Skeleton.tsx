@@ -9,22 +9,26 @@ import { skeletonTv } from '../styles/Skeleton.tw.styles';
 import { skeletonSv } from '../styles/Skeleton.ss.styles';
 
 /**
- * Skeleton component that provides loading placeholders with animated pulse effect.
+ * The `<Skeleton />` component provides loading placeholders with animated pulse effect.
  * Supports multiple variants and sizes for different content types.
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ *
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { Skeleton } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic rectangle skeleton
  * <Skeleton variant="rectangle" size="md" />
  * ```
  *
  * @param children - Child components to render inside the skeleton
  * @param className - Custom CSS classes for styling (NativeWind)
- * @param size - Size variant for the skeleton ('xs' | 'sm' | 'md' | 'lg' | 'xl')
+ * @param size - Size variant for the skeleton: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
  * @param style - Style object for additional styling
- * @param variant - Shape variant for the skeleton ('rectangle' | 'square' | 'circle' | 'text')
- * @returns Skeleton component with animated pulse effect
+ * @param variant - Shape variant for the skeleton: 'rectangle' | 'square' | 'circle' | 'text'
  */
 export function Skeleton(props: PropsWithChildren<SkeletonPropsTw>) {
   classNamePropsHandler(props, 'Skeleton');

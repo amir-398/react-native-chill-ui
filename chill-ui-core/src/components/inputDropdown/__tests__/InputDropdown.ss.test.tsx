@@ -53,12 +53,12 @@ describe('InputDropdown Component (StyleSheet)', () => {
 
   it('should handle visible prop', () => {
     const mockData = [{ id: 1, label: 'Option 1' }];
-    const { root } = render(<InputDropdown visible={true} data={mockData} onSelectItem={jest.fn()} />);
+    const { root } = render(<InputDropdown visible data={mockData} onSelectItem={jest.fn()} />);
     expect(root).toBeTruthy();
   });
 
   it('should handle empty data', () => {
-    const { root } = render(<InputDropdown visible={true} data={[]} onSelectItem={jest.fn()} />);
+    const { root } = render(<InputDropdown visible data={[]} onSelectItem={jest.fn()} />);
     expect(root).toBeTruthy();
   });
 
@@ -66,14 +66,14 @@ describe('InputDropdown Component (StyleSheet)', () => {
     const mockData = [{ id: 1, label: 'Test' }];
     const { root } = render(
       <InputDropdown
-        visible={true}
+        visible
         data={mockData}
         onSelectItem={jest.fn()}
-        hasAnimation={true}
-        hasShadow={true}
+        hasAnimation
+        hasShadow
         maxHeight={300}
         minHeight={50}
-        hasSearch={true}
+        hasSearch
         isLoading={false}
         emptyText="No options"
         style={{ backgroundColor: 'white' }}

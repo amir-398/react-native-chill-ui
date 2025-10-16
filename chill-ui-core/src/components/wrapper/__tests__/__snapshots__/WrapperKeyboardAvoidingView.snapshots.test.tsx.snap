@@ -1,0 +1,179 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WrapperKeyboardAvoidingView Snapshots should match snapshot with accessibility props 1`] = `
+<View
+  accessibilityLabel="Keyboard avoiding container"
+  accessible={true}
+  className="flex-1 px-[16px]"
+  testID="keyboard-avoiding-view"
+>
+  Content
+</View>
+`;
+
+exports[`WrapperKeyboardAvoidingView Snapshots should match snapshot with all props combined 1`] = `
+<RNCSafeAreaView
+  className="flex-1 px-0"
+  edges={
+    {
+      "bottom": "additive",
+      "left": "off",
+      "right": "off",
+      "top": "additive",
+    }
+  }
+>
+  <View
+    accessibilityLabel="Custom keyboard avoiding view"
+    accessible={true}
+    behavior="padding"
+    className="flex-grow px-[24px] flex-grow flex-none custom-class"
+    contentContainerStyle={
+      {
+        "padding": 16,
+      }
+    }
+    enabled={true}
+    style={
+      {
+        "marginBottom": 16,
+      }
+    }
+    testID="keyboard-avoiding-view"
+  >
+    Content
+  </View>
+</RNCSafeAreaView>
+`;
+
+exports[`WrapperKeyboardAvoidingView Snapshots should match snapshot with basic props 1`] = `
+<View
+  className="flex-1 px-[16px]"
+>
+  Content
+</View>
+`;
+
+exports[`WrapperKeyboardAvoidingView Snapshots should match snapshot with behavior prop 1`] = `
+<View
+  behavior="padding"
+  className="flex-1 px-[16px]"
+>
+  Content
+</View>
+`;
+
+exports[`WrapperKeyboardAvoidingView Snapshots should match snapshot with contentContainerStyle prop 1`] = `
+<View
+  className="flex-1 px-[16px]"
+  contentContainerStyle={
+    {
+      "padding": 16,
+    }
+  }
+>
+  Content
+</View>
+`;
+
+exports[`WrapperKeyboardAvoidingView Snapshots should match snapshot with custom className 1`] = `
+<View
+  className="flex-1 px-[16px] custom-class"
+>
+  Content
+</View>
+`;
+
+exports[`WrapperKeyboardAvoidingView Snapshots should match snapshot with custom style 1`] = `
+<View
+  className="flex-1 px-[16px]"
+  style={
+    {
+      "marginBottom": 8,
+    }
+  }
+>
+  Content
+</View>
+`;
+
+exports[`WrapperKeyboardAvoidingView Snapshots should match snapshot with edges prop 1`] = `
+<RNCSafeAreaView
+  className="flex-1 px-0"
+  edges={
+    {
+      "bottom": "additive",
+      "left": "additive",
+      "right": "additive",
+      "top": "additive",
+    }
+  }
+>
+  <View
+    className="flex-1 px-[16px]"
+  >
+    Content
+  </View>
+</RNCSafeAreaView>
+`;
+
+exports[`WrapperKeyboardAvoidingView Snapshots should match snapshot with enabled prop 1`] = `
+<View
+  className="flex-1 px-[16px]"
+  enabled={false}
+>
+  Content
+</View>
+`;
+
+exports[`WrapperKeyboardAvoidingView Snapshots should match snapshot with fill prop 1`] = `
+<View
+  className="flex-1 px-[16px]"
+>
+  Content
+</View>
+`;
+
+exports[`WrapperKeyboardAvoidingView Snapshots should match snapshot with grow prop 1`] = `
+<View
+  className="flex-grow px-[16px] flex-grow flex-none"
+>
+  Content
+</View>
+`;
+
+exports[`WrapperKeyboardAvoidingView Snapshots should match snapshot with hasSafeArea prop 1`] = `
+<RNCSafeAreaView
+  className="flex-1 px-0"
+  edges={
+    {
+      "bottom": "additive",
+      "left": "off",
+      "right": "off",
+      "top": "additive",
+    }
+  }
+>
+  <View
+    className="flex-1 px-[16px]"
+  >
+    Content
+  </View>
+</RNCSafeAreaView>
+`;
+
+exports[`WrapperKeyboardAvoidingView Snapshots should match snapshot with keyboardVerticalOffset prop 1`] = `
+<View
+  className="flex-1 px-[16px]"
+>
+  Content
+</View>
+`;
+
+exports[`WrapperKeyboardAvoidingView Snapshots should match snapshot with px prop 1`] = `
+<View
+  className="flex-1 px-[16px]"
+>
+  Content
+</View>
+`;

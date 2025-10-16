@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react-native';
+
 import ButtonIconSs from '../components/buttonIcon.ss';
 
 // Mocks

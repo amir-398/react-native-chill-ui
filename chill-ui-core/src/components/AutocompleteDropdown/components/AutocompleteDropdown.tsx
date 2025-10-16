@@ -16,13 +16,18 @@ import { useAutocompleteDropdownState } from '../hooks/useCompleteDropdownState'
 import useAutocompleteDropdownProvider from '../hooks/useAutocompleteDropdownProvider';
 
 /**
- * AutocompleteDropdown component with Hybrid styling (Tailwind + StyleSheet).
- * Provides a smart dropdown with search functionality and auto-completion features.
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ * The `<AutocompleteDropdown />` component provides a smart dropdown with search functionality and auto-completion features.
+ * Supports custom rendering, positioning, and advanced search capabilities.
+ *
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { AutocompleteDropdown } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic autocomplete dropdown
  * <AutocompleteDropdown
  *   dataSet={data}
  *   valueField="name"
@@ -34,14 +39,14 @@ import useAutocompleteDropdownProvider from '../hooks/useAutocompleteDropdownPro
  * />
  * ```
  *
- * @param dataSet - Array of data items to display in the dropdown
- * @param valueField - Field to use as the display value and identifier
- * @param closeModalWhenSelectedItem - Close dropdown after selection (default: true)
+ * @param closeDropdownWhenSelectedItem - Close dropdown after selection (default: true)
  * @param confirmSelectItem - Require confirmation before selecting
  * @param customDropdownItem - Custom renderer for dropdown items
+ * @param dataSet - Array of data items to display in the dropdown
+ * @param defaultOpen - Default open state (uncontrolled)
  * @param dropdownItemProps - Props for styling dropdown items
  * @param dropdownListProps - Props for the dropdown FlatList
- * @param dropdownPosition - Dropdown positioning: 'auto', 'top', or 'bottom'
+ * @param dropdownPosition - Dropdown positioning: 'auto' | 'top' | 'bottom'
  * @param dropdownProps - Props for the dropdown container
  * @param excludeItems - Items to exclude from dropdown
  * @param hasHighlightString - Highlight search terms in results (default: true)
@@ -60,15 +65,14 @@ import useAutocompleteDropdownProvider from '../hooks/useAutocompleteDropdownPro
  * @param onOpenChange - Callback when open state changes
  * @param onSelectItem - Callback function when an item is selected
  * @param open - Controlled open state
- * @param defaultOpen - Default open state (uncontrolled)
  * @param searchField - Field to search in (defaults to valueField)
  * @param searchQuery - Custom search function for filtering items
- * @returns Styled autocomplete dropdown component with search and selection functionality
+ * @param valueField - Field to use as the display value and identifier
  */
 export const AutocompleteDropdown = forwardRef<AutocompleteDropdownRefProps, AutocompleteDropdownProps<any>>(
   (props, currentRef) => {
     const {
-      closeModalWhenSelectedItem = autocompleteDropdownDefaultProps.closeModalWhenSelectedItem,
+      closeDropdownWhenSelectedItem = autocompleteDropdownDefaultProps.closeModalWhenSelectedItem,
       confirmSelectItem,
       customDropdownItem,
       dataSet = autocompleteDropdownDefaultProps.dataSet,
@@ -235,7 +239,7 @@ export const AutocompleteDropdown = forwardRef<AutocompleteDropdownRefProps, Aut
         updateState({ currentValue: item, searchText: '' });
         onSelectItem?.(item);
 
-        if (closeModalWhenSelectedItem) {
+        if (closeDropdownWhenSelectedItem) {
           handleOpenChange(false);
           performSearch('');
           onBlur?.();
@@ -247,7 +251,7 @@ export const AutocompleteDropdown = forwardRef<AutocompleteDropdownRefProps, Aut
         onSelectItem,
         onConfirmSelectItem,
         performSearch,
-        closeModalWhenSelectedItem,
+        closeDropdownWhenSelectedItem,
         onBlur,
         updateState,
         handleOpenChange,

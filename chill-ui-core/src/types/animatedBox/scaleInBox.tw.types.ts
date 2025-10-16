@@ -8,13 +8,13 @@ import { AnimatedBoxProps } from './animatedBox.tw.types';
  *
  */
 export interface ScaleInBoxProps extends AnimatedBoxProps {
-  /** Delay before starting the scale-in animation in milliseconds. @default 0 */
+  /** Delay before starting the scale-in animation in milliseconds.  */
   delay?: number;
 
-  /** Whether to start the animation automatically. @default false */
+  /** Whether to start the animation automatically. */
   autoStart?: boolean;
 
-  /** Whether to loop the animation infinitely. @default false */
+  /** Whether to loop the animation infinitely. */
   infiniteLoop?: boolean;
 }
 

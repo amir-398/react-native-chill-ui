@@ -23,15 +23,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 4,
   },
-  inputContainer: {
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    borderColor: '#D1D5DB',
-    borderRadius: 8,
-    borderWidth: 1,
-    flexDirection: 'row',
-    paddingHorizontal: 12,
-  },
 
   inputContainerDisabled: {
     opacity: 0.5,

@@ -1,28 +1,27 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { Box, String } from '../src/components';
 import UiPresentation from './storybook/UiPresentation';
-import Skeleton from '../src/components/skeletons/components/Skeleton.tw';
+import { Skeleton, Box, String } from '../src/components';
 
 const meta: Meta<typeof Skeleton> = {
+  args: {
+    size: 'md',
+    variant: 'rectangle',
+  },
   argTypes: {
-    className: {
-      control: 'text',
-      description: 'Custom CSS classes for styling the skeleton',
-    },
     size: {
-      control: 'select',
-      options: ['xs', 'sm', 'md', 'lg', 'xl'],
-      description: 'Size variant for the skeleton',
-    },
-    style: {
-      control: 'object',
-      description: 'Style object for the skeleton',
+      table: {
+        defaultValue: {
+          summary: 'md',
+        },
+      },
     },
     variant: {
-      control: 'select',
-      options: ['rectangle', 'square', 'circle', 'text'],
-      description: 'Shape variant for the skeleton',
+      table: {
+        defaultValue: {
+          summary: 'rectangle',
+        },
+      },
     },
   },
   component: Skeleton,
@@ -185,8 +184,8 @@ export const WithCustomClassName: Story = {
 export const WithCustomStyle: Story = {
   args: {
     style: {
-      marginBottom: 16,
       alignSelf: 'center',
+      marginBottom: 16,
     },
   },
   parameters: {
@@ -199,8 +198,9 @@ export const WithCustomStyle: Story = {
 };
 
 export const CardSkeleton: Story = {
+  args: {},
   decorators: [
-    (Story: any) => (
+    () => (
       <UiPresentation>
         <Box className="w-full p-4">
           <Box className="rounded-lg border p-4">
@@ -218,7 +218,6 @@ export const CardSkeleton: Story = {
       </UiPresentation>
     ),
   ],
-  args: {},
   parameters: {
     docs: {
       description: {
@@ -229,8 +228,9 @@ export const CardSkeleton: Story = {
 };
 
 export const ListSkeleton: Story = {
+  args: {},
   decorators: [
-    (Story: any) => (
+    () => (
       <UiPresentation>
         <Box className="w-full p-4">
           <Box>
@@ -248,7 +248,6 @@ export const ListSkeleton: Story = {
       </UiPresentation>
     ),
   ],
-  args: {},
   parameters: {
     docs: {
       description: {
@@ -259,8 +258,9 @@ export const ListSkeleton: Story = {
 };
 
 export const ProfileSkeleton: Story = {
+  args: {},
   decorators: [
-    (Story: any) => (
+    () => (
       <UiPresentation>
         <Box className="w-full p-4">
           <Box className="items-center">
@@ -273,7 +273,6 @@ export const ProfileSkeleton: Story = {
       </UiPresentation>
     ),
   ],
-  args: {},
   parameters: {
     docs: {
       description: {
@@ -284,8 +283,9 @@ export const ProfileSkeleton: Story = {
 };
 
 export const ImageGallerySkeleton: Story = {
+  args: {},
   decorators: [
-    (Story: any) => (
+    () => (
       <UiPresentation>
         <Box className="w-full p-4">
           <Box className="flex-row flex-wrap">
@@ -297,7 +297,6 @@ export const ImageGallerySkeleton: Story = {
       </UiPresentation>
     ),
   ],
-  args: {},
   parameters: {
     docs: {
       description: {
@@ -308,8 +307,9 @@ export const ImageGallerySkeleton: Story = {
 };
 
 export const TextContentSkeleton: Story = {
+  args: {},
   decorators: [
-    (Story: any) => (
+    () => (
       <UiPresentation>
         <Box className="w-full p-4">
           <Box>
@@ -326,7 +326,6 @@ export const TextContentSkeleton: Story = {
       </UiPresentation>
     ),
   ],
-  args: {},
   parameters: {
     docs: {
       description: {
@@ -338,16 +337,16 @@ export const TextContentSkeleton: Story = {
 
 export const WithChildren: Story = {
   args: {
-    variant: 'rectangle',
     size: 'lg',
+    variant: 'rectangle',
   },
   decorators: [
-    (Story: any) => (
+    (StoryBox: any) => (
       <UiPresentation>
         <Box className="w-full p-4">
-          <Story>
+          <StoryBox>
             <String className="text-center text-gray-500">Loading content...</String>
-          </Story>
+          </StoryBox>
         </Box>
       </UiPresentation>
     ),
@@ -362,8 +361,9 @@ export const WithChildren: Story = {
 };
 
 export const AllSizes: Story = {
+  args: {},
   decorators: [
-    (Story: any) => (
+    () => (
       <UiPresentation>
         <Box className="w-full p-4">
           <Box className="space-y-4">
@@ -392,7 +392,6 @@ export const AllSizes: Story = {
       </UiPresentation>
     ),
   ],
-  args: {},
   parameters: {
     docs: {
       description: {
@@ -403,8 +402,9 @@ export const AllSizes: Story = {
 };
 
 export const AllVariants: Story = {
+  args: {},
   decorators: [
-    (Story: any) => (
+    () => (
       <UiPresentation>
         <Box className="w-full p-4">
           <Box className="space-y-4">
@@ -429,7 +429,6 @@ export const AllVariants: Story = {
       </UiPresentation>
     ),
   ],
-  args: {},
   parameters: {
     docs: {
       description: {
@@ -441,8 +440,8 @@ export const AllVariants: Story = {
 
 export const Accessibility: Story = {
   args: {
-    accessible: true,
     accessibilityLabel: 'Loading skeleton',
+    accessible: true,
     testID: 'skeleton',
   },
   parameters: {
@@ -456,16 +455,16 @@ export const Accessibility: Story = {
 
 export const AllProps: Story = {
   args: {
-    variant: 'circle',
-    size: 'lg',
-    className: 'custom-skeleton',
-    style: {
-      marginBottom: 16,
-      alignSelf: 'center',
-    },
-    accessible: true,
     accessibilityLabel: 'Custom skeleton',
+    accessible: true,
+    className: 'custom-skeleton',
+    size: 'lg',
+    style: {
+      alignSelf: 'center',
+      marginBottom: 16,
+    },
     testID: 'custom-skeleton',
+    variant: 'circle',
   },
   parameters: {
     docs: {

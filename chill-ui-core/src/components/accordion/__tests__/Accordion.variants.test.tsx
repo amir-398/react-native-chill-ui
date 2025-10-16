@@ -43,8 +43,9 @@ jest.mock('../../string', () => ({
 }));
 
 jest.mock('../../icon', () => ({
-  __esModule: true,
-  default: ({ name }: any) => `Icon:${name}`,
+  Icon: ({ name }: any) => `Icon:${name}`,
+  IconSs: ({ name }: any) => `Icon:${name}`,
+  IconTw: ({ name }: any) => `Icon:${name}`,
 }));
 
 jest.mock('../../animatedBox', () => ({

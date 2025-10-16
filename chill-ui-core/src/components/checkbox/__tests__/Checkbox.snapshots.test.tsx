@@ -1,10 +1,11 @@
 import renderer, { act } from 'react-test-renderer';
+
 import Checkbox from '../components/Checkbox';
 
 // Mocks
 jest.mock('../../../utils', () => ({
-  classNamePropsHandler: jest.fn(),
   classNameHandler: jest.fn(() => ({})),
+  classNamePropsHandler: jest.fn(),
   cn: jest.fn((...args) => args.filter(Boolean).join(' ')),
   isUndefined: jest.fn(value => value === undefined),
   styleHandler: jest.fn(() => ({})),
@@ -44,8 +45,8 @@ describe('Checkbox Snapshots', () => {
         .create(
           <div>
             <Checkbox label="Basic" />
-            <Checkbox label="Checked" isChecked={true} />
-            <Checkbox label="Disabled" isDisabled={true} />
+            <Checkbox label="Checked" isChecked />
+            <Checkbox label="Disabled" isDisabled />
           </div>,
         )
         .toJSON();
@@ -90,7 +91,7 @@ describe('Checkbox Snapshots', () => {
       tree = renderer
         .create(
           <div>
-            <Checkbox label="Pressable" isLabelPressable={true} />
+            <Checkbox label="Pressable" isLabelPressable />
             <Checkbox label="Non-Pressable" isLabelPressable={false} />
           </div>,
         )

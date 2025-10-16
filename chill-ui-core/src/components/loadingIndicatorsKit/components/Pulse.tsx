@@ -1,5 +1,6 @@
-import { Animated, Easing } from 'react-native';
+import { Easing } from 'react-native';
 import { LoadingIndicatorsProps } from '@types';
+import { AnimatedBox } from '@components/animatedBox';
 
 import { loop } from '../utils/utils';
 import defaultProps from '../utils/defaultProps';
@@ -50,7 +51,7 @@ export default function Pulse(props: LoadingIndicatorsProps) {
       animating={animating}
     >
       {values => (
-        <Animated.View
+        <AnimatedBox
           style={[
             {
               backgroundColor: color,

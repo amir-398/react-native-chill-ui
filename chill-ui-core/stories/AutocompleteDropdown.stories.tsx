@@ -1,219 +1,51 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { Box, String } from '@/components';
-
-import UiPresentation from './storybook';
-import { AutocompleteDropdownContext, AutocompleteDropdown } from '../src/components/AutocompleteDropdown';
+import { AutocompleteDropdownContext, AutocompleteDropdown, Box } from '../src/components';
 
 const meta: Meta<typeof AutocompleteDropdown> = {
+  args: {
+    closeDropdownWhenSelectedItem: true,
+    hasHighlightString: true,
+    hasPerformSearch: true,
+    maxHeight: 300,
+    minHeight: 0,
+    offsetX: 0,
+    offsetY: 0,
+  },
   argTypes: {
-    // Required props
-    dataSet: {
-      control: 'object',
-      description: 'Array of data items to display in the dropdown',
+    closeDropdownWhenSelectedItem: {
       table: {
-        type: { summary: 'T[]' },
+        defaultValue: { summary: 'true' },
       },
     },
-    valueField: {
-      control: 'text',
-      description: 'Field to use as the display value and identifier',
+    hasHighlightString: {
       table: {
-        type: { summary: 'keyof T' },
-      },
-    },
-
-    // Positioning and sizing
-    offsetX: {
-      control: 'number',
-      description: 'Horizontal offset for dropdown positioning (default: 0)',
-      table: {
-        defaultValue: { summary: '0' },
-        type: { summary: 'number' },
-      },
-    },
-    offsetY: {
-      control: 'number',
-      description: 'Vertical offset for dropdown positioning (default: 0)',
-      table: {
-        defaultValue: { summary: '0' },
-        type: { summary: 'number' },
-      },
-    },
-    maxHeight: {
-      control: 'number',
-      description: 'Maximum height of dropdown (default: 300)',
-      table: {
-        defaultValue: { summary: '300' },
-        type: { summary: 'number' },
-      },
-    },
-    minHeight: {
-      control: 'number',
-      description: 'Minimum height of dropdown (default: 0)',
-      table: {
-        defaultValue: { summary: '0' },
-        type: { summary: 'number' },
-      },
-    },
-
-    // Search configuration
-    searchField: {
-      control: 'text',
-      description: 'Field to search in (defaults to valueField)',
-      table: {
-        type: { summary: 'keyof T' },
+        defaultValue: { summary: 'true' },
       },
     },
     hasPerformSearch: {
-      control: 'boolean',
-      description: 'Enable search functionality (default: true)',
       table: {
         defaultValue: { summary: 'true' },
-        type: { summary: 'boolean' },
       },
     },
-    searchQuery: {
-      control: false,
-      description: 'Custom search function for filtering items',
+    maxHeight: {
       table: {
-        type: { summary: '(keyword: string, labelValue: string) => boolean' },
+        defaultValue: { summary: '300' },
       },
     },
-
-    // Filtering
-    excludeItems: {
-      control: 'object',
-      description: 'Items to exclude from dropdown',
+    minHeight: {
       table: {
-        type: { summary: 'T[]' },
+        defaultValue: { summary: '0' },
       },
     },
-
-    // Visual configuration
-    hasHighlightString: {
-      control: 'boolean',
-      description: 'Highlight search terms in results (default: true)',
+    offsetX: {
       table: {
-        defaultValue: { summary: 'true' },
-        type: { summary: 'boolean' },
+        defaultValue: { summary: '0' },
       },
     },
-    highlightProps: {
-      control: 'object',
-      description: 'Props for text highlighting configuration',
+    offsetY: {
       table: {
-        type: { summary: 'Partial<Omit<HighlightStringProps, "text">>' },
-      },
-    },
-
-    // State
-    isLoading: {
-      control: 'boolean',
-      description: 'Show loading indicator',
-      table: {
-        type: { summary: 'boolean' },
-      },
-    },
-
-    // Behavior
-    closeModalWhenSelectedItem: {
-      control: 'boolean',
-      description: 'Close dropdown after selection (default: true)',
-      table: {
-        defaultValue: { summary: 'true' },
-        type: { summary: 'boolean' },
-      },
-    },
-    confirmSelectItem: {
-      control: 'boolean',
-      description: 'Require confirmation before selecting',
-      table: {
-        type: { summary: 'boolean' },
-      },
-    },
-    dropdownPosition: {
-      control: 'select',
-      description: "Dropdown positioning: 'auto', 'top', or 'bottom'",
-      options: ['auto', 'top', 'bottom'],
-      table: {
-        type: { summary: "'auto' | 'top' | 'bottom'" },
-      },
-    },
-
-    // Callbacks
-    onBlur: {
-      control: false,
-      description: 'Callback when input loses focus',
-      table: {
-        type: { summary: '() => void' },
-      },
-    },
-    onFocus: {
-      control: false,
-      description: 'Callback when input gains focus',
-      table: {
-        type: { summary: '() => void' },
-      },
-    },
-    onChangeText: {
-      control: false,
-      description: 'Callback function when the input text changes',
-      table: {
-        type: { summary: '(text: string) => void' },
-      },
-    },
-    onSelectItem: {
-      control: false,
-      description: 'Callback function when an item is selected',
-      table: {
-        type: { summary: '(item: T) => void' },
-      },
-    },
-    onConfirmSelectItem: {
-      control: false,
-      description: 'Callback for confirmed selection',
-      table: {
-        type: { summary: '(item: T) => void' },
-      },
-    },
-
-    // Customization
-    customDropdownItem: {
-      control: false,
-      description: 'Custom renderer for dropdown items',
-      table: {
-        type: { summary: '(item: T, selected?: boolean) => React.ReactElement | null' },
-      },
-    },
-
-    // Props objects
-    inputProps: {
-      control: 'object',
-      description: 'Props to pass to the input component',
-      table: {
-        type: { summary: 'Omit<InputProps, "onChangeText">' },
-      },
-    },
-    dropdownItemProps: {
-      control: 'object',
-      description: 'Props for styling dropdown items',
-      table: {
-        type: { summary: '{ className?: string; activeBackgroundColor?: string; stringItemProps?: StringPropsTw }' },
-      },
-    },
-    dropdownListProps: {
-      control: 'object',
-      description: 'Props for the dropdown FlatList component',
-      table: {
-        type: { summary: 'Omit<FlatListProps<any>, "renderItem" | "data">' },
-      },
-    },
-    dropdownProps: {
-      control: 'object',
-      description: 'Props for the dropdown container',
-      table: {
-        type: { summary: 'Partial<InputDropdownProps>' },
+        defaultValue: { summary: '0' },
       },
     },
   },
@@ -221,14 +53,13 @@ const meta: Meta<typeof AutocompleteDropdown> = {
   decorators: [
     Story => (
       <AutocompleteDropdownContext>
-        <UiPresentation className="items-start justify-center px-5">
+        <Box>
           <Story />
-          <String className="text-secondary">AutocompleteDropdown Examples</String>
-        </UiPresentation>
+        </Box>
       </AutocompleteDropdownContext>
     ),
   ],
-  title: 'Components/Inputs/AutocompleteDropdown',
+  title: 'FORMS/AutocompleteDropdown',
 };
 
 export default meta;
@@ -258,31 +89,11 @@ const countries = [
 
 export const Default: Story = {
   args: {
-    closeModalWhenSelectedItem: true,
-    confirmSelectItem: false,
-
     dataSet: data,
-    dropdownItemProps: {
-      stringItemProps: {},
-    },
-    dropdownPosition: 'auto',
-    dropdownProps: {
-      hasAnimation: true,
-      hasShadow: true,
-    },
-    excludeItems: [],
-    hasHighlightString: true,
-    hasPerformSearch: true,
-
+    dropdownPosition: 'bottom',
     inputProps: {
       placeholder: 'Search for an item...',
     },
-    isLoading: false,
-    maxHeight: 250,
-    minHeight: 0,
-    onBlur: () => {},
-    onFocus: () => {},
-    onSelectItem: () => undefined,
     searchField: 'label',
     valueField: 'value',
   },
@@ -299,7 +110,7 @@ export const CustomSearch: Story = {
     searchField: 'name',
     valueField: 'code',
     // Custom search that searches in both name AND code
-    searchQuery: (keyword, labelValue) => {
+    searchQuery: (keyword: string, labelValue: string) => {
       const country = countries.find(c => c.name === labelValue || c.code === labelValue);
       if (!country) return false;
 
@@ -334,66 +145,6 @@ export const WithExcludedItems: Story = {
   },
 };
 
-// Variant with selection confirmation
-export const WithConfirmation: Story = {
-  args: {
-    ...Default.args,
-    confirmSelectItem: true,
-    inputProps: {
-      placeholder: 'Selection with confirmation...',
-    },
-    onConfirmSelectItem: item => {
-      // eslint-disable-next-line no-alert
-      alert(`Do you want to select: ${item.label}?`);
-    },
-  },
-};
-
-// Variant without automatic closing
-export const StayOpenOnSelect: Story = {
-  args: {
-    ...Default.args,
-    closeModalWhenSelectedItem: false,
-    inputProps: {
-      placeholder: 'Dropdown stays open...',
-    },
-  },
-};
-
-// Variant with different search field
-export const DifferentSearchField: Story = {
-  args: {
-    ...Default.args,
-    inputProps: {
-      placeholder: 'Search by category...',
-    },
-    searchField: 'category',
-  },
-};
-
-// Variant without automatic search
-export const NoAutoSearch: Story = {
-  args: {
-    ...Default.args,
-    hasPerformSearch: false,
-    inputProps: {
-      placeholder: 'No automatic search...',
-    },
-  },
-};
-
-// Variant with custom height
-export const CustomHeight: Story = {
-  args: {
-    ...Default.args,
-    inputProps: {
-      placeholder: 'Custom height...',
-    },
-    maxHeight: 150,
-    minHeight: 100,
-  },
-};
-
 // Variant with custom dropdown
 export const CustomDropdownStyle: Story = {
   args: {
@@ -415,50 +166,4 @@ export const CustomDropdownStyle: Story = {
       placeholder: 'Custom styling...',
     },
   },
-};
-
-// Complete example with all features
-export const Complete: Story = {
-  args: {
-    ...Default.args,
-    dataSet: countries,
-    dropdownItemProps: {
-      activeBackgroundColor: '#EBF8FF',
-      stringItemProps: {
-        size: 'sm',
-      },
-    },
-    dropdownProps: {
-      emptyText: 'No country found',
-      hasAnimation: true,
-      hasShadow: true,
-    },
-    inputProps: {
-      hasError: false,
-      label: 'Country selection',
-      placeholder: 'Search by country, code or continent...',
-    },
-    maxHeight: 200,
-    onSelectItem: item => {
-      console.log('Selected country:', item);
-    },
-    searchField: 'name',
-    searchQuery: (keyword, labelValue) => {
-      const country = countries.find(c => c.name === labelValue);
-      if (!country) return false;
-
-      const searchTerm = keyword.toLowerCase();
-      return (
-        country.name.toLowerCase().includes(searchTerm) ||
-        country.code.toLowerCase().includes(searchTerm) ||
-        country.continent.toLowerCase().includes(searchTerm)
-      );
-    },
-    valueField: 'code',
-  },
-  render: args => (
-    <Box className="gap-4">
-      <AutocompleteDropdown {...args} />
-    </Box>
-  ),
 };

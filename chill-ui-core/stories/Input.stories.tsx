@@ -1,99 +1,117 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { StoryObj } from '@storybook/react-native-web-vite';
+
+import { fn } from 'storybook/test';
 
 import UiPresentation from './storybook';
 import { Input } from '../src/components/input';
 
-const meta: Meta<typeof Input> = {
+const meta = {
+  args: {
+    allow: 'all',
+    clickableAs: 'pressable',
+    editable: true,
+    font: 'primaryRegular',
+    hasClearIcon: true,
+    size: 'md',
+  },
   argTypes: {
-    // Basic props
-    editable: { control: 'boolean', description: 'Whether the input is editable' },
-    maxLength: { control: 'number', description: 'Maximum length of the input' },
-    multiline: { control: 'boolean', description: 'Whether the input is multiline' },
-    placeholder: { control: 'text', description: 'The placeholder text' },
-    value: { control: 'text', description: 'The value of the input' },
-    onChangeText: { action: 'onChangeText', description: 'Callback when input text changes' },
-
-    // Label and error
     allow: {
-      control: 'select',
-      description: 'Input validation type',
-      options: ['all', 'numbers', 'letters', 'lettersWithoutSpecialCharacters'],
-    },
-    customRegex: { control: 'text', description: 'Custom regex pattern for validation' },
-    errorClassName: { control: 'text', description: 'Custom class for error message (NativeWind only)' },
-    errorIconName: { control: 'text', description: 'Icon name for error state' },
-    errorMessage: { control: 'text', description: 'Error message to display' },
-    errorStyle: { control: 'object', description: 'Custom style for error message (StyleSheet only)' },
-    hasError: { control: 'boolean', description: 'Whether the input has an error' },
-    label: { control: 'text', description: 'Label text above the input' },
-    labelStringProps: { control: 'object', description: 'Props for the label String component' },
-
-    // Icons
-    clearIconProps: { control: 'object', description: 'Props for the clear icon component' },
-    eyeIconProps: { control: 'object', description: 'Props for the eye/eye-slash icon component' },
-    hasClearIcon: { control: 'boolean', description: 'Whether to show clear icon' },
-    inputClassName: { control: 'text', description: 'Custom class for the input field (NativeWind only)' },
-    inputStyle: { control: 'object', description: 'Custom style for the input field (StyleSheet only)' },
-    leftIconAction: {
-      control: 'object',
-      description: 'Configuration for left icon action',
       table: {
-        type: {
-          summary:
-            '{ iconName?: string, iconColor?: string, iconSize?: string, customIcon?: ReactNode, iconPress?: () => void, hasPressEffect?: boolean }',
+        defaultValue: {
+          summary: 'all',
         },
       },
     },
-    rightIconAction: {
-      control: 'object',
-      description: 'Configuration for right icon action',
-      table: {
-        type: {
-          summary:
-            '{ iconName?: string, iconColor?: string, iconSize?: string, customIcon?: ReactNode, iconPress?: () => void, hasPressEffect?: boolean }',
-        },
-      },
-    },
-
-    // Security
-    hasSecureTextEntry: { control: 'boolean', description: 'Whether the input is a password field' },
-
-    // Interaction
     clickableAs: {
-      control: 'select',
-      description: 'Animation type when input is pressed',
-      options: ['scale', undefined],
+      table: {
+        defaultValue: {
+          summary: 'pressable',
+        },
+      },
     },
-    onPress: { action: 'pressed', description: 'Function called when input is pressed' },
-
-    // Styling
-    className: { control: 'text', description: 'Custom class for the input container (NativeWind only)' },
-    font: { control: 'text', description: 'Font family variant for the input text (StyleSheet only)' },
-    isDisabled: { control: 'boolean', description: 'Whether input is disabled' },
-    isStretchable: { control: 'boolean', description: 'Whether input should stretch to full width' },
+    editable: {
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
+    },
+    font: {
+      control: {
+        type: 'select',
+      },
+      description: 'Font variant for the input',
+      options: [
+        'primaryBold',
+        'primaryExtraBold',
+        'primaryExtraLight',
+        'primaryItalic',
+        'primaryLight',
+        'primaryMedium',
+        'primaryRegular',
+        'primarySemiBold',
+        'primaryThin',
+        'secondaryBold',
+        'secondaryExtraBold',
+        'secondaryExtraLight',
+        'secondaryItalic',
+        'secondaryLight',
+        'secondaryMedium',
+        'secondaryRegular',
+        'secondarySemiBold',
+        'secondaryThin',
+        'tertiaryBold',
+        'tertiaryExtraBold',
+        'tertiaryExtraLight',
+        'tertiaryItalic',
+        'tertiaryLight',
+        'tertiaryMedium',
+        'tertiaryRegular',
+        'tertiarySemiBold',
+        'tertiaryThin',
+      ],
+      table: {
+        defaultValue: {
+          summary: 'primaryRegular',
+        },
+      },
+    },
+    hasClearIcon: {
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
+    },
+    placeholderTextColor: {
+      table: {
+        defaultValue: {
+          summary: '#BDBDBD',
+        },
+      },
+    },
     size: {
-      control: 'select',
-      description: 'Size of the input',
+      control: {
+        type: 'select',
+      },
+      description: 'Input size variant',
       options: ['xs', 'sm', 'md', 'lg', 'xl'],
+      table: {
+        defaultValue: {
+          summary: 'md',
+        },
+      },
     },
-
-    // Features
-    errorStringProps: { control: 'object', description: 'Props for the error message String component' },
-    lengthStringProps: { control: 'object', description: 'Props for the character count String component' },
-    showLength: { control: 'boolean', description: 'Whether to show character count' },
-
-    // Refs
-    wrapperRef: { control: false, description: 'Reference to the input container wrapper' },
   },
   component: Input,
   decorators: [
     (Story: any) => (
-      <UiPresentation className="items-start justify-start px-3">
+      <UiPresentation>
         <Story />
       </UiPresentation>
     ),
   ],
-  title: 'Components/Inputs/TextInput',
+  title: 'Forms/Inputs',
 };
 
 export default meta;
@@ -175,7 +193,6 @@ export const WithBothIcons: Story = {
 // Error States
 export const WithError: Story = {
   args: {
-    errorIconName: 'exclamation-triangle-solid',
     errorMessage: 'Please enter a valid email address',
     hasError: true,
     label: 'Email',
@@ -210,10 +227,7 @@ export const Clickable: Story = {
     clickableAs: 'scale',
     editable: false,
     label: 'Clickable Input',
-    onPress: () => {
-      // eslint-disable-next-line no-alert
-      alert('Input clicked!');
-    },
+    onPress: fn(),
     placeholder: 'Click me (scale effect)',
   },
 };
@@ -289,77 +303,5 @@ export const CustomValidation: Story = {
     customRegex: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
     label: 'Email',
     placeholder: 'Enter a valid email',
-  },
-};
-
-// Advanced Examples
-export const WithCustomIconProps: Story = {
-  args: {
-    eyeIconProps: {
-      color: '#007AFF',
-      size: 'lg',
-    },
-    hasSecureTextEntry: true,
-    label: 'Password with Custom Eye Icon',
-    placeholder: 'Enter your password',
-  },
-};
-
-export const WithCustomClearIconProps: Story = {
-  args: {
-    clearIconProps: {
-      color: '#FF3B30',
-      size: 'lg',
-    },
-    hasClearIcon: true,
-    label: 'Input with Custom Clear Icon',
-    placeholder: 'Type something...',
-    value: 'Clearable text',
-  },
-};
-
-export const WithCustomStringProps: Story = {
-  args: {
-    errorStringProps: {
-      colorVariant: 'error',
-      size: 'sm',
-    },
-    label: 'Input with Custom Label Styling',
-    labelStringProps: {
-      colorVariant: 'primary',
-      size: 'lg',
-    },
-    lengthStringProps: {
-      colorVariant: 'secondary',
-      size: 'xs',
-    },
-    maxLength: 50,
-    placeholder: 'Enter your text',
-    showLength: true,
-    value: 'Sample text',
-  },
-};
-
-export const WithPressEffectIcons: Story = {
-  args: {
-    label: 'Input with Press Effect Icons',
-    leftIconAction: {
-      iconName: 'magnifying-glass-solid',
-      iconPress: () => {
-        // eslint-disable-next-line no-alert
-        alert('Search icon pressed!');
-      },
-      hasPressEffect: true,
-    },
-    placeholder: 'Search with press effect',
-    rightIconAction: {
-      iconName: 'xmark-solid',
-      iconPress: () => {
-        // eslint-disable-next-line no-alert
-        alert('Clear icon pressed!');
-      },
-      hasPressEffect: true,
-    },
-    value: 'Search text',
   },
 };

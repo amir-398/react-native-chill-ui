@@ -1,5 +1,3 @@
-import type { addressComponentsTypes, PlaceInputSelectedValue } from '../common.types';
-
 import { StrictOmit } from '../utils/StrictOmit.types';
 import { AutocompleteDropdownProps } from '../autocompleteDropdown/autocompleteDropdown.types';
 
@@ -17,6 +15,11 @@ import { AutocompleteDropdownProps } from '../autocompleteDropdown/autocompleteD
  * }}
  * ```
  */
+
+export type addressComponentsTypes = 'postal_code' | 'locality' | 'country' | 'street_number' | 'route';
+
+export type PlaceInputSelectedValue = 'longAddress' | 'shortAddress' | addressComponentsTypes;
+
 export interface Place {
   /** Full formatted address (e.g., "123 Main St, New York, NY 10001, USA") */
   formattedAddress: string;

@@ -1,10 +1,26 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
 import UiPresentation from '../storybook';
 import { Box } from '../../src/components';
-import String from '../../src/components/string';
 
 const meta: Meta<typeof Box> = {
+  args: {
+    useFastView: true,
+  },
+  argTypes: {
+    useFastView: {
+      control: 'boolean',
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
+    },
+    ViewProps: {
+      description: 'Any other props accepted by the native `View` component',
+      type: 'object',
+    },
+  },
   component: Box,
   decorators: [
     Story => (
@@ -17,16 +33,15 @@ const meta: Meta<typeof Box> = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  title: 'Components/Box/Box',
+  title: 'LAYOUT/Box/Box',
 };
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: () => (
-    <Box className="bg-gray-100 p-4">
-      <String>Basic Box Container</String>
-    </Box>
-  ),
+  args: {
+    useFastView: true,
+  },
+  render: (args: any) => <Box style={{ backgroundColor: '#f3f4f6', padding: 16, width: 200 }} {...args} />,
 };

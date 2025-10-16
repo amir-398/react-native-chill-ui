@@ -69,7 +69,11 @@ export interface InputDropdownListProps {
   DropdownItemRender?: (item: any) => React.ReactNode;
   /** Props for the FlatList component */
   dropdownListProps?: Omit<FlatListProps<any>, 'renderItem' | 'data'>;
-  /** Type of touchable component to use for items */
+  /** Type of touchable component to use for items
+   * - `'touchable-opacity'`
+   * - `'pressable'`
+   * - `'touchable-highlight'`
+   */
   itemClickableAs?: 'touchable-opacity' | 'pressable' | 'touchable-highlight';
 }
 

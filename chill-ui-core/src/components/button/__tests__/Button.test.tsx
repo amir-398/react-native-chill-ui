@@ -1,13 +1,14 @@
-import { render, screen, fireEvent } from '@testing-library/react-native';
+import { render } from '@testing-library/react-native';
+
 import Button from '../components/Button';
 
 // Mocks
 jest.mock('../../../utils', () => ({
-  classNamePropsHandler: jest.fn(),
-  colorVariantPropsHandler: jest.fn(),
   classNameHandler: jest.fn(() => ({})),
-  styleHandler: jest.fn(() => ({})),
+  classNamePropsHandler: jest.fn(),
   cn: jest.fn((...args) => args.filter(Boolean).join(' ')),
+  colorVariantPropsHandler: jest.fn(),
+  styleHandler: jest.fn(() => ({})),
 }));
 
 jest.mock('../../../components/box', () => ({
@@ -45,13 +46,13 @@ jest.mock('../../../components/scalePressable', () => ({
 jest.mock('../styles/Button.ss.styles', () => ({
   ButtonSv: jest.fn(() => ({})),
   IconContainerSv: jest.fn(() => ({})),
-  styles: { contentContainer: {}, stringContainer: {}, pointerEventsNone: {} },
+  styles: { contentContainer: {}, pointerEventsNone: {}, stringContainer: {} },
 }));
 
 jest.mock('../styles/Button.tw.styles', () => ({
   ButtonTv: jest.fn(() => ''),
   IconPositionTv: jest.fn(() => ''),
-  twStyles: { contentContainer: '', stringContainer: '', pointerEventsNone: '' },
+  twStyles: { contentContainer: '', pointerEventsNone: '', stringContainer: '' },
 }));
 
 describe('Button Component (Hybrid)', () => {
@@ -72,12 +73,12 @@ describe('Button Component (Hybrid)', () => {
   });
 
   it('should render with disabled state', () => {
-    const { root } = render(<Button title="Disabled Button" isDisabled={true} />);
+    const { root } = render(<Button title="Disabled Button" isDisabled />);
     expect(root).toBeTruthy();
   });
 
   it('should render with loading state', () => {
-    const { root } = render(<Button title="Loading Button" isLoading={true} />);
+    const { root } = render(<Button title="Loading Button" isLoading />);
     expect(root).toBeTruthy();
   });
 
@@ -148,7 +149,9 @@ describe('Button Component (Hybrid)', () => {
   });
 
   it('should handle custom icon in leftIconAction', () => {
-    const CustomIcon = () => <div data-testid="custom-left-icon" />;
+    function CustomIcon() {
+      return <div data-testid="custom-left-icon" />;
+    }
     const { root } = render(
       <Button title="Custom Left Icon" leftIconAction={{ customIcon: <CustomIcon />, size: 'md' }} />,
     );
@@ -156,7 +159,9 @@ describe('Button Component (Hybrid)', () => {
   });
 
   it('should handle custom icon in rightIconAction', () => {
-    const CustomIcon = () => <div data-testid="custom-right-icon" />;
+    function CustomIcon() {
+      return <div data-testid="custom-right-icon" />;
+    }
     const { root } = render(
       <Button title="Custom Right Icon" rightIconAction={{ customIcon: <CustomIcon />, size: 'md' }} />,
     );

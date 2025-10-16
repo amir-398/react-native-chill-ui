@@ -4,7 +4,13 @@ import DropdownBase from './InputDropdownBase.ss';
 import DropdownList from './InputDropdownList.ss';
 
 /**
- * Provides a comprehensive dropdown list with search functionality, loading states, and customizable styling.
+ * the `<InputDropdown />` component provides a comprehensive dropdown list with search functionality, loading states, and customizable styling.
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { InputDropdown } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx

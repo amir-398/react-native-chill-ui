@@ -46,13 +46,17 @@ const getInitialCountry = (
 };
 
 /**
- * PhoneNumberInput component that provides a complete phone number input experience.
- * Features country selection with flags, phone number formatting, validation, and international support.
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ * The `<PhoneNumberInput />` component provides a complete phone number input experience.
+ * It features country selection with flags, phone number formatting, validation, and international support.
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { PhoneNumberInput } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic usage with default settings
  * <PhoneNumberInput
  *   defaultCountry="FR"
  *   allowedCountries={['FR', 'US', 'GB']}

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
 import { View } from 'react-native';
-
+import React, { useState } from 'react';
 import { Button } from '@components/button';
 import { String } from '@components/string';
+
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '../index';
 
 /**

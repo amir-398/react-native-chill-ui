@@ -1,4 +1,4 @@
-import { useCallback, useRef, useMemo } from 'react';
+import { useCallback, useRef, useMemo, useEffect } from 'react';
 import { PanResponder, GestureResponderEvent, Animated, I18nManager } from 'react-native';
 
 import Rect from '../utils/rect';
@@ -45,11 +45,39 @@ export const useSliderGestures = (props: UseSliderGesturesProps) => {
 
   const activeThumbIndexRef = useRef(0);
   const previousLeftRef = useRef(0);
+  const currentValuesRef = useRef<number[]>([]);
 
-  const getRawValues = useCallback(
-    (vals: (number | Animated.Value)[]) => vals.map(val => (val as any).__getValue()),
-    [],
-  );
+  // Track current values using listeners instead of __getValue()
+  useEffect(() => {
+    const listeners: string[] = [];
+    
+    // Initialize with current values from Animated.Value
+    values.forEach((val, index) => {
+      if (val instanceof Animated.Value) {
+        // Use the internal _value property to get the current value
+        // This is safer than __getValue() and only used for initialization
+        // eslint-disable-next-line no-underscore-dangle
+        currentValuesRef.current[index] = (val as any)._value ?? 0;
+        
+        const listenerId = val.addListener(({ value: newValue }) => {
+          currentValuesRef.current[index] = newValue;
+        });
+        listeners.push(listenerId);
+      } else {
+        currentValuesRef.current[index] = val as number;
+      }
+    });
+
+    return () => {
+      values.forEach((val, index) => {
+        if (val instanceof Animated.Value && listeners[index]) {
+          val.removeListener(listeners[index]);
+        }
+      });
+    };
+  }, [values]);
+
+  const getRawValues = useCallback(() => [...currentValuesRef.current], []);
 
   const getRatio = useCallback(
     (val: number) => (val - minimumValue) / (maximumValue - minimumValue),
@@ -65,7 +93,7 @@ export const useSliderGestures = (props: UseSliderGesturesProps) => {
     [getRatio, vertical, containerSize, thumbSize],
   );
 
-  const getCurrentValue = useCallback((thumbIndex = 0) => (values[thumbIndex] as any).__getValue() || 0, [values]);
+  const getCurrentValue = useCallback((thumbIndex = 0) => currentValuesRef.current[thumbIndex] || 0, []);
 
   const getValue = useCallback(
     (gestureState: { dy: number; dx: number }) => {
@@ -77,55 +105,82 @@ export const useSliderGestures = (props: UseSliderGesturesProps) => {
       const ratio = I18nManager.isRTL ? 1 - nonRtlRatio : nonRtlRatio;
       let minValue = minimumValue;
       let maxValue = maximumValue;
-      const rawValues = getRawValues(values);
-      const buffer = step || 0.1;
 
-      if (values.length === 2) {
-        if (activeThumbIndexRef.current === 1) {
-          minValue = rawValues[0] + buffer;
-        } else {
-          maxValue = rawValues[1] - buffer;
+      const rawValues = getRawValues();
+      const effectiveStep = step || 0.1; // Use effective step for buffer
+
+      // Range bounding logic for multi-thumb sliders
+      if (values.length > 1) {
+        const currentIndex = activeThumbIndexRef.current;
+        
+        // Constrain by previous thumb (if exists)
+        if (currentIndex > 0) {
+          minValue = rawValues[currentIndex - 1] + effectiveStep;
+        }
+        
+        // Constrain by next thumb (if exists)
+        if (currentIndex < values.length - 1) {
+          maxValue = rawValues[currentIndex + 1] - effectiveStep;
         }
       }
 
+      const calculatedValue = ratio * (maximumValue - minimumValue) + minimumValue;
+
       if (step) {
-        return Math.max(
-          minValue,
-          Math.min(maxValue, minimumValue + Math.round((ratio * (maximumValue - minimumValue)) / step) * step),
-        );
+        // Apply stepping
+        const steppedValue = minimumValue + Math.round((calculatedValue - minimumValue) / step) * step;
+        return Math.max(minValue, Math.min(maxValue, steppedValue));
       }
-      return Math.max(minValue, Math.min(maxValue, ratio * (maximumValue - minimumValue) + minimumValue));
+
+      // Apply simple bounds (no stepping)
+      return Math.max(minValue, Math.min(maxValue, calculatedValue));
     },
     [containerSize, thumbSize, vertical, minimumValue, maximumValue, step, getRawValues, values],
   );
 
+  // Calculate touch overflow area for better UX
+  // Returns the extra space around the thumb for touch handling
   const getTouchOverflowSize = useCallback(() => {
-    const size = { height: 40, width: 40 };
-    if (thumbTouchSize) {
-      size.width = Math.max(0, thumbTouchSize.width || 0 + thumbSize.width);
-      size.height = Math.max(0, thumbTouchSize.height || 0 - containerSize.height);
-    }
-    return size;
-  }, [thumbTouchSize, thumbSize, containerSize]);
+    // Calculate width/height excess of touch area compared to thumb size
+    const widthExcess = (thumbTouchSize.width - thumbSize.width) / 2;
+    const heightExcess = (thumbTouchSize.height - thumbSize.height) / 2;
 
+    return {
+      // Return overflow for PanResponder touch area
+      height: Math.max(0, heightExcess),
+      width: Math.max(0, widthExcess),
+    };
+  }, [thumbTouchSize, thumbSize]);
+
+  // Create touch rectangle using touch area dimensions
   const getThumbTouchRect = useCallback(
     (thumbIndex = 0) => {
       const { height, width } = thumbTouchSize || { height: 40, width: 40 };
-      const touchOverflowSize = getTouchOverflowSize();
+
+      // Touch area is centered around the thumb. Calculate offset.
+      const widthDifference = (width - thumbSize.width) / 2;
+
+      // X: Thumb position (left corner) - half of width excess
+      const x = getThumbLeft(getCurrentValue(thumbIndex)) - widthDifference;
+
+      // Y: Container center - half of touch area height
+      const y = (containerSize.height - height) / 2;
+
       return Rect({
         height,
         width,
-        x: touchOverflowSize.width / 2 + getThumbLeft(getCurrentValue(thumbIndex)) + (thumbSize.width - width) / 2,
-        y: touchOverflowSize.height / 2 + (containerSize.height - height) / 2,
+        x,
+        y,
       });
     },
-    [thumbTouchSize, getTouchOverflowSize, getThumbLeft, getCurrentValue, thumbSize, containerSize],
+    [thumbTouchSize, getThumbLeft, getCurrentValue, thumbSize, containerSize],
   );
 
   const thumbHitTest = useCallback(
     (e: GestureResponderEvent) => {
       const { nativeEvent } = e;
 
+      // 1. Attempt to touch an existing thumb
       const hitThumb = values.find((_: any, i: number) => {
         const thumbTouchRect = getThumbTouchRect(i);
         const containsPoint = thumbTouchRect.containsPoint(nativeEvent.locationX, nativeEvent.locationY);
@@ -139,12 +194,15 @@ export const useSliderGestures = (props: UseSliderGesturesProps) => {
         return true;
       }
 
+      // 2. If no thumb is touched, check if track is clickable
       if (trackClickable) {
+        // Determine which thumb is closest to the click position
         if (values.length === 1) {
           activeThumbIndexRef.current = 0;
         } else {
           const thumbDistances = values.map((_: any, index: number) => {
             const thumbTouchRect = getThumbTouchRect(index);
+            // trackDistanceToPoint measures horizontal/vertical distance to thumb center
             return thumbTouchRect.trackDistanceToPoint(nativeEvent.locationX);
           });
           activeThumbIndexRef.current = indexOfLowest(thumbDistances);
@@ -162,27 +220,44 @@ export const useSliderGestures = (props: UseSliderGesturesProps) => {
 
   const handlePanResponderGrant = useCallback(
     (e: GestureResponderEvent) => {
+      if (disabled) {
+        return;
+      }
       const { nativeEvent } = e;
 
-      previousLeftRef.current = trackClickable
-        ? nativeEvent.locationX - thumbSize.width
-        : getThumbLeft(getCurrentValue(activeThumbIndexRef.current));
-      if (thumbTouchSize) {
-        previousLeftRef.current -= (thumbTouchSize.width - thumbSize.width) / 2;
+      let initialLeft: number;
+
+      if (trackClickable) {
+        // If click on track, movement starts at click position
+        // Subtract half thumb size to center it
+        initialLeft = vertical ? nativeEvent.locationY : nativeEvent.locationX - thumbSize.width / 2;
+      } else {
+        // If dragging thumb, movement starts at current thumb position
+        initialLeft = getThumbLeft(getCurrentValue(activeThumbIndexRef.current));
       }
+
+      // Adjust for touch area (if touch area is larger than thumb)
+      const touchAreaDifference = (thumbTouchSize.width - thumbSize.width) / 2;
+      if (thumbTouchSize) {
+        initialLeft -= touchAreaDifference;
+      }
+
+      previousLeftRef.current = initialLeft;
+
       setIsSliding(true);
-      onSlidingStart?.(getRawValues(values), activeThumbIndexRef.current);
+      onSlidingStart?.(getRawValues(), activeThumbIndexRef.current);
     },
     [
+      disabled,
       trackClickable,
       thumbSize,
       getThumbLeft,
       getCurrentValue,
       getRawValues,
-      values,
       onSlidingStart,
       thumbTouchSize,
       setIsSliding,
+      vertical,
     ],
   );
 
@@ -191,11 +266,13 @@ export const useSliderGestures = (props: UseSliderGesturesProps) => {
       if (disabled) {
         return;
       }
-      setCurrentValue(getValue(gestureState), activeThumbIndexRef.current, () => {
-        onValueChange?.(getRawValues(values), activeThumbIndexRef.current);
+      const newValue = getValue(gestureState);
+      setCurrentValue(newValue, activeThumbIndexRef.current, () => {
+        const rawValues = getRawValues();
+        onValueChange?.(rawValues, activeThumbIndexRef.current);
       });
     },
-    [disabled, getValue, setCurrentValue, getRawValues, values, onValueChange],
+    [disabled, getValue, setCurrentValue, getRawValues, onValueChange],
   );
 
   const handlePanResponderRequestEnd = useCallback(() => false, []);
@@ -205,26 +282,17 @@ export const useSliderGestures = (props: UseSliderGesturesProps) => {
       if (disabled) {
         return;
       }
+
+      // Ensure final value is correct
       setCurrentValue(getValue(gestureState), activeThumbIndexRef.current, () => {
-        if (trackClickable) {
-          onValueChange?.(getRawValues(values), activeThumbIndexRef.current);
-        }
-        onSlidingComplete?.(getRawValues(values), activeThumbIndexRef.current);
+        // Call onValueChange even if track wasn't clickable (for final movement)
+        onValueChange?.(getRawValues(), activeThumbIndexRef.current);
+        onSlidingComplete?.(getRawValues(), activeThumbIndexRef.current);
+        setIsSliding(false);
       });
-      setIsSliding(false);
       activeThumbIndexRef.current = 0;
     },
-    [
-      disabled,
-      getValue,
-      setCurrentValue,
-      trackClickable,
-      getRawValues,
-      values,
-      onValueChange,
-      onSlidingComplete,
-      setIsSliding,
-    ],
+    [disabled, getValue, setCurrentValue, getRawValues, onValueChange, onSlidingComplete, setIsSliding],
   );
 
   const panResponder = useMemo(

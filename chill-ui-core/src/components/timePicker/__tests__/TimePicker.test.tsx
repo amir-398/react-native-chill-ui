@@ -2,31 +2,31 @@ import { Text, View } from 'react-native';
 import { render } from '@testing-library/react-native';
 
 import { TimePicker } from '../components/TimePicker.tw';
-import { TimePickerContent } from '../components/TimePickerContent.tw';
 import { getTimePickerDateNow } from '../utils/createTimePickerDate';
+import { TimePickerContent } from '../components/TimePickerContent.tw';
 
 // Mock TimePickerScroller to avoid FlatList native dependencies
-const TimePickerScroller = ({ children, ...props }: any) => {
+function TimePickerScroller({ children, ...props }: any) {
   const { View: ReactNativeView } = require('react-native');
   return (
     <ReactNativeView testID="time-picker-scroller" {...props}>
       {children}
     </ReactNativeView>
   );
-};
+}
 
 // Mock TimePickerItem to avoid animation dependencies
-const TimePickerItem = ({ ...props }: any) => {
-  const { View: ReactNativeView, Text: ReactNativeText } = require('react-native');
+function TimePickerItem({ ...props }: any) {
+  const { Text: ReactNativeText, View: ReactNativeView } = require('react-native');
   return (
     <ReactNativeView testID="time-picker-item" {...props}>
       <ReactNativeText>Item</ReactNativeText>
     </ReactNativeView>
   );
-};
+}
 
 // Mock TimePickerTitle to simplify testing
-const TimePickerTitle = ({ children, ...props }: any) => {
+function TimePickerTitle({ children, ...props }: any) {
   const { Text: ReactNativeText } = require('react-native');
   if (typeof children === 'string') {
     return (
@@ -36,7 +36,7 @@ const TimePickerTitle = ({ children, ...props }: any) => {
     );
   }
   return null;
-};
+}
 
 jest.mock('../components/TimePickerScroller.tw', () => ({
   TimePickerScroller,
@@ -56,9 +56,9 @@ jest.mock('../../../utils', () => ({
   classNamePropsHandler: jest.fn(),
   cn: jest.fn((...args) => args.filter(Boolean).join(' ')),
   isString: jest.fn(value => typeof value === 'string'),
+  SlotTw: ({ children }: any) => children,
   styleHandler: jest.fn(() => ({})),
   sv: jest.fn(() => jest.fn(() => ({}))),
-  SlotTw: ({ children }: any) => children,
 }));
 
 // Mock AnimatedBox
@@ -83,18 +83,18 @@ jest.mock('../../../components/box', () => ({
       </ReactNativeView>
     );
   },
-  BoxTw: ({ children, ...props }: any) => {
-    const { View: ReactNativeView } = require('react-native');
-    return (
-      <ReactNativeView testID="box-tw" {...props}>
-        {children}
-      </ReactNativeView>
-    );
-  },
   BoxSs: ({ children, ...props }: any) => {
     const { View: ReactNativeView } = require('react-native');
     return (
       <ReactNativeView testID="box-ss" {...props}>
+        {children}
+      </ReactNativeView>
+    );
+  },
+  BoxTw: ({ children, ...props }: any) => {
+    const { View: ReactNativeView } = require('react-native');
+    return (
+      <ReactNativeView testID="box-tw" {...props}>
         {children}
       </ReactNativeView>
     );
@@ -123,6 +123,7 @@ jest.mock('react-native', () => {
     _mockValue: number;
 
     constructor(mockValue: number) {
+      // eslint-disable-next-line no-underscore-dangle
       this._mockValue = mockValue;
     }
 
@@ -130,15 +131,20 @@ jest.mock('react-native', () => {
       return this;
     }
 
+    // eslint-disable-next-line class-methods-use-this
     setValue() {}
 
+    // eslint-disable-next-line class-methods-use-this
     addListener(callback: (value: { value: number }) => void) {
       return 'listener-id';
     }
 
+    // eslint-disable-next-line class-methods-use-this
     removeListener() {}
 
+    // eslint-disable-next-line no-underscore-dangle
     __getValue() {
+      // eslint-disable-next-line no-underscore-dangle
       return this._mockValue;
     }
   };

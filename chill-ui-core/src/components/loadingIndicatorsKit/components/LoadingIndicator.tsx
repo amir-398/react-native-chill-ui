@@ -13,9 +13,15 @@ import CircleFade from './CircleFade';
 import { loadingIndicatorSizes } from '../styles/loadingIndicator.styles';
 
 /**
- * LoadingIndicator component that renders different types of loading animations.
+ * The `<LoadingIndicator />` component renders different types of loading animations.
  * Supports 10 different animation types with customizable size, color, and behavior.
- * Provides a unified interface for all loading indicator variants.
+ *
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { LoadingIndicator } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
@@ -27,15 +33,14 @@ import { loadingIndicatorSizes } from '../styles/loadingIndicator.styles';
  * />
  * ```
  *
- * @param name - Type of loading animation ('bounce' | 'chase' | 'circleFade' | 'flow' | 'fold' | 'grid' | 'pulse' | 'spinner' | 'swing' | 'wander')
- * @param size - Size of the loading indicator (default: 40)
- * @param color - Color of the loading indicator (default: '#000')
- * @param animating - Whether the animation is running (default: true)
- * @param hidesWhenStopped - Whether to hide when animation stops (default: true)
- * @param style - Custom style object for the container
  * @param accessible - Whether the component is accessible
  * @param accessibilityLabel - Accessibility label for screen readers
- * @returns Loading indicator component with specified animation type
+ * @param animating - Whether the animation is running (default: true)
+ * @param color - Color of the loading indicator (default: '#000')
+ * @param hidesWhenStopped - Whether to hide when animation stops (default: true)
+ * @param name - Type of loading animation: 'bounce' | 'chase' | 'circleFade' | 'flow' | 'fold' | 'grid' | 'pulse' | 'spinner' | 'swing' | 'wander'
+ * @param size - Size of the loading indicator: '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' (default: 'md')
+ * @param style - Custom style object for the container
  */
 function LoadingIndicator(props: LoadingIndicatorProps) {
   const { name, size = 'md', ...rest } = props;

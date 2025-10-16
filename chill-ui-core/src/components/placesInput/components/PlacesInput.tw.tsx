@@ -4,13 +4,20 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { AutocompleteDropdownTw } from '@components/AutocompleteDropdown';
 import { PlacesInputPropsTw, PlaceTw, PlacesTw, PlacesResponseTw } from '@types';
 
+import { placesInputDefaultProps } from '../utils/defaultProps';
+
 /**
- * PlacesInput component that provides Google Places API integration for address autocomplete.
+ * The `<PlacesInput />` component is a component that provides Google Places API integration for address autocomplete.
  * Features real-time search, debounced API calls, customizable rendering, and comprehensive place data.
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { PlacesInput } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic usage with Google API key
  * <PlacesInput
  *   googleApiKey="your-google-api-key"
  *   placeholder="Enter your address"
@@ -51,18 +58,18 @@ import { PlacesInputPropsTw, PlaceTw, PlacesTw, PlacesResponseTw } from '@types'
  */
 export function PlacesInput(props: PlacesInputPropsTw) {
   const {
-    clearQueryOnSelect = false,
-    defaultOpen = false,
+    clearQueryOnSelect = placesInputDefaultProps.clearQueryOnSelect,
+    defaultOpen = placesInputDefaultProps.defaultOpen,
     googleApiKey,
     onChangeText,
     onError,
     onOpenChange,
     onSelect,
     open,
-    query = '',
+    query = placesInputDefaultProps.query,
     queryCountries,
-    requiredCharactersBeforeSearch = 2,
-    requiredTimeBeforeSearch = 1000,
+    requiredCharactersBeforeSearch = placesInputDefaultProps.requiredCharactersBeforeSearch,
+    requiredTimeBeforeSearch = placesInputDefaultProps.requiredTimeBeforeSearch,
     selectedValue,
     ...rest
   } = props;

@@ -11,51 +11,49 @@ type TouchableComponentType = 'touchable-opacity' | 'pressable' | 'ripple-pressa
  * Props for the Button component
  */
 export type BtnProps = VariantProps<typeof ButtonSv> & {
-  /** Button title text */
-  title?: string;
-
-  /** Whether the button is in loading state */
-  isLoading?: boolean;
-
-  /** Whether the button is disabled */
-  isDisabled?: boolean;
-
-  /** Press callback function */
-  onPress?: () => void;
-
+  /** Type of touchable component to use:
+   * - `'touchable-opacity'`
+   * - `'pressable'`
+   * - `'ripple-pressable'`
+   * - `'scale-pressable'`
+   */
+  as?: TouchableComponentType;
   /** Custom CSS classes for the button container */
   className?: string;
-
-  /** Style object for the button container */
-  style?: StyleProp<ViewStyle>;
-
-  /** Custom CSS classes for the text */
-  textClassName?: string;
-
-  /** Props to pass to the String component */
-  stringProps?: StringPropsSs;
-
-  /** Icon configuration with position support */
+  /** Content position within the button:
+   * - `'left'`
+   * - `'center'`
+   * - `'right'`
+   */
+  contentPosition?: StringPropsSs['position'];
+  /** Whether the button is disabled */
+  isDisabled?: boolean;
+  /** Whether the button is in loading state */
+  isLoading?: boolean;
+  /** Left icon configuration */
   leftIconAction?: {
     customIcon?: React.ReactNode;
     position?: 'left' | 'right';
     name: keyof TIcons;
     size?: IconPropsSs['size'];
   };
-
+  /** Props to pass to the loading indicator */
+  loadingIndicatorProps?: Partial<LoadingIndicatorProps>;
+  /** Press callback function */
+  onPress?: () => void;
+  /** Right icon configuration */
   rightIconAction?: {
     customIcon?: React.ReactNode;
     position?: 'left' | 'right';
     name: keyof TIcons;
     size?: IconPropsSs['size'];
   };
-
-  /** Props to pass to the loading indicator */
-  loadingIndicatorProps?: Partial<LoadingIndicatorProps>;
-
-  /** Button style variant (contained/outlined/text) */
-  contentPosition?: StringPropsSs['position'];
-
-  /** Type of touchable component to use */
-  as?: TouchableComponentType;
+  /** Style object for the button container */
+  style?: StyleProp<ViewStyle>;
+  /** Props to pass to the String component */
+  stringProps?: StringPropsSs;
+  /** Custom CSS classes for the text */
+  textClassName?: string;
+  /** Button title text */
+  title?: string;
 };

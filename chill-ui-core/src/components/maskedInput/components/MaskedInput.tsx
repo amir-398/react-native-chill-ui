@@ -6,9 +6,15 @@ import { useCallback, useEffect, useState } from 'react';
 import { handleApplyMask, removeMask } from '../utils/maskUtils';
 
 /**
- * MaskedInput component that applies formatting masks to input text.
+ * The `<MaskedInput />` component applies formatting masks to input text.
  * Supports phone numbers, credit cards, dates, and other formatted inputs.
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ *
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { MaskedInput } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
@@ -22,37 +28,35 @@ import { handleApplyMask, removeMask } from '../utils/maskUtils';
  * />
  * ```
  *
- * @param mask - The mask pattern (use '9' for digits, other characters are literals)
- * @param onChangeText - Callback with both masked and unmasked text
- * @param value - Current input value
- * @param label - Label text for the input
- * @param className - Custom CSS classes for the input container
- * @param labelClassName - Custom CSS classes for the label
- * @param wrapperRef - Reference to the wrapper component
- * @param hasError - Whether the input has an error
- * @param errorMessage - Error message to display
- * @param errorClassName - Custom CSS classes for the error message
- * @param errorIconName - Icon name to display with error
- * @param hasClearIcon - Whether to show clear icon
- * @param inputClassName - Custom CSS classes for the input field
- * @param leftIconAction - Left icon configuration
- * @param rightIconAction - Right icon configuration
- * @param hasSecureTextEntry - Whether to show secure text entry
- * @param clickableAs - Type of clickable interaction
- * @param showLength - Whether to show character count
+ * @param allow - Allowed input types: 'all' | 'numbers' | 'letters' | 'lettersWithoutSpecialCharacters' (default: 'all')
+ * @param className - Custom CSS classes for the input container (NativeWind)
+ * @param clickableAs - Type of clickable interaction: 'scale' | undefined
  * @param customRegex - Custom regex pattern for validation
- * @param allow - Allowed input types
+ * @param editable - Whether input is editable (default: true)
+ * @param errorClassName - Custom CSS classes for the error message (NativeWind)
+ * @param errorIconName - Icon name to display with error
+ * @param errorMessage - Error message to display
+ * @param hasClearIcon - Whether to show clear icon (default: true)
+ * @param hasError - Whether the input has an error
+ * @param hasSecureTextEntry - Whether to show secure text entry
+ * @param inputClassName - Custom CSS classes for the input field (NativeWind)
  * @param isDisabled - Whether the input is disabled
  * @param isStretchable - Whether the input stretches to fill container
- * @param size - Size variant for the input
- * @param placeholder - Placeholder text
+ * @param label - Label text for the input
+ * @param leftIconAction - Left icon configuration
+ * @param mask - The mask pattern (use '9' for digits, other characters are literals)
  * @param multiline - Whether input supports multiple lines
- * @param editable - Whether input is editable
+ * @param onChangeText - Callback with both masked and unmasked text
  * @param onPress - Callback when input is pressed
+ * @param placeholder - Placeholder text
+ * @param rightIconAction - Right icon configuration
  * @param secureTextEntry - Whether to show secure text entry
- * @returns MaskedInput component with automatic formatting
+ * @param showLength - Whether to show character count
+ * @param size - Size variant for the input: 'xs' | 'sm' | 'md' | 'lg' | 'xl' (default: 'md')
+ * @param value - Current input value
+ * @param wrapperRef - Reference to the wrapper component
  */
-export default function MaskedInput(props: MaskedInputProps) {
+export function MaskedInput(props: MaskedInputProps) {
   classNamePropsHandler(props, 'MaskedInput');
   const { mask, onChangeText, value, ...rest } = props;
   const [inputValue, setInputValue] = useState(handleApplyMask(value, mask));
@@ -78,3 +82,5 @@ export default function MaskedInput(props: MaskedInputProps) {
 
   return <Input value={inputValue} onChangeText={handleChangeText} maxLength={maxDigits} {...rest} />;
 }
+
+MaskedInput.displayName = 'MaskedInput';

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
 import Icon from '../../src/components/icon';
 import { Box } from '../../src/components/box';
@@ -20,6 +20,10 @@ const meta: Meta<typeof DropdownMenuItem> = {
       control: false,
       description: 'Item content (string or React element)',
     },
+    className: {
+      control: 'text',
+      description: 'Custom CSS classes (NativeWind only)',
+    },
     closeOnSelect: {
       control: 'boolean',
       description: 'Close dropdown when item is selected',
@@ -36,17 +40,13 @@ const meta: Meta<typeof DropdownMenuItem> = {
       control: 'object',
       description: 'Props for String component when children is a string',
     },
-    underlayColor: {
-      control: 'color',
-      description: 'Underlay color for touchable-highlight',
-    },
-    className: {
-      control: 'text',
-      description: 'Custom CSS classes (NativeWind only)',
-    },
     style: {
       control: 'object',
       description: 'Custom style (StyleSheet only)',
+    },
+    underlayColor: {
+      control: 'color',
+      description: 'Underlay color for touchable-highlight',
     },
   },
   component: DropdownMenuItem,

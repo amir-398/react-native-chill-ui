@@ -21,7 +21,9 @@ jest.mock('../../../components/string', () => ({
 
 jest.mock('../../../components/icon', () => ({
   IconSs: ({ name, onPress }: any) => {
-    const MockIcon = () => <div data-testid={`icon-${name}`} onClick={onPress} />;
+    function MockIcon() {
+      return <div data-testid={`icon-${name}`} onClick={onPress} />;
+    }
     return <MockIcon />;
   },
 }));
@@ -77,26 +79,26 @@ jest.mock('../utils/phone', () => ({
 }));
 
 jest.mock('../flags', () => ({
-  us: 'us-flag.png',
   fr: 'fr-flag.png',
   gb: 'gb-flag.png',
+  us: 'us-flag.png',
 }));
 
 jest.mock('../utils/countryCodes', () => ({
   countryCodes: [
     {
-      id: 'US',
       code: 'US',
       dial_code: '+1',
       en: 'United States',
       fr: 'États-Unis',
+      id: 'US',
     },
     {
-      id: 'FR',
       code: 'FR',
       dial_code: '+33',
       en: 'France',
       fr: 'France',
+      id: 'FR',
     },
   ],
 }));
@@ -121,7 +123,7 @@ describe('PhoneNumberInput Component (StyleSheet)', () => {
 
   it('should render with custom dropdown item using StyleSheet', () => {
     const customDropdownItem = jest.fn(country => (
-      <div style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+      <div style={{ alignItems: 'center', flexDirection: 'row', gap: 8 }}>
         <div style={{ height: 16, width: 24 }}>{country.en}</div>
         <div style={{ color: '#666' }}>{country.dial_code}</div>
       </div>
@@ -146,11 +148,11 @@ describe('PhoneNumberInput Component (StyleSheet)', () => {
         dropdownProps={{
           style: {
             backgroundColor: '#FFFFFF',
+            elevation: 3,
             shadowColor: '#000',
-            shadowOffset: { width: 0, height: 2 },
+            shadowOffset: { height: 2, width: 0 },
             shadowOpacity: 0.1,
             shadowRadius: 4,
-            elevation: 3,
           },
         }}
         onPhoneNumberChange={jest.fn()}
@@ -162,7 +164,7 @@ describe('PhoneNumberInput Component (StyleSheet)', () => {
   it('should render with error styling using StyleSheet', () => {
     const { root } = render(
       <PhoneNumberInput
-        hasError={true}
+        hasError
         errorMessage="Invalid phone number"
         inputProps={{
           style: {
@@ -208,14 +210,14 @@ describe('PhoneNumberInput Component (StyleSheet)', () => {
     const { root } = render(
       <PhoneNumberInput
         customDropdownItem={country => (
-          <div style={{ flexDirection: 'row', alignItems: 'center', gap: 12, padding: 8 }}>
+          <div style={{ alignItems: 'center', flexDirection: 'row', gap: 12, padding: 8 }}>
             <div
               style={{
+                borderColor: '#D9D9D9',
+                borderRadius: 4,
+                borderWidth: 1,
                 height: 24,
                 width: 32,
-                borderRadius: 4,
-                borderColor: '#D9D9D9',
-                borderWidth: 1,
               }}
             >
               {country.en}
@@ -233,9 +235,9 @@ describe('PhoneNumberInput Component (StyleSheet)', () => {
       <PhoneNumberInput
         inputProps={{
           style: {
-            width: '100%',
-            minWidth: 200,
             maxWidth: 400,
+            minWidth: 200,
+            width: '100%',
           },
         }}
         onPhoneNumberChange={jest.fn()}
@@ -250,8 +252,8 @@ describe('PhoneNumberInput Component (StyleSheet)', () => {
         inputProps={{
           style: {
             backgroundColor: '#1F2937',
-            color: '#FFFFFF',
             borderColor: '#374151',
+            color: '#FFFFFF',
           },
         }}
         dropdownProps={{
@@ -287,8 +289,8 @@ describe('PhoneNumberInput Component (StyleSheet)', () => {
       <PhoneNumberInput
         inputProps={{
           style: {
-            transform: [{ scale: 1.02 }],
             opacity: 0.9,
+            transform: [{ scale: 1.02 }],
           },
         }}
         onPhoneNumberChange={jest.fn()}

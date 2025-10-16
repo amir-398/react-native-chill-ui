@@ -63,6 +63,7 @@ jest.mock('react-native', () => {
     _mockValue: number;
 
     constructor(mockValue: number) {
+      // eslint-disable-next-line no-underscore-dangle
       this._mockValue = mockValue;
     }
 
@@ -70,9 +71,12 @@ jest.mock('react-native', () => {
       return this;
     }
 
+    // eslint-disable-next-line class-methods-use-this
     setValue() {}
 
+    // eslint-disable-next-line no-underscore-dangle
     __getValue() {
+      // eslint-disable-next-line no-underscore-dangle
       return this._mockValue;
     }
   };
@@ -423,7 +427,7 @@ describe('Slider Component', () => {
           <SliderRange />
         </SliderTrack>
         <SliderThumb />
-        <SliderLabel position="top" stringProps={{ size: 'sm', weight: 'bold' }}>
+        <SliderLabel position="top" stringProps={{ size: 'sm' }}>
           50%
         </SliderLabel>
       </Slider>,

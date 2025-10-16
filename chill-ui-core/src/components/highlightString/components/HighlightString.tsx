@@ -7,37 +7,34 @@ import { styles } from '../styles/HightlightString.styles';
 import { twStyles } from '../styles/HightlightString.variants';
 
 /**
- * HighlightString component that highlights specific terms within text.
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ * The `<HighlightString />` component highlights specific terms within text.
+ * Supports both NativeWind and traditional styling approaches.
+ *
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { HighlightString } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // With NativeWind
  * <HighlightString
  *   content="Hello world, welcome to the world of programming"
  *   highlightTerm="world"
  *   className="text-base text-gray-800"
  *   highlightClassName="bg-yellow-200 font-bold"
  * />
- *
- * // Without NativeWind (fallback)
- * <HighlightString
- *   content="Hello world, welcome to the world of programming"
- *   highlightTerm="world"
- *   style={{ fontSize: 16, color: '#374151' }}
- *   highlightStyle={{ backgroundColor: '#FEF3C7', fontWeight: 'bold' }}
- * />
  * ```
  *
+ * @param className - Custom CSS classes for the container (NativeWind)
  * @param content - The full text to display
- * @param highlightTerm - The term to highlight within the text
- * @param className - Custom CSS classes for the container (NativeWind only)
- * @param highlightClassName - Custom CSS classes for highlighted text (NativeWind only)
- * @param style - Custom styles for the container
- * @param highlightStyle - Custom styles for highlighted text
- * @param stringProps - Props for the main string component
+ * @param highlightClassName - Custom CSS classes for highlighted text (NativeWind)
  * @param highlightStringProps - Props for the highlighted string component
- * @returns Text with highlighted terms with hybrid styling support
+ * @param highlightStyle - Custom styles for highlighted text
+ * @param highlightTerm - The term to highlight within the text
+ * @param stringProps - Props for the main string component
+ * @param style - Custom styles for the container
  */
 function HighlightString(props: HighlightStringPropsTw) {
   classNamePropsHandler(props, 'HighlightString');

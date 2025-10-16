@@ -1,20 +1,19 @@
-import { Box } from '@components/box';
 import { PropsWithChildren } from 'react';
 import { SliderRootPropsTw } from '@types';
-import { cn, classNameHandler, classNamePropsHandler, styleHandler } from '@utils';
+import { classNamePropsHandler } from '@utils';
 
 import { SliderProvider } from './SliderProvider';
-import { styles } from '../styles/Slider.ss.styles';
-import { twStyles } from '../styles/Slider.tw.styles';
+import { SliderRootContent } from './SliderRootContent';
 import { sliderDefaultProps } from '../utils/defaultProps';
-import { useSliderActions } from '../context/SliderContext';
 
 /**
- * Root container for the slider component
+ * The `<Slider />` component is a component that provides a slider for selecting a value.
  *
- * This is the main slider component that wraps all slider parts and manages their state.
- * It handles gestures, animations, and value updates.
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { Slider } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
@@ -36,7 +35,8 @@ import { useSliderActions } from '../context/SliderContext';
  * @param onSlidingStart - Callback when sliding starts
  * @param onValueChange - Callback when value changes
  * @param step - Step value for discrete slider (default: 0)
- * @param value - Current value(s) of the slider
+ * @param value - Current value(s) of the slider (controlled mode, optional)
+ * @param defaultValue - Default initial value (uncontrolled mode, optional)
  * @param orientation - Orientation of the slider: 'horizontal' | 'vertical' (default: 'horizontal')
  * @param animateTransitions - Whether to animate value transitions (default: true)
  * @param animationConfig - Configuration for animations
@@ -45,57 +45,6 @@ import { useSliderActions } from '../context/SliderContext';
  * @param style - Style object for additional styling (React Native)
  * @returns Slider component with full gesture and animation support
  */
-function SliderRootContent(
-  props: PropsWithChildren<{ className?: string; orientation?: 'horizontal' | 'vertical'; style?: any }>,
-) {
-  classNamePropsHandler(props, 'SliderRootContent');
-  const { children, className, orientation = sliderDefaultProps.orientation, style, ...rest } = props;
-  const vertical = orientation === 'vertical';
-  const { getTouchOverflowSize, measureContainer, panResponder } = useSliderActions();
-
-  const getTouchOverflowStyle = () => {
-    const { height, width } = getTouchOverflowSize();
-    const touchOverflowStyle: {
-      marginTop?: number;
-      marginBottom?: number;
-      marginLeft?: number;
-      marginRight?: number;
-    } = {};
-    if (width !== undefined && height !== undefined) {
-      const verticalMargin = -height / 2;
-      touchOverflowStyle.marginTop = verticalMargin;
-      touchOverflowStyle.marginBottom = verticalMargin;
-      const horizontalMargin = -width / 2;
-      touchOverflowStyle.marginLeft = horizontalMargin;
-      touchOverflowStyle.marginRight = horizontalMargin;
-    }
-    return touchOverflowStyle;
-  };
-
-  const touchOverflowStyle = getTouchOverflowStyle();
-
-  return (
-    <Box
-      {...rest}
-      onLayout={measureContainer}
-      {...classNameHandler(cn(vertical && twStyles.rootVertical, twStyles.root, className))}
-      {...styleHandler({
-        defaultStyle: [vertical && styles.rootVertical, styles.root],
-        style,
-      })}
-    >
-      {children}
-      <Box
-        {...classNameHandler(twStyles.touchOverlay)}
-        {...styleHandler({
-          defaultStyle: [styles.touchOverlay, touchOverflowStyle],
-        })}
-        {...(panResponder?.panHandlers || {})}
-      />
-    </Box>
-  );
-}
-
 export function Slider(props: PropsWithChildren<SliderRootPropsTw>) {
   classNamePropsHandler(props, 'Slider');
   const {
@@ -104,6 +53,7 @@ export function Slider(props: PropsWithChildren<SliderRootPropsTw>) {
     animationType = sliderDefaultProps.animationType,
     children,
     className,
+    defaultValue,
     isDisabled = sliderDefaultProps.disabled,
     maximumValue = sliderDefaultProps.maximumValue,
     minimumValue = sliderDefaultProps.minimumValue,
@@ -121,6 +71,7 @@ export function Slider(props: PropsWithChildren<SliderRootPropsTw>) {
   return (
     <SliderProvider
       value={value}
+      defaultValue={defaultValue}
       minimumValue={minimumValue}
       maximumValue={maximumValue}
       step={step}

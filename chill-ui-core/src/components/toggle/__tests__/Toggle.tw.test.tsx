@@ -1,6 +1,7 @@
-import { render } from '@testing-library/react-native';
-import { Toggle } from '../components/toggle.tw';
 import { View } from 'react-native';
+import { render } from '@testing-library/react-native';
+
+import { Toggle } from '../components/toggle.tw';
 
 // Mocks
 jest.mock('../../../utils', () => ({

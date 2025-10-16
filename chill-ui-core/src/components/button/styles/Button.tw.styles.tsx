@@ -107,6 +107,7 @@ export const ButtonTv = tv({
       true: 'opacity-[0.4]',
     },
     position: {
+      auto: 'self-auto',
       center: 'self-center',
       left: 'self-start',
       right: 'self-end',
@@ -165,7 +166,8 @@ export const IconPositionTv = tv({
 });
 
 export const twStyles = {
-  contentContainer: 'flex-1 flex-row items-center px-3',
+  contentContainer: 'w-full flex-row items-center px-3 ',
+  loadingContainer: 'flex-1 justify-center items-center pointer-events-none',
   pointerEventsNone: 'pointer-events-none',
   stringContainer: 'flex-1 pointer-events-none',
 };

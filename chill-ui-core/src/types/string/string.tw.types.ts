@@ -7,10 +7,10 @@ import type { stringTv } from '@components/string/styles/String.tw.styles';
  */
 export type StringProps = TextProps &
   VariantProps<typeof stringTv> & {
-    /** Custom color for the text */
-    color?: string;
-    /** Custom CSS classes for the text */
+    /** Custom CSS classes for additional styling (NativeWind) */
     className?: string;
+    /** Custom color override (hex, rgb, etc.) */
+    color?: string;
     /** Callback when text is pressed */
     onPress?: () => void;
     /** Whether to use fast text rendering */

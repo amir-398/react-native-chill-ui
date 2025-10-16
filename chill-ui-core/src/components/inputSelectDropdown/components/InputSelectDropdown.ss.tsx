@@ -14,8 +14,7 @@ import { styles } from '../styles/InputSelectDropdown.ss.styles';
 import { inputSelectDropdownDefaultProps } from '../utils/defaultProps';
 
 /**
- * InputSelectDropdown component that combines an input field with a searchable dropdown.
- * Supports custom rendering, highlighting, filtering, and keyboard navigation.
+ * The `<InputSelectDropdown />` component is a searchable dropdown component that allows users to select an item from a list.
  *
  * @example
  * ```tsx

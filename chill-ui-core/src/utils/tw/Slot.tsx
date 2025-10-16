@@ -1,5 +1,6 @@
-import { cn } from '@utils';
 import { Children, cloneElement, isValidElement, PropsWithChildren } from 'react';
+
+import { cn } from './cn';
 
 export function Slot({ children, ...props }: PropsWithChildren<Record<string, any>>) {
   if (isValidElement(children)) {
