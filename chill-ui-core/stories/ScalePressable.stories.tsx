@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions';
 
 import { Box, String } from '../src/components';
 import UiPresentation from './storybook/UiPresentation';
-import ScalePressable from '../src/components/scalePressable/components/ScalePressable';
+import { ScalePressable } from '../src/components/scalePressable';
 
 const meta: Meta<typeof ScalePressable> = {
   argTypes: {

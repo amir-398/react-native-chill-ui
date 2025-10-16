@@ -9,9 +9,9 @@ const meta: Meta<typeof Input> = {
     editable: { control: 'boolean', description: 'Whether the input is editable' },
     maxLength: { control: 'number', description: 'Maximum length of the input' },
     multiline: { control: 'boolean', description: 'Whether the input is multiline' },
+    onChangeText: { action: 'onChangeText', description: 'Callback when input text changes' },
     placeholder: { control: 'text', description: 'The placeholder text' },
     value: { control: 'text', description: 'The value of the input' },
-    onChangeText: { action: 'onChangeText', description: 'Callback when input text changes' },
 
     // Label and error
     allow: {
@@ -93,7 +93,7 @@ const meta: Meta<typeof Input> = {
       </UiPresentation>
     ),
   ],
-  title: 'Components/Inputs/TextInput',
+  title: 'Forms/Inputs',
 };
 
 export default meta;
@@ -344,21 +344,21 @@ export const WithPressEffectIcons: Story = {
   args: {
     label: 'Input with Press Effect Icons',
     leftIconAction: {
+      hasPressEffect: true,
       iconName: 'magnifying-glass-solid',
       iconPress: () => {
         // eslint-disable-next-line no-alert
         alert('Search icon pressed!');
       },
-      hasPressEffect: true,
     },
     placeholder: 'Search with press effect',
     rightIconAction: {
+      hasPressEffect: true,
       iconName: 'xmark-solid',
       iconPress: () => {
         // eslint-disable-next-line no-alert
         alert('Clear icon pressed!');
       },
-      hasPressEffect: true,
     },
     value: 'Search text',
   },

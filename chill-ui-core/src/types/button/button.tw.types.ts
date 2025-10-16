@@ -9,7 +9,7 @@ type TouchableComponentType = 'touchable-opacity' | 'pressable' | 'ripple-pressa
 /**
  * Props for the Button component
  */
-export type BtnProps = {
+export type BtnProps = VariantProps<typeof ButtonTv> & {
   /** Button title text */
   title?: string;
 
@@ -45,20 +45,8 @@ export type BtnProps = {
     color?: string;
   };
 
-  /** Button size variant */
-  size?: VariantProps<typeof ButtonTv>['size'];
-
   /** Props to pass to the loading indicator */
   loadingIndicatorProps?: Partial<LoadingIndicatorProps>;
-
-  /** Button style variant (contained/outlined/text) */
-  variant?: VariantProps<typeof ButtonTv>['variant'];
-
-  /** Button color variant (primary/secondary/error/etc.) */
-  colorVariant?: VariantProps<typeof ButtonTv>['colorVariant'];
-
-  /** Button position within its container */
-  position?: VariantProps<typeof ButtonTv>['position'];
 
   /** Content position within the button (text + icon alignment) */
   contentPosition?: StringPropsTw['position'];

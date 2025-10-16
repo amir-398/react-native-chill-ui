@@ -89,6 +89,7 @@ const meta: Meta<typeof String> = {
       </UiPresentation>
     ),
   ],
+  tags: ['autodocs'],
   title: 'UI/String',
 };
 

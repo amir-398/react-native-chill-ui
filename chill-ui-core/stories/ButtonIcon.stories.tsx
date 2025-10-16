@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { action } from '@storybook/addon-actions';
 
+import { ButtonIcon } from '../src/components';
 import UiPresentation from './storybook/UiPresentation';
-import ButtonIcon from '../src/components/buttonIcon/buttonIcon';
 
 const meta: Meta<typeof ButtonIcon> = {
   argTypes: {

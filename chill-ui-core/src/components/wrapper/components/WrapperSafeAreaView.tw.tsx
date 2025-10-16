@@ -1,22 +1,20 @@
 import type { PropsWithChildren } from 'react';
 import type { WrapperSafeAreaViewPropsTw } from '@types';
 
+import { BoxTw } from '@components/box';
 import { cn, customConsole } from '@utils';
 
-import { Wrapper } from './Wrapper.tw';
 import { wrapperTv } from '../styles/Wrapper.tw.styles';
 
-// Optional import with error handling
 let SafeAreaView: any;
 
 try {
-  // eslint-disable-next-line
   const safeAreaContext = require('react-native-safe-area-context');
   if (safeAreaContext) {
     SafeAreaView = safeAreaContext.SafeAreaView;
   }
 } catch {
-  console.warn(
+  customConsole.error(
     'react-native-safe-area-context is not installed. To use WrapperSafeAreaView, please install it: npm install react-native-safe-area-context',
   );
 }
@@ -32,6 +30,7 @@ try {
  * ```
  * @param className - Custom CSS classes for the wrapper (NativeWind)
  * @param fill - Whether to fill the wrapper
+ * @param grow - Whether to grow the wrapper
  * @param px - Padding for the wrapper
  * @param style - Style prop
  * @param edges - Safe area edges to apply
@@ -40,21 +39,17 @@ try {
  * @returns SafeAreaView or fallback to scroll component
  */
 export function WrapperSafeAreaView(props: PropsWithChildren<WrapperSafeAreaViewPropsTw>) {
-  const { children, className, fill, px, ...rest } = props;
+  const { children, className, fill, grow, px, ...rest } = props;
 
   if (!SafeAreaView) {
-    customConsole.error(
-      'react-native-safe-area-context is not installed. To use WrapperSafeAreaView, please install it: npm install react-native-safe-area-context',
-    );
     return (
-      <Wrapper className={cn(wrapperTv({ fill, px }), className)} {...rest}>
+      <BoxTw className={cn(wrapperTv({ fill, grow, px }), className)} {...rest}>
         {children}
-      </Wrapper>
+      </BoxTw>
     );
   }
-
   return (
-    <SafeAreaView className={cn(wrapperTv({ fill, px }), className)} {...rest}>
+    <SafeAreaView className={cn(wrapperTv({ fill, grow, px }), className)} {...rest}>
       {children}
     </SafeAreaView>
   );

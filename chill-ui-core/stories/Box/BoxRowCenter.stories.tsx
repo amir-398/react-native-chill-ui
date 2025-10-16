@@ -1,10 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import UiPresentation from '../storybook';
-import String from '../../src/components/string';
-import { BoxRowCenter } from '../../src/components';
+import { String, BoxRowCenter } from '../../src/components';
 
 const meta: Meta<typeof BoxRowCenter> = {
+  argTypes: {
+    useFastView: {
+      control: 'boolean',
+      description: 'Use optimized RCTView component for better performance',
+    },
+  },
   component: BoxRowCenter,
   decorators: [
     Story => (

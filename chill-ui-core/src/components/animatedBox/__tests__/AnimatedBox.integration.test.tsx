@@ -1,27 +1,54 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react-native';
 
-import { Box } from '../../box/components/Box';
-import String from '../../string/components/String';
-import FadeInBox from '../components/FadeInBox/FadeInBox';
-import BounceBox from '../components/BounceBox/BounceBox';
-import SlideInBox from '../components/SlideInBox/SlideInBox';
-import RotatingBox from '../components/RotatingBox/RotatingBox';
+import { Box } from '../../box';
+import { String } from '../../string';
+import { FadeInBox, BounceBox, SlideInBox, RotatingBox } from '../index';
 
 // Mock all style dependencies
-jest.mock('../styles/AnimatedBox.styles', () => ({
+jest.mock('../styles/AnimatedBox.ss.styles', () => ({
   __esModule: true,
   default: jest.fn(() => ({})),
 }));
 
-jest.mock('../../string/styles/String.styles', () => ({
+jest.mock('../styles/AnimatedBox.tw.styles', () => ({
+  twStyles: jest.fn(() => ({})),
+}));
+
+jest.mock('../../string/styles/String.ss.styles', () => ({
+  __esModule: true,
+  default: jest.fn(() => ({})),
+  StringSv: jest.fn(() => ({})),
+  styles: jest.fn(() => ({})),
+}));
+
+jest.mock('../../string/styles/String.tw.styles', () => ({
+  stringTv: jest.fn(() => ({})),
+  twStyles: jest.fn(() => ({})),
+}));
+
+// Mock AnimatedBox component
+jest.mock('../components/animatedBox/AnimatedBox', () => ({
+  __esModule: true,
+  default: ({ children }: any) => children,
+  AnimatedBox: ({ children }: any) => children,
+}));
+
+jest.mock('../../box', () => ({
+  Box: ({ children, ...props }: any) => children,
+}));
+
+jest.mock('../../box/components/View', () => ({
+  AnimatedView: ({ children, ...props }: any) => children,
+}));
+
+jest.mock('../../box/styles/Box.ss.styles', () => ({
   __esModule: true,
   default: jest.fn(() => ({})),
 }));
 
-jest.mock('../../box/styles/Box.styles', () => ({
-  __esModule: true,
-  default: jest.fn(() => ({})),
+jest.mock('../../box/styles/Box.tw.styles', () => ({
+  twStyles: jest.fn(() => ({})),
 }));
 
 // Mock utilities

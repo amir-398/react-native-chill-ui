@@ -4,6 +4,12 @@ import UiPresentation from '../storybook';
 import { Box, BoxCenter } from '../../src/components';
 
 const meta: Meta<typeof BoxCenter> = {
+  argTypes: {
+    useFastView: {
+      control: 'boolean',
+      description: 'Use optimized RCTView component for better performance',
+    },
+  },
   component: BoxCenter,
   decorators: [
     Story => (

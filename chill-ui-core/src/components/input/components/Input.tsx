@@ -195,7 +195,7 @@ const Input = forwardRef<TextInput, InputProps>((props, ref) => {
       <AnimatedBox
         ref={wrapperRef}
         {...styleHandler({
-          defaultStyle: [styles.inputContainer, inputContainerSv({ hasError: !!hasError, isDisabled: !!isDisabled })],
+          defaultStyle: [inputContainerSv({ hasError: !!hasError, isDisabled: !!isDisabled })],
           style: [
             clickableAs === 'scale' ? { transform: [{ scale: scaleAnim }] } : undefined,
             hasError && errorStyle,

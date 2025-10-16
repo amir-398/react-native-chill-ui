@@ -1,9 +1,9 @@
 import type { PropsWithChildren } from 'react';
 import type { WrapperSafeAreaViewPropsTw } from '@types';
 
+import { Box } from '@components/box';
 import { classNameHandler, classNamePropsHandler, cn, customConsole, styleHandler } from '@utils';
 
-import { Wrapper } from './Wrapper.tw';
 import { wrapperTv } from '../styles/Wrapper.tw.styles';
 import { wrapperSv } from '../styles/Wrapper.ss.styles';
 
@@ -34,6 +34,7 @@ try {
  * ```
  * @param className - Custom CSS classes for the wrapper (NativeWind)
  * @param fill - Whether to fill the wrapper
+ * @param grow - Whether to grow the wrapper
  * @param px - Padding for the wrapper
  * @param style - Style prop
  * @param edges - Safe area edges to apply
@@ -41,26 +42,26 @@ try {
  * @param children - Child components to render
  * @returns SafeAreaView or fallback to scroll component
  */
-export function WrapperSafeAreaView(props: PropsWithChildren<WrapperSafeAreaViewPropsTw>) {
+export function WrapperSafeAreaView(props: PropsWithChildren<Omit<WrapperSafeAreaViewPropsTw, 'hasSafeArea'>>) {
   classNamePropsHandler(props, 'WrapperSafeAreaView');
-  const { children, className, fill, px, style, ...rest } = props;
+  const { children, className, fill, grow, px, style, ...rest } = props;
 
   if (!SafeAreaView) {
     return (
-      <Wrapper
-        {...styleHandler({ defaultStyle: wrapperSv({ fill, px }), style })}
-        {...classNameHandler(cn(wrapperTv({ fill, px }), className))}
+      <Box
+        {...styleHandler({ defaultStyle: wrapperSv({ fill, grow, px }), style })}
+        {...classNameHandler(cn(wrapperTv({ fill, grow, px }), className))}
         {...rest}
       >
         {children}
-      </Wrapper>
+      </Box>
     );
   }
 
   return (
     <SafeAreaView
-      {...styleHandler({ defaultStyle: wrapperSv({ fill, px }), style })}
-      {...classNameHandler(cn(wrapperTv({ fill, px }), className))}
+      {...styleHandler({ defaultStyle: wrapperSv({ fill, grow, px }), style })}
+      {...classNameHandler(cn(wrapperTv({ fill, grow, px }), className))}
       {...rest}
     >
       {children}

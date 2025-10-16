@@ -3,19 +3,27 @@ import { render, screen, fireEvent } from '@testing-library/react-native';
 import String from '../components/String';
 
 // Mocks pour StyleSheet
-jest.mock('../styles/String.styles', () => ({
+jest.mock('../styles/String.ss.styles', () => ({
   __esModule: true,
   default: jest.fn(() => ({})),
+  StringSv: jest.fn(() => ({})),
+  styles: jest.fn(() => ({})),
+}));
+
+jest.mock('../styles/String.tw.styles', () => ({
+  stringTv: jest.fn(() => ''),
+  twStyles: jest.fn(() => ({})),
 }));
 
 // Mocks pour Hybrid
-jest.mock('../../../utils/hybrid/classNameMissingError', () => ({
+jest.mock('../../../utils/hybrid/classNamePropsHandler', () => ({
   classNamePropsHandler: jest.fn(),
 }));
 
 jest.mock('../../../utils/hybrid/colorVariantPropsHandler', () => ({
   __esModule: true,
   default: jest.fn(),
+  colorVariantPropsHandler: jest.fn(),
 }));
 
 jest.mock('../../../utils/hybrid/propsHandlers', () => ({
@@ -23,10 +31,13 @@ jest.mock('../../../utils/hybrid/propsHandlers', () => ({
   styleHandler: jest.fn(style => ({ style: style.defaultStyle })),
 }));
 
-// Mocks pour Tailwind
-jest.mock('../../../utils/tw/cn', () => ({
-  __esModule: true,
-  default: jest.fn((...args) => args.filter(Boolean).join(' ')),
+jest.mock('../../../utils', () => ({
+  cn: jest.fn((...args) => args.filter(Boolean).join(' ')),
+  classNameHandler: jest.fn(className => ({ className })),
+  styleHandler: jest.fn(style => ({ style: style.defaultStyle })),
+  classNamePropsHandler: jest.fn(),
+  colorVariantPropsHandler: jest.fn(),
+  isNativeWindInstalled: jest.fn(() => false),
 }));
 
 describe('String Component', () => {

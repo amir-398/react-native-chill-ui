@@ -1,14 +1,14 @@
-import React from 'react';
 import { render } from '@testing-library/react-native';
+
 import ButtonIcon from '../components/buttonIcon';
 
 // Mocks
 jest.mock('../../../utils', () => ({
-  classNamePropsHandler: jest.fn(),
-  colorVariantPropsHandler: jest.fn(),
   classNameHandler: jest.fn(() => ({})),
-  styleHandler: jest.fn(() => ({})),
+  classNamePropsHandler: jest.fn(),
   cn: jest.fn((...args) => args.filter(Boolean).join(' ')),
+  colorVariantPropsHandler: jest.fn(),
+  styleHandler: jest.fn(() => ({})),
 }));
 
 jest.mock('../../../components/box', () => ({
@@ -25,17 +25,17 @@ jest.mock('../../../components/loadingIndicatorsKit', () => ({
 
 jest.mock('../../../components/ripplePressable', () => ({
   RipplePressable: ({ children, onPress }: any) => (
-    <div data-testid="ripple-pressable" onClick={onPress}>
+    <button data-testid="ripple-pressable" type="button" onClick={onPress}>
       {children}
-    </div>
+    </button>
   ),
 }));
 
 jest.mock('../../../components/scalePressable', () => ({
   ScalePressable: ({ children, onPress }: any) => (
-    <div data-testid="scale-pressable" onClick={onPress}>
+    <button data-testid="scale-pressable" type="button" onClick={onPress}>
       {children}
-    </div>
+    </button>
   ),
 }));
 
@@ -55,7 +55,7 @@ describe('ButtonIcon Integration Tests', () => {
       <div>
         <ButtonIcon iconName="heart-solid" onPress={() => {}} colorVariant="error" />
         <ButtonIcon iconName="share-solid" onPress={() => {}} colorVariant="info" />
-        <ButtonIcon iconName="settings-solid" onPress={() => {}} colorVariant="neutral" />
+        <ButtonIcon iconName="gear-solid" onPress={() => {}} colorVariant="neutral" />
       </div>,
     );
     expect(root).toBeTruthy();
@@ -63,14 +63,14 @@ describe('ButtonIcon Integration Tests', () => {
 
   it('should handle loading state with refresh', () => {
     const { root } = render(
-      <ButtonIcon iconName="refresh-solid" isLoading={true} onPress={() => {}} colorVariant="primary" />,
+      <ButtonIcon iconName="arrow-left-solid" isLoading onPress={() => {}} colorVariant="primary" />,
     );
     expect(root).toBeTruthy();
   });
 
   it('should handle complex button combinations', () => {
     const { root } = render(
-      <ButtonIcon iconName="settings-solid" variant="outlined" rounded="circle" colorVariant="primary" size="lg" />,
+      <ButtonIcon iconName="gear-solid" variant="outlined" rounded="circle" colorVariant="primary" size="lg" />,
     );
     expect(root).toBeTruthy();
   });

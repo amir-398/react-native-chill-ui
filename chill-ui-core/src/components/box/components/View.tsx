@@ -1,19 +1,26 @@
 import type { ViewProps as NativeViewProps } from 'react-native';
 
-import { Animated } from 'react-native';
 import { isNativeWindInstalled } from '@utils';
+import { createElement, ReactElement } from 'react';
+import { Animated, View as NativeView, Platform } from 'react-native';
 
-// eslint-disable-next-line
-export const NativeView = require('react-native/Libraries/Components/View/ViewNativeComponent').default;
+interface ViewProps extends NativeViewProps {
+  className?: string;
+  useFastView?: boolean;
+}
 
-const AnimatedNativeView = Animated.createAnimatedComponent(NativeView);
+function FastView(props: NativeViewProps): ReactElement {
+  if (Platform.OS === 'web') {
+    return <NativeView {...props} />;
+  }
+  return createElement('RCTView', props);
+}
+
+const FastAnimatedView = Animated.createAnimatedComponent(FastView);
 
 /**
  * Props for View components that include className support
  */
-interface ViewProps extends NativeViewProps {
-  className?: string;
-}
 
 /**
  * Props for AnimatedView components that include className support
@@ -21,6 +28,7 @@ interface ViewProps extends NativeViewProps {
 export type AnimatedViewProps = React.ComponentProps<typeof Animated.View>;
 export interface AnimatedViewPropsWithClassName extends AnimatedViewProps {
   className?: string;
+  useFastView?: boolean;
 }
 
 /**
@@ -41,7 +49,11 @@ export interface AnimatedViewPropsWithClassName extends AnimatedViewProps {
  * ```
  */
 export function View(props: ViewProps) {
-  const { children, ...rest } = props;
+  const { children, useFastView = true, ...rest } = props;
+  if (useFastView) {
+    return <FastView {...rest}>{children}</FastView>;
+  }
+
   return <NativeView {...rest}>{children}</NativeView>;
 }
 
@@ -63,9 +75,13 @@ export function View(props: ViewProps) {
  * ```
  */
 export function AnimatedView(props: AnimatedViewPropsWithClassName) {
-  const { children, ...rest } = props;
+  const { children, useFastView = true, ...rest } = props;
 
-  return <AnimatedNativeView {...rest}>{children}</AnimatedNativeView>;
+  if (useFastView) {
+    return <FastAnimatedView {...rest}>{children}</FastAnimatedView>;
+  }
+
+  return <Animated.View {...rest}>{children}</Animated.View>;
 }
 
 // Only apply cssInterop if NativeWind is available

@@ -1,15 +1,21 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { useRef } from 'react';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import UiPresentation from './storybook';
-import Chip from '../src/components/chip';
-import { Box } from '../src/components/box';
-import Button from '../src/components/button';
-import { String } from '../src/components/string';
-import { Dialog, DialogContent, DialogTrigger } from '../src/components/dialog';
-import { DialogClose, DialogToaster, DialogToasterRef } from '../src/components/dialog/Dialog';
+import {
+  Chip,
+  Box,
+  Button,
+  String,
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogClose,
+  DialogToaster,
+  DialogToasterRef,
+} from '../src/components';
 
 const meta: Meta<typeof DialogContent> = {
   argTypes: {

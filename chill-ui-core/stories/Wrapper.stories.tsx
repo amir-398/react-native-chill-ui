@@ -1,118 +1,172 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Box } from '../src/components/box';
-import { String } from '../src/components/string';
-import Wrapper from '../src/components/wrapper/Wrapper';
+import { Wrapper, String, Box, Button } from '../src/components';
 
-const meta: Meta<typeof Wrapper> = {
+const meta = {
   argTypes: {
+    className: {
+      control: 'text',
+      description: 'Custom CSS classes for the wrapper (NativeWind)',
+    },
     edges: {
-      control: 'multi-select',
-      description: 'Safe area edges',
-      options: ['top', 'right', 'bottom', 'left'],
+      control: 'object',
+      description: 'Safe area edges to apply when hasSafeArea is true',
     },
-    hasKeyboardAvoidingView: {
+    fill: {
       control: 'boolean',
-      description: 'Enable keyboard avoiding view',
+      description: 'Whether to fill the wrapper',
     },
-    hasKeyboardAwareScrollView: {
+    grow: {
       control: 'boolean',
-      description: 'Enable keyboard aware scroll view',
+      description: 'Whether to grow the wrapper',
     },
-    hasSafeAreaView: {
+    hasSafeArea: {
       control: 'boolean',
-      description: 'Enable safe area view',
+      description: 'Whether to wrap content in SafeAreaView',
     },
-    hasScrollView: {
-      control: 'boolean',
-      description: 'Enable scroll view behavior',
+    px: {
+      control: 'select',
+      description: 'Horizontal padding variant',
+      options: ['none', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'],
+    },
+    style: {
+      control: 'object',
+      description: 'Custom styles for the wrapper',
     },
   },
   component: Wrapper,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'A flexible container component with default styling and SafeAreaView support. Automatically detects NativeWind availability and falls back to StyleSheet if needed.',
+      },
+    },
+  },
   title: 'Components/Wrapper',
-};
+} satisfies Meta<typeof Wrapper>;
 
 export default meta;
-type Story = StoryObj<typeof Wrapper>;
-
-function SampleContent() {
-  return (
-    <>
-      <Box className="mb-4">
-        <String>Sample content 1</String>
-      </Box>
-      <Box className="mb-4">
-        <String>Sample content 2</String>
-      </Box>
-      <Box className="mb-4">
-        <String>Sample content 3</String>
-      </Box>
-      <Box className="mb-4">
-        <String>Sample content 4</String>
-      </Box>
-      <Box className="mb-4">
-        <String>Sample content 5</String>
-      </Box>
-    </>
-  );
-}
-
-function ScrollableContent() {
-  return (
-    <>
-      <Box className="items-center justify-center bg-black" style={{ height: 500 }}>
-        <String color="white">Sample content 1</String>
-      </Box>
-      <Box className="items-center justify-center bg-red-500" style={{ height: 500 }}>
-        <String color="white">Sample content 2</String>
-      </Box>
-      <Box className="items-center justify-center bg-black" style={{ height: 500 }}>
-        <String color="white">Sample content 3</String>
-      </Box>
-      <Box className="items-center justify-center bg-red-500" style={{ height: 500 }}>
-        <String color="white">Sample content 4</String>
-      </Box>
-    </>
-  );
-}
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    children: <SampleContent />,
+    children: <String>Default wrapper content</String>,
+  },
+};
+
+export const WithPadding: Story = {
+  args: {
+    children: <String>Wrapper with padding</String>,
+    px: 'md',
+  },
+};
+
+export const WithCustomStyling: Story = {
+  args: {
+    children: <String>Wrapper with custom styling</String>,
+    className: 'bg-blue-100 p-4 rounded-lg',
+    style: { borderColor: '#3b82f6', borderWidth: 1 },
   },
 };
 
 export const WithSafeArea: Story = {
   args: {
-    children: <SampleContent />,
-    hasSafeAreaView: true,
-  },
-};
-
-export const WithSafeAreaAndEdges: Story = {
-  args: {
-    children: <SampleContent />,
+    children: <String>Wrapper with SafeAreaView</String>,
+    className: 'bg-green-100 p-4',
     edges: ['top', 'bottom'],
+    hasSafeArea: true,
   },
 };
 
-export const Scrollable: Story = {
+export const FillAndGrow: Story = {
   args: {
-    children: <ScrollableContent />,
-    hasScrollView: true,
+    children: <String>Wrapper that fills and grows</String>,
+    className: 'bg-purple-100 p-4',
+    fill: true,
+    grow: true,
   },
 };
 
-export const KeyboardAware: Story = {
+export const WithComplexContent: Story = {
   args: {
-    children: <SampleContent />,
-    hasKeyboardAwareScrollView: true,
+    children: (
+      <Box className="space-y-4">
+        <String className="text-lg font-bold">Complex Content</String>
+        <String>This wrapper contains multiple elements</String>
+        <Button colorVariant="primary" size="sm">
+          <String>Action Button</String>
+        </Button>
+      </Box>
+    ),
+    className: 'bg-gray-100 p-6 rounded-xl',
   },
 };
 
-export const WithClassName: Story = {
+export const ScrollableContent: Story = {
   args: {
-    children: <SampleContent />,
-    className: 'bg-red-500',
+    children: (
+      <Box className="space-y-2">
+        {Array.from({ length: 10 }, (_, i) => (
+          <String key={i} className="rounded bg-white p-2">
+            Scrollable item {i + 1}
+          </String>
+        ))}
+      </Box>
+    ),
+    className: 'bg-yellow-100 p-4',
+    fill: true,
   },
+};
+
+export const AllPaddingVariants: Story = {
+  render: () => (
+    <Box className="space-y-4">
+      {['none', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'].map(px => (
+        <Wrapper key={px} px={px as any} className="border border-blue-200 bg-blue-50">
+          <String>Padding: {px}</String>
+        </Wrapper>
+      ))}
+    </Box>
+  ),
+};
+
+export const SafeAreaVariations: Story = {
+  render: () => (
+    <Box className="space-y-4">
+      <Wrapper hasSafeArea edges={['top']} className="bg-red-100 p-4">
+        <String>SafeArea: top only</String>
+      </Wrapper>
+      <Wrapper hasSafeArea edges={['bottom']} className="bg-green-100 p-4">
+        <String>SafeArea: bottom only</String>
+      </Wrapper>
+      <Wrapper hasSafeArea edges={['top', 'bottom']} className="bg-blue-100 p-4">
+        <String>SafeArea: top and bottom</String>
+      </Wrapper>
+      <Wrapper hasSafeArea edges={['left', 'right']} className="bg-yellow-100 p-4">
+        <String>SafeArea: left and right</String>
+      </Wrapper>
+    </Box>
+  ),
+};
+
+export const LayoutExamples: Story = {
+  render: () => (
+    <Box className="space-y-4">
+      <Wrapper className="bg-gray-100 p-4">
+        <String className="font-bold">Basic Layout</String>
+        <String>Simple wrapper with default styling</String>
+      </Wrapper>
+
+      <Wrapper fill grow className="bg-blue-100 p-4">
+        <String className="font-bold">Fill & Grow Layout</String>
+        <String>Wrapper that takes available space</String>
+      </Wrapper>
+
+      <Wrapper className="rounded-lg border border-green-300 bg-green-100 p-4">
+        <String className="font-bold">Styled Layout</String>
+        <String>Wrapper with custom border and rounded corners</String>
+      </Wrapper>
+    </Box>
+  ),
 };

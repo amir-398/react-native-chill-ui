@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { View } from 'react-native';
 
-import Chip from '../src/components/chip/Chip';
+import { Chip } from '../src/components';
 
 const meta: Meta<typeof Chip> = {
   argTypes: {

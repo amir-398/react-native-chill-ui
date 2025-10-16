@@ -1,25 +1,24 @@
 import type { PropsWithChildren } from 'react';
 
 import { WrapperKeyboardAwareScrollViewPropsTw } from '@types';
-import { classNameHandler, classNamePropsHandler, cn, customConsole, styleHandler } from '@utils';
+import { classNameHandler, cn, customConsole, styleHandler } from '@utils';
 
 import { wrapperTv } from '../styles/Wrapper.tw.styles';
 import { wrapperSv } from '../styles/Wrapper.ss.styles';
 import { WrapperScrollView } from './WrapperScrollView.tw';
 import { wrapperDefaultProps } from '../utils/defaultProps';
+import { WrapperSafeAreaView } from './WrapperSafeAreaView.tw';
 
-// Optional import with error handling
 let KeyboardAwareScrollView: any;
 
 try {
-  // eslint-disable-next-line
   const keyboardController = require('react-native-keyboard-controller');
   if (keyboardController) {
     KeyboardAwareScrollView = keyboardController.KeyboardAwareScrollView;
   }
 } catch {
   customConsole.error(
-    'react-native-keyboard-controller is not installed. To use WrapperKeyboardAwareScrollView, please install it: npm install react-native-keyboard-controller',
+    'react-native-keyboard-controller is not installed. To use WrapperKeyboardAwareScrollView, please install it: npm install react-native-keyboard-controller and wrap your app with KeyboardProvider',
   );
 }
 
@@ -32,10 +31,18 @@ try {
  * <WrapperKeyboardAwareScrollView bottomOffset={20}>
  *   <Input placeholder="Type here" />
  * </WrapperKeyboardAwareScrollView>
+ *
+ * // With SafeAreaView
+ * <WrapperKeyboardAwareScrollView hasSafeArea edges={['top', 'bottom']}>
+ *   <Input placeholder="Type here" />
+ * </WrapperKeyboardAwareScrollView>
  * ```
- * @param className - Custom CSS classes for the wrapper (NativeWind)
+ * @param className - Custom CSS classes for the wrapper
  * @param fill - Whether to fill the wrapper
+ * @param grow - Whether to grow the wrapper
  * @param px - Padding for the wrapper
+ * @param hasSafeArea - Whether to wrap content in SafeAreaView
+ * @param edges - Safe area edges to apply when hasSafeArea is true
  * @param style - Style prop
  * @param bottomOffset - Bottom offset for keyboard
  * @param disableScrollOnKeyboardHide - Whether to disable scroll on keyboard hide
@@ -44,14 +51,26 @@ try {
  * @param children - Child components to render
  */
 export function WrapperKeyboardAwareScrollView(props: PropsWithChildren<WrapperKeyboardAwareScrollViewPropsTw>) {
-  classNamePropsHandler(props, 'WrapperKeyboardAwareScrollView');
-  const { bottomOffset = wrapperDefaultProps.bottomOffset, children, className, fill, px, style, ...rest } = props;
+  const {
+    bottomOffset = wrapperDefaultProps.bottomOffset,
+    children,
+    className,
+    edges,
+    fill,
+    grow,
+    hasSafeArea,
+    px,
+    style,
+    ...rest
+  } = props;
 
   if (!KeyboardAwareScrollView) {
     return (
       <WrapperScrollView
-        {...styleHandler({ defaultStyle: wrapperSv({ fill, px }), style })}
-        {...classNameHandler(cn(wrapperTv({ fill, px }), className))}
+        {...styleHandler({ defaultStyle: wrapperSv({ fill, grow, px }), style })}
+        {...classNameHandler(cn(wrapperTv({ fill, grow, px }), className))}
+        hasSafeArea={hasSafeArea}
+        edges={edges}
         {...rest}
       >
         {children}
@@ -59,16 +78,26 @@ export function WrapperKeyboardAwareScrollView(props: PropsWithChildren<WrapperK
     );
   }
 
-  return (
+  const content = (
     <KeyboardAwareScrollView
-      {...styleHandler({ defaultStyle: wrapperSv({ fill, px }), style })}
-      {...classNameHandler(cn(wrapperTv({ fill, px }), className))}
+      {...styleHandler({ defaultStyle: wrapperSv({ fill, grow, px }), style })}
+      {...classNameHandler(cn(wrapperTv({ fill, grow, px }), className))}
       bottomOffset={bottomOffset}
       {...rest}
     >
       {children}
     </KeyboardAwareScrollView>
   );
+
+  if (hasSafeArea) {
+    return (
+      <WrapperSafeAreaView edges={edges} px="none">
+        {content}
+      </WrapperSafeAreaView>
+    );
+  }
+
+  return content;
 }
 
 WrapperKeyboardAwareScrollView.displayName = 'WrapperKeyboardAwareScrollView';

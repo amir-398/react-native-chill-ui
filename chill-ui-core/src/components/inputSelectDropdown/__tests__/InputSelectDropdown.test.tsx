@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react-native';
-import InputSelectDropdown from '../components/InputSelectDropdown';
+import { InputSelectDropdown } from '../index';
 
 // Mocks
 jest.mock('../../../utils', () => ({

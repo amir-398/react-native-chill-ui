@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { action } from '@storybook/addon-actions';
 
-import Toggle from '../src/components/toggle/toggle';
+import { Toggle } from '../src/components';
 import UiPresentation from './storybook/UiPresentation';
 
 const meta: Meta<typeof Toggle> = {

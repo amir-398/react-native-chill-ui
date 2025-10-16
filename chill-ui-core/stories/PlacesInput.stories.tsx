@@ -3,8 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 
 import UiPresentation from './storybook';
-import { String } from '../src/components';
-import PlacesInput from '../src/components/places-input/PlacesInput';
+import { String, PlacesInput } from '../src/components';
 import { AutocompleteDropdownContext } from '../src/components/AutocompleteDropdown';
 
 const meta: Meta<typeof PlacesInput> = {

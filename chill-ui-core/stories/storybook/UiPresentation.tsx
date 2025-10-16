@@ -1,7 +1,7 @@
-import { cn } from '@utils';
 import { ReactNode } from 'react';
 import { ScrollView } from 'react-native';
 
+import { cn } from '../../src/utils';
 import { Box } from '../../src/components';
 
 interface UiPresentationProps {

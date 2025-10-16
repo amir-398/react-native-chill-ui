@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Box, String } from '../src/components';
 import UiPresentation from './storybook/UiPresentation';
-import Separator from '../src/components/separator/components/Separator';
+import { Separator } from '../src/components/separator/components/Separator';
 
 const meta: Meta<typeof Separator> = {
   argTypes: {
@@ -86,9 +86,9 @@ export const CustomColor: Story = {
 export const CustomStyle: Story = {
   args: {
     style: {
-      height: 2,
       backgroundColor: '#10B981',
       borderRadius: 1,
+      height: 2,
     },
   },
   parameters: {
@@ -116,8 +116,8 @@ export const WithMargins: Story = {
 export const WithPadding: Story = {
   args: {
     style: {
-      marginVertical: 16,
       marginHorizontal: 8,
+      marginVertical: 16,
     },
   },
   parameters: {
@@ -132,9 +132,9 @@ export const WithPadding: Story = {
 export const Rounded: Story = {
   args: {
     style: {
-      height: 3,
       backgroundColor: '#8B5CF6',
       borderRadius: 1.5,
+      height: 3,
     },
   },
   parameters: {
@@ -165,13 +165,13 @@ export const WithOpacity: Story = {
 export const WithShadow: Story = {
   args: {
     style: {
-      height: 1,
       backgroundColor: '#000000',
+      elevation: 1,
+      height: 1,
       shadowColor: '#000',
-      shadowOffset: { width: 0, height: 1 },
+      shadowOffset: { height: 1, width: 0 },
       shadowOpacity: 0.2,
       shadowRadius: 1,
-      elevation: 1,
     },
   },
   parameters: {
@@ -186,9 +186,9 @@ export const WithShadow: Story = {
 export const CustomWidth: Story = {
   args: {
     style: {
+      alignSelf: 'center',
       height: 1,
       width: '50%',
-      alignSelf: 'center',
     },
   },
   parameters: {
@@ -203,11 +203,11 @@ export const CustomWidth: Story = {
 export const Dotted: Story = {
   args: {
     style: {
-      height: 1,
       backgroundColor: 'transparent',
+      borderColor: '#D1D5DB',
       borderStyle: 'dashed',
       borderWidth: 1,
-      borderColor: '#D1D5DB',
+      height: 1,
     },
   },
   parameters: {
@@ -246,22 +246,22 @@ export const Compact: Story = {
 };
 
 export const InCard: Story = {
+  args: {
+    className: 'my-3',
+  },
   decorators: [
-    (Story: any) => (
+    (StoryBox: any) => (
       <UiPresentation>
         <Box className="w-full p-4">
           <Box className="rounded-lg border border-gray-200 p-4">
             <String className="text-lg font-bold">Card Title</String>
-            <Story />
+            <StoryBox />
             <String className="text-gray-600">Card content goes here</String>
           </Box>
         </Box>
       </UiPresentation>
     ),
   ],
-  args: {
-    className: 'my-3',
-  },
   parameters: {
     docs: {
       description: {
@@ -272,24 +272,24 @@ export const InCard: Story = {
 };
 
 export const InList: Story = {
+  args: {
+    className: 'my-2',
+  },
   decorators: [
-    (Story: any) => (
+    (StoryBox: any) => (
       <UiPresentation>
         <Box className="w-full p-4">
           <Box>
             <String className="font-semibold">List Item 1</String>
-            <Story />
+            <StoryBox />
             <String className="font-semibold">List Item 2</String>
-            <Story />
+            <StoryBox />
             <String className="font-semibold">List Item 3</String>
           </Box>
         </Box>
       </UiPresentation>
     ),
   ],
-  args: {
-    className: 'my-2',
-  },
   parameters: {
     docs: {
       description: {
@@ -300,20 +300,20 @@ export const InList: Story = {
 };
 
 export const DarkTheme: Story = {
+  args: {
+    className: 'bg-white/30',
+  },
   decorators: [
-    (Story: any) => (
+    (StoryBox: any) => (
       <UiPresentation>
         <Box className="w-full bg-gray-900 p-4">
           <String className="text-white">Content Above</String>
-          <Story />
+          <StoryBox />
           <String className="text-white">Content Below</String>
         </Box>
       </UiPresentation>
     ),
   ],
-  args: {
-    className: 'bg-white/30',
-  },
   parameters: {
     docs: {
       description: {
@@ -324,8 +324,9 @@ export const DarkTheme: Story = {
 };
 
 export const MultipleSeparators: Story = {
+  args: {},
   decorators: [
-    (Story: any) => (
+    () => (
       <UiPresentation>
         <Box className="w-full p-4">
           <String>Section 1</String>
@@ -339,7 +340,6 @@ export const MultipleSeparators: Story = {
       </UiPresentation>
     ),
   ],
-  args: {},
   parameters: {
     docs: {
       description: {
@@ -351,8 +351,8 @@ export const MultipleSeparators: Story = {
 
 export const Accessibility: Story = {
   args: {
-    accessible: true,
     accessibilityLabel: 'Content separator',
+    accessible: true,
     testID: 'separator',
   },
   parameters: {
@@ -366,16 +366,16 @@ export const Accessibility: Story = {
 
 export const AllProps: Story = {
   args: {
+    accessibilityLabel: 'Custom separator',
+    accessible: true,
     className: 'custom-separator',
     style: {
-      height: 2,
       backgroundColor: '#F59E0B',
-      marginVertical: 12,
       borderRadius: 1,
+      height: 2,
+      marginVertical: 12,
       opacity: 0.8,
     },
-    accessible: true,
-    accessibilityLabel: 'Custom separator',
     testID: 'custom-separator',
   },
   parameters: {

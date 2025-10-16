@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import String from '../../src/components/string';
-import { BoxColumnCenterBetween } from '../../src/components';
+import { String, BoxColumnCenterBetween } from '../../src/components';
 
 const meta: Meta<typeof BoxColumnCenterBetween> = {
   component: BoxColumnCenterBetween,

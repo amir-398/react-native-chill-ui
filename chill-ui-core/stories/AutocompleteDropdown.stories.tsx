@@ -1,9 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Box, String } from '@/components';
-
 import UiPresentation from './storybook';
-import { AutocompleteDropdownContext, AutocompleteDropdown } from '../src/components/AutocompleteDropdown';
+import { Box, String, AutocompleteDropdownContext, AutocompleteDropdown } from '../src/components';
 
 const meta: Meta<typeof AutocompleteDropdown> = {
   argTypes: {
@@ -24,22 +22,6 @@ const meta: Meta<typeof AutocompleteDropdown> = {
     },
 
     // Positioning and sizing
-    offsetX: {
-      control: 'number',
-      description: 'Horizontal offset for dropdown positioning (default: 0)',
-      table: {
-        defaultValue: { summary: '0' },
-        type: { summary: 'number' },
-      },
-    },
-    offsetY: {
-      control: 'number',
-      description: 'Vertical offset for dropdown positioning (default: 0)',
-      table: {
-        defaultValue: { summary: '0' },
-        type: { summary: 'number' },
-      },
-    },
     maxHeight: {
       control: 'number',
       description: 'Maximum height of dropdown (default: 300)',
@@ -56,21 +38,37 @@ const meta: Meta<typeof AutocompleteDropdown> = {
         type: { summary: 'number' },
       },
     },
-
-    // Search configuration
-    searchField: {
-      control: 'text',
-      description: 'Field to search in (defaults to valueField)',
+    offsetX: {
+      control: 'number',
+      description: 'Horizontal offset for dropdown positioning (default: 0)',
       table: {
-        type: { summary: 'keyof T' },
+        defaultValue: { summary: '0' },
+        type: { summary: 'number' },
       },
     },
+    offsetY: {
+      control: 'number',
+      description: 'Vertical offset for dropdown positioning (default: 0)',
+      table: {
+        defaultValue: { summary: '0' },
+        type: { summary: 'number' },
+      },
+    },
+
+    // Search configuration
     hasPerformSearch: {
       control: 'boolean',
       description: 'Enable search functionality (default: true)',
       table: {
         defaultValue: { summary: 'true' },
         type: { summary: 'boolean' },
+      },
+    },
+    searchField: {
+      control: 'text',
+      description: 'Field to search in (defaults to valueField)',
+      table: {
+        type: { summary: 'keyof T' },
       },
     },
     searchQuery: {
@@ -149,13 +147,6 @@ const meta: Meta<typeof AutocompleteDropdown> = {
         type: { summary: '() => void' },
       },
     },
-    onFocus: {
-      control: false,
-      description: 'Callback when input gains focus',
-      table: {
-        type: { summary: '() => void' },
-      },
-    },
     onChangeText: {
       control: false,
       description: 'Callback function when the input text changes',
@@ -163,16 +154,23 @@ const meta: Meta<typeof AutocompleteDropdown> = {
         type: { summary: '(text: string) => void' },
       },
     },
-    onSelectItem: {
+    onConfirmSelectItem: {
       control: false,
-      description: 'Callback function when an item is selected',
+      description: 'Callback for confirmed selection',
       table: {
         type: { summary: '(item: T) => void' },
       },
     },
-    onConfirmSelectItem: {
+    onFocus: {
       control: false,
-      description: 'Callback for confirmed selection',
+      description: 'Callback when input gains focus',
+      table: {
+        type: { summary: '() => void' },
+      },
+    },
+    onSelectItem: {
+      control: false,
+      description: 'Callback function when an item is selected',
       table: {
         type: { summary: '(item: T) => void' },
       },
@@ -188,13 +186,6 @@ const meta: Meta<typeof AutocompleteDropdown> = {
     },
 
     // Props objects
-    inputProps: {
-      control: 'object',
-      description: 'Props to pass to the input component',
-      table: {
-        type: { summary: 'Omit<InputProps, "onChangeText">' },
-      },
-    },
     dropdownItemProps: {
       control: 'object',
       description: 'Props for styling dropdown items',
@@ -214,6 +205,13 @@ const meta: Meta<typeof AutocompleteDropdown> = {
       description: 'Props for the dropdown container',
       table: {
         type: { summary: 'Partial<InputDropdownProps>' },
+      },
+    },
+    inputProps: {
+      control: 'object',
+      description: 'Props to pass to the input component',
+      table: {
+        type: { summary: 'Omit<InputProps, "onChangeText">' },
       },
     },
   },
@@ -299,7 +297,7 @@ export const CustomSearch: Story = {
     searchField: 'name',
     valueField: 'code',
     // Custom search that searches in both name AND code
-    searchQuery: (keyword, labelValue) => {
+    searchQuery: (keyword: string, labelValue: string) => {
       const country = countries.find(c => c.name === labelValue || c.code === labelValue);
       if (!country) return false;
 
@@ -342,7 +340,7 @@ export const WithConfirmation: Story = {
     inputProps: {
       placeholder: 'Selection with confirmation...',
     },
-    onConfirmSelectItem: item => {
+    onConfirmSelectItem: (item: any) => {
       // eslint-disable-next-line no-alert
       alert(`Do you want to select: ${item.label}?`);
     },
@@ -439,11 +437,11 @@ export const Complete: Story = {
       placeholder: 'Search by country, code or continent...',
     },
     maxHeight: 200,
-    onSelectItem: item => {
+    onSelectItem: (item: any) => {
       console.log('Selected country:', item);
     },
     searchField: 'name',
-    searchQuery: (keyword, labelValue) => {
+    searchQuery: (keyword: string, labelValue: string) => {
       const country = countries.find(c => c.name === labelValue);
       if (!country) return false;
 

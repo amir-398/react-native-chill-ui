@@ -3,6 +3,12 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { BoxRowGrow, String } from '../../src/components';
 
 const meta: Meta<typeof BoxRowGrow> = {
+  argTypes: {
+    useFastView: {
+      control: 'boolean',
+      description: 'Use optimized RCTView component for better performance',
+    },
+  },
   component: BoxRowGrow,
   decorators: [Story => <Story />],
   parameters: {

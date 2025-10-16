@@ -1,11 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import UiPresentation from '../storybook';
-import Chip from '../../src/components/chip';
-import String from '../../src/components/string';
-import { BoxAbsolute, BoxStack } from '../../src/components';
+import { Chip, String, BoxAbsolute, BoxStack } from '../../src/components';
 
 const meta: Meta<typeof BoxStack> = {
+  argTypes: {
+    useFastView: {
+      control: 'boolean',
+      description: 'Use optimized RCTView component for better performance',
+    },
+  },
   component: BoxStack,
   decorators: [
     Story => (

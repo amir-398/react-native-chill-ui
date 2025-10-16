@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import UiPresentation from './storybook';
-import { InputDropdown } from '../src/components/inputDrodown';
+import { InputDropdown } from '../src/components';
 
 const sampleData = [
   { id: 1, label: 'Option 1', value: 'opt1' },
@@ -183,15 +183,6 @@ export const Pressable: Story = {
   args: {
     data: sampleData,
     itemClickableAs: 'Pressable',
-    maxHeight: 300,
-    visible: true,
-  },
-};
-
-export const TouchableHighlight: Story = {
-  args: {
-    data: sampleData,
-    itemClickableAs: 'TouchableHighlight',
     maxHeight: 300,
     visible: true,
   },

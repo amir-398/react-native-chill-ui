@@ -25,6 +25,7 @@ export const ButtonSv = sv({
       true: { opacity: 0.4 },
     },
     position: {
+      auto: { alignSelf: 'auto' },
       center: { alignSelf: 'center' },
       left: { alignSelf: 'flex-start' },
       right: { alignSelf: 'flex-end' },
@@ -93,9 +94,14 @@ export const IconContainerSv = sv({
 export const styles = StyleSheet.create({
   contentContainer: {
     alignItems: 'center',
-    flex: 1,
     flexDirection: 'row',
     paddingHorizontal: 12,
+    width: '100%',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    pointerEvents: 'none',
   },
   pointerEventsNone: {
     pointerEvents: 'none',

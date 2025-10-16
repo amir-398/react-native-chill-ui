@@ -1,14 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Box, String } from '../src/components';
-import Button from '../src/components/button/Button';
+import { Box, String, Button } from '../src/components';
 
 const meta = {
   argTypes: {
     as: {
       control: 'select',
       description: 'Type of touchable component to use',
-      options: ['TouchableOpacity', 'Pressable', 'RipplePressable'],
+      options: ['touchable-opacity', 'pressable', 'ripple-pressable', 'scale-pressable'],
     },
     colorVariant: {
       control: 'select',
@@ -31,9 +30,10 @@ const meta = {
         'white',
       ],
     },
-    iconAction: {
-      control: 'object',
-      description: 'Icon configuration with position support',
+    contentPosition: {
+      control: 'select',
+      description: 'Content position within the button (text + icon alignment)',
+      options: ['left', 'center', 'right'],
     },
     isDisabled: {
       control: 'boolean',
@@ -43,14 +43,36 @@ const meta = {
       control: 'boolean',
       description: 'Whether the button is in a loading state',
     },
+    leftIconAction: {
+      control: 'table',
+      defaultValue: {
+        name: 'home-solid',
+        size: 'md',
+      },
+      description: 'Left icon configuration with position support',
+      table: {
+        type: {
+          detail: '{ color?: string, size?: "small" | "large" }',
+          summary: 'object',
+        },
+      },
+    },
     loadingIndicatorProps: {
       control: 'object',
       description: 'The props of the loading indicator',
     },
+    onPress: {
+      control: 'text',
+      description: 'Press callback function',
+    },
     position: {
       control: 'select',
-      description: 'The position of the button',
-      options: ['left', 'center', 'right'],
+      description: 'Button position within its container',
+      options: ['auto', 'left', 'center', 'right'],
+    },
+    rightIconAction: {
+      control: 'object',
+      description: 'Right icon configuration with position support',
     },
     size: {
       control: 'select',
@@ -60,6 +82,10 @@ const meta = {
     stringProps: {
       control: 'object',
       description: 'The props of the button text',
+    },
+    style: {
+      control: 'object',
+      description: 'Style object for the button container',
     },
     title: {
       control: 'text',
@@ -73,13 +99,14 @@ const meta = {
   },
   component: Button,
   decorators: [
-    Story => (
-      <Box style={{ padding: 16 }}>
+    (Story: any) => (
+      <Box className="w-full bg-[#f0f0f0] p-4">
         <Story />
       </Box>
     ),
   ],
-  title: 'components/Button',
+  tags: ['autodocs'],
+  title: 'Forms/Button',
 } satisfies Meta<typeof Button>;
 
 export default meta;
@@ -89,8 +116,7 @@ type Story = StoryObj<typeof Button>;
 // Default Example
 export const Default: Story = {
   args: {
-    colorVariant: 'primary',
-    position: 'center',
+    contentPosition: 'center',
     size: 'md',
     title: 'Button',
     variant: 'contained',
@@ -101,7 +127,6 @@ export const Default: Story = {
 export const Outlined: Story = {
   args: {
     colorVariant: 'primary',
-    position: 'center',
     size: 'md',
     title: 'Outlined Button',
     variant: 'outlined',
@@ -111,7 +136,6 @@ export const Outlined: Story = {
 export const TextButton: Story = {
   args: {
     colorVariant: 'primary',
-    position: 'center',
     size: 'md',
     title: 'Text Button',
     variant: 'text',
@@ -123,7 +147,6 @@ export const Loading: Story = {
   args: {
     colorVariant: 'primary',
     isLoading: true,
-    position: 'center',
     size: 'md',
     title: 'Loading Button',
     variant: 'contained',
@@ -134,7 +157,6 @@ export const Disabled: Story = {
   args: {
     colorVariant: 'primary',
     isDisabled: true,
-    position: 'center',
     size: 'md',
     title: 'Disabled Button',
     variant: 'contained',
@@ -145,12 +167,11 @@ export const Disabled: Story = {
 export const WithIcon: Story = {
   args: {
     colorVariant: 'primary',
-    iconAction: {
+    contentPosition: 'center',
+    leftIconAction: {
       name: 'home-solid',
-      position: 'left',
       size: 'md',
     },
-    position: 'center',
     size: 'md',
     title: 'Button with Icon',
     variant: 'contained',
@@ -159,6 +180,9 @@ export const WithIcon: Story = {
 
 // Sizes
 export const SizeVariants: Story = {
+  args: {
+    contentPosition: 'center',
+  },
   parameters: {
     docs: {
       description: {
@@ -166,8 +190,8 @@ export const SizeVariants: Story = {
       },
     },
   },
-  render: () => (
-    <Box className="items-center gap-4">
+  render: (_args: any) => (
+    <Box className="w-full gap-4">
       <Button size="2xs" title="2XS" colorVariant="primary" variant="contained" />
       <Button size="xs" title="XS" colorVariant="primary" variant="contained" />
       <Button size="sm" title="Small" colorVariant="primary" variant="contained" />
@@ -188,11 +212,12 @@ export const TouchableTypes: Story = {
       },
     },
   },
-  render: () => (
-    <Box className="gap-4">
-      <Button as="TouchableOpacity" title="TouchableOpacity" colorVariant="primary" variant="contained" />
-      <Button as="Pressable" title="Pressable" colorVariant="secondary" variant="contained" />
-      <Button as="RipplePressable" title="RipplePressable" colorVariant="success" variant="contained" />
+  render: (_args: any) => (
+    <Box className="w-full gap-4">
+      <Button as="touchable-opacity" title="TouchableOpacity" colorVariant="primary" {..._args} />
+      <Button as="pressable" title="Pressable" colorVariant="secondary" variant="contained" {..._args} />
+      <Button as="ripple-pressable" title="RipplePressable" colorVariant="accent" {..._args} />
+      <Button as="scale-pressable" title="ScalePressable" colorVariant="info" {..._args} />
     </Box>
   ),
 };
@@ -206,14 +231,14 @@ export const VariantsOverview: Story = {
       },
     },
   },
-  render: () => (
-    <Box className="gap-4">
+  render: (_args: any) => (
+    <Box className="w-full gap-4">
       {/* Contained */}
-      <Box className="gap-2">
+      <Box className="w-full gap-2">
         <String weight="bold">Contained</String>
-        <Box className="flex-row flex-wrap gap-2">
+        <Box className="w-full flex-row gap-2">
           <Button variant="contained" colorVariant="primary" title="Primary" />
-          <Button variant="contained" colorVariant="success" title="Success" />
+          <Button variant="contained" colorVariant="info" title="Success" />
           <Button variant="contained" colorVariant="error" title="Error" />
         </Box>
       </Box>
@@ -250,7 +275,7 @@ export const CustomContent: Story = {
       },
     },
   },
-  render: () => (
+  render: (_args: any) => (
     <Button colorVariant="primary" variant="contained">
       <Box className="flex-row items-center gap-2">
         <String weight="bold" color="white">

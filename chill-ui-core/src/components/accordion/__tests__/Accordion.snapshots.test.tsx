@@ -22,24 +22,25 @@ jest.mock('../../../utils/hybrid/propsHandlers', () => ({
 
 // Mock des composants enfants
 jest.mock('../../box', () => ({
-  Box: ({ children, ...props }: any) => children,
+  Box: ({ children }: any) => children,
 }));
 
 jest.mock('../../string', () => ({
-  String: ({ children, ...props }: any) => children,
+  String: ({ children }: any) => children,
 }));
 
 jest.mock('../../icon', () => ({
-  __esModule: true,
-  default: ({ name, ...props }: any) => `Icon:${name}`,
+  Icon: ({ name }: any) => `Icon:${name}`,
+  IconSs: ({ name }: any) => `Icon:${name}`,
+  IconTw: ({ name }: any) => `Icon:${name}`,
 }));
 
 jest.mock('../../animatedBox', () => ({
-  AnimatedBox: ({ children, ...props }: any) => children,
+  AnimatedBox: ({ children }: any) => children,
 }));
 
 jest.mock('../../ripplePressable', () => ({
-  RipplePressable: ({ children, onPress, ...props }: any) => children,
+  RipplePressable: ({ children }: any) => children,
 }));
 
 describe('Accordion Snapshots', () => {
@@ -152,7 +153,7 @@ describe('Accordion Snapshots', () => {
 
   it('should render accordion with custom icons correctly', () => {
     const { toJSON } = render(
-      <Accordion expandIcon="chevron-down" collapseIcon="chevron-up">
+      <Accordion>
         <AccordionItem value="item-1">
           <AccordionTrigger>Question 1</AccordionTrigger>
           <AccordionContent>Answer 1</AccordionContent>

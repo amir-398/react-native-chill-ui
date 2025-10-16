@@ -4,13 +4,14 @@ import { String } from '../../string';
 import { Box, BoxCenter } from '../components/Box';
 
 // Mock des utilitaires hybrid pour éviter les erreurs
-jest.mock('../../../utils/hybrid/classNameMissingError', () => ({
+jest.mock('../../../utils/hybrid/classNamePropsHandler', () => ({
   classNamePropsHandler: jest.fn(),
 }));
 
 jest.mock('../../../utils/hybrid/colorVariantPropsHandler', () => ({
   __esModule: true,
   default: jest.fn(),
+  colorVariantPropsHandler: jest.fn(),
 }));
 
 jest.mock('../../../utils/hybrid/propsHandlers', () => ({

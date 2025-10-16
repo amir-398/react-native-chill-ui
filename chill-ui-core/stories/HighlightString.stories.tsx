@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import UiPresentation from './storybook';
-import HighlightString from '../src/components/highlightString';
+import { HighlightString } from '../src/components';
 
 const meta: Meta<typeof HighlightString> = {
   argTypes: {

@@ -3,15 +3,16 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { action } from '@storybook/addon-actions';
 
-import { Box, String } from '../src/components';
 import UiPresentation from './storybook/UiPresentation';
 import {
+  Box,
+  String,
   TimePicker,
   TimePickerContent,
   TimePickerTitle,
   TimePickerScroller,
-  TimePickerSeparator,
-} from '../src/components/timePicker';
+  Separator,
+} from '../src/components';
 
 const meta: Meta<typeof TimePicker> = {
   component: TimePicker,
@@ -45,7 +46,7 @@ export const Default: Story = {
         <TimePickerScroller mode="hour" />
       </TimePickerContent>
 
-      <TimePickerSeparator />
+      <Separator />
 
       <TimePickerContent name="minute">
         <TimePickerTitle>Minutes</TimePickerTitle>
@@ -64,20 +65,20 @@ export const WithSeconds: Story = {
     },
   },
   render: () => (
-    <TimePicker onTimeChange={time => action('onTimeChange')(time)}>
+    <TimePicker onTimeChange={(time: any) => action('onTimeChange')(time)}>
       <TimePickerContent name="hour">
         <TimePickerTitle>H</TimePickerTitle>
         <TimePickerScroller mode="hour" />
       </TimePickerContent>
 
-      <TimePickerSeparator />
+      <Separator />
 
       <TimePickerContent name="minute">
         <TimePickerTitle>M</TimePickerTitle>
         <TimePickerScroller mode="minute" />
       </TimePickerContent>
 
-      <TimePickerSeparator />
+      <Separator />
 
       <TimePickerContent name="second">
         <TimePickerTitle>S</TimePickerTitle>
@@ -96,13 +97,13 @@ export const Format12Hour: Story = {
     },
   },
   render: () => (
-    <TimePicker onTimeChange={time => action('onTimeChange')(time)}>
+    <TimePicker onTimeChange={(time: any) => action('onTimeChange')(time)}>
       <TimePickerContent name="hour">
         <TimePickerTitle>Hour</TimePickerTitle>
         <TimePickerScroller mode="hour" format="12h" />
       </TimePickerContent>
 
-      <TimePickerSeparator />
+      <Separator />
 
       <TimePickerContent name="minute">
         <TimePickerTitle>Min</TimePickerTitle>
@@ -126,13 +127,13 @@ export const WithIntervals: Story = {
     },
   },
   render: () => (
-    <TimePicker onTimeChange={time => action('onTimeChange')(time)}>
+    <TimePicker onTimeChange={(time: any) => action('onTimeChange')(time)}>
       <TimePickerContent name="hour">
         <TimePickerTitle>Hours</TimePickerTitle>
         <TimePickerScroller mode="hour" />
       </TimePickerContent>
 
-      <TimePickerSeparator />
+      <Separator />
 
       <TimePickerContent name="minute">
         <TimePickerTitle>Minutes (15 min intervals)</TimePickerTitle>
@@ -156,12 +157,12 @@ export const Controlled: Story = {
     return (
       <Box className="gap-4">
         <String className="text-center text-lg">
-          Selected: {time.hour}:{String(time.minute).padStart(2, '0')}
+          Selected: {time.hour}:{time.minute.toString().padStart(2, '0')}
         </String>
 
         <TimePicker
           value={time}
-          onTimeChange={newTime => {
+          onTimeChange={(newTime: any) => {
             setTime(newTime as { hour: number; minute: number });
             action('onTimeChange')(newTime);
           }}
@@ -171,7 +172,7 @@ export const Controlled: Story = {
             <TimePickerScroller mode="hour" />
           </TimePickerContent>
 
-          <TimePickerSeparator />
+          <Separator />
 
           <TimePickerContent name="minute">
             <TimePickerTitle>Minutes</TimePickerTitle>
@@ -197,7 +198,7 @@ export const WithoutTitles: Story = {
         <TimePickerScroller mode="hour" />
       </TimePickerContent>
 
-      <TimePickerSeparator />
+      <Separator />
 
       <TimePickerContent name="minute">
         <TimePickerScroller mode="minute" />
@@ -221,14 +222,14 @@ export const CustomSeparator: Story = {
         <TimePickerScroller mode="hour" />
       </TimePickerContent>
 
-      <TimePickerSeparator>-</TimePickerSeparator>
+      <Separator>-</Separator>
 
       <TimePickerContent name="minute">
         <TimePickerTitle>M</TimePickerTitle>
         <TimePickerScroller mode="minute" />
       </TimePickerContent>
 
-      <TimePickerSeparator>-</TimePickerSeparator>
+      <Separator>-</Separator>
 
       <TimePickerContent name="second">
         <TimePickerTitle>S</TimePickerTitle>
@@ -253,7 +254,7 @@ export const CustomStyling: Story = {
         <TimePickerScroller mode="hour" className="rounded-lg bg-white/20 backdrop-blur" />
       </TimePickerContent>
 
-      <TimePickerSeparator className="text-3xl font-bold text-white">:</TimePickerSeparator>
+      <Separator className="text-3xl font-bold text-white">:</Separator>
 
       <TimePickerContent name="minute" className="mx-2">
         <TimePickerTitle className="text-sm font-bold uppercase text-white">Minutes</TimePickerTitle>
@@ -278,7 +279,7 @@ export const FiveMinuteIntervals: Story = {
         <TimePickerScroller mode="hour" />
       </TimePickerContent>
 
-      <TimePickerSeparator />
+      <Separator />
 
       <TimePickerContent name="minute">
         <TimePickerTitle>Minutes (5 min)</TimePickerTitle>
@@ -303,7 +304,7 @@ export const ThirtyMinuteIntervals: Story = {
         <TimePickerScroller mode="hour" />
       </TimePickerContent>
 
-      <TimePickerSeparator />
+      <Separator />
 
       <TimePickerContent name="minute">
         <TimePickerTitle>Minutes (30 min)</TimePickerTitle>
@@ -322,7 +323,7 @@ export const HourOnly: Story = {
     },
   },
   render: () => (
-    <TimePicker onTimeChange={time => action('onTimeChange')(time)}>
+    <TimePicker onTimeChange={(time: any) => action('onTimeChange')(time)}>
       <TimePickerContent name="hour">
         <TimePickerTitle>Select Hour</TimePickerTitle>
         <TimePickerScroller mode="hour" />
@@ -340,13 +341,13 @@ export const MinuteSecondOnly: Story = {
     },
   },
   render: () => (
-    <TimePicker onTimeChange={time => action('onTimeChange')(time)}>
+    <TimePicker onTimeChange={(time: any) => action('onTimeChange')(time)}>
       <TimePickerContent name="minute">
         <TimePickerTitle>Minutes</TimePickerTitle>
         <TimePickerScroller mode="minute" />
       </TimePickerContent>
 
-      <TimePickerSeparator />
+      <Separator />
 
       <TimePickerContent name="second">
         <TimePickerTitle>Seconds</TimePickerTitle>
@@ -365,7 +366,7 @@ export const CustomModeAgePicker: Story = {
     },
   },
   render: () => (
-    <TimePicker onTimeChange={value => action('onTimeChange')(value)}>
+    <TimePicker onTimeChange={(value: any) => action('onTimeChange')(value)}>
       <TimePickerContent name="age">
         <TimePickerTitle>Age</TimePickerTitle>
         <TimePickerScroller mode="custom" data={Array.from({ length: 100 }, (_, i) => i + 1)} />
@@ -383,7 +384,7 @@ export const CustomModeSizePicker: Story = {
     },
   },
   render: () => (
-    <TimePicker onTimeChange={value => action('onTimeChange')(value)}>
+    <TimePicker onTimeChange={(value: any) => action('onTimeChange')(value)}>
       <TimePickerContent name="size">
         <TimePickerTitle>T-Shirt Size</TimePickerTitle>
         <TimePickerScroller mode="custom" data={['XS', 'S', 'M', 'L', 'XL', 'XXL']} />
@@ -401,12 +402,12 @@ export const CompactDarkTheme: Story = {
     },
   },
   render: () => (
-    <TimePicker className="rounded-lg bg-gray-900 p-4" onTimeChange={time => action('onTimeChange')(time)}>
+    <TimePicker className="rounded-lg bg-gray-900 p-4" onTimeChange={(time: any) => action('onTimeChange')(time)}>
       <TimePickerContent name="hour">
         <TimePickerScroller mode="hour" />
       </TimePickerContent>
 
-      <TimePickerSeparator className="text-2xl font-bold text-gray-400">:</TimePickerSeparator>
+      <Separator className="text-2xl font-bold text-gray-400">:</Separator>
 
       <TimePickerContent name="minute">
         <TimePickerScroller mode="minute" />
@@ -431,12 +432,12 @@ export const AppointmentScheduler: Story = {
         <String className="text-2xl font-bold text-gray-800">Schedule Appointment</String>
 
         <String className="text-center text-xl font-semibold text-blue-600">
-          {appointment.hour}:{String(appointment.minute).padStart(2, '0')}
+          {appointment.hour}:{appointment.minute.toString().padStart(2, '0')}
         </String>
 
         <TimePicker
           value={appointment}
-          onTimeChange={newTime => {
+          onTimeChange={(newTime: any) => {
             setAppointment(newTime as { hour: number; minute: number });
             action('onTimeChange')(newTime);
           }}
@@ -446,7 +447,7 @@ export const AppointmentScheduler: Story = {
             <TimePickerScroller mode="hour" />
           </TimePickerContent>
 
-          <TimePickerSeparator className="text-2xl font-bold text-gray-300" />
+          <Separator className="text-2xl font-bold text-gray-300" />
 
           <TimePickerContent name="minute" className="mx-3">
             <TimePickerTitle className="mb-1 text-xs font-semibold uppercase text-gray-500">Min</TimePickerTitle>
@@ -476,12 +477,12 @@ export const AlarmClock: Story = {
         <String className="text-center text-3xl font-bold text-white">Set Alarm</String>
 
         <String className="text-center text-5xl font-bold text-white">
-          {alarm.hour}:{String(alarm.minute).padStart(2, '0')} {alarm.period === 0 ? 'AM' : 'PM'}
+          {alarm.hour}:{alarm.minute.toString().padStart(2, '0')} {alarm.period === 0 ? 'AM' : 'PM'}
         </String>
 
         <TimePicker
           value={alarm}
-          onTimeChange={newTime => {
+          onTimeChange={(newTime: any) => {
             setAlarm(newTime as { hour: number; minute: number; period: number });
             action('onTimeChange')(newTime);
           }}
@@ -490,7 +491,7 @@ export const AlarmClock: Story = {
             <TimePickerScroller mode="hour" format="12h" className="rounded-lg bg-white/10 backdrop-blur" />
           </TimePickerContent>
 
-          <TimePickerSeparator className="text-4xl font-bold text-white/80">:</TimePickerSeparator>
+          <Separator className="text-4xl font-bold text-white/80">:</Separator>
 
           <TimePickerContent name="minute" className="mx-2">
             <TimePickerScroller mode="minute" className="rounded-lg bg-white/10 backdrop-blur" />
@@ -521,12 +522,12 @@ export const CountdownTimer: Story = {
         <String className="text-center text-2xl font-bold text-white">Set Timer</String>
 
         <String className="text-center font-mono text-4xl font-bold text-green-400">
-          {String(timer.minute).padStart(2, '0')}:{String(timer.second).padStart(2, '0')}
+          {timer.minute.toString().padStart(2, '0')}:{timer.second.toString().padStart(2, '0')}
         </String>
 
         <TimePicker
           value={timer}
-          onTimeChange={newTime => {
+          onTimeChange={(newTime: any) => {
             setTimer(newTime as { minute: number; second: number });
             action('onTimeChange')(newTime);
           }}
@@ -536,7 +537,7 @@ export const CountdownTimer: Story = {
             <TimePickerScroller mode="minute" className="rounded-lg bg-gray-700" />
           </TimePickerContent>
 
-          <TimePickerSeparator className="text-3xl font-bold text-gray-500">:</TimePickerSeparator>
+          <Separator className="text-3xl font-bold text-gray-500">:</Separator>
 
           <TimePickerContent name="second" className="mx-3">
             <TimePickerTitle className="text-sm font-bold uppercase text-gray-400">Seconds</TimePickerTitle>

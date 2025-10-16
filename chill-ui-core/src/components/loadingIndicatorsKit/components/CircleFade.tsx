@@ -1,6 +1,7 @@
 import { Box } from '@components/box';
+import { ViewStyle } from 'react-native';
 import { LoadingIndicatorsProps } from '@types';
-import { Animated, ViewStyle } from 'react-native';
+import { AnimatedBox } from '@components/animatedBox';
 
 import { stagger } from '../utils/utils';
 import defaultProps from '../utils/defaultProps';
@@ -72,7 +73,7 @@ export default function CircleFade(props: LoadingIndicatorsProps) {
           {...rest}
         >
           {values?.circleFade?.map((value, index) => (
-            <Animated.View
+            <AnimatedBox
               key={index}
               style={[
                 circleStyle,

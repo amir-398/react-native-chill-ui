@@ -411,11 +411,11 @@ export const WithCallbacks: Story = {
   args: {
     defaultCountry: 'US',
     onBlur: () => console.log('Input blurred'),
-    onCountryChange: country => console.log('Country changed:', country),
-    onError: error => console.log('Error:', error),
+    onCountryChange: (country: any) => console.log('Country changed:', country),
+    onError: (error: any) => console.log('Error:', error),
     onFocus: () => console.log('Input focused'),
-    onOpenChange: open => console.log('Dropdown open:', open),
-    onPhoneNumberChange: data => console.log('Phone changed:', data),
+    onOpenChange: (open: any) => console.log('Dropdown open:', open),
+    onPhoneNumberChange: (data: any) => console.log('Phone changed:', data),
     placeholder: 'Enter your phone number',
   },
 };

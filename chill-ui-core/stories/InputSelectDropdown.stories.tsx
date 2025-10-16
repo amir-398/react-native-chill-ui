@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
 
+import { useState } from 'react';
 import { Text } from 'react-native';
 
+import { cn } from '../src/utils';
 import UiPresentation from './storybook';
-import { Box, cn } from '../src/components';
-import InputSelectDropdown from '../src/components/inputSelectDropdown/InputSelectDropdown';
+import { Box, InputSelectDropdown } from '../src/components';
 
 const meta: Meta<typeof InputSelectDropdown> = {
   argTypes: {
@@ -107,17 +107,17 @@ const meta: Meta<typeof InputSelectDropdown> = {
     },
 
     // State management
-    open: {
+    defaultOpen: {
       control: 'boolean',
-      description: 'Whether the dropdown is open (controlled mode)',
+      description: 'Default open state (uncontrolled mode)',
     },
     onOpenChange: {
       control: false,
       description: 'Callback when dropdown open state changes',
     },
-    defaultOpen: {
+    open: {
       control: 'boolean',
-      description: 'Default open state (uncontrolled mode)',
+      description: 'Whether the dropdown is open (controlled mode)',
     },
 
     // Other options
@@ -435,7 +435,7 @@ export const ControlledMode: Story = {
     // Note: open and onOpenChange are controlled by Storybook controls
   },
   render: args => {
-    const [isOpen, setIsOpen] = React.useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
     return <InputSelectDropdown {...args} open={isOpen} onOpenChange={setIsOpen} />;
   },
@@ -448,10 +448,10 @@ export const AlwaysOpenControlled: Story = {
     inputProps: {
       placeholder: 'Always open (controlled)',
     },
-    onSelectItem: (item: any) => console.log('Selected:', item),
-    valueField: 'value',
-    open: true,
     onOpenChange: () => {}, // Prevent closing
+    onSelectItem: (item: any) => console.log('Selected:', item),
+    open: true,
+    valueField: 'value',
   },
 };
 
@@ -467,19 +467,19 @@ export const ConditionalOpen: Story = {
     valueField: 'name',
   },
   render: args => {
-    const [isOpen, setIsOpen] = React.useState(false);
-    const [selectedCountry, setSelectedCountry] = React.useState(null);
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedCountry, setSelectedCountry] = useState<any>(null);
 
     return (
       <Box>
         <Box style={{ marginBottom: 10 }}>
-          <Text>Selected: {selectedCountry?.name || 'None'}</Text>
+          <Text>Selected: {selectedCountry?.value || 'None'}</Text>
         </Box>
         <InputSelectDropdown
           {...args}
           open={isOpen}
           onOpenChange={setIsOpen}
-          onSelectItem={item => {
+          onSelectItem={(item: any) => {
             setSelectedCountry(item);
             setIsOpen(false); // Close after selection
           }}

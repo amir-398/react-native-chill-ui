@@ -1,8 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Box, Button } from '@/components';
-
-import Carousel from '../src/components/carousel/Carousel';
+import { Carousel, Box, Button } from '../src/components';
 
 const meta: Meta<typeof Carousel> = {
   argTypes: {
@@ -154,5 +152,5 @@ export const WithChildren: Story = {
     hasDot: true,
     items: sampleImages,
   },
-  render: args => <WithChildrenComponent {...args} />,
+  render: (args: any) => <WithChildrenComponent {...args} />,
 };

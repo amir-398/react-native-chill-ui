@@ -54,6 +54,8 @@ export default function String(props: PropsWithChildren<StringPropsTw>) {
     className,
   );
 
+  console.log('dynamicClasses', dynamicClasses);
+
   return (
     <NativeText className={dynamicClasses} style={[color && { color }, style]} onPress={onPress} {...rest}>
       {children}

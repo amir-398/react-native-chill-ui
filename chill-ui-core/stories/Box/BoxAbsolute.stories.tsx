@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import UiPresentation from '../storybook';
-import Chip from '../../src/components/chip';
-import { BoxAbsolute, BoxStack } from '../../src/components';
+import { Chip, BoxAbsolute, BoxStack } from '../../src/components';
 
 const meta: Meta<typeof BoxAbsolute> = {
   component: BoxAbsolute,

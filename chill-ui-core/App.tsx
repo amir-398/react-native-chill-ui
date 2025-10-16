@@ -1,6 +1,5 @@
-import { useState } from 'react';
 import { useFonts } from 'expo-font';
-import { String, WrapperKeyboardAwareScrollViewTw, WrapperTw } from '@components';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   Poppins_700Bold,
   Poppins_800ExtraBold,
@@ -24,13 +23,13 @@ import {
   Montserrat_100Thin,
 } from '@expo-google-fonts/montserrat';
 
-// Import global.css only if NativeWind is available
+import { view } from './.storybook/storybook.requires';
+
 try {
   require('nativewind');
   require('./global.css');
 } catch {
-  // NativeWind is not available, skip CSS import
-  console.log('NativeWind not available, skipping global.css import');
+  // customConsole.warn('NativeWind not available, skipping global.css import');
 }
 
 export default function App() {
@@ -54,78 +53,21 @@ export default function App() {
     secondary_semi_bold_font: Montserrat_600SemiBold,
     secondary_thin_font: Montserrat_100Thin,
   });
-  const [isEnabled, setIsEnabled] = useState(false);
-  if (!fontsLoaded) {
-    return null; // ou un composant de chargement
-  }
-  // @ts-ignore
-  // eslint-disable-next-line
-  // const StorybookUIRoot = view.getStorybookUI({
-  //   storage: {
-  //     getItem(key: string) {
-  //       return AsyncStorage.getItem(key);
-  //     },
-  //     setItem(key: string, value: string) {
-  //       return AsyncStorage.setItem(key, value);
-  //     },
-  //   },
-  // });
 
-  return (
-    <WrapperTw className="bg-red-500">
-      <WrapperKeyboardAwareScrollViewTw className="bg-blue-500">
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-      </WrapperKeyboardAwareScrollViewTw>
-    </WrapperTw>
-  );
+  if (!fontsLoaded) {
+    return null;
+  }
+
+  const StorybookUIRoot = view.getStorybookUI({
+    storage: {
+      getItem(key: string) {
+        return AsyncStorage.getItem(key);
+      },
+      setItem(key: string, value: string) {
+        return AsyncStorage.setItem(key, value);
+      },
+    },
+  });
+
+  return <StorybookUIRoot />;
 }
