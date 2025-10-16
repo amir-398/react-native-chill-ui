@@ -11,9 +11,15 @@ import { AvatarSv, styles } from '../styles/Avatar.ss.styles';
 import { avatarTv, twStyles } from '../styles/Avatar.tw.styles';
 
 /**
- * Avatar component displays user profile images with fallback to initials.
+ * The `<Avatar />` component displays user profile images with fallback to initials.
  * Supports different sizes, shapes, and touchable interactions.
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ *
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { Avatar } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
@@ -28,17 +34,15 @@ import { avatarTv, twStyles } from '../styles/Avatar.tw.styles';
  * />
  * ```
  *
- * @param as - Component to use when avatar is pressable (default: 'Pressable') - 'pressable' | 'touchable-opacity' | 'ripple-pressable'
+ * @param as - Component to use when avatar is pressable: 'pressable' | 'touchable-opacity' | 'ripple-pressable' (default: 'pressable')
  * @param color - Custom background color
- * @param className - Custom CSS classes (only used with NativeWind)
+ * @param className - Custom CSS classes for the avatar container (NativeWind)
  * @param data - User data containing firstname, lastname, and image_url
  * @param onPress - Callback when avatar is pressed
- * @param size - Avatar size variant (default: 'md')
+ * @param size - Avatar size variant: '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' (default: 'md')
  * @param stringProps - Props for the String component displaying initials
- * @param style - Custom inline styles
- * @param variant - Avatar shape variant (default: 'circle') - 'circle' | 'square'
- *
- * @see {@link https://github.com/your-repo/chill-ui/tree/main/src/components/avatar/README.md Documentation}
+ * @param style - Style object for the avatar container
+ * @param variant - Avatar shape variant: 'circle' | 'square' (default: 'circle')
  */
 export default function Avatar(props: AvatarPropsTw) {
   classNamePropsHandler(props, 'Avatar');

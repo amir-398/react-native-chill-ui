@@ -19,15 +19,21 @@ export type SliderRootProps = ViewProps & {
   maximumValue?: number;
   /** Animation configuration object */
   animationConfig?: any;
-  /** Current value(s) of the slider */
-  value?: number | number[];
+  /** Current value(s) of the slider - use an array even for a single thumb */
+  value: number[];
   /** Right padding for the track */
   trackRightPadding?: number;
   /** Whether to animate transitions */
   animateTransitions?: boolean;
-  /** Type of animation to use */
+  /** Type of animation to use :
+   * - `'timing'` : for smooth transitions
+   * - `'spring'` : for springy transitions
+   */
   animationType?: 'timing' | 'spring';
-  /** Orientation of the slider */
+  /** Orientation of the slider :
+   * - `'horizontal'` : for horizontal orientation
+   * - `'vertical'` : for vertical orientation
+   */
   orientation?: 'horizontal' | 'vertical';
   /** Callback when value changes during sliding */
   onValueChange?: (values: number[], activeThumbIndex: number) => void;

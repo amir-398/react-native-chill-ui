@@ -1,10 +1,10 @@
 import { cn, isString } from '@utils';
+import { PropsWithChildren } from 'react';
 import { SliderLabelPropsTw } from '@types';
 import { StringTw } from '@components/string';
-import { PropsWithChildren, useState } from 'react';
 import { AnimatedBoxTw } from '@components/animatedBox';
 
-import { useSliderState } from '../context/SliderContext';
+import { useSliderLabel } from '../hooks/useSliderLabel';
 import { sliderLabelTv, twStyles } from '../styles/Slider.tw.styles';
 
 /**
@@ -32,10 +32,7 @@ import { sliderLabelTv, twStyles } from '../styles/Slider.tw.styles';
  */
 export function SliderLabel(props: PropsWithChildren<SliderLabelPropsTw>) {
   const { children, className, index = 0, position = 'top', stringProps, style, ...rest } = props;
-  const { interpolatedThumbValues, thumbSize, valueVisibleStyle } = useSliderState();
-  const [labelWidth, setLabelWidth] = useState(0);
-
-  const val = interpolatedThumbValues[index];
+  const { labelTransformStyle, onLayout, val, valueVisibleStyle } = useSliderLabel(index);
 
   if (!val) {
     return null;
@@ -54,21 +51,9 @@ export function SliderLabel(props: PropsWithChildren<SliderLabelPropsTw>) {
   return (
     <AnimatedBoxTw
       {...rest}
-      onLayout={e => {
-        const { width } = e.nativeEvent.layout;
-        if (width !== labelWidth) {
-          setLabelWidth(width);
-        }
-      }}
+      onLayout={onLayout}
       className={cn(twStyles.label, sliderLabelTv({ position: isTop ? 'top' : 'bottom' }), className)}
-      style={[
-        {
-          left: thumbSize.width / 2 - labelWidth / 2,
-          transform: [{ translateX: val }, { translateY: 0 }],
-        },
-        valueVisibleStyle,
-        style,
-      ]}
+      style={[labelTransformStyle, valueVisibleStyle, style]}
     >
       {content}
     </AnimatedBoxTw>

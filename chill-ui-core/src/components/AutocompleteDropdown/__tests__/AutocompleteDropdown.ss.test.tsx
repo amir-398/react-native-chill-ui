@@ -1,16 +1,16 @@
 import { render } from '@testing-library/react-native';
 
-import AutocompleteDropdown from '../components/AutocompleteDropdown.ss';
+import { AutocompleteDropdownSs as AutocompleteDropdown } from '../index';
 
 // Mock dependencies with StyleSheet suffixes
 jest.mock('../../../utils', () => ({
-  get: jest.fn((obj, path) => obj?.[path]),
-  isEqual: jest.fn((a, b) => a === b),
   debounce: jest.fn(fn => {
     const debounced = (...args: any[]) => fn(...args);
     debounced.cancel = jest.fn();
     return debounced;
   }),
+  get: jest.fn((obj, path) => obj?.[path]),
+  isEqual: jest.fn((a, b) => a === b),
 }));
 
 jest.mock('../../../components/box', () => ({
@@ -26,11 +26,17 @@ jest.mock('../../../components/string', () => ({
 }));
 
 jest.mock('../../../components/inputDropdown', () => ({
-  InputDropdownSs: ({ visible, data, onSelectItem, DropdownItemRender }: any) => (
+  InputDropdownSs: ({ data, DropdownItemRender, onSelectItem, visible }: any) => (
     <div data-testid="input-dropdown" data-visible={visible}>
       {visible &&
         data.map((item: any, index: number) => (
-          <div key={index} onClick={() => onSelectItem(item)}>
+          <div
+            key={index}
+            onClick={() => onSelectItem(item)}
+            onKeyDown={() => onSelectItem(item)}
+            role="button"
+            tabIndex={0}
+          >
             {DropdownItemRender ? DropdownItemRender(item) : item.name}
           </div>
         ))}
@@ -71,9 +77,9 @@ jest.mock('../hooks/useGetDropdownPosition', () =>
 
 describe('AutocompleteDropdown Component (StyleSheet)', () => {
   const mockData = [
-    { id: 1, name: 'Apple', category: 'Fruit' },
-    { id: 2, name: 'Banana', category: 'Fruit' },
-    { id: 3, name: 'Carrot', category: 'Vegetable' },
+    { category: 'Fruit', id: 1, name: 'Apple' },
+    { category: 'Fruit', id: 2, name: 'Banana' },
+    { category: 'Vegetable', id: 3, name: 'Carrot' },
   ];
 
   it('should render without crashing', () => {
@@ -133,7 +139,7 @@ describe('AutocompleteDropdown Component (StyleSheet)', () => {
 
   it('should handle loading state', () => {
     const { root } = render(
-      <AutocompleteDropdown dataSet={mockData} valueField="name" onSelectItem={jest.fn()} isLoading={true} />,
+      <AutocompleteDropdown dataSet={mockData} valueField="name" onSelectItem={jest.fn()} isLoading />,
     );
     expect(root).toBeTruthy();
   });
@@ -156,7 +162,7 @@ describe('AutocompleteDropdown Component (StyleSheet)', () => {
         dataSet={mockData}
         valueField="name"
         onSelectItem={jest.fn()}
-        hasHighlightString={true}
+        hasHighlightString
         highlightProps={{ highlightTerm: 'App' }}
       />,
     );
@@ -170,9 +176,9 @@ describe('AutocompleteDropdown Component (StyleSheet)', () => {
         valueField="name"
         searchField="name"
         onSelectItem={jest.fn()}
-        closeModalWhenSelectedItem={true}
-        hasPerformSearch={true}
-        hasHighlightString={true}
+        closeModalWhenSelectedItem
+        hasPerformSearch
+        hasHighlightString
         maxHeight={300}
         minHeight={50}
         offsetX={10}
@@ -180,7 +186,7 @@ describe('AutocompleteDropdown Component (StyleSheet)', () => {
         isLoading={false}
         excludeItems={[]}
         dropdownPosition="auto"
-        inputProps={{ style: { backgroundColor: 'white' }, placeholder: 'Search' }}
+        inputProps={{ placeholder: 'Search', style: { backgroundColor: 'white' } }}
         dropdownProps={{ style: { borderRadius: 8 } }}
       />,
     );

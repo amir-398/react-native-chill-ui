@@ -5,9 +5,13 @@ import DropdownBase from './InputDropdownBase';
 import DropdownList from './InputDropdownList';
 
 /**
-
- * Provides a comprehensive dropdown list with search functionality, loading states, and customizable styling.
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ * the `<InputDropdown />` component provides a comprehensive dropdown list with search functionality, loading states, and customizable styling.
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { InputDropdown } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx

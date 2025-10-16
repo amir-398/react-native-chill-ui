@@ -1,47 +1,45 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { action } from '@storybook/addon-actions';
+import { fn } from 'storybook/test';
 
-import { Box, Button } from '../src/components';
-import { ToastVariantType } from '../src/types/toast.types';
-import { ToastProvider, useToast } from '../src/components/toast/ToastProvider';
+import { Box, Button, ToastProvider, useToast } from '../src/components';
 
-const defaultVariants: ToastVariantType = {
+const defaultVariants: any = {
   error: {
     backgroundColor: '#F44336',
-    iconProps: { name: 'xmark-circle-solid', color: '#FFFFFF' },
-    titleStringProps: { color: '#FFFFFF' },
+    iconProps: { color: '#FFFFFF', name: 'xmark-circle-solid' },
     messageStringProps: { color: '#FFFFFF' },
     progressBarColor: '#FFFFFF',
+    titleStringProps: { color: '#FFFFFF' },
   },
   info: {
     backgroundColor: '#2196F3',
-    iconProps: { name: 'circle-info-solid', color: '#FFFFFF' },
-    titleStringProps: { color: '#FFFFFF' },
+    iconProps: { color: '#FFFFFF', name: 'circle-info-solid' },
     messageStringProps: { color: '#FFFFFF' },
     progressBarColor: '#FFFFFF',
+    titleStringProps: { color: '#FFFFFF' },
   },
   success: {
     backgroundColor: '#4CAF50',
-    iconProps: { name: 'check-circle-solid', color: '#FFFFFF' },
-    titleStringProps: { color: '#FFFFFF' },
+    iconProps: { color: '#FFFFFF', name: 'check-circle-solid' },
     messageStringProps: { color: '#FFFFFF' },
     progressBarColor: '#FFFFFF',
+    titleStringProps: { color: '#FFFFFF' },
   },
   warning: {
     backgroundColor: '#FF9800',
-    iconProps: { name: 'warning-solid', color: '#FFFFFF' },
-    titleStringProps: { color: '#FFFFFF' },
+    iconProps: { color: '#FFFFFF', name: 'warning-solid' },
     messageStringProps: { color: '#FFFFFF' },
     progressBarColor: '#FFFFFF',
+    titleStringProps: { color: '#FFFFFF' },
   },
 };
 
 function ToastDemo({
   duration,
   message,
-  title,
   position,
+  title,
   variant,
 }: {
   message?: string;
@@ -62,11 +60,11 @@ function ToastDemo({
               toast({
                 duration: duration || 3000,
                 message: message || 'This is a toast message',
-                title: title,
                 position: position || 'bottom',
+                title,
                 variant: variant || 'info',
               });
-              action('toast')(variant || 'info');
+              fn()('toast', variant || 'info');
             }}
             size="sm"
             variant={variant || 'info'}
@@ -87,14 +85,14 @@ const meta: Meta<typeof ToastDemo> = {
       control: 'text',
       description: 'Message to display in the toast',
     },
-    title: {
-      control: 'text',
-      description: 'Title to display in the toast',
-    },
     position: {
       control: 'select',
       description: 'Position of the toast on screen',
       options: ['top', 'bottom'],
+    },
+    title: {
+      control: 'text',
+      description: 'Title to display in the toast',
     },
     variant: {
       control: 'select',
@@ -177,75 +175,75 @@ export const LongMessage: Story = {
 
 export const WithTitle: Story = {
   args: {
-    title: 'Success!',
     message: 'Your action was completed successfully.',
     position: 'bottom',
+    title: 'Success!',
     variant: 'success',
   },
 };
 
 export const WithTitleAndLongMessage: Story = {
   args: {
-    title: 'Important Notice',
     message:
       'This is a very long message that should wrap to multiple lines in the toast notification. It demonstrates how the toast handles longer content with a title.',
     position: 'bottom',
+    title: 'Important Notice',
     variant: 'warning',
   },
 };
 
 export const ShortDuration: Story = {
   args: {
-    title: 'Quick Toast',
-    message: 'This toast will disappear quickly.',
     duration: 1000,
+    message: 'This toast will disappear quickly.',
     position: 'bottom',
+    title: 'Quick Toast',
     variant: 'info',
   },
 };
 
 export const LongDuration: Story = {
   args: {
-    title: 'Persistent Toast',
-    message: 'This toast will stay visible for a long time.',
     duration: 8000,
+    message: 'This toast will stay visible for a long time.',
     position: 'bottom',
+    title: 'Persistent Toast',
     variant: 'info',
   },
 };
 
 export const TopWithTitle: Story = {
   args: {
-    title: 'Top Toast',
     message: 'This toast appears at the top of the screen.',
     position: 'top',
+    title: 'Top Toast',
     variant: 'info',
   },
 };
 
 export const ErrorWithTitle: Story = {
   args: {
-    title: 'Error Occurred',
     message: 'Something went wrong. Please try again.',
     position: 'bottom',
+    title: 'Error Occurred',
     variant: 'error',
   },
 };
 
 export const WarningWithTitle: Story = {
   args: {
-    title: 'Warning',
     message: 'Please be careful with this action.',
     position: 'bottom',
+    title: 'Warning',
     variant: 'warning',
   },
 };
 
 export const SuccessWithTitle: Story = {
   args: {
-    title: 'Success!',
     message: 'Your operation completed successfully.',
     position: 'bottom',
+    title: 'Success!',
     variant: 'success',
   },
 };

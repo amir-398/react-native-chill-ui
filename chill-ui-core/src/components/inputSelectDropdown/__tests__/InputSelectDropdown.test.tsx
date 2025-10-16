@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react-native';
-import InputSelectDropdown from '../components/InputSelectDropdown';
+
+import { InputSelectDropdown } from '../index';
 
 // Mocks
 jest.mock('../../../utils', () => ({
@@ -73,9 +74,9 @@ jest.mock('../utils/defaultProps', () => ({
 }));
 
 const mockDataSet = [
-  { id: 1, name: 'John Doe', email: 'john@example.com' },
-  { id: 2, name: 'Jane Smith', email: 'jane@example.com' },
-  { id: 3, name: 'Bob Johnson', email: 'bob@example.com' },
+  { email: 'john@example.com', id: 1, name: 'John Doe' },
+  { email: 'jane@example.com', id: 2, name: 'Jane Smith' },
+  { email: 'bob@example.com', id: 3, name: 'Bob Johnson' },
 ];
 
 describe('InputSelectDropdown Component (Hybrid)', () => {
@@ -190,8 +191,8 @@ describe('InputSelectDropdown Component (Hybrid)', () => {
         dataSet={mockDataSet}
         valueField="name"
         inputProps={{
-          placeholder: 'Custom placeholder',
           isDisabled: true,
+          placeholder: 'Custom placeholder',
         }}
         onSelectItem={jest.fn()}
       />,
@@ -234,8 +235,8 @@ describe('InputSelectDropdown Component (Hybrid)', () => {
         dataSet={mockDataSet}
         valueField="name"
         dropdownItemProps={{
-          className: 'custom-class',
           activeBackgroundColor: '#FF0000',
+          className: 'custom-class',
         }}
         onSelectItem={jest.fn()}
       />,
@@ -343,8 +344,8 @@ describe('InputSelectDropdown Component (Hybrid)', () => {
 
   it('should render with complex data structure', () => {
     const complexDataSet = [
-      { user: { profile: { firstName: 'John', lastName: 'Doe' } }, id: 1 },
-      { user: { profile: { firstName: 'Jane', lastName: 'Smith' } }, id: 2 },
+      { id: 1, user: { profile: { firstName: 'John', lastName: 'Doe' } } },
+      { id: 2, user: { profile: { firstName: 'Jane', lastName: 'Smith' } } },
     ];
 
     const { root } = render(

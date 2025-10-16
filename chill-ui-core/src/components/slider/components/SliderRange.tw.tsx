@@ -3,7 +3,7 @@ import { SliderRangePropsTw } from '@types';
 import { AnimatedBoxTw } from '@components/animatedBox';
 
 import { twStyles } from '../styles/Slider.tw.styles';
-import { useSliderActions } from '../context/SliderContext';
+import { useSliderRange } from '../hooks/useSliderRange';
 
 /**
  * Range indicator for the slider
@@ -22,9 +22,7 @@ import { useSliderActions } from '../context/SliderContext';
  */
 export function SliderRange(props: SliderRangePropsTw) {
   const { className, style, ...rest } = props;
-  const { getMinimumTrackStyle } = useSliderActions();
-
-  const minimumTrackStyle = getMinimumTrackStyle();
+  const { minimumTrackStyle } = useSliderRange();
 
   return (
     <AnimatedBoxTw

@@ -51,7 +51,7 @@ import { handleApplyMask, removeMask } from '../utils/maskUtils';
  * @param secureTextEntry - Whether to show secure text entry
  * @returns MaskedInput component with automatic formatting
  */
-export function MaskedInputTw(props: MaskedInputPropsTw) {
+export function MaskedInput(props: MaskedInputPropsTw) {
   const { mask, onChangeText, value, ...rest } = props;
   const [inputValue, setInputValue] = useState(handleApplyMask(value, mask));
   const maxDigits = mask.length;
@@ -76,3 +76,5 @@ export function MaskedInputTw(props: MaskedInputPropsTw) {
 
   return <InputTw value={inputValue} onChangeText={handleChangeText} maxLength={maxDigits} {...rest} />;
 }
+
+MaskedInput.displayName = 'MaskedInput';

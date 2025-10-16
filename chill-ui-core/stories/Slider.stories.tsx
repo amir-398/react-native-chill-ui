@@ -1,80 +1,162 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { action } from '@storybook/addon-actions';
+import { useState } from 'react';
+import { action } from 'storybook/actions';
 
 import { Box, Icon, String } from '../src/components';
 import UiPresentation from './storybook/UiPresentation';
 import { Slider, SliderLabel, SliderRange, SliderThumb, SliderTrack } from '../src/components/slider';
 
 const meta: Meta<typeof Slider> = {
+  args: {
+    animateTransitions: true,
+    animationType: 'timing',
+    animationTypeThumb: 'extend',
+    disabled: false,
+    index: 0,
+    maximumValue: 1,
+    minimumValue: 0,
+    orientation: 'horizontal',
+    step: 0,
+    touchSize: 40,
+    trackClickable: true,
+  },
+  argTypes: {
+    animateTransitions: {
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
+    },
+    animationType: {
+      table: {
+        defaultValue: {
+          summary: 'timing',
+        },
+      },
+    },
+    animationTypeThumb: {
+      table: {
+        defaultValue: {
+          summary: 'extend',
+        },
+      },
+    },
+    disabled: {
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
+    },
+    index: {
+      table: {
+        defaultValue: {
+          summary: 0,
+        },
+      },
+    },
+    maximumValue: {
+      table: {
+        defaultValue: {
+          summary: 1,
+        },
+      },
+    },
+    minimumValue: {
+      table: {
+        defaultValue: {
+          summary: 0,
+        },
+      },
+    },
+    orientation: {
+      table: {
+        defaultValue: {
+          summary: 'horizontal',
+        },
+      },
+    },
+    step: {
+      table: {
+        defaultValue: {
+          summary: 0,
+        },
+      },
+    },
+    touchSize: {
+      table: {
+        defaultValue: {
+          summary: 40,
+        },
+      },
+    },
+    trackClickable: {
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
+    },
+  },
   component: Slider,
   decorators: [
     (Story: any) => (
       <UiPresentation>
-        <Box className="w-full p-4">
-          <Story />
-        </Box>
+        <Story />
       </UiPresentation>
     ),
   ],
-  title: 'components/Slider',
+  subcomponents: {
+    SliderLabel,
+    SliderRange,
+    SliderThumb,
+    SliderTrack,
+  },
+  title: 'FORMS/Slider',
 };
 
 export default meta;
 type Story = StoryObj<typeof Slider>;
 
 export const Default: Story = {
-  render: () => {
-    const [value, setValue] = useState(50);
+  args: {
+    maximumValue: 100,
+    minimumValue: 0,
+    value: 50,
+  },
+  render: (args: any) => (
+    <Slider {...args}>
+      <SliderTrack>
+        <SliderRange />
+      </SliderTrack>
+      <SliderThumb />
+    </Slider>
+  ),
+};
 
-    return (
-      <Slider
-        value={value}
-        minimumValue={0}
-        maximumValue={100}
-        onValueChange={values => {
-          setValue(values[0]);
-          action('onValueChange')(values);
-        }}
-      >
-        <SliderTrack>
-          <SliderRange />
-        </SliderTrack>
-        <SliderThumb />
-      </Slider>
-    );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Basic Slider with a single thumb',
-      },
-    },
-  },
+const withLabelComponent = (args: any) => {
+  const [value, setValue] = useState(50);
+  console.log(value);
+
+  return (
+    <Slider {...args} value={value} onValueChange={setValue}>
+      <SliderTrack>
+        <SliderRange />
+      </SliderTrack>
+      <SliderThumb />
+      <SliderLabel position="top" className="bg-transparent">
+        {Math.round(value)}%
+      </SliderLabel>
+    </Slider>
+  );
 };
 
 export const WithLabel: Story = {
-  render: () => {
-    const [value, setValue] = useState(50);
-
-    return (
-      <Slider
-        value={value}
-        minimumValue={0}
-        maximumValue={100}
-        onValueChange={values => {
-          setValue(values[0]);
-          action('onValueChange')(values);
-        }}
-      >
-        <SliderTrack>
-          <SliderRange />
-        </SliderTrack>
-        <SliderThumb />
-        <SliderLabel position="top">{value}%</SliderLabel>
-      </Slider>
-    );
+  args: {
+    maximumValue: 100,
+    minimumValue: 0,
   },
   parameters: {
     docs: {
@@ -83,9 +165,17 @@ export const WithLabel: Story = {
       },
     },
   },
+  render: (args: any) => withLabelComponent(args),
 };
 
 export const RangeSlider: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Slider with two thumbs for selecting a range of values',
+      },
+    },
+  },
   render: () => {
     const [range, setRange] = useState([20, 80]);
 
@@ -94,7 +184,7 @@ export const RangeSlider: Story = {
         value={range}
         minimumValue={0}
         maximumValue={100}
-        onValueChange={values => {
+        onValueChange={(values: any) => {
           setRange(values);
           action('onValueChange')(values);
         }}
@@ -113,16 +203,16 @@ export const RangeSlider: Story = {
       </Slider>
     );
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Slider with two thumbs for selecting a range of values',
-      },
-    },
-  },
 };
 
 export const WithSteps: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Slider with discrete steps (increments of 10)',
+      },
+    },
+  },
   render: () => {
     const [value, setValue] = useState(50);
 
@@ -132,7 +222,7 @@ export const WithSteps: Story = {
         minimumValue={0}
         maximumValue={100}
         step={10}
-        onValueChange={values => {
+        onValueChange={(values: any) => {
           setValue(values[0]);
           action('onValueChange')(values);
         }}
@@ -145,16 +235,16 @@ export const WithSteps: Story = {
       </Slider>
     );
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Slider with discrete steps (increments of 10)',
-      },
-    },
-  },
 };
 
 export const Disabled: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Slider in a disabled state',
+      },
+    },
+  },
   render: () => (
     <Slider value={50} minimumValue={0} maximumValue={100} isDisabled>
       <SliderTrack>
@@ -164,16 +254,16 @@ export const Disabled: Story = {
       <SliderLabel position="top">50</SliderLabel>
     </Slider>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Slider in a disabled state',
-      },
-    },
-  },
 };
 
 export const Vertical: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Slider with vertical orientation',
+      },
+    },
+  },
   render: () => {
     const [value, setValue] = useState(60);
 
@@ -184,7 +274,7 @@ export const Vertical: Story = {
           minimumValue={0}
           maximumValue={100}
           orientation="vertical"
-          onValueChange={values => {
+          onValueChange={(values: any) => {
             setValue(values[0]);
             action('onValueChange')(values);
           }}
@@ -198,16 +288,16 @@ export const Vertical: Story = {
       </Box>
     );
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Slider with vertical orientation',
-      },
-    },
-  },
 };
 
 export const CustomStyling: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Slider with custom styling using Tailwind classes',
+      },
+    },
+  },
   render: () => {
     const [value, setValue] = useState(75);
 
@@ -216,7 +306,7 @@ export const CustomStyling: Story = {
         value={value}
         minimumValue={0}
         maximumValue={100}
-        onValueChange={values => {
+        onValueChange={(values: any) => {
           setValue(values[0]);
           action('onValueChange')(values);
         }}
@@ -231,16 +321,16 @@ export const CustomStyling: Story = {
       </Slider>
     );
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Slider with custom styling using Tailwind classes',
-      },
-    },
-  },
 };
 
 export const WithCallbacks: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Slider with callbacks for sliding start and complete events',
+      },
+    },
+  },
   render: () => {
     const [value, setValue] = useState(50);
 
@@ -249,12 +339,12 @@ export const WithCallbacks: Story = {
         value={value}
         minimumValue={0}
         maximumValue={100}
-        onValueChange={values => {
+        onValueChange={(values: any) => {
           setValue(values[0]);
           action('onValueChange')(values);
         }}
-        onSlidingStart={values => action('onSlidingStart')(values)}
-        onSlidingComplete={values => action('onSlidingComplete')(values)}
+        onSlidingStart={(values: any) => action('onSlidingStart')(values)}
+        onSlidingComplete={(values: any) => action('onSlidingComplete')(values)}
       >
         <SliderTrack>
           <SliderRange />
@@ -264,16 +354,16 @@ export const WithCallbacks: Story = {
       </Slider>
     );
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Slider with callbacks for sliding start and complete events',
-      },
-    },
-  },
 };
 
 export const VolumeControl: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Real-world example: Volume control slider',
+      },
+    },
+  },
   render: () => {
     const [volume, setVolume] = useState(70);
 
@@ -285,7 +375,7 @@ export const VolumeControl: Story = {
           minimumValue={0}
           maximumValue={100}
           step={1}
-          onValueChange={values => {
+          onValueChange={(values: any) => {
             setVolume(values[0]);
             action('onValueChange')(values);
           }}
@@ -299,16 +389,16 @@ export const VolumeControl: Story = {
       </Box>
     );
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Real-world example: Volume control slider',
-      },
-    },
-  },
 };
 
 export const PriceRange: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Real-world example: Price range filter',
+      },
+    },
+  },
   render: () => {
     const [priceRange, setPriceRange] = useState([200, 800]);
 
@@ -320,7 +410,7 @@ export const PriceRange: Story = {
           minimumValue={0}
           maximumValue={1000}
           step={10}
-          onValueChange={values => {
+          onValueChange={(values: any) => {
             setPriceRange(values);
             action('onValueChange')(values);
           }}
@@ -340,16 +430,16 @@ export const PriceRange: Story = {
       </Box>
     );
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Real-world example: Price range filter',
-      },
-    },
-  },
 };
 
 export const WithCustomLabel: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Slider with custom label content displaying rating text',
+      },
+    },
+  },
   render: () => {
     const [value, setValue] = useState(3);
 
@@ -359,7 +449,7 @@ export const WithCustomLabel: Story = {
         minimumValue={1}
         maximumValue={5}
         step={1}
-        onValueChange={values => {
+        onValueChange={(values: any) => {
           setValue(values[0]);
           action('onValueChange')(values);
         }}
@@ -376,16 +466,16 @@ export const WithCustomLabel: Story = {
       </Slider>
     );
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Slider with custom label content displaying rating text',
-      },
-    },
-  },
 };
 
 export const TemperatureControl: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Real-world example: Temperature control with gradient background',
+      },
+    },
+  },
   render: () => {
     const [temp, setTemp] = useState(20);
 
@@ -395,7 +485,7 @@ export const TemperatureControl: Story = {
         minimumValue={10}
         maximumValue={30}
         step={0.5}
-        onValueChange={values => {
+        onValueChange={(values: any) => {
           setTemp(values[0]);
           action('onValueChange')(values);
         }}
@@ -408,16 +498,16 @@ export const TemperatureControl: Story = {
       </Slider>
     );
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Real-world example: Temperature control with gradient background',
-      },
-    },
-  },
 };
 
 export const BrightnessControl: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Real-world example: Brightness control with icon label',
+      },
+    },
+  },
   render: () => {
     const [brightness, setBrightness] = useState(70);
 
@@ -426,7 +516,7 @@ export const BrightnessControl: Story = {
         value={brightness}
         minimumValue={0}
         maximumValue={100}
-        onValueChange={values => {
+        onValueChange={(values: any) => {
           setBrightness(values[0]);
           action('onValueChange')(values);
         }}
@@ -441,16 +531,16 @@ export const BrightnessControl: Story = {
       </Slider>
     );
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Real-world example: Brightness control with icon label',
-      },
-    },
-  },
 };
 
 export const WithLabelBelow: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Slider with label positioned below the thumb',
+      },
+    },
+  },
   render: () => {
     const [value, setValue] = useState(50);
 
@@ -459,7 +549,7 @@ export const WithLabelBelow: Story = {
         value={value}
         minimumValue={0}
         maximumValue={100}
-        onValueChange={values => {
+        onValueChange={(values: any) => {
           setValue(values[0]);
           action('onValueChange')(values);
         }}
@@ -472,16 +562,16 @@ export const WithLabelBelow: Story = {
       </Slider>
     );
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Slider with label positioned below the thumb',
-      },
-    },
-  },
 };
 
 export const WithSpringAnimation: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Slider with spring animation and scaling thumb',
+      },
+    },
+  },
   render: () => {
     const [value, setValue] = useState(50);
 
@@ -492,7 +582,7 @@ export const WithSpringAnimation: Story = {
         maximumValue={100}
         animationType="spring"
         animationConfig={{ damping: 20, mass: 1, stiffness: 200 }}
-        onValueChange={values => {
+        onValueChange={(values: any) => {
           setValue(values[0]);
           action('onValueChange')(values);
         }}
@@ -505,16 +595,16 @@ export const WithSpringAnimation: Story = {
       </Slider>
     );
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Slider with spring animation and scaling thumb',
-      },
-    },
-  },
 };
 
 export const ThumbAnimationExtend: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Slider with thumb that extends when sliding (default animation)',
+      },
+    },
+  },
   render: () => {
     const [value, setValue] = useState(50);
 
@@ -523,7 +613,7 @@ export const ThumbAnimationExtend: Story = {
         value={value}
         minimumValue={0}
         maximumValue={100}
-        onValueChange={values => {
+        onValueChange={(values: any) => {
           setValue(values[0]);
           action('onValueChange')(values);
         }}
@@ -536,16 +626,16 @@ export const ThumbAnimationExtend: Story = {
       </Slider>
     );
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Slider with thumb that extends when sliding (default animation)',
-      },
-    },
-  },
 };
 
 export const ThumbAnimationScale: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Slider with thumb that scales when sliding',
+      },
+    },
+  },
   render: () => {
     const [value, setValue] = useState(50);
 
@@ -554,7 +644,7 @@ export const ThumbAnimationScale: Story = {
         value={value}
         minimumValue={0}
         maximumValue={100}
-        onValueChange={values => {
+        onValueChange={(values: any) => {
           setValue(values[0]);
           action('onValueChange')(values);
         }}
@@ -567,16 +657,16 @@ export const ThumbAnimationScale: Story = {
       </Slider>
     );
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Slider with thumb that scales when sliding',
-      },
-    },
-  },
 };
 
 export const ThumbAnimationNone: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Slider with no thumb animation',
+      },
+    },
+  },
   render: () => {
     const [value, setValue] = useState(50);
 
@@ -585,7 +675,7 @@ export const ThumbAnimationNone: Story = {
         value={value}
         minimumValue={0}
         maximumValue={100}
-        onValueChange={values => {
+        onValueChange={(values: any) => {
           setValue(values[0]);
           action('onValueChange')(values);
         }}
@@ -598,16 +688,16 @@ export const ThumbAnimationNone: Story = {
       </Slider>
     );
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Slider with no thumb animation',
-      },
-    },
-  },
 };
 
 export const NonClickableTrack: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Slider with non-clickable track (only thumb is draggable)',
+      },
+    },
+  },
   render: () => {
     const [value, setValue] = useState(50);
 
@@ -616,7 +706,7 @@ export const NonClickableTrack: Story = {
         value={value}
         minimumValue={0}
         maximumValue={100}
-        onValueChange={values => {
+        onValueChange={(values: any) => {
           setValue(values[0]);
           action('onValueChange')(values);
         }}
@@ -629,16 +719,16 @@ export const NonClickableTrack: Story = {
       </Slider>
     );
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Slider with non-clickable track (only thumb is draggable)',
-      },
-    },
-  },
 };
 
 export const WithCustomStringProps: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Slider with custom string props for label styling',
+      },
+    },
+  },
   render: () => {
     const [value, setValue] = useState(50);
 
@@ -647,7 +737,7 @@ export const WithCustomStringProps: Story = {
         value={value}
         minimumValue={0}
         maximumValue={100}
-        onValueChange={values => {
+        onValueChange={(values: any) => {
           setValue(values[0]);
           action('onValueChange')(values);
         }}
@@ -659,21 +749,14 @@ export const WithCustomStringProps: Story = {
         <SliderLabel
           position="top"
           stringProps={{
+            color: '#FF0000',
             size: 'sm',
             weight: 'bold',
-            color: '#FF0000',
           }}
         >
           {value}%
         </SliderLabel>
       </Slider>
     );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Slider with custom string props for label styling',
-      },
-    },
   },
 };

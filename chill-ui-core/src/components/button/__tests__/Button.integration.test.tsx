@@ -1,5 +1,6 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react-native';
 import React, { useState } from 'react';
+import { render } from '@testing-library/react-native';
+
 import { Button } from '../index';
 
 // Mocks
@@ -36,23 +37,23 @@ jest.mock('../../../components/scalePressable', () => ({
 }));
 
 jest.mock('../../../utils', () => ({
-  classNamePropsHandler: jest.fn(),
-  colorVariantPropsHandler: jest.fn(),
   classNameHandler: jest.fn(() => ({})),
-  styleHandler: jest.fn(() => ({})),
+  classNamePropsHandler: jest.fn(),
   cn: jest.fn((...args) => args.filter(Boolean).join(' ')),
+  colorVariantPropsHandler: jest.fn(),
+  styleHandler: jest.fn(() => ({})),
 }));
 
 jest.mock('../styles/Button.ss.styles', () => ({
   ButtonSv: jest.fn(() => ({})),
   IconContainerSv: jest.fn(() => ({})),
-  styles: { contentContainer: {}, stringContainer: {}, pointerEventsNone: {} },
+  styles: { contentContainer: {}, pointerEventsNone: {}, stringContainer: {} },
 }));
 
 jest.mock('../styles/Button.tw.styles', () => ({
   ButtonTv: jest.fn(() => ''),
   IconPositionTv: jest.fn(() => ''),
-  twStyles: { contentContainer: '', stringContainer: '', pointerEventsNone: '' },
+  twStyles: { contentContainer: '', pointerEventsNone: '', stringContainer: '' },
 }));
 
 // Test components

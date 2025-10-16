@@ -296,15 +296,28 @@ export type PhoneNumberInputOnError = {
  * Props for the PhoneNumberInput component
  */
 export type PhoneNumberInputProps = {
-  /** List of allowed country codes */
+  /** List of allowed country codes. Common options:
+   * - `'FR'` (France) | `'US'` (USA) | `'GB'` (UK) | `'DE'` (Germany) | `'IT'` (Italy)
+   * - `'ES'` (Spain) | `'PT'` (Portugal) | `'BE'` (Belgium) | `'CH'` (Switzerland) | `'CA'` (Canada)
+   * - `'JP'` (Japan) | `'CN'` (China) | `'IN'` (India) | `'BR'` (Brazil) | `'AU'` (Australia)
+   * Full list of ISO 3166-1 alpha-2 country codes is available in the type definition.
+   */
   allowedCountries?: PhoneNumberInputCountryCodesProps['code'][];
-  /** Default country code */
+  /** Default country code. Common options:
+   * - `'FR'` (France) | `'US'` (USA) | `'GB'` (UK) | `'DE'` (Germany) | `'IT'` (Italy)
+   * - `'ES'` (Spain) | `'PT'` (Portugal) | `'BE'` (Belgium) | `'CH'` (Switzerland) | `'CA'` (Canada)
+   * - `'JP'` (Japan) | `'CN'` (China) | `'IN'` (India) | `'BR'` (Brazil) | `'AU'` (Australia)
+   * Full list of ISO 3166-1 alpha-2 country codes is available in the type definition.
+   */
   defaultCountry?: PhoneNumberInputCountryCodesProps['code'];
   /** Callback when country changes */
   onCountryChange?: (country: PhoneNumberInputCountryCodesProps) => void;
   /** Callback when phone number changes */
   onPhoneNumberChange?: (phoneNumber: PhoneNumberInputOnPhoneNumberChange) => void;
-  /** Language for localization */
+  /** Language for localization :
+   * - 'fr' for French
+   * - 'en' for English
+   */
   language?: 'fr' | 'en';
   /** Callback when error occurs */
   onError?: (error: PhoneNumberInputOnError) => void;

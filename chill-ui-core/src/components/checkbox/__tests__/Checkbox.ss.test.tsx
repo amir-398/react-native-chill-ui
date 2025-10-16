@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react-native';
+
 import Checkbox from '../components/Checkbox.ss';
 
 // Mocks
@@ -31,15 +32,15 @@ describe('Checkbox Component (StyleSheet)', () => {
 
   it('should render with label and controlled mode', () => {
     const onCheckedChangeMock = jest.fn();
-    const { root } = render(<Checkbox label="Controlled" isChecked={true} onCheckedChange={onCheckedChangeMock} />);
+    const { root } = render(<Checkbox label="Controlled" isChecked onCheckedChange={onCheckedChangeMock} />);
     expect(root).toBeTruthy();
   });
 
   it('should render with disabled and checked states', () => {
-    const { root: disabled } = render(<Checkbox label="Disabled" isDisabled={true} />);
+    const { root: disabled } = render(<Checkbox label="Disabled" isDisabled />);
     expect(disabled).toBeTruthy();
 
-    const { root: checked } = render(<Checkbox label="Checked" isChecked={true} />);
+    const { root: checked } = render(<Checkbox label="Checked" isChecked />);
     expect(checked).toBeTruthy();
   });
 
@@ -52,12 +53,12 @@ describe('Checkbox Component (StyleSheet)', () => {
   });
 
   it('should render with custom colors and label behavior', () => {
-    const { root } = render(<Checkbox label="Custom" checkedColor="#FF0000" isLabelPressable={true} />);
+    const { root } = render(<Checkbox label="Custom" checkedColor="#FF0000" isLabelPressable />);
     expect(root).toBeTruthy();
   });
 
   it('should render with custom style', () => {
-    const { root } = render(<Checkbox label="Custom" checkedStyle={{ borderWidth: 2 }} isChecked={true} />);
+    const { root } = render(<Checkbox label="Custom" checkedStyle={{ borderWidth: 2 }} isChecked />);
     expect(root).toBeTruthy();
   });
 });

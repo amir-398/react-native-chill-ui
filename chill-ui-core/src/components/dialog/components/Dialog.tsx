@@ -5,9 +5,15 @@ import { PropsWithChildren } from 'react';
 import { DialogProvider } from './DialogContext';
 
 /**
- * Root Dialog component that provides context for all dialog sub-components.
- * Must wrap all dialog-related components.
- * Automatically manages dialog state and provides context for all sub-components.
+ * The `<Dialog />` component provides context for all dialog sub-components.
+ * Must wrap all dialog-related components and automatically manages dialog state.
+ *
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { Dialog } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
@@ -23,11 +29,10 @@ import { DialogProvider } from './DialogContext';
  *
  * @param children - Dialog content and triggers
  * @param defaultOpen - Initial open state for uncontrolled mode
- * @param open - Controlled open state
- * @param onOpenChange - Callback when open state changes
- * @param onOpen - Callback when dialog opens
  * @param onClose - Callback when dialog closes
- * @returns Dialog context provider component
+ * @param onOpen - Callback when dialog opens
+ * @param onOpenChange - Callback when open state changes
+ * @param open - Controlled open state
  */
 export function Dialog({
   children,

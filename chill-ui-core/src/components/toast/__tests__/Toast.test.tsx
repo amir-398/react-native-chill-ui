@@ -1,18 +1,19 @@
-import { render, screen } from '@testing-library/react-native';
-import { ToastProvider } from '../components/ToastProvider';
 import { View, Text } from 'react-native';
+import { render, screen } from '@testing-library/react-native';
+
+import { ToastProvider } from '../components/ToastProvider';
 
 // Mock SafeAreaProvider
 jest.mock('react-native-safe-area-context', () => ({
   SafeAreaProvider: ({ children }: any) => children,
-  useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }),
+  useSafeAreaInsets: () => ({ bottom: 0, left: 0, right: 0, top: 0 }),
 }));
 
 // Mocks
 jest.mock('../../../utils', () => ({
   classNameHandler: jest.fn(() => ({})),
-  styleHandler: jest.fn(() => ({})),
   cn: jest.fn((...args) => args.filter(Boolean).join(' ')),
+  styleHandler: jest.fn(() => ({})),
 }));
 
 jest.mock('../../../components/box', () => ({
@@ -101,8 +102,8 @@ describe('Toast', () => {
       success: {
         backgroundColor: '#10B981',
         iconProps: { color: '#FFFFFF' },
-        titleStringProps: { color: '#FFFFFF' },
         messageStringProps: { color: '#FFFFFF' },
+        titleStringProps: { color: '#FFFFFF' },
       },
     };
 
@@ -119,29 +120,29 @@ describe('Toast', () => {
 
   it('supports multiple custom variants', () => {
     const customVariants = {
-      success: {
-        backgroundColor: '#10B981',
-        iconProps: { color: '#FFFFFF' },
-        titleStringProps: { color: '#FFFFFF' },
-        messageStringProps: { color: '#FFFFFF' },
-      },
       error: {
         backgroundColor: '#EF4444',
         iconProps: { color: '#FFFFFF' },
-        titleStringProps: { color: '#FFFFFF' },
         messageStringProps: { color: '#FFFFFF' },
-      },
-      warning: {
-        backgroundColor: '#F59E0B',
-        iconProps: { color: '#FFFFFF' },
         titleStringProps: { color: '#FFFFFF' },
-        messageStringProps: { color: '#FFFFFF' },
       },
       info: {
         backgroundColor: '#3B82F6',
         iconProps: { color: '#FFFFFF' },
-        titleStringProps: { color: '#FFFFFF' },
         messageStringProps: { color: '#FFFFFF' },
+        titleStringProps: { color: '#FFFFFF' },
+      },
+      success: {
+        backgroundColor: '#10B981',
+        iconProps: { color: '#FFFFFF' },
+        messageStringProps: { color: '#FFFFFF' },
+        titleStringProps: { color: '#FFFFFF' },
+      },
+      warning: {
+        backgroundColor: '#F59E0B',
+        iconProps: { color: '#FFFFFF' },
+        messageStringProps: { color: '#FFFFFF' },
+        titleStringProps: { color: '#FFFFFF' },
       },
     };
 
@@ -161,8 +162,8 @@ describe('Toast', () => {
       success: {
         backgroundColor: '#10B981',
         iconProps: { color: '#FFFFFF' },
-        titleStringProps: { color: '#FFFFFF' },
         messageStringProps: { color: '#FFFFFF' },
+        titleStringProps: { color: '#FFFFFF' },
       },
     };
 

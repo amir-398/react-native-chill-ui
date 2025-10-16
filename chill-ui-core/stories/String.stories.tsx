@@ -1,84 +1,21 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { action } from '@storybook/addon-actions';
+import { fn } from 'storybook/test';
 
 import { String } from '../src/components/string';
 import UiPresentation from './storybook/UiPresentation';
 
 const meta: Meta<typeof String> = {
+  args: {
+    colorVariant: 'primary',
+  },
   argTypes: {
-    className: {
-      control: 'text',
-      description: 'Additional CSS classes',
-    },
-    color: {
-      control: 'color',
-      description: 'Custom color override',
-    },
     colorVariant: {
-      control: 'select',
-      options: [
-        'primary',
-        'secondary',
-        'tertiary',
-        'success',
-        'warning',
-        'error',
-        'danger',
-        'info',
-        'dark',
-        'light',
-        'white',
-        'disabled',
-        'inverted',
-        'muted',
-        'neutral',
-      ],
-    },
-    font: {
-      control: 'select',
-      options: ['primary', 'secondary', 'tertiary'],
-    },
-    numberOfLines: {
-      control: 'number',
-    },
-    position: {
-      control: 'select',
-      options: ['left', 'center', 'right'],
-    },
-    size: {
-      control: 'select',
-      options: ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl', '8xl', '9xl'],
-    },
-    style: {
-      control: 'object',
-      description: 'Inline styles',
-    },
-    useFastText: {
-      control: 'boolean',
-    },
-    variant: {
-      control: 'select',
-      description: 'The variant of the string',
-      options: [
-        'body-1',
-        'body-2',
-        'body-3',
-        'body-sm',
-        'body-xs',
-        'title-1',
-        'title-2',
-        'title-3',
-        'title-4',
-        'title-5',
-        'title-6',
-        'title-7',
-        'title-8',
-      ],
-    },
-    weight: {
-      control: 'select',
-      options: ['regular', 'light', 'medium', 'semiBold', 'bold', 'extraLight', 'extraBold', 'thin', 'italic'],
+      table: {
+        defaultValue: {
+          summary: 'primary',
+        },
+      },
     },
   },
   component: String,
@@ -89,6 +26,7 @@ const meta: Meta<typeof String> = {
       </UiPresentation>
     ),
   ],
+  tags: ['autodocs'],
   title: 'UI/String',
 };
 
@@ -113,7 +51,7 @@ export const Clickable: Story = {
     children: 'Click me!',
     colorVariant: 'primary',
     font: 'primary',
-    onPress: action('onPress'),
+    onPress: fn(),
     position: 'left',
     size: 'md',
     useFastText: true,
@@ -127,7 +65,7 @@ export const ClickableTitle: Story = {
     children: 'Clickable Title',
     colorVariant: 'primary',
     font: 'primary',
-    onPress: action('onPress'),
+    onPress: fn(),
     position: 'left',
     size: 'xl',
     useFastText: true,
@@ -181,7 +119,6 @@ export const BoldText: Story = {
     colorVariant: 'primary',
     size: 'lg',
     variant: 'body-1',
-    weight: 'bold',
   },
 };
 

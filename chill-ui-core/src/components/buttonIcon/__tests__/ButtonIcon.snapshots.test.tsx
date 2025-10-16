@@ -1,15 +1,16 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { act } from '@testing-library/react-native';
+
 import ButtonIcon from '../components/buttonIcon';
 
 // Mocks
 jest.mock('../../../utils', () => ({
-  classNamePropsHandler: jest.fn(),
-  colorVariantPropsHandler: jest.fn(),
   classNameHandler: jest.fn(() => ({})),
-  styleHandler: jest.fn(() => ({})),
+  classNamePropsHandler: jest.fn(),
   cn: jest.fn((...args) => args.filter(Boolean).join(' ')),
+  colorVariantPropsHandler: jest.fn(),
+  styleHandler: jest.fn(() => ({})),
 }));
 
 jest.mock('../../../components/box', () => ({

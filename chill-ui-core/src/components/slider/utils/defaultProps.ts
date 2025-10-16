@@ -1,7 +1,7 @@
 export const sliderDefaultProps = {
   animateTransitions: true,
   animationType: 'timing' as const,
-  animationTypeThumb: 'extend',
+  animationTypeThumb: 'extend' as const,
   disabled: false,
   index: 0,
   maximumValue: 1,
@@ -10,4 +10,5 @@ export const sliderDefaultProps = {
   step: 0,
   touchSize: 40,
   trackClickable: true,
+  value: [50],
 };

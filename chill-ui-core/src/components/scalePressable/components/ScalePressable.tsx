@@ -9,16 +9,18 @@ import { twStyles } from '../styles/ScalePressable.tw.styles';
 import { scalePressableDefaultProps } from '../utils/defaultProps';
 
 /**
- * ScalePressable component that provides a scale effect on press.
+ * The `<ScalePressable />` component provides a scale effect on press.
+ * When pressed, the component scales down to give a tactile feedback effect.
  *
- * When pressed, the component scales down to give a tactile feedback effect,
- * making it feel like you're physically pressing a button.
-
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { ScalePressable } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic usage with scale effect
  * <ScalePressable onPress={() => console.log('Pressed!')}>
  *   <Box className="p-4 bg-blue-500 rounded-lg">
  *     <String color="white">Press me</String>
@@ -28,12 +30,10 @@ import { scalePressableDefaultProps } from '../utils/defaultProps';
  *
  * @param children - Child components to render with scale effect (required)
  * @param className - Custom CSS classes for styling the container (NativeWind)
- * @param style - Style object for the pressable container
- * @param scaleValue - Scale factor when pressed (default: 0.95)
  * @param duration - Animation duration in milliseconds (default: 100)
  * @param onPress - Callback function called when the component is pressed
- * @returns ScalePressable component with scale animation
- * @throws Error if no children are provided
+ * @param scaleValue - Scale factor when pressed (default: 0.95)
+ * @param style - Style object for the pressable container
  */
 export const ScalePressable = forwardRef<any, PropsWithChildren<ScalePressablePropsTw>>((props, ref) => {
   classNamePropsHandler(props, 'ScalePressable');

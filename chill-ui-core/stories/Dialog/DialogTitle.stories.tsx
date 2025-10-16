@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { Button } from '@components/button';
-import { String } from '@components/string';
-import { Box } from '@components/box';
 import {
+  String,
+  Button,
+  Box,
   Dialog,
   DialogTrigger,
   DialogContent,
@@ -11,21 +11,16 @@ import {
   DialogTitle,
   DialogFooter,
   DialogClose,
-} from '@components/dialog';
+} from '../../src/components';
 
 const meta: Meta<typeof DialogTitle> = {
-  title: 'Components/Dialog/DialogTitle',
-  component: DialogTitle,
-  parameters: {
-    layout: 'centered',
-  },
-  tags: ['autodocs'],
   argTypes: {
     className: {
       control: 'text',
       description: 'Custom CSS classes (NativeWind only)',
     },
   },
+  component: DialogTitle,
   decorators: [
     Story => (
       <Dialog>
@@ -46,6 +41,11 @@ const meta: Meta<typeof DialogTitle> = {
       </Dialog>
     ),
   ],
+  parameters: {
+    layout: 'centered',
+  },
+  tags: ['autodocs'],
+  title: 'Components/Dialog/DialogTitle',
 };
 
 export default meta;
@@ -76,6 +76,26 @@ export const MultilineTitle: Story = {
 };
 
 export const DifferentSizes: Story = {
+  decorators: [
+    (StoryBox: any) => (
+      <Dialog>
+        <DialogTrigger>
+          <Button title="Open Dialog" />
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader hasCloseMark>
+            <StoryBox />
+          </DialogHeader>
+          <String>Compare different title sizes above.</String>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button title="Close" />
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    ),
+  ],
   render: () => (
     <Box className="flex flex-col gap-4">
       <String className="text-lg font-semibold">Different Title Sizes</String>
@@ -88,24 +108,4 @@ export const DifferentSizes: Story = {
       </Box>
     </Box>
   ),
-  decorators: [
-    Story => (
-      <Dialog>
-        <DialogTrigger>
-          <Button title="Open Dialog" />
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader hasCloseMark>
-            <Story />
-          </DialogHeader>
-          <String>Compare different title sizes above.</String>
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button title="Close" />
-            </DialogClose>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    ),
-  ],
 };

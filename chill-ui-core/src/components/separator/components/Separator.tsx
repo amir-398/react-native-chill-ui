@@ -6,19 +6,23 @@ import { styles } from '../styles/Separator.ss.styles';
 import { twStyles } from '../styles/Separator.tw.styles';
 
 /**
- * Separator component that displays a horizontal line for visual separation.
+ * The `<Separator />` component displays a horizontal line for visual separation.
  * A simple and lightweight component for creating visual dividers between content sections.
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ *
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { Separator } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic separator
  * <Separator />
  * ```
  *
- * @param className - Custom CSS classes for styling the separator
+ * @param className - Custom CSS classes for styling the separator (NativeWind)
  * @param style - Style object for the separator
- * @param viewProps - Rest of the view props
  */
 export function Separator(props: SeparatorPropsTw) {
   classNamePropsHandler(props, 'Separator');

@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react-native';
+import { render, screen } from '@testing-library/react-native';
 
 import Icon from '../components/Icon';
 
@@ -18,19 +18,21 @@ jest.mock('../../../utils/hybrid/propsHandlers', () => ({
 }));
 
 // Mock du composant CustomIcon
-jest.mock('../components/CustomIcon', () => {
-  return function MockCustomIcon({ name, color, style, className }: any) {
-    return (
-      <div testID={`icon-${name}`} style={style} className={className} data-color={color}>
-        {name}
-      </div>
-    );
-  };
-});
+jest.mock(
+  '../components/CustomIcon',
+  () =>
+    function MockCustomIcon({ className, color, name, style }: any) {
+      return (
+        <div testID={`icon-${name}`} style={style} className={className} data-color={color}>
+          {name}
+        </div>
+      );
+    },
+);
 
 // Mock du composant RipplePressable
 jest.mock('../../ripplePressable', () => ({
-  RipplePressable: ({ children, onPress, style, className, ...props }: any) => (
+  RipplePressable: ({ children, className, onPress, style, ...props }: any) => (
     <div testID="ripple-pressable" onPress={onPress} style={style} className={className} {...props}>
       {children}
     </div>

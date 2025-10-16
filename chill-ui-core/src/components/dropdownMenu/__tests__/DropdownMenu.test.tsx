@@ -63,27 +63,27 @@ jest.mock('../../../utils', () => ({
   cn: jest.fn((...args) => args.filter(Boolean).join(' ')),
   isNativeWindInstalled: jest.fn(() => false),
   isString: jest.fn(value => typeof value === 'string'),
-  styleHandler: jest.fn(() => ({})),
-  SlotTw: ({ children, ...props }: any) => <div {...props}>{children}</div>,
   SlotSs: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+  SlotTw: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+  styleHandler: jest.fn(() => ({})),
 }));
 
 jest.mock('../../../components/box', () => ({
   Box: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-  BoxTw: ({ children, ...props }: any) => <div {...props}>{children}</div>,
   BoxSs: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+  BoxTw: ({ children, ...props }: any) => <div {...props}>{children}</div>,
 }));
 
 jest.mock('../../../components/string', () => ({
-  StringTw: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-  StringSs: ({ children, ...props }: any) => <div {...props}>{children}</div>,
   String: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+  StringSs: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+  StringTw: ({ children, ...props }: any) => <div {...props}>{children}</div>,
 }));
 
 jest.mock('../../../components/inputDropdown', () => ({
   InputDropdownModal: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-  InputDropdownModalTw: ({ children, ...props }: any) => <div {...props}>{children}</div>,
   InputDropdownModalSs: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+  InputDropdownModalTw: ({ children, ...props }: any) => <div {...props}>{children}</div>,
 }));
 
 jest.mock('../components/DropdownMenuContext', () => ({
@@ -127,18 +127,15 @@ jest.mock('../styles/DropdownMenu.tw.styles', () => ({
 }));
 
 jest.mock('../utils/defaultProps', () => ({
-  dropdownMenuDefaultProps: {
-    defaultOpen: false,
-  },
-  dropdownMenuTriggerDefaultProps: {
-    as: 'pressable',
-  },
   dropdownMenuContentDefaultProps: {
     align: 'start',
     closeWhenInteractedOutside: true,
     offsetX: 0,
     offsetY: 5,
     side: 'bottom',
+  },
+  dropdownMenuDefaultProps: {
+    defaultOpen: false,
   },
   dropdownMenuItemDefaultProps: {
     as: 'touchable-highlight',
@@ -148,6 +145,9 @@ jest.mock('../utils/defaultProps', () => ({
   },
   dropdownMenuLabelDefaultProps: {},
   dropdownMenuSeparatorDefaultProps: {},
+  dropdownMenuTriggerDefaultProps: {
+    as: 'pressable',
+  },
 }));
 
 describe('DropdownMenu Component (Hybrid)', () => {
@@ -167,7 +167,7 @@ describe('DropdownMenu Component (Hybrid)', () => {
 
   it('should render with controlled open state', () => {
     const { root } = render(
-      <DropdownMenu open={true} onOpenChange={jest.fn()}>
+      <DropdownMenu open onOpenChange={jest.fn()}>
         <DropdownMenuTrigger>
           <button>Open Menu</button>
         </DropdownMenuTrigger>
@@ -181,7 +181,7 @@ describe('DropdownMenu Component (Hybrid)', () => {
 
   it('should render with defaultOpen prop', () => {
     const { root } = render(
-      <DropdownMenu defaultOpen={true}>
+      <DropdownMenu defaultOpen>
         <DropdownMenuTrigger>
           <button>Open Menu</button>
         </DropdownMenuTrigger>
@@ -229,7 +229,7 @@ describe('DropdownMenu Component (Hybrid)', () => {
 
   it('should render DropdownMenuContent with scrolling props', () => {
     const { root } = render(
-      <DropdownMenuContent maxHeight={150} minHeight={50} hasScroll={true} hasAnimation={true}>
+      <DropdownMenuContent maxHeight={150} minHeight={50} hasScroll hasAnimation>
         <DropdownMenuItem>Item 1</DropdownMenuItem>
       </DropdownMenuContent>,
     );
@@ -238,7 +238,7 @@ describe('DropdownMenu Component (Hybrid)', () => {
 
   it('should render DropdownMenuContent with close behavior props', () => {
     const { root } = render(
-      <DropdownMenuContent closeDropdownWhenSelectedItem={true} closeWhenInteractedOutside={true}>
+      <DropdownMenuContent closeDropdownWhenSelectedItem closeWhenInteractedOutside>
         <DropdownMenuItem>Item 1</DropdownMenuItem>
       </DropdownMenuContent>,
     );
@@ -401,7 +401,7 @@ describe('DropdownMenu Component (Hybrid)', () => {
   });
 
   it('should handle closeOnSelect prop variations', () => {
-    const { root: closeOnSelect } = render(<DropdownMenuItem closeOnSelect={true}>Close on select</DropdownMenuItem>);
+    const { root: closeOnSelect } = render(<DropdownMenuItem closeOnSelect>Close on select</DropdownMenuItem>);
     expect(closeOnSelect).toBeTruthy();
 
     const { root: noCloseOnSelect } = render(
@@ -477,7 +477,7 @@ describe('DropdownMenu Component (Hybrid)', () => {
           offsetX={20}
           offsetY={10}
           maxHeight={300}
-          hasScroll={true}
+          hasScroll
           closeWhenInteractedOutside={false}
         >
           <DropdownMenuLabel>Account Settings</DropdownMenuLabel>

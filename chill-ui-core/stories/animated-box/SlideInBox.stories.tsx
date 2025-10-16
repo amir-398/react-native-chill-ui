@@ -1,39 +1,61 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { String } from '../../src/components';
 import UiPresentation from '../storybook/UiPresentation';
-import SlideInBox from '../../src/components/animatedBox/components/SlideInBox/SlideInBox';
+import { SlideInBox, String } from '../../src/components';
 
 const meta = {
+  args: {
+    autoStart: false,
+    delay: 0,
+    duration: 1000,
+    infiniteLoop: false,
+    useFastView: true,
+  },
   argTypes: {
-    autoStart: {
-      control: 'boolean',
-      description: 'Whether to start the animation automatically',
+    AnimatedViewProps: {
+      control: 'object',
+      table: {
+        type: {
+          summary: 'Animated.ViewProps',
+        },
+      },
     },
-    className: {
-      control: 'text',
-      description: 'Additional className for the slide-in box',
+    autoStart: {
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
     },
     delay: {
-      control: 'number',
-      description: 'Delay before starting the slide-in animation',
-    },
-    direction: {
-      control: 'select',
-      description: 'Direction from which to slide in',
-      options: ['left', 'right', 'up', 'down'],
-    },
-    distance: {
-      control: 'number',
-      description: 'Distance to slide from in pixels',
+      table: {
+        defaultValue: {
+          summary: 0,
+        },
+      },
     },
     duration: {
-      control: 'number',
-      description: 'Duration of the slide-in animation',
+      table: {
+        defaultValue: {
+          summary: 1000,
+        },
+      },
     },
     infiniteLoop: {
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
+    },
+    useFastView: {
       control: 'boolean',
-      description: 'Whether to loop the animation infinitely',
+      description: 'Use optimized RCTView component for better performance',
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
     },
   },
   component: SlideInBox,
@@ -48,103 +70,85 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  title: 'Components/AnimatedBox/SlideInBox',
+  title: 'LAYOUT/AnimatedBox/SlideInBox',
 } satisfies Meta<typeof SlideInBox>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const FromLeft: Story = {
+export const Default: Story = {
   args: {
     autoStart: true,
-    children: (
-      <String size="lg" className="text-center" color="black">
-        Slide from Left
-      </String>
-    ),
     className: 'rounded-lg bg-blue-100 p-6',
     direction: 'left',
   },
+  render: (args: any) => (
+    <SlideInBox {...args}>
+      <String size="lg" className="text-center" color="black">
+        Slide from Left
+      </String>
+    </SlideInBox>
+  ),
 };
 
 export const FromRight: Story = {
   args: {
     autoStart: true,
-    children: (
-      <String size="lg" className="text-center" color="black">
-        Slide from Right
-      </String>
-    ),
     className: 'rounded-lg  bg-blue-100 p-6',
     direction: 'right',
   },
+  render: (args: any) => (
+    <SlideInBox {...args}>
+      <String size="lg" className="text-center" color="black">
+        Slide from Right
+      </String>
+    </SlideInBox>
+  ),
 };
 
 export const FromTop: Story = {
   args: {
     autoStart: true,
-    children: (
-      <String size="lg" className="text-center" color="black">
-        Slide from Top
-      </String>
-    ),
     className: 'rounded-lg  bg-blue-100 p-6',
     direction: 'up',
   },
+  render: (args: any) => (
+    <SlideInBox {...args}>
+      <String size="lg" className="text-center" color="black">
+        Slide from Top
+      </String>
+    </SlideInBox>
+  ),
 };
 
 export const FromBottom: Story = {
   args: {
     autoStart: true,
-    children: (
-      <String size="lg" className="text-center" color="black">
-        Slide from Bottom
-      </String>
-    ),
     className: 'rounded-lg bg-blue-100 p-6',
     direction: 'down',
   },
-};
-
-export const CustomDistance: Story = {
-  args: {
-    autoStart: true,
-    children: (
+  render: (args: any) => (
+    <SlideInBox {...args}>
       <String size="lg" className="text-center" color="black">
-        Long Distance Slide
+        Slide from Bottom
       </String>
-    ),
-    className: 'rounded-lg  bg-blue-100 p-6',
-    direction: 'left',
-    distance: 200,
-  },
-};
-
-export const Fast: Story = {
-  args: {
-    autoStart: true,
-    children: (
-      <String size="lg" className="text-center" color="black">
-        Fast Slide
-      </String>
-    ),
-    className: 'rounded-lg  bg-blue-100 p-6',
-    direction: 'left',
-    duration: 300,
-  },
+    </SlideInBox>
+  ),
 };
 
 export const InfiniteLoop: Story = {
   args: {
     autoStart: true,
-    children: (
-      <String size="lg" className="text-center" color="black">
-        Infinite Slide Loop
-      </String>
-    ),
     className: 'rounded-lg  bg-blue-100 p-6',
     direction: 'left',
     duration: 1000,
     infiniteLoop: true,
   },
+  render: (args: any) => (
+    <SlideInBox {...args}>
+      <String size="lg" className="text-center" color="black">
+        Infinite Slide Loop
+      </String>
+    </SlideInBox>
+  ),
 };

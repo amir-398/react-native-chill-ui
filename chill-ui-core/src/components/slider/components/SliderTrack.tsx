@@ -1,12 +1,12 @@
+import { PropsWithChildren, memo } from 'react';
 import { Box } from '@components/box';
 import { SliderTrackPropsTw } from '@types';
-import { PropsWithChildren, useEffect } from 'react';
 import { cn, classNameHandler, classNamePropsHandler, styleHandler } from '@utils';
 
 import { styles } from '../styles/Slider.ss.styles';
 import { twStyles } from '../styles/Slider.tw.styles';
+import { useSliderTrack } from '../hooks/useSliderTrack';
 import { sliderDefaultProps } from '../utils/defaultProps';
-import { useSliderActions } from '../context/SliderContext';
 
 /**
  * Track container for the slider
@@ -29,14 +29,10 @@ import { useSliderActions } from '../context/SliderContext';
  * @returns SliderTrack component serving as the slider background
  * @throws Error if used outside of SliderProvider context
  */
-export function SliderTrack(props: PropsWithChildren<SliderTrackPropsTw>) {
+function SliderTrackComponent(props: PropsWithChildren<SliderTrackPropsTw>) {
   classNamePropsHandler(props, 'SliderTrack');
   const { children, className, clickable = sliderDefaultProps.trackClickable, style, ...rest } = props;
-  const { measureTrack, setTrackClickable } = useSliderActions();
-
-  useEffect(() => {
-    setTrackClickable(clickable);
-  }, [clickable, setTrackClickable]);
+  const { measureTrack } = useSliderTrack(clickable);
 
   return (
     <Box
@@ -51,4 +47,6 @@ export function SliderTrack(props: PropsWithChildren<SliderTrackPropsTw>) {
   );
 }
 
-SliderTrack.displayName = 'SliderTrack';
+SliderTrackComponent.displayName = 'SliderTrack';
+
+export const SliderTrack = memo(SliderTrackComponent);

@@ -1,17 +1,17 @@
 import { render } from '@testing-library/react-native';
 
-import AutocompleteDropdown from '../components/AutocompleteDropdown.tw';
+import { AutocompleteDropdownTw as AutocompleteDropdown } from '../index';
 
 // Mock dependencies with Tailwind suffixes
 jest.mock('../../../utils', () => ({
   cn: jest.fn((...args) => args.filter(Boolean).join(' ')),
-  get: jest.fn((obj, path) => obj?.[path]),
-  isEqual: jest.fn((a, b) => a === b),
   debounce: jest.fn(fn => {
     const debounced = (...args: any[]) => fn(...args);
     debounced.cancel = jest.fn();
     return debounced;
   }),
+  get: jest.fn((obj, path) => obj?.[path]),
+  isEqual: jest.fn((a, b) => a === b),
 }));
 
 jest.mock('../../../components/box', () => ({
@@ -27,13 +27,13 @@ jest.mock('../../../components/string', () => ({
 }));
 
 jest.mock('../../../components/inputDropdown', () => ({
-  InputDropdownTw: ({ visible, data, onSelectItem, DropdownItemRender }: any) => (
+  InputDropdownTw: ({ data, DropdownItemRender, onSelectItem, visible }: any) => (
     <div data-testid="input-dropdown" data-visible={visible}>
       {visible &&
         data.map((item: any, index: number) => (
-          <div key={index} onClick={() => onSelectItem(item)}>
+          <button key={index} type="button" onClick={() => onSelectItem(item)}>
             {DropdownItemRender ? DropdownItemRender(item) : item.name}
-          </div>
+          </button>
         ))}
     </div>
   ),
@@ -72,9 +72,9 @@ jest.mock('../hooks/useGetDropdownPosition', () =>
 
 describe('AutocompleteDropdown Component (Tailwind)', () => {
   const mockData = [
-    { id: 1, name: 'Apple', category: 'Fruit' },
-    { id: 2, name: 'Banana', category: 'Fruit' },
-    { id: 3, name: 'Carrot', category: 'Vegetable' },
+    { category: 'Fruit', id: 1, name: 'Apple' },
+    { category: 'Fruit', id: 2, name: 'Banana' },
+    { category: 'Vegetable', id: 3, name: 'Carrot' },
   ];
 
   it('should render without crashing', () => {
@@ -134,7 +134,7 @@ describe('AutocompleteDropdown Component (Tailwind)', () => {
 
   it('should handle loading state', () => {
     const { root } = render(
-      <AutocompleteDropdown dataSet={mockData} valueField="name" onSelectItem={jest.fn()} isLoading={true} />,
+      <AutocompleteDropdown dataSet={mockData} valueField="name" onSelectItem={jest.fn()} isLoading />,
     );
     expect(root).toBeTruthy();
   });
@@ -157,7 +157,7 @@ describe('AutocompleteDropdown Component (Tailwind)', () => {
         dataSet={mockData}
         valueField="name"
         onSelectItem={jest.fn()}
-        hasHighlightString={true}
+        hasHighlightString
         highlightProps={{ highlightTerm: 'App' }}
       />,
     );
@@ -171,9 +171,9 @@ describe('AutocompleteDropdown Component (Tailwind)', () => {
         valueField="name"
         searchField="name"
         onSelectItem={jest.fn()}
-        closeModalWhenSelectedItem={true}
-        hasPerformSearch={true}
-        hasHighlightString={true}
+        closeModalWhenSelectedItem
+        hasPerformSearch
+        hasHighlightString
         maxHeight={300}
         minHeight={50}
         offsetX={10}

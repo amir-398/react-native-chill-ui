@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react-native';
+
 import { PlacesInput } from '../components/PlacesInput';
 
 // Mocks
@@ -87,7 +88,7 @@ describe('PlacesInput Snapshots', () => {
       <PlacesInput
         googleApiKey={mockGoogleApiKey}
         className="custom-class"
-        style={{ margin: 16, backgroundColor: '#fff' }}
+        style={{ backgroundColor: '#fff', margin: 16 }}
       />,
     );
     expect(tree).toMatchSnapshot();

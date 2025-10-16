@@ -1,11 +1,26 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
 import UiPresentation from '../storybook';
-import Chip from '../../src/components/chip';
-import String from '../../src/components/string';
-import { BoxAbsolute, BoxStack } from '../../src/components';
+import { Chip, BoxAbsolute, BoxStack } from '../../src/components';
 
 const meta: Meta<typeof BoxStack> = {
+  args: {
+    useFastView: true,
+  },
+  argTypes: {
+    useFastView: {
+      control: 'boolean',
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
+    },
+    ViewProps: {
+      description: 'Any other props accepted by the native `View` component',
+      type: 'object',
+    },
+  },
   component: BoxStack,
   decorators: [
     Story => (
@@ -18,7 +33,7 @@ const meta: Meta<typeof BoxStack> = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  title: 'Components/Box/BoxStack',
+  title: 'LAYOUT/Box/BoxStack',
 };
 
 export default meta;
@@ -30,7 +45,6 @@ export const Default: Story = {
       <BoxAbsolute className="right-2 top-2">
         <Chip>New</Chip>
       </BoxAbsolute>
-      <String className="p-4">Background</String>
     </BoxStack>
   ),
 };

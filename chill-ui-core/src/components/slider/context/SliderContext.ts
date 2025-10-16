@@ -2,35 +2,39 @@ import { createContext, useContext } from 'react';
 import { Animated, PanResponderInstance } from 'react-native';
 
 export interface SliderStateContextValue {
-  step: number;
-  disabled: boolean;
-  isSliding: boolean;
   allMeasured: boolean;
-  minimumValue: number;
+  containerSize: { width: number; height: number };
+  disabled: boolean;
+  interpolatedThumbValues: Animated.AnimatedInterpolation<number>[];
+  interpolatedTrackValues: Animated.AnimatedInterpolation<number>[];
+  isSliding: boolean;
   maximumValue: number;
+  minimumValue: number;
+  orientation: 'horizontal' | 'vertical';
+  step: number;
+  thumbSize: { width: number; height: number };
+  thumbTouchSize: { width: number; height: number };
   trackClickable: boolean;
   values: (number | Animated.Value)[];
-  orientation: 'horizontal' | 'vertical';
   valueVisibleStyle: { opacity?: number };
-  interpolatedThumbValues: Animated.Value[];
-  interpolatedTrackValues: Animated.Value[];
-  thumbSize: { width: number; height: number };
-  containerSize: { width: number; height: number };
-  thumbTouchSize: { width: number; height: number };
 }
 
 export interface SliderActionsContextValue {
-  measureTrack: (e: any) => void;
-  measureThumb: (e: any) => void;
-  getMinimumTrackStyle: () => any;
-  measureContainer: (e: any) => void;
-  setThumbTouchSize: (size: number) => void;
-  panResponder: PanResponderInstance | null;
-  setTrackClickable: (clickable: boolean) => void;
+  getMinimumTrackStyle: () => {
+    left: Animated.Value | Animated.AnimatedAddition<number>;
+    width: Animated.AnimatedAddition<number>;
+    opacity?: number;
+  };
   getTouchOverflowSize: () => { width: number; height: number };
-  onValueChange?: (values: number[], activeThumbIndex: number) => void;
-  onSlidingStart?: (values: number[], activeThumbIndex: number) => void;
+  measureContainer: (e: { nativeEvent: { layout: { width: number; height: number } } }) => void;
+  measureThumb: (e: { nativeEvent: { layout: { width: number; height: number } } }) => void;
+  measureTrack: (e: { nativeEvent: { layout: { width: number; height: number } } }) => void;
   onSlidingComplete?: (values: number[], activeThumbIndex: number) => void;
+  onSlidingStart?: (values: number[], activeThumbIndex: number) => void;
+  onValueChange?: (values: number[], activeThumbIndex: number) => void;
+  panResponder: PanResponderInstance | null;
+  setThumbTouchSize: (size: number) => void;
+  setTrackClickable: (clickable: boolean) => void;
 }
 
 export const SliderStateContext = createContext<SliderStateContextValue>({
@@ -52,11 +56,17 @@ export const SliderStateContext = createContext<SliderStateContextValue>({
 });
 
 export const SliderActionsContext = createContext<SliderActionsContextValue>({
-  getMinimumTrackStyle: () => ({}),
+  getMinimumTrackStyle: () => ({
+    left: new Animated.Value(0),
+    width: new Animated.Value(0),
+  }),
   getTouchOverflowSize: () => ({ height: 40, width: 40 }),
   measureContainer: () => {},
   measureThumb: () => {},
   measureTrack: () => {},
+  onSlidingComplete: undefined,
+  onSlidingStart: undefined,
+  onValueChange: undefined,
   panResponder: null,
   setThumbTouchSize: () => {},
   setTrackClickable: () => {},

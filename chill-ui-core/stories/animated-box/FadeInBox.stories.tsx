@@ -1,34 +1,61 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { String } from '../../src/components';
+import { FadeInBox, String } from '../../src/components';
 import UiPresentation from '../storybook/UiPresentation';
-import FadeInBox from '../../src/components/animatedBox/components/FadeInBox/FadeInBox';
 
 const meta = {
+  args: {
+    autoStart: false,
+    delay: 0,
+    duration: 1000,
+    infiniteLoop: false,
+    useFastView: true,
+  },
   argTypes: {
-    autoStart: {
-      control: 'boolean',
-      description: 'Whether to start the animation automatically',
-    },
-    children: {
+    AnimatedViewProps: {
       control: 'object',
-      description: 'Content to display inside the fade-in box',
+      table: {
+        type: {
+          summary: 'Animated.ViewProps',
+        },
+      },
     },
-    className: {
-      control: 'text',
-      description: 'Additional className for the fade-in box',
+    autoStart: {
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
     },
     delay: {
-      control: 'number',
-      description: 'Delay before starting the fade-in animation',
+      table: {
+        defaultValue: {
+          summary: 0,
+        },
+      },
     },
     duration: {
-      control: 'number',
-      description: 'Duration of the fade-in animation',
+      table: {
+        defaultValue: {
+          summary: 1000,
+        },
+      },
     },
     infiniteLoop: {
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
+    },
+    useFastView: {
       control: 'boolean',
-      description: 'Whether to loop the animation infinitely',
+      description: 'Use optimized RCTView component for better performance',
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
     },
   },
   component: FadeInBox,
@@ -43,7 +70,7 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  title: 'Components/AnimatedBox/FadeInBox',
+  title: 'LAYOUT/AnimatedBox/FadeInBox',
 } satisfies Meta<typeof FadeInBox>;
 
 export default meta;
@@ -52,64 +79,73 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     autoStart: true,
-    children: (
+    className: 'rounded-lg bg-secondary p-6',
+  },
+  render: (args: any) => (
+    <FadeInBox {...args}>
       <String size="lg" className="text-center" color="black">
         Fade In
       </String>
-    ),
-    className: 'rounded-lg bg-secondary p-6',
-  },
+    </FadeInBox>
+  ),
 };
 
 export const Fast: Story = {
   args: {
     autoStart: true,
-    children: (
-      <String size="lg" className="text-center" color="black">
-        Fast Fade In
-      </String>
-    ),
     className: 'rounded-lg bg-secondary p-6',
     duration: 500,
   },
+  render: (args: any) => (
+    <FadeInBox {...args}>
+      <String size="lg" className="text-center" color="black">
+        Fast Fade In
+      </String>
+    </FadeInBox>
+  ),
 };
 
 export const Slow: Story = {
   args: {
     autoStart: true,
-    children: (
-      <String size="lg" className="text-center" color="black">
-        Slow Fade In
-      </String>
-    ),
     className: 'rounded-lg bg-secondary p-6',
     duration: 2000,
   },
+  render: (args: any) => (
+    <FadeInBox {...args}>
+      <String size="lg" className="text-center" color="black">
+        Slow Fade In
+      </String>
+    </FadeInBox>
+  ),
 };
 
 export const WithDelay: Story = {
   args: {
     autoStart: true,
-    children: (
-      <String size="lg" className="text-center" color="black">
-        Fade In with Delay
-      </String>
-    ),
     className: 'rounded-lg bg-secondary p-6',
     delay: 1000,
   },
+  render: (args: any) => (
+    <FadeInBox {...args}>
+      <String size="lg" className="text-center" color="black">
+        Fade In with Delay
+      </String>
+    </FadeInBox>
+  ),
 };
 
 export const InfiniteLoop: Story = {
   args: {
-    autoStart: true,
-    children: (
-      <String size="lg" className="text-center" color="black">
-        Infinite Fade Loop
-      </String>
-    ),
     className: 'rounded-lg bg-secondary p-6',
     duration: 1500,
     infiniteLoop: true,
   },
+  render: (args: any) => (
+    <FadeInBox {...args}>
+      <String size="lg" className="text-center" color="black">
+        Infinite Fade Loop
+      </String>
+    </FadeInBox>
+  ),
 };

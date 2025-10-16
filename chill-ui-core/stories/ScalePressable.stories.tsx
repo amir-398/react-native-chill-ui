@@ -1,36 +1,15 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 
 import { Box, String } from '../src/components';
 import UiPresentation from './storybook/UiPresentation';
-import ScalePressable from '../src/components/scalePressable/components/ScalePressable';
+import { ScalePressable } from '../src/components/scalePressable';
 
 const meta: Meta<typeof ScalePressable> = {
   argTypes: {
-    className: {
-      control: 'text',
-      description: 'Additional CSS classes',
-    },
-    disabled: {
-      control: 'boolean',
-      description: 'Whether the component is disabled',
-    },
-    duration: {
-      control: { max: 1000, min: 50, step: 25, type: 'range' },
-      description: 'Animation duration in milliseconds',
-    },
     onPress: {
       action: 'pressed',
-      description: 'Callback when pressed',
-    },
-    scaleValue: {
-      control: { max: 1, min: 0.5, step: 0.05, type: 'range' },
-      description: 'Scale factor when pressed',
-    },
-    style: {
-      control: 'object',
-      description: 'Inline styles',
     },
   },
   component: ScalePressable,

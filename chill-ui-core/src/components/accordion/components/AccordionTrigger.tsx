@@ -15,38 +15,29 @@ import { twStyles } from '../styles/Accordion.tw.styles';
 import { useAccordionItem } from './AccordionItemContext';
 
 /**
- * AccordionTrigger is the clickable header that toggles the accordion item.
+ * The `<AccordionTrigger />` component is the clickable header that toggles the accordion item.
  * Supports different trigger types (TouchableOpacity, Pressable, etc.) and custom styling.
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ *
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { AccordionTrigger } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
  * <AccordionTrigger as="TouchableOpacity">
  *   Is it accessible?
  * </AccordionTrigger>
- *
- * // Custom content
- * <AccordionTrigger>
- *   <Box className="flex-row items-center">
- *     <Icon name="user" />
- *     <String>Custom Trigger</String>
- *   </Box>
- * </AccordionTrigger>
- *
- * // Using asChild to pass props to child component
- * <AccordionTrigger asChild>
- *   <TouchableOpacity>
- *     <String>Custom Button</String>
- *   </TouchableOpacity>
- * </AccordionTrigger>
  * ```
  *
- * @param as - Component type to use for the trigger (default: TouchableOpacity)
+ * @param as - Component type to use for the trigger: 'touchable-opacity' | 'pressable' | 'ripple-pressable' (default: 'touchable-opacity')
  * @param asChild - Use the child component as the trigger element instead of wrapping it
  * @param children - Content to display in the trigger
- * @param className - Custom CSS classes
+ * @param className - Custom CSS classes for the trigger container (NativeWind)
  * @param stringProps - Props to pass to String component when children is a string
- * @param props - Additional TouchableOpacityProps
+ * @param style - Style object for the trigger container
  */
 export default function AccordionTrigger(props: PropsWithChildren<AccordionTriggerPropsTw>) {
   classNamePropsHandler(props, 'AccordionTrigger');

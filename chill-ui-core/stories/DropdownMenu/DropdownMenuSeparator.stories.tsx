@@ -1,8 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { Box } from '../../src/components/box';
-import { String } from '../../src/components/string';
-import { DropdownMenuSeparator } from '../../src/components/dropdownMenu';
+import { Box, String, DropdownMenuSeparator } from '../../src/components';
 
 const meta: Meta<typeof DropdownMenuSeparator> = {
   argTypes: {
@@ -270,10 +268,10 @@ export const WithCustomStyle: Story = {
         <String>Item 1</String>
         <DropdownMenuSeparator
           style={{
-            height: 2,
             backgroundColor: '#3B82F6',
-            marginVertical: 8,
             borderRadius: 1,
+            height: 2,
+            marginVertical: 8,
           }}
         />
         <String>Custom Styled Separator</String>

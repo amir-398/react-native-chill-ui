@@ -10,6 +10,7 @@ import { forwardRef, PropsWithChildren, useMemo } from 'react';
 import { LoadingIndicator } from '@components/loadingIndicatorsKit';
 import { cn, classNamePropsHandler, classNameHandler, styleHandler, colorVariantPropsHandler } from '@utils';
 
+import { buttonDefaultProps } from '../utils/defaultProps';
 import { ButtonSv, IconContainerSv, styles } from '../styles/Button.ss.styles';
 import { ButtonTv, IconPositionTv, twStyles } from '../styles/Button.tw.styles';
 
@@ -92,10 +93,6 @@ function ButtonContent({
     return children;
   }
 
-  if (isLoading) {
-    return <LoadingIndicator name="spinner" size={sizingVariant} {...loadingIndicatorProps} />;
-  }
-
   const isIconAbsolute = isTextCentered;
 
   const finalStringProps = {
@@ -108,7 +105,16 @@ function ButtonContent({
       {...classNameHandler(cn(twStyles.contentContainer))}
       {...styleHandler({ defaultStyle: styles.contentContainer })}
     >
-      {leftIconAction && (
+      {isLoading && (
+        <Box
+          {...classNameHandler(cn(twStyles.loadingContainer))}
+          {...styleHandler({ defaultStyle: styles.loadingContainer })}
+        >
+          <LoadingIndicator name="spinner" size={sizingVariant} {...loadingIndicatorProps} />
+        </Box>
+      )}
+
+      {leftIconAction && !isLoading && (
         <Box
           {...classNameHandler(
             cn(
@@ -133,23 +139,25 @@ function ButtonContent({
         </Box>
       )}
 
-      <Box
-        {...classNameHandler(cn(twStyles.stringContainer))}
-        {...styleHandler({ defaultStyle: styles.stringContainer })}
-      >
-        {title && (
-          <String
-            size={sizingVariant}
-            position={contentPosition}
-            {...styleHandler({ defaultStyle: styles.pointerEventsNone, style: stringProps?.style })}
-            {...finalStringProps}
-          >
-            {title}
-          </String>
-        )}
-      </Box>
+      {!isLoading && (
+        <Box
+          {...classNameHandler(cn(twStyles.stringContainer))}
+          {...styleHandler({ defaultStyle: styles.stringContainer })}
+        >
+          {title && (
+            <String
+              size={sizingVariant}
+              position={contentPosition}
+              {...styleHandler({ defaultStyle: styles.pointerEventsNone, style: stringProps?.style })}
+              {...finalStringProps}
+            >
+              {title}
+            </String>
+          )}
+        </Box>
+      )}
 
-      {rightIconAction && (
+      {rightIconAction && !isLoading && (
         <Box
           {...classNameHandler(
             cn(
@@ -181,9 +189,8 @@ function ButtonContent({
  * Renders the appropriate touchable component based on the 'as' prop
  */
 const TouchableComponent = forwardRef<any, PropsWithChildren<BtnPropsTw>>(
-  ({ as = 'touchable-opacity', children, className, isDisabled, isLoading, onPress, style, ...props }, ref) => {
+  ({ as = buttonDefaultProps.as, children, className, isDisabled, isLoading, onPress, style, ...props }, ref) => {
     const isButtonDisabled = isDisabled || isLoading;
-
     const commonProps = {
       disabled: isButtonDisabled,
       onPress: isButtonDisabled ? undefined : onPress,
@@ -216,12 +223,7 @@ const TouchableComponent = forwardRef<any, PropsWithChildren<BtnPropsTw>>(
       case 'touchable-opacity':
       default:
         return (
-          <TouchableOpacity
-            {...commonProps}
-            {...classNameHandler(className)}
-            {...styleHandler({ style })}
-            activeOpacity={0.7}
-          >
+          <TouchableOpacity {...commonProps} {...classNameHandler(className)} {...styleHandler({ style })}>
             {children}
           </TouchableOpacity>
         );
@@ -266,23 +268,23 @@ const Button = forwardRef<any, PropsWithChildren<BtnPropsTw>>((props, ref) => {
   classNamePropsHandler(props, 'Button');
   colorVariantPropsHandler(props, 'Button');
   const {
-    as = 'touchable-opacity',
+    as = buttonDefaultProps.as,
     children,
     className,
-    colorVariant = 'primary',
-    contentPosition = 'center',
+    colorVariant = buttonDefaultProps.colorVariant,
+    contentPosition = buttonDefaultProps.contentPosition,
     isDisabled,
     isLoading,
     leftIconAction,
     loadingIndicatorProps,
     onPress,
-    position = 'center',
+    position = buttonDefaultProps.position,
     rightIconAction,
-    size = 'md',
+    size = buttonDefaultProps.size,
     stringProps,
     style,
     title,
-    variant = 'contained',
+    variant = buttonDefaultProps.variant,
   } = props;
 
   const buttonContent = useMemo(
@@ -319,6 +321,8 @@ const Button = forwardRef<any, PropsWithChildren<BtnPropsTw>>((props, ref) => {
       ref={ref}
       onPress={onPress}
       as={as}
+      isDisabled={isDisabled}
+      isLoading={isLoading}
       {...classNameHandler(
         cn(
           ButtonTv({

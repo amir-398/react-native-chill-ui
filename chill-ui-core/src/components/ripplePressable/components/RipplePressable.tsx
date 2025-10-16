@@ -71,12 +71,18 @@ function RippleEffect({ containerHeight, containerWidth, duration, effectColor, 
 }
 
 /**
- * RipplePressable component that provides a ripple effect on press.
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ * The `<RipplePressable />` component provides a ripple effect on press.
+ * Creates a visual ripple animation that emanates from the touch point.
+ *
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { RipplePressable } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic usage with ripple effect
  * <RipplePressable onPress={() => console.log('Pressed!')}>
  *   <Box className="p-4 bg-blue-500 rounded-lg">
  *     <String color="white">Press me</String>
@@ -87,12 +93,10 @@ function RippleEffect({ containerHeight, containerWidth, duration, effectColor, 
  * @param children - Child components to render with ripple effect (required)
  * @param className - Custom CSS classes for styling the container (NativeWind)
  * @param disabled - Whether the component is disabled (default: false)
- * @param style - Style object for the pressable container
  * @param effectColor - Color of the ripple effect (default: 'rgba(255, 255, 255, 0.6)')
- * @param speed - Animation duration in milliseconds (default: 500)
  * @param onPress - Callback function called when the component is pressed, receives press event
- * @returns RipplePressable component with ripple animation
- * @throws Error if no children are provided
+ * @param speed - Animation duration in milliseconds (default: 500)
+ * @param style - Style object for the pressable container
  */
 const RipplePressable = forwardRef<View, PropsWithChildren<RipplePressablePropsTw>>((props, ref) => {
   classNamePropsHandler(props, 'RipplePressable');

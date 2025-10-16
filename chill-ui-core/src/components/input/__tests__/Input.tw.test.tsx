@@ -6,8 +6,8 @@ import Input from '../components/Input.tw';
 jest.mock('../../../utils', () => ({
   cn: jest.fn((...args) => args.filter(Boolean).join(' ')),
   getStringLength: jest.fn(str => str?.length || 0),
-  isString: jest.fn(value => typeof value === 'string'),
   isNativeWindInstalled: jest.fn(() => true),
+  isString: jest.fn(value => typeof value === 'string'),
 }));
 
 jest.mock('../../../components', () => ({
@@ -16,7 +16,9 @@ jest.mock('../../../components', () => ({
 
 jest.mock('../../../components/icon', () => ({
   IconTw: ({ name, onPress }: any) => {
-    const MockIcon = () => <div data-testid={`icon-${name}`} onClick={onPress} />;
+    function MockIcon() {
+      return <div data-testid={`icon-${name}`} onClick={onPress} />;
+    }
     return <MockIcon />;
   },
 }));
@@ -46,12 +48,12 @@ describe('Input Component (Tailwind)', () => {
   });
 
   it('should render without crashing', () => {
-    const { root } = render(<Input hasError={true} errorMessage="This is an error" />);
+    const { root } = render(<Input hasError errorMessage="This is an error" />);
     expect(root).toBeTruthy();
   });
 
   it('should handle disabled state', () => {
-    render(<Input isDisabled={true} placeholder="Disabled input" />);
+    render(<Input isDisabled placeholder="Disabled input" />);
     const input = screen.getByPlaceholderText('Disabled input');
     expect(input.props.editable).toBe(false);
   });

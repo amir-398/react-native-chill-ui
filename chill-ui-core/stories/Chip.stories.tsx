@@ -1,46 +1,52 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
 import { View } from 'react-native';
 
-import Chip from '../src/components/chip/Chip';
+import { Chip } from '../src/components';
 
 const meta: Meta<typeof Chip> = {
+  args: {
+    as: 'touchable-opacity',
+    colorVariant: 'primary',
+    position: 'left',
+    size: 'xs',
+    variant: 'contained',
+  },
   argTypes: {
+    as: {
+      table: {
+        defaultValue: {
+          summary: 'touchable-opacity',
+        },
+      },
+    },
     colorVariant: {
-      control: { type: 'select' },
-      options: [
-        'primary',
-        'secondary',
-        'accent',
-        'danger',
-        'error',
-        'warning',
-        'info',
-        'success',
-        'neutral',
-        'muted',
-        'light',
-        'dark',
-        'inverted',
-        'white',
-        'disabled',
-      ],
+      table: {
+        defaultValue: {
+          summary: 'primary',
+        },
+      },
     },
     position: {
-      control: { type: 'select' },
-      options: ['left', 'center', 'right'],
-    },
-    rounded: {
-      control: { type: 'select' },
-      options: ['sm', 'md', 'lg', 'xl', '2xl', '3xl', 'full'],
+      table: {
+        defaultValue: {
+          summary: 'left',
+        },
+      },
     },
     size: {
-      control: { type: 'select' },
-      options: ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '2xs', '3xl'],
+      table: {
+        defaultValue: {
+          summary: 'xs',
+        },
+      },
     },
     variant: {
-      control: { type: 'select' },
-      options: ['contained', 'outlined'],
+      table: {
+        defaultValue: {
+          summary: 'contained',
+        },
+      },
     },
   },
   component: Chip,

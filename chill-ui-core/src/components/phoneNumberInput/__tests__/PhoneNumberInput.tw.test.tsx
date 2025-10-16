@@ -22,7 +22,9 @@ jest.mock('../../../components/string', () => ({
 
 jest.mock('../../../components/icon', () => ({
   IconTw: ({ name, onPress }: any) => {
-    const MockIcon = () => <div data-testid={`icon-${name}`} onClick={onPress} />;
+    function MockIcon() {
+      return <div data-testid={`icon-${name}`} onClick={onPress} />;
+    }
     return <MockIcon />;
   },
 }));
@@ -78,26 +80,26 @@ jest.mock('../utils/phone', () => ({
 }));
 
 jest.mock('../flags', () => ({
-  us: 'us-flag.png',
   fr: 'fr-flag.png',
   gb: 'gb-flag.png',
+  us: 'us-flag.png',
 }));
 
 jest.mock('../utils/countryCodes', () => ({
   countryCodes: [
     {
-      id: 'US',
       code: 'US',
       dial_code: '+1',
       en: 'United States',
       fr: 'États-Unis',
+      id: 'US',
     },
     {
-      id: 'FR',
       code: 'FR',
       dial_code: '+33',
       en: 'France',
       fr: 'France',
+      id: 'FR',
     },
   ],
 }));
@@ -153,7 +155,7 @@ describe('PhoneNumberInput Component (Tailwind)', () => {
   it('should render with error styling using Tailwind', () => {
     const { root } = render(
       <PhoneNumberInput
-        hasError={true}
+        hasError
         errorMessage="Invalid phone number"
         inputProps={{
           className: 'border-red-500',

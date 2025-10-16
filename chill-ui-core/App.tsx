@@ -1,6 +1,7 @@
 import { useState } from 'react';
+
+import './global.css';
 import { useFonts } from 'expo-font';
-import { String, WrapperKeyboardAwareScrollViewTw, WrapperTw } from '@components';
 import {
   Poppins_700Bold,
   Poppins_800ExtraBold,
@@ -24,14 +25,7 @@ import {
   Montserrat_100Thin,
 } from '@expo-google-fonts/montserrat';
 
-// Import global.css only if NativeWind is available
-try {
-  require('nativewind');
-  require('./global.css');
-} catch {
-  // NativeWind is not available, skip CSS import
-  console.log('NativeWind not available, skipping global.css import');
-}
+import { Box, Slider, SliderRange, SliderThumb, SliderTrack } from '@/components';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -54,78 +48,20 @@ export default function App() {
     secondary_semi_bold_font: Montserrat_600SemiBold,
     secondary_thin_font: Montserrat_100Thin,
   });
-  const [isEnabled, setIsEnabled] = useState(false);
-  if (!fontsLoaded) {
-    return null; // ou un composant de chargement
-  }
-  // @ts-ignore
-  // eslint-disable-next-line
-  // const StorybookUIRoot = view.getStorybookUI({
-  //   storage: {
-  //     getItem(key: string) {
-  //       return AsyncStorage.getItem(key);
-  //     },
-  //     setItem(key: string, value: string) {
-  //       return AsyncStorage.setItem(key, value);
-  //     },
-  //   },
-  // });
 
+  const [value, setValue] = useState([0.6]);
+  console.log(value);
+  if (!fontsLoaded) {
+    return null;
+  }
   return (
-    <WrapperTw className="bg-red-500">
-      <WrapperKeyboardAwareScrollViewTw className="bg-blue-500">
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-        <String>soazkjpok</String>
-      </WrapperKeyboardAwareScrollViewTw>
-    </WrapperTw>
+    <Box className="mt-16 w-full bg-slate-500 p-10">
+      <Slider value={value} onValueChange={setValue}>
+        <SliderTrack>
+          <SliderRange />
+        </SliderTrack>
+        <SliderThumb index={0} />
+      </Slider>
+    </Box>
   );
 }

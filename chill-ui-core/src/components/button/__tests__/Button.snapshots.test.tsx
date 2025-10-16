@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react-native';
+
 import { Button } from '../index';
 
 // Mocks
@@ -35,23 +36,23 @@ jest.mock('../../../components/scalePressable', () => ({
 }));
 
 jest.mock('../../../utils', () => ({
-  classNamePropsHandler: jest.fn(),
-  colorVariantPropsHandler: jest.fn(),
   classNameHandler: jest.fn(() => ({})),
-  styleHandler: jest.fn(() => ({})),
+  classNamePropsHandler: jest.fn(),
   cn: jest.fn((...args) => args.filter(Boolean).join(' ')),
+  colorVariantPropsHandler: jest.fn(),
+  styleHandler: jest.fn(() => ({})),
 }));
 
 jest.mock('../styles/Button.ss.styles', () => ({
   ButtonSv: jest.fn(() => ({})),
   IconContainerSv: jest.fn(() => ({})),
-  styles: { contentContainer: {}, stringContainer: {}, pointerEventsNone: {} },
+  styles: { contentContainer: {}, pointerEventsNone: {}, stringContainer: {} },
 }));
 
 jest.mock('../styles/Button.tw.styles', () => ({
   ButtonTv: jest.fn(() => ''),
   IconPositionTv: jest.fn(() => ''),
-  twStyles: { contentContainer: '', stringContainer: '', pointerEventsNone: '' },
+  twStyles: { contentContainer: '', pointerEventsNone: '', stringContainer: '' },
 }));
 
 describe('Button Snapshots', () => {
@@ -67,12 +68,12 @@ describe('Button Snapshots', () => {
     });
 
     it('should match snapshot for disabled button', () => {
-      const tree = render(<Button title="Disabled Button" isDisabled={true} />);
+      const tree = render(<Button title="Disabled Button" isDisabled />);
       expect(tree).toMatchSnapshot();
     });
 
     it('should match snapshot for loading button', () => {
-      const tree = render(<Button title="Loading Button" isLoading={true} />);
+      const tree = render(<Button title="Loading Button" isLoading />);
       expect(tree).toMatchSnapshot();
     });
   });
@@ -255,7 +256,9 @@ describe('Button Snapshots', () => {
     });
 
     it('should match snapshot for custom icon', () => {
-      const CustomIcon = () => <div data-testid="custom-icon">Custom</div>;
+      function CustomIcon() {
+        return <div data-testid="custom-icon">Custom</div>;
+      }
       const tree = render(
         <Button title="Custom Icon Button" leftIconAction={{ customIcon: <CustomIcon />, size: 'md' }} />,
       );
@@ -276,7 +279,7 @@ describe('Button Snapshots', () => {
     it('should match snapshot for complex custom content', () => {
       const tree = render(
         <Button>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ alignItems: 'center', display: 'flex', gap: '8px' }}>
             <span>Custom</span>
             <span>→</span>
           </div>
@@ -307,12 +310,7 @@ describe('Button Snapshots', () => {
 
     it('should match snapshot for loading button with custom props', () => {
       const tree = render(
-        <Button
-          title="Loading Button"
-          isLoading={true}
-          loadingIndicatorProps={{ color: 'white', size: 24 }}
-          isDisabled={true}
-        />,
+        <Button title="Loading Button" isLoading loadingIndicatorProps={{ color: 'white', size: 24 }} isDisabled />,
       );
       expect(tree).toMatchSnapshot();
     });

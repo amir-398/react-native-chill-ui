@@ -6,35 +6,26 @@ import { twStyles } from '../../styles/AnimatedBox.tw.styles';
 import { AnimatedView as AnimatedViewNative } from '../../../box/components/View';
 
 /**
- * AnimatedBox - Base animated container component
- * Provides optimal performance using React Native's internal ViewNativeComponent and automatically
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ * The `<AnimatedBox />` component provides a base animated container with optimal performance.
+ * Uses React Native's internal ViewNativeComponent.
+ *
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { AnimatedBox } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // With NativeWind (Tailwind CSS)
- * <AnimatedBox className="bg-blue-500 p-4 rounded-lg shadow-lg">
+ * <AnimatedBox>
  *   <String className="text-white">Base animated container</String>
  * </AnimatedBox>
- *
- * // Without NativeWind (traditional styles)
- * <AnimatedBox style={{ backgroundColor: 'blue', padding: 16, borderRadius: 8 }}>
- *   <String style={{ color: 'white' }}>Base animated container</String>
- * </AnimatedBox>
- *
- * // As foundation for custom animations
- * <Animated.View style={{ transform: [{ scale: scaleValue }] }}>
- *   <AnimatedBox className="bg-green-500">
- *     <String>Custom animated content</String>
- *   </AnimatedBox>
- * </Animated.View>
  * ```
  *
- * @param className - CSS classes for NativeWind styling
- * @param style - Inline styles for traditional styling or style overrides
- * @param children - Content to be rendered inside the animated container
- * @param props - All other View props are supported
- * @returns Optimized animated view component ready for custom animations
+ * @param useFastView - Use optimized RCTView component for better performance (default: `true`)
+ * @param className - CSS classes for NativeWind styling (Nativewind only)
+ * @param AnimatedViewProps - Any other props accepted by the native `Animated.View` component
  */
 export function AnimatedBox(props: AnimatedBoxPropsTw) {
   classNamePropsHandler(props, 'AnimatedBox');
@@ -48,3 +39,5 @@ export function AnimatedBox(props: AnimatedBoxPropsTw) {
     />
   );
 }
+
+AnimatedBox.displayName = 'AnimatedBox';

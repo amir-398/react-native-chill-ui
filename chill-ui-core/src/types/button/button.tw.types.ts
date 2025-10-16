@@ -9,60 +9,48 @@ type TouchableComponentType = 'touchable-opacity' | 'pressable' | 'ripple-pressa
 /**
  * Props for the Button component
  */
-export type BtnProps = {
-  /** Button title text */
-  title?: string;
-
-  /** Whether the button is in loading state */
-  isLoading?: boolean;
-
+export type BtnProps = VariantProps<typeof ButtonTv> & {
+  /** Type of touchable component to use:
+   * - `'touchable-opacity'`
+   * - `'pressable'`
+   * - `'ripple-pressable'`
+   * - `'scale-pressable'`
+   */
+  as?: TouchableComponentType;
+  /** Custom CSS classes for the button container (NativeWind) */
+  className?: string;
+  /** Content position within the button:
+   * - `'left'`
+   * - `'center'`
+   * - `'right'`
+   */
+  contentPosition?: StringPropsTw['position'];
   /** Whether the button is disabled */
   isDisabled?: boolean;
-
-  /** Press callback function */
-  onPress?: () => void;
-
-  /** Custom CSS classes for the button container */
-  className?: string;
-
-  /** Style object for the button container */
-  style?: StyleProp<ViewStyle>;
-
-  /** Props to pass to the String component */
-  stringProps?: StringPropsTw;
-
-  /** Icon configuration with position support */
+  /** Whether the button is in loading state */
+  isLoading?: boolean;
+  /** Left icon configuration */
   leftIconAction?: {
     customIcon?: React.ReactNode;
     name: keyof TIcons;
     size?: IconPropsTw['size'];
     color?: string;
   };
+  /** Props to pass to the loading indicator */
+  loadingIndicatorProps?: Partial<LoadingIndicatorProps>;
+  /** Press callback function */
+  onPress?: () => void;
+  /** Right icon configuration */
   rightIconAction?: {
     customIcon?: React.ReactNode;
     name: keyof TIcons;
     size?: IconPropsTw['size'];
     color?: string;
   };
-
-  /** Button size variant */
-  size?: VariantProps<typeof ButtonTv>['size'];
-
-  /** Props to pass to the loading indicator */
-  loadingIndicatorProps?: Partial<LoadingIndicatorProps>;
-
-  /** Button style variant (contained/outlined/text) */
-  variant?: VariantProps<typeof ButtonTv>['variant'];
-
-  /** Button color variant (primary/secondary/error/etc.) */
-  colorVariant?: VariantProps<typeof ButtonTv>['colorVariant'];
-
-  /** Button position within its container */
-  position?: VariantProps<typeof ButtonTv>['position'];
-
-  /** Content position within the button (text + icon alignment) */
-  contentPosition?: StringPropsTw['position'];
-
-  /** Type of touchable component to use */
-  as?: TouchableComponentType;
+  /** Style object for the button container */
+  style?: StyleProp<ViewStyle>;
+  /** Props to pass to the String component */
+  stringProps?: StringPropsTw;
+  /** Button title text */
+  title?: string;
 };

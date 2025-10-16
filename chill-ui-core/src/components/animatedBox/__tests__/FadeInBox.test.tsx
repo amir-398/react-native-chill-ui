@@ -2,25 +2,42 @@ import React from 'react';
 import { Animated } from 'react-native';
 import { render, screen, waitFor } from '@testing-library/react-native';
 
-import String from '../../string/components/String';
-import FadeInBox from '../components/FadeInBox/FadeInBox';
+import { FadeInBox } from '../index';
+import { String } from '../../string';
 
 // Mock StyleSheet styles
-jest.mock('../styles/AnimatedBox.styles', () => ({
+jest.mock('../styles/AnimatedBox.ss.styles', () => ({
   __esModule: true,
   default: jest.fn(() => ({})),
+}));
+
+jest.mock('../styles/AnimatedBox.tw.styles', () => ({
+  twStyles: jest.fn(() => ({})),
 }));
 
 // Mock String styles
-jest.mock('../../string/styles/String.styles', () => ({
+jest.mock('../../string/styles/String.ss.styles', () => ({
   __esModule: true,
   default: jest.fn(() => ({})),
+  StringSv: jest.fn(() => ({})),
+  styles: jest.fn(() => ({})),
 }));
 
-// Mock String variants
-jest.mock('../../string/styles/String.variants', () => ({
+jest.mock('../../string/styles/String.tw.styles', () => ({
+  stringTv: jest.fn(() => ({})),
+  twStyles: jest.fn(() => ({})),
+}));
+
+// Mock AnimatedBox component
+jest.mock('../components/animatedBox/AnimatedBox', () => ({
   __esModule: true,
-  default: jest.fn(() => ({})),
+  AnimatedBox: ({ children }: any) => children,
+  default: ({ children }: any) => children,
+}));
+
+// Mock Box component
+jest.mock('../../box/components/View', () => ({
+  AnimatedView: ({ children, ...props }: any) => children,
 }));
 
 // Mock Tailwind utilities

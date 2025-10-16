@@ -1,96 +1,122 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { Box, String } from '../src/components';
-import Button from '../src/components/button/Button';
+import UiPresentation from './storybook';
+import { Box, String, ButtonTw } from '../src/components';
 
 const meta = {
+  args: {
+    as: 'touchable-opacity',
+    colorVariant: 'primary',
+    contentPosition: 'center',
+    isDisabled: false,
+    isLoading: false,
+    position: 'auto',
+    size: 'md',
+    variant: 'contained',
+  },
   argTypes: {
     as: {
-      control: 'select',
-      description: 'Type of touchable component to use',
-      options: ['TouchableOpacity', 'Pressable', 'RipplePressable'],
+      table: {
+        defaultValue: {
+          summary: 'touchable-opacity',
+        },
+      },
     },
     colorVariant: {
-      control: 'select',
-      description: 'The color variant of the button (NativeWind only)',
-      options: [
-        'primary',
-        'secondary',
-        'tertiary',
-        'success',
-        'error',
-        'warning',
-        'info',
-        'accent',
-        'danger',
-        'dark',
-        'light',
-        'neutral',
-        'muted',
-        'inverted',
-        'white',
-      ],
+      table: {
+        defaultValue: {
+          summary: 'primary',
+        },
+      },
     },
-    iconAction: {
-      control: 'object',
-      description: 'Icon configuration with position support',
+    contentPosition: {
+      table: {
+        defaultValue: {
+          summary: 'center',
+        },
+      },
     },
     isDisabled: {
-      control: 'boolean',
-      description: 'Whether the button is disabled',
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
     },
     isLoading: {
-      control: 'boolean',
-      description: 'Whether the button is in a loading state',
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
     },
-    loadingIndicatorProps: {
-      control: 'object',
-      description: 'The props of the loading indicator',
+    leftIconAction: {
+      control: 'table',
+      defaultValue: {
+        name: 'home-solid',
+        size: 'md',
+      },
+      table: {
+        type: {
+          detail: '{ color?: string, name: keyof TIcons, size?: IconProps["size"], customIcon?: React.ReactNode }',
+          summary: 'iconConfig',
+        },
+      },
     },
     position: {
-      control: 'select',
-      description: 'The position of the button',
-      options: ['left', 'center', 'right'],
+      table: {
+        defaultValue: {
+          summary: 'auto',
+        },
+      },
+    },
+    rightIconAction: {
+      control: 'table',
+      defaultValue: {
+        name: 'arrow-right-solid',
+        size: 'md',
+      },
+      table: {
+        type: {
+          detail: '{ color?: string, name: keyof TIcons, size?: IconProps["size"], customIcon?: React.ReactNode }',
+          summary: 'iconConfig',
+        },
+      },
     },
     size: {
-      control: 'select',
-      description: 'The size of the button',
-      options: ['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'],
-    },
-    stringProps: {
-      control: 'object',
-      description: 'The props of the button text',
-    },
-    title: {
-      control: 'text',
-      description: 'The text content of the button',
+      table: {
+        defaultValue: {
+          summary: 'md',
+        },
+      },
     },
     variant: {
-      control: 'select',
-      description: 'The visual style of the button',
-      options: ['contained', 'outlined', 'text'],
+      table: {
+        defaultValue: {
+          summary: 'contained',
+        },
+      },
     },
   },
-  component: Button,
+  component: ButtonTw,
   decorators: [
-    Story => (
-      <Box style={{ padding: 16 }}>
+    (Story: any) => (
+      <UiPresentation>
         <Story />
-      </Box>
+      </UiPresentation>
     ),
   ],
-  title: 'components/Button',
-} satisfies Meta<typeof Button>;
+  title: 'Forms/Button',
+} satisfies Meta<typeof ButtonTw>;
 
 export default meta;
 
-type Story = StoryObj<typeof Button>;
+type Story = StoryObj<typeof ButtonTw>;
 
 // Default Example
 export const Default: Story = {
   args: {
-    colorVariant: 'primary',
-    position: 'center',
+    contentPosition: 'center',
     size: 'md',
     title: 'Button',
     variant: 'contained',
@@ -101,7 +127,6 @@ export const Default: Story = {
 export const Outlined: Story = {
   args: {
     colorVariant: 'primary',
-    position: 'center',
     size: 'md',
     title: 'Outlined Button',
     variant: 'outlined',
@@ -111,7 +136,6 @@ export const Outlined: Story = {
 export const TextButton: Story = {
   args: {
     colorVariant: 'primary',
-    position: 'center',
     size: 'md',
     title: 'Text Button',
     variant: 'text',
@@ -123,7 +147,6 @@ export const Loading: Story = {
   args: {
     colorVariant: 'primary',
     isLoading: true,
-    position: 'center',
     size: 'md',
     title: 'Loading Button',
     variant: 'contained',
@@ -134,7 +157,6 @@ export const Disabled: Story = {
   args: {
     colorVariant: 'primary',
     isDisabled: true,
-    position: 'center',
     size: 'md',
     title: 'Disabled Button',
     variant: 'contained',
@@ -145,12 +167,11 @@ export const Disabled: Story = {
 export const WithIcon: Story = {
   args: {
     colorVariant: 'primary',
-    iconAction: {
+    contentPosition: 'center',
+    leftIconAction: {
       name: 'home-solid',
-      position: 'left',
       size: 'md',
     },
-    position: 'center',
     size: 'md',
     title: 'Button with Icon',
     variant: 'contained',
@@ -159,22 +180,25 @@ export const WithIcon: Story = {
 
 // Sizes
 export const SizeVariants: Story = {
+  args: {
+    contentPosition: 'center',
+  },
   parameters: {
     docs: {
       description: {
-        story: 'Different button sizes from 2xs to 2xl',
+        story: 'Different Button sizes from 2xs to 2xl',
       },
     },
   },
-  render: () => (
-    <Box className="items-center gap-4">
-      <Button size="2xs" title="2XS" colorVariant="primary" variant="contained" />
-      <Button size="xs" title="XS" colorVariant="primary" variant="contained" />
-      <Button size="sm" title="Small" colorVariant="primary" variant="contained" />
-      <Button size="md" title="Medium" colorVariant="primary" variant="contained" />
-      <Button size="lg" title="Large" colorVariant="primary" variant="contained" />
-      <Button size="xl" title="XL" colorVariant="primary" variant="contained" />
-      <Button size="2xl" title="2XL" colorVariant="primary" variant="contained" />
+  render: (_args: any) => (
+    <Box className="w-full gap-4">
+      <ButtonTw size="2xs" title="2XS" colorVariant="primary" variant="contained" />
+      <ButtonTw size="xs" title="XS" colorVariant="primary" variant="contained" />
+      <ButtonTw size="sm" title="Small" colorVariant="primary" variant="contained" />
+      <ButtonTw size="md" title="Medium" colorVariant="primary" variant="contained" />
+      <ButtonTw size="lg" title="Large" colorVariant="primary" variant="contained" />
+      <ButtonTw size="xl" title="XL" colorVariant="primary" variant="contained" />
+      <ButtonTw size="2xl" title="2XL" colorVariant="primary" variant="contained" />
     </Box>
   ),
 };
@@ -188,11 +212,12 @@ export const TouchableTypes: Story = {
       },
     },
   },
-  render: () => (
-    <Box className="gap-4">
-      <Button as="TouchableOpacity" title="TouchableOpacity" colorVariant="primary" variant="contained" />
-      <Button as="Pressable" title="Pressable" colorVariant="secondary" variant="contained" />
-      <Button as="RipplePressable" title="RipplePressable" colorVariant="success" variant="contained" />
+  render: (_args: any) => (
+    <Box className="w-full gap-4">
+      <ButtonTw as="touchable-opacity" title="TouchableOpacity" colorVariant="primary" {..._args} />
+      <ButtonTw as="pressable" title="Pressable" colorVariant="secondary" variant="contained" {..._args} />
+      <ButtonTw as="ripple-pressable" title="RipplePressable" colorVariant="accent" {..._args} />
+      <ButtonTw as="scale-pressable" title="ScalePressable" colorVariant="info" {..._args} />
     </Box>
   ),
 };
@@ -202,19 +227,19 @@ export const VariantsOverview: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Overview of all button variants (contained, outlined, text) with different colors',
+        story: 'Overview of all Button variants (contained, outlined, text) with different colors',
       },
     },
   },
-  render: () => (
-    <Box className="gap-4">
+  render: (_args: any) => (
+    <Box className="w-full gap-4">
       {/* Contained */}
-      <Box className="gap-2">
+      <Box className="w-full gap-2">
         <String weight="bold">Contained</String>
-        <Box className="flex-row flex-wrap gap-2">
-          <Button variant="contained" colorVariant="primary" title="Primary" />
-          <Button variant="contained" colorVariant="success" title="Success" />
-          <Button variant="contained" colorVariant="error" title="Error" />
+        <Box className="w-full flex-row gap-2">
+          <ButtonTw variant="contained" colorVariant="primary" title="Primary" />
+          <ButtonTw variant="contained" colorVariant="info" title="Success" />
+          <ButtonTw variant="contained" colorVariant="error" title="Error" />
         </Box>
       </Box>
 
@@ -222,9 +247,9 @@ export const VariantsOverview: Story = {
       <Box className="gap-2">
         <String weight="bold">Outlined</String>
         <Box className="flex-row flex-wrap gap-2">
-          <Button variant="outlined" colorVariant="primary" title="Primary" />
-          <Button variant="outlined" colorVariant="success" title="Success" />
-          <Button variant="outlined" colorVariant="error" title="Error" />
+          <ButtonTw variant="outlined" colorVariant="primary" title="Primary" />
+          <ButtonTw variant="outlined" colorVariant="success" title="Success" />
+          <ButtonTw variant="outlined" colorVariant="error" title="Error" />
         </Box>
       </Box>
 
@@ -232,9 +257,9 @@ export const VariantsOverview: Story = {
       <Box className="gap-2">
         <String weight="bold">Text</String>
         <Box className="flex-row flex-wrap gap-2">
-          <Button variant="text" colorVariant="primary" title="Primary" />
-          <Button variant="text" colorVariant="success" title="Success" />
-          <Button variant="text" colorVariant="error" title="Error" />
+          <ButtonTw variant="text" colorVariant="primary" title="Primary" />
+          <ButtonTw variant="text" colorVariant="success" title="Success" />
+          <ButtonTw variant="text" colorVariant="error" title="Error" />
         </Box>
       </Box>
     </Box>
@@ -250,14 +275,14 @@ export const CustomContent: Story = {
       },
     },
   },
-  render: () => (
-    <Button colorVariant="primary" variant="contained">
+  render: (_args: any) => (
+    <ButtonTw colorVariant="primary" variant="contained">
       <Box className="flex-row items-center gap-2">
         <String weight="bold" color="white">
           Custom Content
         </String>
         <String color="white">→</String>
       </Box>
-    </Button>
+    </ButtonTw>
   ),
 };

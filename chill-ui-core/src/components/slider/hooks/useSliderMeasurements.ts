@@ -1,56 +1,52 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useRef } from 'react';
 
 const useSliderMeasurements = () => {
   const [allMeasured, setAllMeasured] = useState(false);
   const [containerSize, setContainerSize] = useState({ height: 0, width: 0 });
   const [thumbSize, setThumbSize] = useState({ height: 0, width: 0 });
 
-  const containerSizeRef = { current: { height: 0, width: 0 } };
-  const thumbSizeRef = { current: { height: 0, width: 0 } };
-  const trackSizeRef = { current: { height: 0, width: 0 } };
+  const containerMeasuredRef = useRef(false);
+  const thumbMeasuredRef = useRef(false);
 
-  const handleMeasure = useCallback((name: string, e: any) => {
+  const measureContainer = useCallback((e: any) => {
     const { height, width } = e.nativeEvent.layout;
-    const size = { height, width };
-
-    if (name === '_containerSize') {
-      const currentSize = containerSizeRef.current;
-      if (currentSize && width === currentSize.width && height === currentSize.height) {
-        return;
+    setContainerSize(prevSize => {
+      if (prevSize.width === width && prevSize.height === height) {
+        return prevSize;
       }
-      containerSizeRef.current = size;
-      setContainerSize(size);
-    } else if (name === '_thumbSize') {
-      const currentSize = thumbSizeRef.current;
-      if (currentSize && width === currentSize.width && height === currentSize.height) {
-        return;
+      containerMeasuredRef.current = width > 0 && height > 0;
+      if (thumbMeasuredRef.current) {
+        setAllMeasured(true);
       }
-      thumbSizeRef.current = size;
-      setThumbSize(size);
-    } else if (name === '_trackSize') {
-      trackSizeRef.current = size;
-    }
-
-    if (containerSizeRef.current.width > 0 && thumbSizeRef.current.width > 0) {
-      setAllMeasured(true);
-    }
-    // eslint-disable-next-line
+      return { height, width };
+    });
   }, []);
 
-  const measureContainer = useCallback((e: any) => handleMeasure('_containerSize', e), [handleMeasure]);
-  const measureTrack = useCallback((e: any) => handleMeasure('_trackSize', e), [handleMeasure]);
-  const measureThumb = useCallback((e: any) => handleMeasure('_thumbSize', e), [handleMeasure]);
+  const measureThumb = useCallback((e: any) => {
+    const { height, width } = e.nativeEvent.layout;
+    setThumbSize(prevSize => {
+      if (prevSize.width === width && prevSize.height === height) {
+        return prevSize;
+      }
+      thumbMeasuredRef.current = width > 0 && height > 0;
+      if (containerMeasuredRef.current) {
+        setAllMeasured(true);
+      }
+      return { height, width };
+    });
+  }, []);
+
+  // Cette mesure n'est pas critique pour le rendu,
+  // elle n'a donc pas besoin de déclencher de mise à jour d'état.
+  const measureTrack = useCallback((_e: any) => {}, []);
 
   return {
     allMeasured,
     containerSize,
-    containerSizeRef,
     measureContainer,
     measureThumb,
     measureTrack,
     thumbSize,
-    thumbSizeRef,
-    trackSizeRef,
   };
 };
 

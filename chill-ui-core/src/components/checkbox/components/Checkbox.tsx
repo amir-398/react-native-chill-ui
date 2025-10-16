@@ -13,9 +13,15 @@ import { checkboxSv, styles } from '../styles/Checkbox.ss.styles';
 import { checkboxTv, twStyles } from '../styles/Checkbox.tw.styles';
 
 /**
- * Checkbox component with support for different variants, custom styling, and accessibility features.
- * Provides a flexible and accessible checkbox implementation with support for controlled and uncontrolled patterns.
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ * The `<Checkbox />` component provides a flexible and accessible checkbox implementation.
+ * Supports different variants, custom styling, and accessibility features.
+ *
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { Checkbox } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
@@ -29,10 +35,11 @@ import { checkboxTv, twStyles } from '../styles/Checkbox.tw.styles';
  * />
  * ```
  *
- * @param checkedClassName - (only NativeWind) Additional CSS classes when checked
+ * @param checkedClassName - Additional CSS classes when checked (NativeWind)
  * @param checkedColor - Background color when checked
  * @param checkedStyle - Additional style when checked
- * @param className - (only NativeWind) Additional CSS classes for the checkbox container
+ * @param children - Custom content to render inside the checkbox
+ * @param className - Custom CSS classes for the checkbox container (NativeWind)
  * @param iconProps - Props for the icon component
  * @param isChecked - Whether the checkbox is checked (default: false)
  * @param isDisabled - Whether the checkbox is disabled (default: false)
@@ -40,10 +47,10 @@ import { checkboxTv, twStyles } from '../styles/Checkbox.tw.styles';
  * @param label - Label text for the checkbox
  * @param labelProps - Props for the label component
  * @param onCheckedChange - Callback when checkbox state changes
- * @param size - Size variant of the checkbox (default: 'md')
+ * @param size - Size variant of the checkbox: '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' (default: 'md')
  * @param style - Style object for the checkbox container
  * @param uncheckedColor - Background color when unchecked
- * @param variant - Visual variant of the checkbox (default: 'square')
+ * @param variant - Visual variant of the checkbox: 'circle' | 'square' (default: 'square')
  */
 export default function Checkbox(props: PropsWithChildren<CheckboxPropsTw>) {
   classNamePropsHandler(props, 'Checkbox');

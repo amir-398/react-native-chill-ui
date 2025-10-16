@@ -1,43 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
 import UiPresentation from './storybook';
-import HighlightString from '../src/components/highlightString';
+import { HighlightString } from '../src/components';
 
 const meta: Meta<typeof HighlightString> = {
-  argTypes: {
-    className: {
-      control: 'text',
-      description: 'Custom CSS classes for the container (NativeWind only)',
-    },
-    content: {
-      control: 'text',
-      description: 'The full text to display',
-    },
-    highlightClassName: {
-      control: 'text',
-      description: 'Custom CSS classes for highlighted text (NativeWind only)',
-    },
-    highlightStringProps: {
-      control: 'object',
-      description: 'Props for the highlighted string component',
-    },
-    highlightStyle: {
-      control: 'object',
-      description: 'Custom styles for highlighted text',
-    },
-    highlightTerm: {
-      control: 'text',
-      description: 'The term to highlight within the text',
-    },
-    stringProps: {
-      control: 'object',
-      description: 'Props for the main string component',
-    },
-    style: {
-      control: 'object',
-      description: 'Custom styles for the container',
-    },
-  },
+  argTypes: {},
   component: HighlightString,
   decorators: [
     (Story: any) => (

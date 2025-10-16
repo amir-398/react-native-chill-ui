@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react-native';
+
 import Chip from '../components/Chip';
 
 // Mocks
@@ -38,8 +39,8 @@ jest.mock('../styles/Chip.ss.styles', () => ({
 }));
 
 jest.mock('../styles/Chip.tw.styles', () => ({
-  chipTv: jest.fn(() => ''),
   chipTextTv: jest.fn(() => ''),
+  chipTv: jest.fn(() => ''),
   twStyles: { chip: '', chipWithIcons: '', iconLeft: '', iconRight: '', pointerEventsNone: '' },
 }));
 

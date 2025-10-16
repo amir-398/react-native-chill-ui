@@ -2,37 +2,51 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 
 // Mock all the components we need
-const Dialog = ({ children }: any) => <div data-testid="dialog">{children}</div>;
-const DialogContent = ({ children, ...props }: any) => (
-  <div data-testid="dialog-content" {...props}>
-    {children}
-  </div>
-);
-const DialogHeader = ({ children, ...props }: any) => (
-  <div data-testid="dialog-header" {...props}>
-    {children}
-  </div>
-);
-const DialogTitle = ({ children, ...props }: any) => (
-  <div data-testid="dialog-title" {...props}>
-    {children}
-  </div>
-);
-const DialogFooter = ({ children, ...props }: any) => (
-  <div data-testid="dialog-footer" {...props}>
-    {children}
-  </div>
-);
-const DialogTrigger = ({ children, ...props }: any) => (
-  <div data-testid="dialog-trigger" {...props}>
-    {children}
-  </div>
-);
-const DialogClose = ({ children, ...props }: any) => (
-  <div data-testid="dialog-close" {...props}>
-    {children}
-  </div>
-);
+function Dialog({ children }: any) {
+  return <div data-testid="dialog">{children}</div>;
+}
+function DialogContent({ children, ...props }: any) {
+  return (
+    <div data-testid="dialog-content" {...props}>
+      {children}
+    </div>
+  );
+}
+function DialogHeader({ children, ...props }: any) {
+  return (
+    <div data-testid="dialog-header" {...props}>
+      {children}
+    </div>
+  );
+}
+function DialogTitle({ children, ...props }: any) {
+  return (
+    <div data-testid="dialog-title" {...props}>
+      {children}
+    </div>
+  );
+}
+function DialogFooter({ children, ...props }: any) {
+  return (
+    <div data-testid="dialog-footer" {...props}>
+      {children}
+    </div>
+  );
+}
+function DialogTrigger({ children, ...props }: any) {
+  return (
+    <div data-testid="dialog-trigger" {...props}>
+      {children}
+    </div>
+  );
+}
+function DialogClose({ children, ...props }: any) {
+  return (
+    <div data-testid="dialog-close" {...props}>
+      {children}
+    </div>
+  );
+}
 
 // Mocks
 jest.mock('react-native-reanimated', () => ({
@@ -49,9 +63,9 @@ jest.mock('../../../utils', () => ({
   classNameHandler: jest.fn(() => ({})),
   classNamePropsHandler: jest.fn(),
   cn: jest.fn((...args) => args.filter(Boolean).join(' ')),
+  isNativeWindInstalled: jest.fn(() => false),
   isString: jest.fn(value => typeof value === 'string'),
   styleHandler: jest.fn(() => ({})),
-  isNativeWindInstalled: jest.fn(() => false),
 }));
 
 jest.mock('../../../components/box', () => ({
@@ -67,23 +81,23 @@ jest.mock('../../../components/icon', () => ({
 }));
 
 jest.mock('../components/DialogContext', () => ({
+  DialogProvider: ({ children }: any) => children,
   useDialog: () => ({
     close: jest.fn(),
     isOpen: false,
     open: jest.fn(),
   }),
-  DialogProvider: ({ children }: any) => children,
 }));
 
 jest.mock('../styles/Dialog.ss.styles', () => ({
-  dialogSv: jest.fn(() => ({})),
   dialogHeaderSv: jest.fn(() => ({})),
+  dialogSv: jest.fn(() => ({})),
   styles: { backdrop: {}, container: {}, dialogBase: {}, footer: {}, title: {} },
 }));
 
 jest.mock('../styles/Dialog.tw.styles', () => ({
-  dialogTv: jest.fn(() => ''),
   dialogHeaderTv: jest.fn(() => ''),
+  dialogTv: jest.fn(() => ''),
   twStyles: { backdrop: '', container: '', dialogBase: '', footer: '', title: '' },
 }));
 
@@ -106,10 +120,10 @@ describe('Dialog Snapshots', () => {
       .create(
         <Dialog>
           <DialogContent
-            hasBackdrop={true}
-            closeOnBackdropPress={true}
+            hasBackdrop
+            closeOnBackdropPress
             size="md"
-            open={true}
+            open
             onOpenChange={jest.fn()}
             onRequestClose={jest.fn()}
             onShow={jest.fn()}
@@ -125,7 +139,7 @@ describe('Dialog Snapshots', () => {
   it('renders DialogHeader with close mark', () => {
     const tree = renderer
       .create(
-        <DialogHeader hasCloseMark={true}>
+        <DialogHeader hasCloseMark>
           <DialogTitle>Test Title</DialogTitle>
         </DialogHeader>,
       )

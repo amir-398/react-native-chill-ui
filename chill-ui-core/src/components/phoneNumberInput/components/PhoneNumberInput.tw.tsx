@@ -44,12 +44,18 @@ const getInitialCountry = (
 };
 
 /**
- * PhoneNumberInput component that provides a complete phone number input experience.
+ * The `<PhoneNumberInput />` component provides a complete phone number input experience.
  * Features country selection with flags, phone number formatting, validation, and international support.
+ *
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { PhoneNumberInput } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic usage with default settings
  * <PhoneNumberInput
  *   defaultCountry="FR"
  *   allowedCountries={['FR', 'US', 'GB']}
@@ -70,16 +76,16 @@ const getInitialCountry = (
  * @param customDropdownItem - Custom render function for dropdown items
  * @param defaultCountry - Default country code to select initially
  * @param defaultOpen - Default open state (uncontrolled)
- * @param dropdownPosition - Position of the country dropdown ('auto' | 'top' | 'bottom')
+ * @param dropdownPosition - Position of the country dropdown: 'auto' | 'top' | 'bottom'
  * @param dropdownProps - Props for the dropdown component
  * @param errorMessage - Custom error message for invalid phone numbers
- * @param hasErrorOnChange - Whether to show error immediately on change
+ * @param hasErrorOnChange - Whether to show error immediately on change (default: false)
  * @param inputProps - Props to pass to the underlying Input component
- * @param language - Language for country names ('en' | 'fr')
- * @param maxHeight - Maximum height of the dropdown
- * @param minHeight - Minimum height of the dropdown
- * @param offsetX - Horizontal offset for dropdown positioning
- * @param offsetY - Vertical offset for dropdown positioning
+ * @param language - Language for country names: 'en' | 'fr' (default: 'en')
+ * @param maxHeight - Maximum height of the dropdown (default: 300)
+ * @param minHeight - Minimum height of the dropdown (default: 0)
+ * @param offsetX - Horizontal offset for dropdown positioning (default: 0)
+ * @param offsetY - Vertical offset for dropdown positioning (default: 0)
  * @param onBlur - Callback when input loses focus
  * @param onCountryChange - Callback when country selection changes
  * @param onError - Callback when validation error occurs
@@ -90,7 +96,6 @@ const getInitialCountry = (
  * @param placeholder - Placeholder text for the input
  * @param searchInputProps - Props for the search input in dropdown
  * @param value - Initial phone number value
- * @returns PhoneNumberInput component with country selection and validation
  */
 export function PhoneNumberInput(props: PhoneNumberInputPropsTw) {
   const {
@@ -321,5 +326,3 @@ export function PhoneNumberInput(props: PhoneNumberInputPropsTw) {
 }
 
 PhoneNumberInput.displayName = 'PhoneNumberInput';
-
-export { PhoneNumberInput };

@@ -9,6 +9,7 @@ import { forwardRef, PropsWithChildren, useMemo } from 'react';
 import { RipplePressableSs } from '@components/ripplePressable';
 import { LoadingIndicator } from '@components/loadingIndicatorsKit';
 
+import { buttonDefaultProps } from '../utils/defaultProps';
 import { ButtonSv, IconContainerSv, styles } from '../styles/Button.ss.styles';
 
 /**
@@ -21,7 +22,7 @@ function ButtonContent({
   leftIconAction,
   loadingIndicatorProps,
   rightIconAction,
-  size = 'md',
+  size = buttonDefaultProps.size,
   stringProps,
   title,
 }: {
@@ -78,15 +79,17 @@ function ButtonContent({
     return children;
   }
 
-  if (isLoading) {
-    return <LoadingIndicator name="spinner" size={sizingVariant} {...loadingIndicatorProps} />;
-  }
-
   const isIconAbsolute = isTextCentered;
 
   return (
     <BoxSs style={styles.contentContainer}>
-      {leftIconAction && (
+      {isLoading && (
+        <BoxSs style={styles.loadingContainer}>
+          <LoadingIndicator name="spinner" size={sizingVariant} {...loadingIndicatorProps} />
+        </BoxSs>
+      )}
+
+      {leftIconAction && !isLoading && (
         <BoxSs
           style={[
             IconContainerSv({
@@ -100,20 +103,22 @@ function ButtonContent({
         </BoxSs>
       )}
 
-      <BoxSs style={[styles.stringContainer]}>
-        {title && (
-          <StringSs
-            size={sizingVariant}
-            position={contentPosition}
-            style={[styles.pointerEventsNone, stringProps?.style]}
-            {...stringProps}
-          >
-            {title}
-          </StringSs>
-        )}
-      </BoxSs>
+      {!isLoading && (
+        <BoxSs style={styles.stringContainer}>
+          {title && (
+            <StringSs
+              size={sizingVariant}
+              position={contentPosition}
+              {...stringProps}
+              style={[styles.pointerEventsNone, stringProps?.style]}
+            >
+              {title}
+            </StringSs>
+          )}
+        </BoxSs>
+      )}
 
-      {rightIconAction && (
+      {rightIconAction && !isLoading && (
         <BoxSs
           style={[
             IconContainerSv({
@@ -134,7 +139,7 @@ function ButtonContent({
  * Renders the appropriate touchable component based on the 'as' prop
  */
 const TouchableComponent = forwardRef<any, PropsWithChildren<BtnPropsSs>>(
-  ({ as = 'touchable-opacity', children, isDisabled, isLoading, onPress, ...props }, ref) => {
+  ({ as = buttonDefaultProps.as, children, isDisabled, isLoading, onPress, ...props }, ref) => {
     const isButtonDisabled = isDisabled || isLoading;
 
     const commonProps = {
@@ -156,11 +161,7 @@ const TouchableComponent = forwardRef<any, PropsWithChildren<BtnPropsSs>>(
 
       case 'touchable-opacity':
       default:
-        return (
-          <TouchableOpacity {...commonProps} activeOpacity={0.7}>
-            {children}
-          </TouchableOpacity>
-        );
+        return <TouchableOpacity {...commonProps}>{children}</TouchableOpacity>;
     }
   },
 );
@@ -168,18 +169,24 @@ const TouchableComponent = forwardRef<any, PropsWithChildren<BtnPropsSs>>(
 TouchableComponent.displayName = 'TouchableComponent';
 
 /**
- * Button component with support for multiple touchable types, loading states, and various styling options.
+ * The `<Button />` component is a versatile and customizable button for React Native applications.
+ * Supports multiple touchable types, loading states, and various styling options using StyleSheet.
  *
- * Provides a flexible and accessible button implementation with support for different interaction patterns.
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { Button } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic usage
  * <Button title="Click me" onPress={handlePress} />
  * ```
  *
  * @param as - Type of touchable component to use: 'touchable-opacity' | 'pressable' | 'ripple-pressable' | 'scale-pressable' (default: 'touchable-opacity')
  * @param children - Custom content to render inside the button
+ * @param contentPosition - Content position within the button: 'left' | 'center' | 'right' (default: 'center')
  * @param isDisabled - Whether the button is disabled
  * @param leftIconAction - Left icon configuration with position support
  * @param rightIconAction - Right icon configuration with position support
@@ -192,25 +199,24 @@ TouchableComponent.displayName = 'TouchableComponent';
  * @param style - Style object for the button container
  * @param title - Button title text
  * @param variant - Button style variant: 'contained' | 'outlined' | 'text' (default: 'contained')
- * @param contentPosition - Content position within the button: 'left' | 'center' | 'right' (default: 'center')
  */
 const Button = forwardRef<any, PropsWithChildren<BtnPropsSs>>((props, ref) => {
   const {
-    as = 'touchable-opacity',
+    as = buttonDefaultProps.as,
     children,
-    contentPosition = 'center',
+    contentPosition = buttonDefaultProps.contentPosition,
     isDisabled,
     isLoading,
     leftIconAction,
     loadingIndicatorProps,
     onPress,
-    position = 'center',
+    position = buttonDefaultProps.position,
     rightIconAction,
-    size = 'md',
+    size = buttonDefaultProps.size,
     stringProps,
     style,
     title,
-    variant = 'contained',
+    variant = buttonDefaultProps.variant,
   } = props;
 
   const buttonContent = useMemo(
@@ -244,6 +250,8 @@ const Button = forwardRef<any, PropsWithChildren<BtnPropsSs>>((props, ref) => {
         style,
       ]}
       as={as}
+      isDisabled={isDisabled}
+      isLoading={isLoading}
     >
       {children ?? buttonContent}
     </TouchableComponent>

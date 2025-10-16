@@ -1,36 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 
-import { Box, String } from '../src/components';
 import UiPresentation from './storybook/UiPresentation';
-import RipplePressable from '../src/components/ripplePressable/components/RipplePressable';
+import { Box, String, RipplePressable } from '../src/components';
 
 const meta: Meta<typeof RipplePressable> = {
   argTypes: {
-    className: {
-      control: 'text',
-      description: 'Additional CSS classes',
-    },
-    disabled: {
-      control: 'boolean',
-      description: 'Whether the component is disabled',
-    },
-    effectColor: {
-      control: 'color',
-      description: 'Color of the ripple effect',
-    },
     onPress: {
       action: 'pressed',
-      description: 'Callback when pressed',
-    },
-    speed: {
-      control: { max: 2000, min: 100, step: 50, type: 'range' },
-      description: 'Speed of the ripple effect animation in milliseconds',
-    },
-    style: {
-      control: 'object',
-      description: 'Inline styles',
     },
   },
   component: RipplePressable,

@@ -1,5 +1,6 @@
-import { IconProps } from '@types';
 import { FlatListProps, StyleProp, ViewProps, ViewStyle } from 'react-native';
+
+import { IconProps } from '../icon/icon.tw.types';
 
 export interface CarouselProps {
   className?: string;

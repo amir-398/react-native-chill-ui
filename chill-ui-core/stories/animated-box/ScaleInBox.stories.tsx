@@ -1,34 +1,53 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { String } from '../../src/components';
 import UiPresentation from '../storybook/UiPresentation';
-import ScaleInBox from '../../src/components/animatedBox/components/ScaleInBox/ScaleInBox';
+import { ScaleInBox, String } from '../../src/components';
 
 const meta = {
+  args: {
+    autoStart: false,
+    delay: 0,
+    infiniteLoop: false,
+    useFastView: true,
+  },
   argTypes: {
-    autoStart: {
-      control: 'boolean',
-      description: 'Whether to start the animation automatically',
-    },
-    children: {
+    AnimatedViewProps: {
       control: 'object',
-      description: 'Content to display inside the scale-in box',
+      table: {
+        type: {
+          summary: 'Animated.ViewProps',
+        },
+      },
     },
-    className: {
-      control: 'text',
-      description: 'Additional className for the scale-in box',
+    autoStart: {
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
     },
     delay: {
-      control: 'number',
-      description: 'Delay before starting the scale-in animation',
-    },
-    duration: {
-      control: 'number',
-      description: 'Duration of the scale-in animation',
+      table: {
+        defaultValue: {
+          summary: 0,
+        },
+      },
     },
     infiniteLoop: {
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
+    },
+    useFastView: {
       control: 'boolean',
-      description: 'Whether to loop the animation infinitely',
+      description: 'Use optimized RCTView component for better performance',
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
     },
   },
   component: ScaleInBox,
@@ -43,7 +62,7 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  title: 'Components/AnimatedBox/ScaleInBox',
+  title: 'LAYOUT/AnimatedBox/ScaleInBox',
 } satisfies Meta<typeof ScaleInBox>;
 
 export default meta;
@@ -52,64 +71,40 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     autoStart: true,
-    children: (
+  },
+  render: (args: any) => (
+    <ScaleInBox {...args}>
       <String size="lg" className="text-center" color="black">
         Scale In
       </String>
-    ),
-    className: 'rounded-lg bg-secondary p-6',
-  },
-};
-
-export const Fast: Story = {
-  args: {
-    autoStart: true,
-    children: (
-      <String size="lg" className="text-center">
-        Fast Scale In
-      </String>
-    ),
-    className: 'rounded-lg bg-secondary p-6',
-    duration: 400,
-  },
-};
-
-export const Slow: Story = {
-  args: {
-    autoStart: true,
-    children: (
-      <String size="lg" className="text-center">
-        Slow Scale In
-      </String>
-    ),
-    className: 'rounded-lg bg-secondary p-6',
-    duration: 1500,
-  },
+    </ScaleInBox>
+  ),
 };
 
 export const WithDelay: Story = {
   args: {
     autoStart: true,
-    children: (
+    delay: 800,
+  },
+  render: (args: any) => (
+    <ScaleInBox {...args}>
       <String size="lg" className="text-center">
         Scale In with Delay
       </String>
-    ),
-    className: 'rounded-lg bg-secondary p-6',
-    delay: 800,
-  },
+    </ScaleInBox>
+  ),
 };
 
 export const InfiniteLoop: Story = {
   args: {
     autoStart: true,
-    children: (
+    infiniteLoop: true,
+  },
+  render: (args: any) => (
+    <ScaleInBox {...args}>
       <String size="lg" className="text-center">
         Infinite Scale Loop
       </String>
-    ),
-    className: 'rounded-lg bg-secondary p-6',
-    duration: 1200,
-    infiniteLoop: true,
-  },
+    </ScaleInBox>
+  ),
 };

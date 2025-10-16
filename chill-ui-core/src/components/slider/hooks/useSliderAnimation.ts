@@ -5,9 +5,9 @@ import DEFAULT_ANIMATION_CONFIGS from '../constants';
 
 export const useSliderAnimation = (
   values: (number | Animated.Value)[],
-  setValues: (val: any) => void,
+  setValues: React.Dispatch<React.SetStateAction<Animated.Value[]>>,
   animationType: 'spring' | 'timing',
-  animationConfig: any,
+  animationConfig: Partial<Animated.TimingAnimationConfig | Animated.SpringAnimationConfig>,
 ) => {
   const setCurrentValueAnimated = useCallback(
     (val: number, thumbIndex = 0) => {

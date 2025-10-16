@@ -8,22 +8,22 @@ import { AnimatedBoxProps } from './animatedBox.tw.types';
  *
  */
 export interface BounceBoxProps extends AnimatedBoxProps {
-  /** Duration of the bounce animation in milliseconds. @default 400 */
+  /** Duration of the bounce animation in milliseconds. */
   duration?: number;
 
-  /** Whether to start the bounce animation automatically. @default false */
+  /** Whether to start the bounce animation automatically. */
   autoStart?: boolean;
 
-  /** Height of the bounce effect in pixels. @default 20 */
+  /** Height of the bounce effect in pixels. */
   bounceHeight?: number;
 
   /** Callback function called when the bounce animation starts */
   onBounce?: () => void;
 
-  /** Interval between automatic bounces in milliseconds. @default 2000 */
+  /** Interval between automatic bounces in milliseconds. */
   bounceInterval?: number;
 
-  /** Whether to loop the animation infinitely. @default false */
+  /** Whether to loop the animation infinitely. */
   infiniteLoop?: boolean;
 }
 

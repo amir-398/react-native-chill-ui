@@ -1,11 +1,12 @@
-import { render, screen } from '@testing-library/react-native';
-import { ToastProvider } from '../components/ToastProvider.tw';
 import { View, Text } from 'react-native';
+import { render, screen } from '@testing-library/react-native';
+
+import { ToastProvider } from '../components/ToastProvider.tw';
 
 // Mock SafeAreaProvider
 jest.mock('react-native-safe-area-context', () => ({
   SafeAreaProvider: ({ children }: any) => children,
-  useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }),
+  useSafeAreaInsets: () => ({ bottom: 0, left: 0, right: 0, top: 0 }),
 }));
 
 // Mocks
@@ -51,8 +52,8 @@ describe('Toast.tw', () => {
       success: {
         className: 'bg-green-500',
         iconProps: { className: 'text-white' },
-        titleStringProps: { className: 'text-white font-bold' },
         messageStringProps: { className: 'text-white' },
+        titleStringProps: { className: 'text-white font-bold' },
       },
     };
 
@@ -69,29 +70,29 @@ describe('Toast.tw', () => {
 
   it('supports multiple Tailwind variants', () => {
     const tailwindVariants = {
-      success: {
-        className: 'bg-green-500',
-        iconProps: { className: 'text-white' },
-        titleStringProps: { className: 'text-white font-bold' },
-        messageStringProps: { className: 'text-white' },
-      },
       error: {
         className: 'bg-red-500',
         iconProps: { className: 'text-white' },
-        titleStringProps: { className: 'text-white font-bold' },
         messageStringProps: { className: 'text-white' },
-      },
-      warning: {
-        className: 'bg-yellow-500',
-        iconProps: { className: 'text-black' },
-        titleStringProps: { className: 'text-black font-bold' },
-        messageStringProps: { className: 'text-black' },
+        titleStringProps: { className: 'text-white font-bold' },
       },
       info: {
         className: 'bg-blue-500',
         iconProps: { className: 'text-white' },
-        titleStringProps: { className: 'text-white font-bold' },
         messageStringProps: { className: 'text-white' },
+        titleStringProps: { className: 'text-white font-bold' },
+      },
+      success: {
+        className: 'bg-green-500',
+        iconProps: { className: 'text-white' },
+        messageStringProps: { className: 'text-white' },
+        titleStringProps: { className: 'text-white font-bold' },
+      },
+      warning: {
+        className: 'bg-yellow-500',
+        iconProps: { className: 'text-black' },
+        messageStringProps: { className: 'text-black' },
+        titleStringProps: { className: 'text-black font-bold' },
       },
     };
 
@@ -111,8 +112,8 @@ describe('Toast.tw', () => {
       success: {
         className: 'bg-green-500 rounded-lg shadow-lg',
         iconProps: { className: 'text-white text-xl' },
-        titleStringProps: { className: 'text-white font-bold text-lg' },
         messageStringProps: { className: 'text-white text-sm' },
+        titleStringProps: { className: 'text-white font-bold text-lg' },
       },
     };
 
@@ -139,8 +140,8 @@ describe('Toast.tw', () => {
       success: {
         className: 'bg-gradient-to-r from-green-400 to-green-600 rounded-xl shadow-2xl border border-green-300',
         iconProps: { className: 'text-white text-2xl drop-shadow-lg' },
-        titleStringProps: { className: 'text-white font-extrabold text-xl tracking-wide' },
         messageStringProps: { className: 'text-white text-base opacity-90' },
+        titleStringProps: { className: 'text-white font-extrabold text-xl tracking-wide' },
       },
     };
 

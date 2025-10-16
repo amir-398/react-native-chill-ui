@@ -87,7 +87,9 @@
     "check:components-docs:report": "node scripts/check-components.js --report",
     "generate:variants": "node scripts/generate-variants.js",
     "generate:variants:ss": "node scripts/generate-variants.js",
-    "generate:variants:tw": "node scripts/generate-variants.js"
+    "generate:variants:tw": "node scripts/generate-variants.js",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -104,6 +106,7 @@
     "@react-native/eslint-config": "0.79.2",
     "@react-native/metro-config": "0.79.2",
     "@react-native/typescript-config": "0.79.2",
+    "@storybook/react-vite": "^9.1.12",
     "@types/jest": "^29.5.13",
     "@types/react-test-renderer": "^19.0.0",
     "clsx": "^2.1.1",
@@ -118,6 +121,7 @@
     "eslint-plugin-prettier": "^5.4.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-storybook": "^9.1.12",
     "eslint-plugin-unused-imports": "^4.1.4",
     "jest": "^29.6.3",
     "lefthook": "^1.11.12",

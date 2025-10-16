@@ -14,8 +14,8 @@ export interface TimePickerValues {
  */
 export interface TimePickerStateContextValue {
   itemSize: number;
-  values: TimePickerValues;
   defaultTime?: Date;
+  values: TimePickerValues;
 }
 
 /**

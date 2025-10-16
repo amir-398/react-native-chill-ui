@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 
 import { Box, String } from '../src/components';
 import UiPresentation from './storybook/UiPresentation';
@@ -20,7 +20,7 @@ const meta: Meta<typeof SegmentedControl> = {
     (Story: any) => (
       <UiPresentation>
         <Box className="w-full p-4">
-        <Story />
+          <Story />
         </Box>
       </UiPresentation>
     ),
@@ -32,6 +32,13 @@ export default meta;
 type Story = StoryObj<typeof SegmentedControl>;
 
 export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Basic SegmentedControl with three options',
+      },
+    },
+  },
   render: () => (
     <SegmentedControl>
       <SegmentedControlTriggerContent onChange={action('onChange')}>
@@ -42,16 +49,16 @@ export const Default: Story = {
       <SegmentedControlIndicator />
     </SegmentedControl>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Basic SegmentedControl with three options',
-      },
-    },
-  },
 };
 
 export const WithDefaultValue: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'SegmentedControl with Option 2 selected by default',
+      },
+    },
+  },
   render: () => (
     <SegmentedControl>
       <SegmentedControlTriggerContent defaultValue="option2" onChange={action('onChange')}>
@@ -62,16 +69,16 @@ export const WithDefaultValue: Story = {
       <SegmentedControlIndicator />
     </SegmentedControl>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'SegmentedControl with Option 2 selected by default',
-      },
-    },
-  },
 };
 
 export const WithConditionalContent: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'SegmentedControl with conditional panel content that changes based on selection',
+      },
+    },
+  },
   render: () => (
     <SegmentedControl>
       <SegmentedControlTriggerContent defaultValue="home" onChange={action('onChange')}>
@@ -103,16 +110,16 @@ export const WithConditionalContent: Story = {
       </SegmentedControlPanelContent>
     </SegmentedControl>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'SegmentedControl with conditional panel content that changes based on selection',
-      },
-    },
-  },
 };
 
 export const WithSliderContent: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'SegmentedControl with swipeable slider content that syncs with trigger selection',
+      },
+    },
+  },
   render: () => (
     <SegmentedControl>
       <SegmentedControlTriggerContent onChange={action('onChange')}>
@@ -144,16 +151,16 @@ export const WithSliderContent: Story = {
       </SegmentedControlPanelSliderContent>
     </SegmentedControl>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'SegmentedControl with swipeable slider content that syncs with trigger selection',
-      },
-    },
-  },
 };
 
 export const WithDisabledOption: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'SegmentedControl with a disabled option that cannot be selected',
+      },
+    },
+  },
   render: () => (
     <SegmentedControl>
       <SegmentedControlTriggerContent onChange={action('onChange')}>
@@ -166,16 +173,16 @@ export const WithDisabledOption: Story = {
       <SegmentedControlIndicator />
     </SegmentedControl>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'SegmentedControl with a disabled option that cannot be selected',
-      },
-    },
-  },
 };
 
 export const WithCustomStyling: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'SegmentedControl with custom styling for triggers and indicator',
+      },
+    },
+  },
   render: () => (
     <SegmentedControl>
       <SegmentedControlTriggerContent className="rounded-xl p-2" style={{ backgroundColor: '#F3F4F6' }}>
@@ -222,16 +229,16 @@ export const WithCustomStyling: Story = {
       <SegmentedControlIndicator className="rounded-lg" style={{ backgroundColor: '#3B82F6', height: 0 }} />
     </SegmentedControl>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'SegmentedControl with custom styling for triggers and indicator',
-      },
-    },
-  },
 };
 
 export const WithCustomDuration: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'SegmentedControl with custom animation duration (500ms)',
+      },
+    },
+  },
   render: () => (
     <SegmentedControl>
       <SegmentedControlTriggerContent onChange={action('onChange')}>
@@ -242,16 +249,16 @@ export const WithCustomDuration: Story = {
       <SegmentedControlIndicator duration={500} />
     </SegmentedControl>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'SegmentedControl with custom animation duration (500ms)',
-      },
-    },
-  },
 };
 
 export const TwoOptions: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'SegmentedControl with only two options',
+      },
+    },
+  },
   render: () => (
     <SegmentedControl>
       <SegmentedControlTriggerContent onChange={action('onChange')}>
@@ -261,16 +268,16 @@ export const TwoOptions: Story = {
       <SegmentedControlIndicator />
     </SegmentedControl>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'SegmentedControl with only two options',
-      },
-    },
-  },
 };
 
 export const FourOptions: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'SegmentedControl with four options',
+      },
+    },
+  },
   render: () => (
     <SegmentedControl>
       <SegmentedControlTriggerContent onChange={action('onChange')}>
@@ -282,16 +289,16 @@ export const FourOptions: Story = {
       <SegmentedControlIndicator />
     </SegmentedControl>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'SegmentedControl with four options',
-      },
-    },
-  },
 };
 
 export const WithCustomInternalPadding: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'SegmentedControl with custom internal padding (16px)',
+      },
+    },
+  },
   render: () => (
     <SegmentedControl>
       <SegmentedControlTriggerContent internalPadding={16} onChange={action('onChange')}>
@@ -302,16 +309,16 @@ export const WithCustomInternalPadding: Story = {
       <SegmentedControlIndicator />
     </SegmentedControl>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'SegmentedControl with custom internal padding (16px)',
-      },
-    },
-  },
 };
 
 export const WithTouchableOpacity: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'SegmentedControl using TouchableOpacity instead of Pressable',
+      },
+    },
+  },
   render: () => (
     <SegmentedControl>
       <SegmentedControlTriggerContent onChange={action('onChange')}>
@@ -328,16 +335,16 @@ export const WithTouchableOpacity: Story = {
       <SegmentedControlIndicator />
     </SegmentedControl>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'SegmentedControl using TouchableOpacity instead of Pressable',
-      },
-    },
-  },
 };
 
 export const CompactStyle: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'SegmentedControl with compact, dark themed styling',
+      },
+    },
+  },
   render: () => (
     <SegmentedControl>
       <SegmentedControlTriggerContent
@@ -370,11 +377,4 @@ export const CompactStyle: Story = {
       <SegmentedControlIndicator className="rounded-md" style={{ backgroundColor: '#3B82F6' }} />
     </SegmentedControl>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'SegmentedControl with compact, dark themed styling',
-      },
-    },
-  },
 };

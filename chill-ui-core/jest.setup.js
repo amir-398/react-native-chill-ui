@@ -1,7 +1,7 @@
+/* eslint-env jest */
 // Jest setup file for React Native testing
 
 // Mock react-native-svg de manière simple
-// eslint-disable-next-line
 jest.mock('react-native-svg', () => 'SvgMock');
 
 // Mock expo-constants

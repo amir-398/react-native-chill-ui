@@ -1,3 +1,4 @@
+import { ComponentType } from 'react';
 import { VariantProps } from 'tailwind-variants';
 import { wrapperTv } from '@components/wrapper/styles/Wrapper.tw.styles';
 import { StyleProp, ViewStyle, ViewProps, ScrollViewProps } from 'react-native';
@@ -7,8 +8,12 @@ import { StyleProp, ViewStyle, ViewProps, ScrollViewProps } from 'react-native';
  */
 export type WrapperBaseProps = ViewProps &
   VariantProps<typeof wrapperTv> & {
-    /** Custom CSS classes for the wrapper */
+    /** Custom CSS classes for the wrapper (NativeWind only) */
     className?: string;
+    /** Whether to wrap content in SafeAreaView */
+    hasSafeArea?: boolean;
+    /** Safe area edges to apply when hasSafeArea is true */
+    edges?: ('top' | 'right' | 'bottom' | 'left')[];
   };
 
 /**
@@ -44,6 +49,17 @@ export type WrapperKeyboardAvoidingViewProps = WrapperBaseProps & {
 };
 
 /**
+ * Props for WrapperKeyboardAvoidingStickyView component
+ */
+export type WrapperKeyboardAvoidingStickyViewProps = WrapperBaseProps & {
+  /** Whether the keyboard avoiding sticky view is enabled */
+  enabled?: boolean;
+
+  /** Offset for the keyboard avoiding sticky view */
+  offset?: { close: number; open: number };
+};
+
+/**
  * Props for WrapperKeyboardAwareScrollView component
  */
 export type WrapperKeyboardAwareScrollViewProps = WrapperBaseProps &
@@ -54,14 +70,14 @@ export type WrapperKeyboardAwareScrollViewProps = WrapperBaseProps &
     contentContainerClassName?: string;
 
     /** ScrollView component */
-    ScrollViewComponent?: React.ComponentType<ScrollViewProps>;
+    ScrollViewComponent?: ComponentType<ScrollViewProps>;
 
     /** Disable scroll on keyboard hide */
-    disableScrollOnKeyboardHide: boolean;
+    disableScrollOnKeyboardHid?: boolean;
 
     /** Whether the keyboard aware scroll view is enabled */
-    enabled: boolean;
+    enabled?: boolean;
 
     /** Extra keyboard space */
-    extraKeyboardSpace: number;
+    extraKeyboardSpace?: number;
   };

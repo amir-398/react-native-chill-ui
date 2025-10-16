@@ -2,11 +2,11 @@ import { applyMaskPhoneNumber, getPhoneNumberWithSuffix, isValidNumber } from '.
 
 // Mock libphonenumber-js
 jest.mock('libphonenumber-js', () => ({
-  parsePhoneNumber: jest.fn(),
   AsYouType: jest.fn().mockImplementation(() => ({
     input: jest.fn(phone => phone),
   })),
   isValidPhoneNumber: jest.fn(() => true),
+  parsePhoneNumber: jest.fn(),
 }));
 
 describe('PhoneNumberInput Utils', () => {

@@ -27,3 +27,6 @@ export type { WrapperKeyboardAwareScrollViewProps as WrapperKeyboardAwareScrollV
  */
 export type { WrapperScrollViewProps as WrapperScrollViewPropsSs } from './wrapper.ss.types';
 export type { WrapperScrollViewProps as WrapperScrollViewPropsTw } from './wrapper.tw.types';
+
+export type { WrapperKeyboardAvoidingStickyViewProps as WrapperKeyboardAvoidingStickyViewPropsSs } from './wrapper.ss.types';
+export type { WrapperKeyboardAvoidingStickyViewProps as WrapperKeyboardAvoidingStickyViewPropsTw } from './wrapper.tw.types';

@@ -20,7 +20,9 @@ jest.mock('../../../components/box', () => ({
 
 jest.mock('../../../components/icon', () => ({
   IconSs: ({ name, onPress }: any) => {
-    const MockIcon = () => <div data-testid={`icon-${name}`} onClick={onPress} />;
+    function MockIcon() {
+      return <div data-testid={`icon-${name}`} onClick={onPress} />;
+    }
     return <MockIcon />;
   },
 }));
@@ -50,12 +52,12 @@ describe('Input Component (StyleSheet)', () => {
   });
 
   it('should render without crashing', () => {
-    const { root } = render(<Input hasError={true} errorMessage="This is an error" />);
+    const { root } = render(<Input hasError errorMessage="This is an error" />);
     expect(root).toBeTruthy();
   });
 
   it('should handle disabled state', () => {
-    render(<Input isDisabled={true} placeholder="Disabled input" />);
+    render(<Input isDisabled placeholder="Disabled input" />);
     const input = screen.getByPlaceholderText('Disabled input');
     expect(input.props.editable).toBe(false);
   });

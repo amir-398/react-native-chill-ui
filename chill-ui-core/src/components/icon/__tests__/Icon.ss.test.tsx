@@ -3,15 +3,17 @@ import { render, screen } from '@testing-library/react-native';
 import Icon from '../components/Icon.ss';
 
 // Mock du composant CustomIcon
-jest.mock('../components/CustomIcon.ss', () => {
-  return function MockCustomIcon({ name, color, style }: any) {
-    return (
-      <div testID={`icon-${name}`} style={style} data-color={color}>
-        {name}
-      </div>
-    );
-  };
-});
+jest.mock(
+  '../components/CustomIcon.ss',
+  () =>
+    function MockCustomIcon({ color, name, style }: any) {
+      return (
+        <div testID={`icon-${name}`} style={style} data-color={color}>
+          {name}
+        </div>
+      );
+    },
+);
 
 // Mock du composant RipplePressableSs
 jest.mock('../../ripplePressable', () => ({

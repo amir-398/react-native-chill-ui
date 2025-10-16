@@ -66,6 +66,7 @@ module.exports = {
 
   // Configuration de l'environnement
   setupFilesAfterEnv: ['@testing-library/jest-native/extend-expect', '<rootDir>/jest.setup.js'],
+  testEnvironment: 'node',
 
   // Variables globales
   globals: {

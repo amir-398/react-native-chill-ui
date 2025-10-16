@@ -63,27 +63,27 @@ jest.mock('../../../utils', () => ({
   cn: jest.fn((...args) => args.filter(Boolean).join(' ')),
   isNativeWindInstalled: jest.fn(() => false),
   isString: jest.fn(value => typeof value === 'string'),
-  styleHandler: jest.fn(() => ({})),
-  SlotTw: ({ children, ...props }: any) => <div {...props}>{children}</div>,
   SlotSs: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+  SlotTw: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+  styleHandler: jest.fn(() => ({})),
 }));
 
 jest.mock('../../../components/box', () => ({
   Box: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-  BoxTw: ({ children, ...props }: any) => <div {...props}>{children}</div>,
   BoxSs: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+  BoxTw: ({ children, ...props }: any) => <div {...props}>{children}</div>,
 }));
 
 jest.mock('../../../components/string', () => ({
-  StringTw: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-  StringSs: ({ children, ...props }: any) => <div {...props}>{children}</div>,
   String: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+  StringSs: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+  StringTw: ({ children, ...props }: any) => <div {...props}>{children}</div>,
 }));
 
 jest.mock('../../../components/inputDropdown', () => ({
   InputDropdownModal: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-  InputDropdownModalTw: ({ children, ...props }: any) => <div {...props}>{children}</div>,
   InputDropdownModalSs: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+  InputDropdownModalTw: ({ children, ...props }: any) => <div {...props}>{children}</div>,
 }));
 
 jest.mock('../components/DropdownMenuContext', () => ({
@@ -127,18 +127,15 @@ jest.mock('../styles/DropdownMenu.tw.styles', () => ({
 }));
 
 jest.mock('../utils/defaultProps', () => ({
-  dropdownMenuDefaultProps: {
-    defaultOpen: false,
-  },
-  dropdownMenuTriggerDefaultProps: {
-    as: 'pressable',
-  },
   dropdownMenuContentDefaultProps: {
     align: 'start',
     closeWhenInteractedOutside: true,
     offsetX: 0,
     offsetY: 5,
     side: 'bottom',
+  },
+  dropdownMenuDefaultProps: {
+    defaultOpen: false,
   },
   dropdownMenuItemDefaultProps: {
     as: 'touchable-highlight',
@@ -148,6 +145,9 @@ jest.mock('../utils/defaultProps', () => ({
   },
   dropdownMenuLabelDefaultProps: {},
   dropdownMenuSeparatorDefaultProps: {},
+  dropdownMenuTriggerDefaultProps: {
+    as: 'pressable',
+  },
 }));
 
 describe('DropdownMenu Snapshot Tests', () => {
@@ -168,7 +168,7 @@ describe('DropdownMenu Snapshot Tests', () => {
 
   it('should match snapshot for controlled dropdown', () => {
     const tree = render(
-      <DropdownMenu open={true} onOpenChange={jest.fn()}>
+      <DropdownMenu open onOpenChange={jest.fn()}>
         <DropdownMenuTrigger>
           <button>Open Menu</button>
         </DropdownMenuTrigger>
@@ -249,8 +249,8 @@ describe('DropdownMenu Snapshot Tests', () => {
         offsetY={10}
         maxHeight={300}
         minHeight={100}
-        hasScroll={true}
-        hasAnimation={true}
+        hasScroll
+        hasAnimation
         closeDropdownWhenSelectedItem={false}
         closeWhenInteractedOutside={false}
         verticalPosition="bottom"
@@ -265,7 +265,7 @@ describe('DropdownMenu Snapshot Tests', () => {
   it('should match snapshot for dropdown with all item variants', () => {
     const tree = render(
       <DropdownMenuContent>
-        <DropdownMenuItem as="pressable" closeOnSelect={true}>
+        <DropdownMenuItem as="pressable" closeOnSelect>
           Pressable Item
         </DropdownMenuItem>
         <DropdownMenuItem as="touchable-opacity" closeOnSelect={false}>
@@ -305,7 +305,7 @@ describe('DropdownMenu Snapshot Tests', () => {
 
   it('should match snapshot for complex nested dropdown', () => {
     const tree = render(
-      <DropdownMenu defaultOpen={true}>
+      <DropdownMenu defaultOpen>
         <DropdownMenuTrigger as="touchable-highlight">
           <button>Complex Menu</button>
         </DropdownMenuTrigger>
@@ -314,8 +314,8 @@ describe('DropdownMenu Snapshot Tests', () => {
           offsetX={15}
           offsetY={8}
           maxHeight={400}
-          hasScroll={true}
-          closeWhenInteractedOutside={true}
+          hasScroll
+          closeWhenInteractedOutside
           verticalPosition="auto"
           horizontalPosition="auto"
         >

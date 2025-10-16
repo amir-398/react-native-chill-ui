@@ -44,12 +44,17 @@ const getInitialCountry = (
 };
 
 /**
- * PhoneNumberInput component that provides a complete phone number input experience.
+ * The `<PhoneNumberInput />` component provides a complete phone number input experience.
  * Features country selection with flags, phone number formatting, validation, and international support.
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { PhoneNumberInput } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic usage with default settings
  * <PhoneNumberInput
  *   defaultCountry="FR"
  *   allowedCountries={['FR', 'US', 'GB']}
@@ -321,5 +326,3 @@ export function PhoneNumberInput(props: PhoneNumberInputPropsSs) {
 }
 
 PhoneNumberInput.displayName = 'PhoneNumberInput';
-
-export { PhoneNumberInput };

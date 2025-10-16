@@ -9,29 +9,32 @@ import { toggleSv } from '../styles/toggle.ss.styles';
 import { toggleDefaultProps } from '../utils/defaultProps';
 
 /**
- * Toggle component that provides a switch-like interface for boolean values.
+ * The `<Toggle />` component provides a switch-like interface for boolean values.
  * Built on top of React Native's Switch component with enhanced styling and state management.
- * Features customizable colors, sizes, and support for loading and disabled states.
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ *
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { Toggle } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic toggle
  * <Toggle value={isEnabled} onChange={setIsEnabled} />
  * ```
  *
- * @param value - Current toggle state (true for on, false for off)
- * @param onChange - Callback function called when toggle state changes
- * @param size - Toggle size variant (default: 'md') lg, md, sm, xl, xs
+ * @param className - Custom CSS classes for the container (NativeWind)
  * @param isDisabled - Whether the toggle is disabled (default: false)
  * @param isLoading - Whether the toggle is in loading state (default: false)
- * @param className - Custom CSS classes for the container (only NativeWind)
- * @param style - Custom style for the container (only NativeWind)
- * @param thumbColorOn - Color of the thumb when toggle is on
+ * @param onChange - Callback function called when toggle state changes
+ * @param size - Toggle size variant: 'xs' | 'sm' | 'md' | 'lg' | 'xl' (default: 'md')
+ * @param style - Custom style for the container
  * @param thumbColorOff - Color of the thumb when toggle is off
- * @param trackColorOn - Color of the track when toggle is on
+ * @param thumbColorOn - Color of the thumb when toggle is on
  * @param trackColorOff - Color of the track when toggle is off
- * @returns Toggle component with switch-like interface
+ * @param trackColorOn - Color of the track when toggle is on
+ * @param value - Current toggle state (true for on, false for off)
  */
 export function Toggle(props: TogglePropsTw) {
   const {

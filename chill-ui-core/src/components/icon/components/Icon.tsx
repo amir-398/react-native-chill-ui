@@ -10,27 +10,30 @@ import { iconSizeSv, iconPaddingSv, iconPressEffectSv, styles } from '../styles/
 import { iconSizeTv, iconPaddingTv, iconPressableTv, twStyles } from '../styles/Icon.tw.styles';
 
 /**
- * Icon component that displays SVG icons with customizable size, color, and press interactions.
+ * The `<Icon />` component displays SVG icons with customizable size, color, and press interactions.
  * Supports both static and interactive icons with press effects.
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ *
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { Icon } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic icon
  * <Icon name="heart-solid" />
- *
- * // Customized with size and color
- * <Icon name="star-solid" size="lg" color="#FFD700" />
  * ```
- * @param name - Icon name from the available icon set (required)
- * @param size - Icon size variant: '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' (default: 'md')
+ *
+ * @param as - Component to use when pressable: 'pressable' | 'touchable-opacity' | 'ripple-pressable' (default: 'pressable')
+ * @param className - Custom CSS classes for the icon container (NativeWind)
  * @param color - Icon color (default: '#000')
- * @param onPress - Callback function when icon is pressed
  * @param hasPressEffect - Whether to show press effect when pressed (default: true)
+ * @param name - Icon name from the available icon set (required)
+ * @param onPress - Callback function when icon is pressed
  * @param pressEffectSize - Size of the press effect padding
  * @param pressEffectStyle - Custom styles for the press effect
- * @param as - Component to use when pressable: 'pressable' | 'touchable-opacity' | 'ripple-pressable' (default: 'pressable')
- * @param className - Custom CSS classes (used with NativeWind)
+ * @param size - Icon size variant: '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' (default: 'md')
  * @param style - Additional inline styles
  */
 export default function Icon(props: IconProps) {

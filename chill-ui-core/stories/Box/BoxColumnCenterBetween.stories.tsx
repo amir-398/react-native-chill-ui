@@ -1,16 +1,32 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import String from '../../src/components/string';
-import { BoxColumnCenterBetween } from '../../src/components';
+import { String, BoxColumnCenterBetween } from '../../src/components';
 
 const meta: Meta<typeof BoxColumnCenterBetween> = {
+  args: {
+    useFastView: true,
+  },
+  argTypes: {
+    useFastView: {
+      control: 'boolean',
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
+    },
+    ViewProps: {
+      description: 'Any other props accepted by the native `View` component',
+      type: 'object',
+    },
+  },
   component: BoxColumnCenterBetween,
   decorators: [Story => <Story />],
   parameters: {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  title: 'Components/Box/BoxColumnCenterBetween',
+  title: 'LAYOUT/Box/BoxColumnCenterBetween',
 };
 
 export default meta;

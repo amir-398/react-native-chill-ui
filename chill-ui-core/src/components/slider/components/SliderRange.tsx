@@ -1,10 +1,11 @@
+import { memo } from 'react';
 import { SliderRangePropsTw } from '@types';
 import { AnimatedBox } from '@components/animatedBox';
 import { cn, classNameHandler, classNamePropsHandler, styleHandler } from '@utils';
 
 import { styles } from '../styles/Slider.ss.styles';
 import { twStyles } from '../styles/Slider.tw.styles';
-import { useSliderActions } from '../context/SliderContext';
+import { useSliderRange } from '../hooks/useSliderRange';
 
 /**
  * Range indicator for the slider
@@ -25,12 +26,10 @@ import { useSliderActions } from '../context/SliderContext';
  * @returns SliderRange component showing the filled track portion
  * @throws Error if used outside of SliderProvider context
  */
-export function SliderRange(props: SliderRangePropsTw) {
+function SliderRangeComponent(props: SliderRangePropsTw) {
   classNamePropsHandler(props, 'SliderRange');
   const { className, style, ...rest } = props;
-  const { getMinimumTrackStyle } = useSliderActions();
-
-  const minimumTrackStyle = getMinimumTrackStyle();
+  const { minimumTrackStyle } = useSliderRange();
 
   return (
     <AnimatedBox
@@ -45,4 +44,6 @@ export function SliderRange(props: SliderRangePropsTw) {
   );
 }
 
-SliderRange.displayName = 'SliderRange';
+SliderRangeComponent.displayName = 'SliderRange';
+
+export const SliderRange = memo(SliderRangeComponent);

@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react-native';
+
 import Chip from '../components/Chip.ss';
 
 // Mocks

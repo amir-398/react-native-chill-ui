@@ -13,9 +13,15 @@ import { chipSv, styles } from '../styles/Chip.ss.styles';
 import { chipTv, chipTextTv, twStyles } from '../styles/Chip.tw.styles';
 
 /**
- * Chip component displays compact elements that represent an input, attribute, or action.
- * Supports both text and icon content with customizable colors, sizes, and style variants (contained/outlined).
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ * The `<Chip />` component displays compact elements that represent an input, attribute, or action.
+ * Supports both text and icon content with customizable colors, sizes, and style variants.
+ *
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { Chip } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
@@ -30,16 +36,16 @@ import { chipTv, chipTextTv, twStyles } from '../styles/Chip.tw.styles';
  * </Chip>
  * ```
  *
- * @param as - Type of touchable component to use when onPress is provided (default: 'touchable-opacity')
+ * @param as - Type of touchable component to use when onPress is provided: 'touchable-opacity' | 'pressable' | 'ripple-pressable' | 'scale-pressable' (default: 'touchable-opacity')
  * @param children - Content to display in the chip
- * @param className - (only NativeWind) Additional CSS classes for the chip container
+ * @param className - Custom CSS classes for the chip container (NativeWind)
  * @param color - Custom background color for the chip
- * @param colorVariant - (only NativeWind) Color variant: 'primary' | 'secondary' | 'accent' | 'danger' | 'warning' | 'info' | 'success' | 'error' | 'dark' | 'light' | 'muted' | 'neutral' | 'disabled' | 'inverted' | 'white' (default: 'primary')
+ * @param colorVariant - Color variant: 'primary' | 'secondary' | 'accent' | 'danger' | 'warning' | 'info' | 'success' | 'error' | 'dark' | 'light' | 'muted' | 'neutral' | 'disabled' | 'inverted' | 'white' (default: 'primary')
  * @param leftIconAction - Left icon configuration (name, size, color, customIcon)
  * @param onPress - Press callback function for the chip
  * @param position - Position variant for the chip: 'left' | 'center' | 'right' (default: 'left')
  * @param rightIconAction - Right icon configuration (name, size, color, customIcon)
- * @param size - Size variant: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '2xs' (default: 'xs')
+ * @param size - Size variant: '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' (default: 'xs')
  * @param stringProps - Props for the String component
  * @param style - Style object for the chip container
  * @param title - Title to display in the chip (priority over children)

@@ -1,10 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import React, { useState } from 'react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { Button } from '@components/button';
-import { String } from '@components/string';
-import { Box } from '@components/box';
+import { useState } from 'react';
+
 import {
+  Box,
+  Button,
+  String,
   Dialog,
   DialogTrigger,
   DialogContent,
@@ -12,44 +13,91 @@ import {
   DialogTitle,
   DialogFooter,
   DialogClose,
-} from '@components/dialog';
+} from '../../src/components';
 
 const meta: Meta<typeof Dialog> = {
-  title: 'Components/Dialog',
+  args: {
+    animation: 'fade',
+    as: 'pressable',
+    closeOnBackdropPress: true,
+    closeOnGoBack: true,
+    hasBackdrop: true,
+    size: 'md',
+    useDefaultContainer: true,
+  },
+  argTypes: {
+    animation: {
+      table: {
+        defaultValue: {
+          summary: 'fade',
+        },
+      },
+    },
+    as: {
+      table: {
+        defaultValue: {
+          summary: 'pressable',
+        },
+      },
+    },
+    closeOnBackdropPress: {
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
+    },
+    closeOnGoBack: {
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
+    },
+    hasBackdrop: {
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
+    },
+    onClose: {
+      action: 'onClose',
+    },
+    onOpen: {
+      action: 'onOpen',
+    },
+    onOpenChange: {
+      action: 'onOpenChange',
+    },
+    size: {
+      table: {
+        defaultValue: {
+          summary: 'md',
+        },
+      },
+    },
+    useDefaultContainer: {
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
+    },
+  },
   component: Dialog,
   parameters: {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  argTypes: {
-    defaultOpen: {
-      control: 'boolean',
-      description: 'Initial open state for uncontrolled mode',
-    },
-    open: {
-      control: 'boolean',
-      description: 'Controlled open state',
-    },
-    onOpenChange: {
-      action: 'onOpenChange',
-      description: 'Callback when open state changes',
-    },
-    onOpen: {
-      action: 'onOpen',
-      description: 'Callback when dialog opens',
-    },
-    onClose: {
-      action: 'onClose',
-      description: 'Callback when dialog closes',
-    },
-  },
+  title: 'Components/Dialog',
 };
 
 export default meta;
 type Story = StoryObj<typeof Dialog>;
 
 export const Default: Story = {
-  render: args => (
+  render: (args: any) => (
     <Dialog {...args}>
       <DialogTrigger>
         <Button title="Open Dialog" />
@@ -70,7 +118,7 @@ export const Default: Story = {
 };
 
 export const WithCloseMark: Story = {
-  render: args => (
+  render: (args: any) => (
     <Dialog {...args}>
       <DialogTrigger>
         <Button title="Open Dialog with Close Mark" />
@@ -89,7 +137,7 @@ export const WithCloseMark: Story = {
 };
 
 export const Controlled: Story = {
-  render: args => {
+  render: (args: any) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -118,7 +166,7 @@ export const Controlled: Story = {
 };
 
 export const Uncontrolled: Story = {
-  render: args => (
+  render: (args: any) => (
     <Dialog {...args} defaultOpen={false}>
       <DialogTrigger>
         <Button title="Open Uncontrolled Dialog" />
@@ -139,10 +187,10 @@ export const Uncontrolled: Story = {
 };
 
 export const WithCallbacks: Story = {
-  render: args => (
+  render: (args: any) => (
     <Dialog
       {...args}
-      onOpenChange={open => console.log('Dialog state changed:', open)}
+      onOpenChange={(open: boolean) => console.log('Dialog state changed:', open)}
       onOpen={() => console.log('Dialog opened!')}
       onClose={() => console.log('Dialog closed!')}
     >
@@ -165,7 +213,7 @@ export const WithCallbacks: Story = {
 };
 
 export const MultipleDialogs: Story = {
-  render: args => (
+  render: (args: any) => (
     <Box className="flex flex-col gap-4">
       <String className="text-lg font-semibold">Multiple Dialogs</String>
       <Box className="flex flex-row gap-4">

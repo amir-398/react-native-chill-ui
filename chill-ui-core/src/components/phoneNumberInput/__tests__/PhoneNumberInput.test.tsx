@@ -23,7 +23,9 @@ jest.mock('../../../components/string', () => ({
 
 jest.mock('../../../components/icon', () => ({
   Icon: ({ name, onPress }: any) => {
-    const MockIcon = () => <div data-testid={`icon-${name}`} onClick={onPress} />;
+    function MockIcon() {
+      return <div data-testid={`icon-${name}`} onClick={onPress} />;
+    }
     return <MockIcon />;
   },
 }));
@@ -83,33 +85,33 @@ jest.mock('../utils/phone', () => ({
 }));
 
 jest.mock('../flags', () => ({
-  us: 'us-flag.png',
   fr: 'fr-flag.png',
   gb: 'gb-flag.png',
+  us: 'us-flag.png',
 }));
 
 jest.mock('../utils/countryCodes', () => ({
   countryCodes: [
     {
-      id: 'US',
       code: 'US',
       dial_code: '+1',
       en: 'United States',
       fr: 'États-Unis',
+      id: 'US',
     },
     {
-      id: 'FR',
       code: 'FR',
       dial_code: '+33',
       en: 'France',
       fr: 'France',
+      id: 'FR',
     },
     {
-      id: 'GB',
       code: 'GB',
       dial_code: '+44',
       en: 'United Kingdom',
       fr: 'Royaume-Uni',
+      id: 'GB',
     },
   ],
 }));
@@ -139,7 +141,7 @@ describe('PhoneNumberInput Component (Hybrid)', () => {
 
   it('should render with validation', () => {
     const { root } = render(
-      <PhoneNumberInput hasErrorOnChange={true} errorMessage="Invalid phone number" onPhoneNumberChange={jest.fn()} />,
+      <PhoneNumberInput hasErrorOnChange errorMessage="Invalid phone number" onPhoneNumberChange={jest.fn()} />,
     );
     expect(root).toBeTruthy();
   });
@@ -187,7 +189,7 @@ describe('PhoneNumberInput Component (Hybrid)', () => {
   });
 
   it('should render with uncontrolled mode', () => {
-    const { root } = render(<PhoneNumberInput defaultOpen={true} onPhoneNumberChange={jest.fn()} />);
+    const { root } = render(<PhoneNumberInput defaultOpen onPhoneNumberChange={jest.fn()} />);
     expect(root).toBeTruthy();
   });
 
@@ -233,7 +235,7 @@ describe('PhoneNumberInput Component (Hybrid)', () => {
         dropdownProps={{ hasSearch: true }}
         errorMessage="Invalid phone number"
         hasError={false}
-        hasErrorOnChange={true}
+        hasErrorOnChange
         inputProps={{ placeholder: 'Custom input' }}
         language="en"
         maxHeight={340}

@@ -1,0 +1,195 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WrapperSafeAreaView Snapshots should match snapshot with accessibility props 1`] = `
+<RNCSafeAreaView
+  accessibilityLabel="Safe area container"
+  accessible={true}
+  className="flex-1 px-[16px]"
+  edges={
+    {
+      "bottom": "additive",
+      "left": "additive",
+      "right": "additive",
+      "top": "additive",
+    }
+  }
+  testID="safe-area-view"
+>
+  Content
+</RNCSafeAreaView>
+`;
+
+exports[`WrapperSafeAreaView Snapshots should match snapshot with all edges 1`] = `
+<RNCSafeAreaView
+  className="flex-1 px-[16px]"
+  edges={
+    {
+      "bottom": "additive",
+      "left": "additive",
+      "right": "additive",
+      "top": "additive",
+    }
+  }
+>
+  Content
+</RNCSafeAreaView>
+`;
+
+exports[`WrapperSafeAreaView Snapshots should match snapshot with all props combined 1`] = `
+<RNCSafeAreaView
+  accessibilityLabel="Custom safe area view"
+  accessible={true}
+  className="flex-grow px-[24px] flex-grow flex-none custom-class"
+  edges={
+    {
+      "bottom": "additive",
+      "left": "off",
+      "right": "off",
+      "top": "additive",
+    }
+  }
+  emulateUnlessSupported={true}
+  style={
+    {
+      "marginBottom": 16,
+    }
+  }
+  testID="safe-area-view"
+>
+  Content
+</RNCSafeAreaView>
+`;
+
+exports[`WrapperSafeAreaView Snapshots should match snapshot with basic props 1`] = `
+<RNCSafeAreaView
+  className="flex-1 px-[16px]"
+  edges={
+    {
+      "bottom": "additive",
+      "left": "additive",
+      "right": "additive",
+      "top": "additive",
+    }
+  }
+>
+  Content
+</RNCSafeAreaView>
+`;
+
+exports[`WrapperSafeAreaView Snapshots should match snapshot with custom className 1`] = `
+<RNCSafeAreaView
+  className="flex-1 px-[16px] custom-class"
+  edges={
+    {
+      "bottom": "additive",
+      "left": "additive",
+      "right": "additive",
+      "top": "additive",
+    }
+  }
+>
+  Content
+</RNCSafeAreaView>
+`;
+
+exports[`WrapperSafeAreaView Snapshots should match snapshot with custom style 1`] = `
+<RNCSafeAreaView
+  className="flex-1 px-[16px]"
+  edges={
+    {
+      "bottom": "additive",
+      "left": "additive",
+      "right": "additive",
+      "top": "additive",
+    }
+  }
+  style={
+    {
+      "marginBottom": 8,
+    }
+  }
+>
+  Content
+</RNCSafeAreaView>
+`;
+
+exports[`WrapperSafeAreaView Snapshots should match snapshot with edges prop 1`] = `
+<RNCSafeAreaView
+  className="flex-1 px-[16px]"
+  edges={
+    {
+      "bottom": "additive",
+      "left": "off",
+      "right": "off",
+      "top": "additive",
+    }
+  }
+>
+  Content
+</RNCSafeAreaView>
+`;
+
+exports[`WrapperSafeAreaView Snapshots should match snapshot with emulateUnlessSupported prop 1`] = `
+<RNCSafeAreaView
+  className="flex-1 px-[16px]"
+  edges={
+    {
+      "bottom": "additive",
+      "left": "additive",
+      "right": "additive",
+      "top": "additive",
+    }
+  }
+  emulateUnlessSupported={true}
+>
+  Content
+</RNCSafeAreaView>
+`;
+
+exports[`WrapperSafeAreaView Snapshots should match snapshot with fill prop 1`] = `
+<RNCSafeAreaView
+  className="flex-1 px-[16px]"
+  edges={
+    {
+      "bottom": "additive",
+      "left": "additive",
+      "right": "additive",
+      "top": "additive",
+    }
+  }
+>
+  Content
+</RNCSafeAreaView>
+`;
+
+exports[`WrapperSafeAreaView Snapshots should match snapshot with grow prop 1`] = `
+<RNCSafeAreaView
+  className="flex-grow px-[16px] flex-grow flex-none"
+  edges={
+    {
+      "bottom": "additive",
+      "left": "additive",
+      "right": "additive",
+      "top": "additive",
+    }
+  }
+>
+  Content
+</RNCSafeAreaView>
+`;
+
+exports[`WrapperSafeAreaView Snapshots should match snapshot with px prop 1`] = `
+<RNCSafeAreaView
+  className="flex-1 px-[16px]"
+  edges={
+    {
+      "bottom": "additive",
+      "left": "additive",
+      "right": "additive",
+      "top": "additive",
+    }
+  }
+>
+  Content
+</RNCSafeAreaView>
+`;

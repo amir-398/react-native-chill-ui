@@ -10,6 +10,10 @@ export type WrapperBaseProps = ViewProps &
   VariantProps<typeof wrapperSv> & {
     /** Style prop */
     style?: StyleProp<ViewStyle>;
+    /** Whether to wrap content in SafeAreaView */
+    hasSafeArea?: boolean;
+    /** Safe area edges to apply when hasSafeArea is true */
+    edges?: ('top' | 'right' | 'bottom' | 'left')[];
   };
 
 /**
@@ -42,6 +46,17 @@ export type WrapperKeyboardAvoidingViewProps = WrapperBaseProps & {
   enabled?: boolean;
   /** Content container style */
   contentContainerStyle?: StyleProp<ViewStyle>;
+};
+
+/**
+ * Props for WrapperKeyboardAvoidingStickyView component
+ */
+export type WrapperKeyboardAvoidingStickyViewProps = WrapperBaseProps & {
+  /** Whether the keyboard avoiding sticky view is enabled */
+  enabled?: boolean;
+
+  /** Offset for the keyboard avoiding sticky view */
+  offset?: { close: number; open: number };
 };
 
 /**

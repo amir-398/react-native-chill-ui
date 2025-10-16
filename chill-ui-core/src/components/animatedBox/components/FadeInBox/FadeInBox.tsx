@@ -4,41 +4,34 @@ import { Animated } from 'react-native';
 import { classNameHandler, classNamePropsHandler } from '@utils';
 import { useRef, useEffect, useImperativeHandle, forwardRef, useCallback, PropsWithChildren } from 'react';
 
-import AnimatedBox from '../animatedBox/AnimatedBox';
+import { AnimatedBox } from '../animatedBox/AnimatedBox';
 
 /**
- * FadeInBox - Smooth fade-in animation component
- * Creates a beautiful fade-in effect by animating opacity from 0 to 1. Perfect for revealing
- * content with elegant transitions. Supports both automatic and manual control with ref methods.
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ * The `<FadeInBox />` component creates a smooth fade-in animation for its children.
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { FadeInBox } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic auto-start fade in
  * <FadeInBox autoStart className="bg-blue-500 p-6 rounded-lg">
  *   <String className="text-white">Fading in automatically</String>
  * </FadeInBox>
  *
- * // With custom timing and delay
- * <FadeInBox
- *   autoStart
- *   duration={1500}
- *   delay={800}
- *   className="bg-green-500 p-4 rounded-xl"
- * >
- *   <String className="text-white">Delayed smooth fade</String>
- * </FadeInBox>
  * ```
  *
- * @param autoStart - Automatically start animation when component mounts (default: false)
- * @param duration - Animation duration in milliseconds (default: 1000)
- * @param delay - Delay before starting animation in milliseconds (default: 0)
- * @param infiniteLoop - Loop animation continuously (default: false)
- * @param className - CSS classes for NativeWind styling
- * @param style - Inline styles for traditional styling or style overrides
+ * @param autoStart - Automatically start animation when component mounts (default: `false`)
  * @param children - Content to be animated
- * @param ref - Ref for manual animation control (start, stop methods)
- * @returns Animated component with fade-in effect
+ * @param className - CSS classes for NativeWind styling (NativeWind only)
+ * @param delay - Delay before starting animation in milliseconds (default: `0`)
+ * @param duration - Animation duration in milliseconds (default: `1000`)
+ * @param infiniteLoop - Loop animation continuously (default: `false`)
+ * @param style - Inline styles for traditional styling or style overrides
+ * @param ref - Ref for manual animation control (exposes `start` and `stop` methods)
+ * @param AnimatedBoxProps - Any other props accepted by the `AnimatedBox` component
  */
 const FadeInBox = forwardRef<FadeInBoxRefTw, PropsWithChildren<FadeInBoxPropsTw>>((props, ref) => {
   const {

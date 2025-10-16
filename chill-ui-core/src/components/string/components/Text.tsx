@@ -3,7 +3,7 @@ import type { TextProps as NativeTextProps } from 'react-native';
 
 import { createElement } from 'react';
 import { isNativeWindInstalled } from '@utils';
-import { Animated, Text as NativeText } from 'react-native';
+import { Animated, Text as NativeText, Platform } from 'react-native';
 
 export interface TextProps extends NativeTextProps {
   className?: string;
@@ -38,13 +38,10 @@ export type FastTextProps = Omit<
  * @returns Optimized text component using RCTText
  */
 export function FastText(props: FastTextProps): ReactElement {
-  if (isNativeWindInstalled()) {
-    return createElement('RCTText', props);
+  if (Platform.OS === 'web') {
+    return <NativeText {...props} />;
   }
-
-  // Fallback to native Text when NativeWind is not available
-  const { className, ...restProps } = props;
-  return createElement(NativeText, restProps);
+  return createElement('RCTText', props);
 }
 
 /**

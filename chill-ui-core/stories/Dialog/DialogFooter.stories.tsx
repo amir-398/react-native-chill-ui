@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { Button } from '@components/button';
-import { String } from '@components/string';
-import { Box } from '@components/box';
 import {
+  Box,
+  Button,
+  String,
   Dialog,
   DialogTrigger,
   DialogContent,
@@ -11,21 +11,16 @@ import {
   DialogTitle,
   DialogFooter,
   DialogClose,
-} from '@components/dialog';
+} from '../../src/components';
 
 const meta: Meta<typeof DialogFooter> = {
-  title: 'Components/Dialog/DialogFooter',
-  component: DialogFooter,
-  parameters: {
-    layout: 'centered',
-  },
-  tags: ['autodocs'],
   argTypes: {
     className: {
       control: 'text',
       description: 'Custom CSS classes (NativeWind only)',
     },
   },
+  component: DialogFooter,
   decorators: [
     Story => (
       <Dialog>
@@ -42,6 +37,11 @@ const meta: Meta<typeof DialogFooter> = {
       </Dialog>
     ),
   ],
+  parameters: {
+    layout: 'centered',
+  },
+  tags: ['autodocs'],
+  title: 'Components/Dialog/DialogFooter',
 };
 
 export default meta;

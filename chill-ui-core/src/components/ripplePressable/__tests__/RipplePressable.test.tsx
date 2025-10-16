@@ -1,5 +1,6 @@
-import { render, fireEvent } from '@testing-library/react-native';
 import { Text, View } from 'react-native';
+import { render, fireEvent } from '@testing-library/react-native';
+
 import RipplePressable from '../components/RipplePressable';
 
 // Mock utils
@@ -15,12 +16,11 @@ jest.mock('../../../utils', () => ({
 // Mock AnimatedBox
 jest.mock('../../../components/animatedBox', () => ({
   AnimatedBox: ({ children, ...props }: any) => {
-    const React = require('react');
-    const { View } = require('react-native');
+    const { View: ReactNativeView } = require('react-native');
     return (
-      <View testID="animated-box" {...props}>
+      <ReactNativeView testID="animated-box" {...props}>
         {children}
-      </View>
+      </ReactNativeView>
     );
   },
 }));

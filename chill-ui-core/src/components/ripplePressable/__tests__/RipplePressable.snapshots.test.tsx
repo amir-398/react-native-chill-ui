@@ -1,5 +1,6 @@
-import { render } from '@testing-library/react-native';
 import { Text, View } from 'react-native';
+import { render } from '@testing-library/react-native';
+
 import RipplePressable from '../components/RipplePressable';
 
 // Mock utils
@@ -15,12 +16,11 @@ jest.mock('../../../utils', () => ({
 // Mock AnimatedBox
 jest.mock('../../../components/animatedBox', () => ({
   AnimatedBox: ({ children, ...props }: any) => {
-    const React = require('react');
-    const { View } = require('react-native');
+    const { View: ReactNativeView } = require('react-native');
     return (
-      <View testID="animated-box" {...props}>
+      <ReactNativeView testID="animated-box" {...props}>
         {children}
-      </View>
+      </ReactNativeView>
     );
   },
 }));
@@ -69,7 +69,7 @@ describe('RipplePressable Snapshots', () => {
   it('should match snapshot with custom styling', () => {
     const tree = render(
       <RipplePressable className="custom-class" style={{ margin: 10 }}>
-        <View style={{ padding: 16, backgroundColor: '#3B82F6', borderRadius: 8 }}>
+        <View style={{ backgroundColor: '#3B82F6', borderRadius: 8, padding: 16 }}>
           <Text style={{ color: 'white' }}>Styled Button</Text>
         </View>
       </RipplePressable>,

@@ -25,20 +25,20 @@ export type AutocompleteDropdownRefProps = {
 export interface AutocompleteDropdownProps<T> {
   /** Array of data items to display in the dropdown */
   dataSet: T[];
-  /** Horizontal offset for dropdown positioning (default: 0) */
+  /** Horizontal offset for dropdown positioning  */
   offsetX?: number;
-  /** Vertical offset for dropdown positioning (default: 0) */
+  /** Vertical offset for dropdown positioning  */
   offsetY?: number;
-  /** Maximum height of dropdown (default: 300) */
+  /** Maximum height of dropdown  */
   /** Controlled open state */
   open?: boolean;
   /** Callback when open state changes */
   onOpenChange?: (open: boolean) => void;
   /** Default open state (uncontrolled) */
   defaultOpen?: boolean;
-  /** Maximum height of dropdown (default: 300) */
+  /** Maximum height of dropdown  */
   maxHeight?: number;
-  /** Minimum height of dropdown (default: 0) */
+  /** Minimum height of dropdown  */
   minHeight?: number;
   /** Items to exclude from dropdown */
   excludeItems?: T[];
@@ -54,11 +54,11 @@ export interface AutocompleteDropdownProps<T> {
   searchField?: keyof T;
   /** Props to pass to the input component */
   inputProps?: Omit<InputPropsTw, 'onChangeText'>;
-  /** Enable search functionality (default: true) */
+  /** Enable search functionality */
   hasPerformSearch?: boolean;
   /** Require confirmation before selecting */
   confirmSelectItem?: boolean;
-  /** Highlight search terms in results (default: true) */
+  /** Highlight search terms in results  */
   hasHighlightString?: boolean;
 
   /** Callback function when the input text changes */
@@ -66,11 +66,15 @@ export interface AutocompleteDropdownProps<T> {
 
   /** Callback function when an item is selected */
   onSelectItem?: (item: T) => void;
-  /** Close dropdown after selection (default: true) */
-  closeModalWhenSelectedItem?: boolean;
+  /** Close dropdown after selection  */
+  closeDropdownWhenSelectedItem?: boolean;
   /** Callback for confirmed selection */
   onConfirmSelectItem?: (item: T) => void;
-  /** Dropdown positioning: 'auto', 'top', or 'bottom' */
+  /** Dropdown positioning:
+   * - `'auto'`
+   * - `'top'`
+   * - `'bottom'`
+   */
   dropdownPosition?: 'auto' | 'top' | 'bottom';
   /** Props for text highlighting configuration */
   highlightProps?: Partial<Omit<HighlightStringProps, 'text'>>;
@@ -80,11 +84,8 @@ export interface AutocompleteDropdownProps<T> {
   customDropdownItem?: (item: T, selected?: boolean) => React.ReactElement | null;
   /** Props for styling dropdown items */
   dropdownItemProps?: {
-    /** Custom CSS classes for dropdown items */
     className?: string;
-    /** Background color for active/selected items */
     activeBackgroundColor?: string;
-    /** Props for the String component used in dropdown items */
     stringItemProps?: StringPropsTw;
   };
   /** Props for the dropdown FlatList component */

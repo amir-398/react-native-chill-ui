@@ -3,12 +3,13 @@ import { render, screen } from '@testing-library/react-native';
 import Avatar from '../components/Avatar';
 
 // Mock des utilitaires hybrid pour éviter les erreurs
-jest.mock('../../../utils/hybrid/classNameMissingError', () => ({
+jest.mock('../../../utils/hybrid/classNamePropsHandler', () => ({
   classNamePropsHandler: jest.fn(),
 }));
 
 jest.mock('../../../utils/hybrid/colorVariantPropsHandler', () => ({
   __esModule: true,
+  colorVariantPropsHandler: jest.fn(),
   default: jest.fn(),
 }));
 

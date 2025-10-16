@@ -5,5 +5,6 @@ export const inputDefaultProps: Partial<InputPropsTw> = {
   editable: true,
   font: 'primaryRegular',
   hasClearIcon: true,
+  placeholderTextColor: '#BDBDBD',
   size: 'md',
 };

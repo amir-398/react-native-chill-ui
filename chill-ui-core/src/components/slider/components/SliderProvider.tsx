@@ -1,9 +1,8 @@
 import { Animated, I18nManager } from 'react-native';
-import { PropsWithChildren, useMemo, useState, useEffect, useCallback } from 'react';
+import { PropsWithChildren, useMemo, useState, useEffect, useCallback, useRef } from 'react';
 
 import { useSliderGestures } from '../hooks/useSliderGestures';
 import { useSliderAnimation } from '../hooks/useSliderAnimation';
-import { normalizeValue, updateValues } from '../utils/normalize';
 import useSliderMeasurements from '../hooks/useSliderMeasurements';
 import { SliderStateContext, SliderActionsContext } from '../context/SliderContext';
 
@@ -17,9 +16,9 @@ export interface SliderProviderProps {
   /** Maximum value of the slider (default: 1) */
   maximumValue?: number;
   /** Animation configuration object */
-  animationConfig?: any;
-  /** Current value(s) of the slider */
-  value?: number | number[];
+  animationConfig?: Partial<Animated.TimingAnimationConfig | Animated.SpringAnimationConfig>;
+  /** Current value(s) of the slider as an array (supports single or multiple thumbs) */
+  value: number | number[];
   /** Right padding for the track (defaults to thumb width) */
   trackRightPadding?: number;
   /** Whether to animate transitions (default: true) */
@@ -90,15 +89,11 @@ export function SliderProvider(props: PropsWithChildren<SliderProviderProps>) {
     value = 0,
   } = props;
 
-  const [values, setValues] = useState(() =>
-    updateValues({
-      values: normalizeValue(
-        // eslint-disable-next-line
-        { maximumValue, minimumValue, value: value instanceof Animated.Value ? (value as any).__getValue() : value },
-        // eslint-disable-next-line
-        value instanceof Animated.Value ? (value as any).__getValue() : value,
-      ),
-    }),
+  // Normalize value to always be an array
+  const normalizedValue = useMemo(() => (Array.isArray(value) ? [...value] : [value]), [value]);
+
+  const [values, setValues] = useState<Animated.Value[]>(() =>
+    normalizedValue.map(v => new Animated.Value(Math.max(minimumValue, Math.min(maximumValue, v)))),
   );
 
   const [trackClickable, setTrackClickable] = useState(true);
@@ -119,14 +114,35 @@ export function SliderProvider(props: PropsWithChildren<SliderProviderProps>) {
   const { allMeasured, containerSize, measureContainer, measureThumb, measureTrack, thumbSize } =
     useSliderMeasurements();
 
+  const handleValueChange = useCallback(
+    (newValues: number[], activeThumbIndex: number) => {
+      onValueChange?.(newValues, activeThumbIndex);
+    },
+    [onValueChange],
+  );
+
+  const handleSlidingStart = useCallback(
+    (slidingValues: number[], activeThumbIndex: number) => {
+      onSlidingStart?.(slidingValues, activeThumbIndex);
+    },
+    [onSlidingStart],
+  );
+
+  const handleSlidingComplete = useCallback(
+    (completeValues: number[], activeThumbIndex: number) => {
+      onSlidingComplete?.(completeValues, activeThumbIndex);
+    },
+    [onSlidingComplete],
+  );
+
   const { getTouchOverflowSize, panResponder } = useSliderGestures({
     containerSize,
     disabled,
     maximumValue,
     minimumValue,
-    onSlidingComplete,
-    onSlidingStart,
-    onValueChange,
+    onSlidingComplete: handleSlidingComplete,
+    onSlidingStart: handleSlidingStart,
+    onValueChange: handleValueChange,
     orientation,
     setCurrentValue,
     setIsSliding,
@@ -137,60 +153,139 @@ export function SliderProvider(props: PropsWithChildren<SliderProviderProps>) {
     values,
   });
 
-  useEffect(() => {
-    if (value !== undefined) {
-      const newValues = normalizeValue({ maximumValue, minimumValue, value }, value);
-      const updatedValues = updateValues({
-        newValues,
-        values,
-      });
-      setValues(updatedValues);
+  // Track current values in a ref to avoid dependency on values in the effect
+  const currentValuesRef = useRef<number[]>(normalizedValue);
 
-      newValues.forEach((newValue, i) => {
-        // eslint-disable-next-line
-        const currentValue = (updatedValues[i] as any).__getValue();
-        if (newValue !== currentValue && animateTransitions) {
-          setCurrentValueAnimated(newValue, i);
-        } else {
-          setCurrentValue(newValue, i);
+  // Update current values when values change
+  useEffect(() => {
+    const listeners: string[] = [];
+    values.forEach((val, index) => {
+      const listenerId = val.addListener(({ value: newValue }) => {
+        currentValuesRef.current[index] = newValue;
+      });
+      listeners.push(listenerId);
+    });
+
+    return () => {
+      values.forEach((val, index) => {
+        if (listeners[index]) {
+          val.removeListener(listeners[index]);
         }
       });
+    };
+  }, [values]);
+
+  // Ref to track the last external value to avoid processing internal updates
+  const lastExternalValueRef = useRef<number | number[]>(value);
+  const processingUpdateRef = useRef(false);
+
+  // Update values when value prop changes (external updates only)
+  useEffect(() => {
+    // Don't process if we're already processing an update
+    if (processingUpdateRef.current) {
+      return;
     }
-    // eslint-disable-next-line
-  }, [value, minimumValue, maximumValue]);
+
+    // Don't process updates during sliding at all
+    if (isSliding) {
+      return;
+    }
+
+    if (value === undefined) {
+      return;
+    }
+
+    const newValues = Array.isArray(value) ? [...value] : [value];
+    const currentAnimatedValues = currentValuesRef.current;
+
+    // If we don't have current values yet (initial render), initialize them
+    if (currentAnimatedValues.length === 0) {
+      processingUpdateRef.current = true;
+      newValues.forEach((newVal, i) => {
+        const numValue = typeof newVal === 'number' ? newVal : 0;
+        setCurrentValue(numValue, i);
+      });
+      lastExternalValueRef.current = value;
+      setTimeout(() => {
+        processingUpdateRef.current = false;
+      }, 0);
+      return;
+    }
+
+    // Check if the new values are significantly different from current values
+    // This helps distinguish external changes from callback-triggered updates
+    const hasSignificantChange = newValues.some((newVal, i) => {
+      const currentVal = currentAnimatedValues[i] ?? 0;
+      const diff = Math.abs(newVal - currentVal);
+      // Use a threshold of 1 to avoid processing small changes from callbacks
+      return diff > 1;
+    });
+
+    if (!hasSignificantChange) {
+      return;
+    }
+
+    // Apply external update
+    processingUpdateRef.current = true;
+    newValues.forEach((newVal, i) => {
+      const numValue = typeof newVal === 'number' ? newVal : 0;
+
+      if (animateTransitions && !isSliding) {
+        setCurrentValueAnimated(numValue, i);
+      } else {
+        setCurrentValue(numValue, i);
+      }
+    });
+    lastExternalValueRef.current = value;
+    setTimeout(() => {
+      processingUpdateRef.current = false;
+    }, 0);
+  }, [value, isSliding, animateTransitions, setCurrentValue, setCurrentValueAnimated]);
 
   const rightPadding = trackRightPadding ?? thumbSize.width;
 
-  const interpolatedThumbValues = values.map((val: any) =>
-    val.interpolate({
-      inputRange: [minimumValue, maximumValue],
-      outputRange: I18nManager.isRTL
-        ? [0, -(containerSize.width - rightPadding)]
-        : [0, containerSize.width - rightPadding],
-    }),
+  const interpolatedThumbValues = useMemo(
+    () =>
+      values.map((val: any) =>
+        val.interpolate({
+          inputRange: [minimumValue, maximumValue],
+          outputRange: I18nManager.isRTL
+            ? [0, -(containerSize.width - rightPadding)]
+            : [0, containerSize.width - rightPadding],
+        }),
+      ),
+    [values, minimumValue, maximumValue, containerSize.width, rightPadding],
   );
 
-  const interpolatedTrackValues = values.map((val: any) =>
-    val.interpolate({
-      inputRange: [minimumValue, maximumValue],
-      outputRange: [0, containerSize.width - rightPadding],
-    }),
+  const interpolatedTrackValues = useMemo(
+    () =>
+      values.map((val: Animated.Value) =>
+        val.interpolate({
+          inputRange: [minimumValue, maximumValue],
+          outputRange: [0, containerSize.width - rightPadding],
+        }),
+      ),
+    [values, minimumValue, maximumValue, containerSize.width, rightPadding],
   );
 
   const valueVisibleStyle: { opacity?: number } = useMemo(() => (!allMeasured ? { opacity: 0 } : {}), [allMeasured]);
 
-  const minTrackWidth = interpolatedTrackValues[0];
-  const maxTrackWidth = interpolatedTrackValues[1];
+  const minimumTrackStyle = useMemo(() => {
+    const minTrackWidth = interpolatedTrackValues[0];
+    const maxTrackWidth = interpolatedTrackValues[1];
 
-  const minimumTrackStyle = {
-    left:
-      interpolatedTrackValues.length === 1 ? new Animated.Value(0) : Animated.add(minTrackWidth, thumbSize.width / 2),
-    width:
-      interpolatedTrackValues.length === 1
-        ? Animated.add(minTrackWidth, thumbSize.width / 2)
-        : Animated.add(Animated.multiply(minTrackWidth, -1), maxTrackWidth),
-    ...valueVisibleStyle,
-  };
+    return {
+      left:
+        interpolatedTrackValues.length === 1
+          ? new Animated.Value(0)
+          : Animated.add(minTrackWidth, thumbSize.width / 2),
+      width:
+        interpolatedTrackValues.length === 1
+          ? Animated.add(minTrackWidth, thumbSize.width / 2)
+          : Animated.add(Animated.multiply(minTrackWidth, -1), maxTrackWidth),
+      ...valueVisibleStyle,
+    };
+  }, [interpolatedTrackValues, thumbSize.width, valueVisibleStyle]);
 
   const stateValue = useMemo(
     () => ({
@@ -229,7 +324,7 @@ export function SliderProvider(props: PropsWithChildren<SliderProviderProps>) {
     ],
   );
 
-  const getMinimumTrackStyle = () => minimumTrackStyle;
+  const getMinimumTrackStyle = useCallback(() => minimumTrackStyle, [minimumTrackStyle]);
 
   const actionsValue = useMemo(
     () => ({

@@ -1,51 +1,54 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
 import { Box, String } from '../src/components';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '../src/components/accordion';
 
 const meta = {
+  args: {
+    collapsible: true,
+    disabled: false,
+    hasCollapseIcon: true,
+    iconPosition: 'right',
+    type: 'single',
+  },
   argTypes: {
-    className: {
-      control: 'text',
-      description: 'Custom CSS classes (used with NativeWind)',
-    },
-    collapseIcon: {
-      control: 'text',
-      description: 'Icon to show when item is expanded',
-    },
     collapsible: {
-      control: 'boolean',
-      description: 'Whether items can be collapsed when type is single',
-    },
-    defaultValue: {
-      control: 'text',
-      description: 'Default open items (string for single, array for multiple)',
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
     },
     disabled: {
-      control: 'boolean',
-      description: 'Whether the accordion is disabled',
-    },
-    expandIcon: {
-      control: 'text',
-      description: 'Icon to show when item is collapsed',
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
     },
     hasCollapseIcon: {
-      control: 'boolean',
-      description: 'Whether to show the collapse icon',
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
     },
     iconPosition: {
-      control: 'select',
-      description: 'Position of the expand/collapse icon',
-      options: ['left', 'right'],
+      table: {
+        defaultValue: {
+          summary: 'right',
+        },
+      },
     },
     onValueChange: {
       action: 'onValueChange',
-      description: 'Callback fired when accordion state changes',
     },
     type: {
-      control: 'select',
-      description: 'Whether single or multiple items can be open at once',
-      options: ['single', 'multiple'],
+      table: {
+        defaultValue: {
+          summary: 'single',
+        },
+      },
     },
   },
   component: Accordion,

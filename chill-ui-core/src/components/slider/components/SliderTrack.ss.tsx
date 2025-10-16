@@ -1,10 +1,10 @@
 import { BoxSs } from '@components/box';
+import { PropsWithChildren } from 'react';
 import { SliderTrackPropsSs } from '@types';
-import { PropsWithChildren, useEffect } from 'react';
 
 import { styles } from '../styles/Slider.ss.styles';
+import { useSliderTrack } from '../hooks/useSliderTrack';
 import { sliderDefaultProps } from '../utils/defaultProps';
-import { useSliderActions } from '../context/SliderContext';
 
 /**
  * Track container for the slider
@@ -22,11 +22,7 @@ import { useSliderActions } from '../context/SliderContext';
  */
 export function SliderTrack(props: PropsWithChildren<SliderTrackPropsSs>) {
   const { children, clickable = sliderDefaultProps.trackClickable, style, ...rest } = props;
-  const { measureTrack, setTrackClickable } = useSliderActions();
-
-  useEffect(() => {
-    setTrackClickable(clickable);
-  }, [clickable, setTrackClickable]);
+  const { measureTrack } = useSliderTrack(clickable);
 
   return (
     <BoxSs {...rest} onLayout={measureTrack} renderToHardwareTextureAndroid style={[styles.track, style]}>
