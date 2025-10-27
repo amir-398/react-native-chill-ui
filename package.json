@@ -105,7 +105,7 @@
     "@react-native/babel-preset": "0.79.2",
     "@react-native/eslint-config": "0.79.2",
     "@react-native/metro-config": "0.79.2",
-    "@react-native/typescript-config": "0.79.2",
+    "@react-native/typescript-config": "0.82.1",
     "@storybook/react-vite": "^9.1.12",
     "@types/jest": "^29.5.13",
     "@types/react-test-renderer": "^19.0.0",
