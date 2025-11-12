@@ -16,25 +16,31 @@ import { SliderRootContent } from './SliderRootContent.ss';
  *
  * @example
  * ```tsx
- * <Slider value={50} minimumValue={0} maximumValue={100}>
+ * <Slider defaultValue={50}>
  *   <SliderTrack>
  *     <SliderRange />
  *   </SliderTrack>
  *   <SliderThumb />
+ *   <SliderLabel position="top">50%</SliderLabel>
  * </Slider>
  * ```
  *
- * @param children - Child components (SliderTrack, SliderThumb, etc.)
- * @param style - Style object for additional styling
- * @param disabled - Whether the slider is disabled
- * @param maximumValue - Maximum value of the slider
- * @param minimumValue - Minimum value of the slider
+ * @param children - Child components (SliderTrack, SliderThumb, SliderLabel, etc.)
+ * @param style - Style object for additional styling (React Native)
+ * @param isDisabled - Whether the slider is disabled (default: false)
+ * @param maximumValue - Maximum value of the slider (default: 100)
+ * @param minimumValue - Minimum value of the slider (default: 0)
  * @param onSlidingComplete - Callback when sliding completes
  * @param onSlidingStart - Callback when sliding starts
  * @param onValueChange - Callback when value changes
- * @param step - Step value for discrete slider
- * @param value - Current value(s) of the slider
- * @param orientation - Orientation of the slider ('horizontal' | 'vertical')
+ * @param step - Step value for discrete slider (default: 0)
+ * @param value - Current value(s) of the slider (controlled mode, optional)
+ * @param defaultValue - Default initial value (uncontrolled mode, optional)
+ * @param orientation - Orientation of the slider: 'horizontal' | 'vertical' (default: 'horizontal')
+ * @param animateTransitions - Whether to animate value transitions (default: true)
+ * @param animationConfig - Configuration for animations
+ * @param animationType - Type of animation: 'timing' | 'spring' (default: 'timing')
+ * @param trackRightPadding - Right padding for the track
  */
 export function Slider(props: PropsWithChildren<SliderRootPropsSs>) {
   const {
@@ -42,6 +48,7 @@ export function Slider(props: PropsWithChildren<SliderRootPropsSs>) {
     animationConfig,
     animationType = sliderDefaultProps.animationType,
     children,
+    defaultValue = sliderDefaultProps.defaultValue,
     isDisabled = sliderDefaultProps.disabled,
     maximumValue = sliderDefaultProps.maximumValue,
     minimumValue = sliderDefaultProps.minimumValue,
@@ -59,6 +66,7 @@ export function Slider(props: PropsWithChildren<SliderRootPropsSs>) {
   return (
     <SliderProvider
       value={value}
+      defaultValue={defaultValue}
       minimumValue={minimumValue}
       maximumValue={maximumValue}
       step={step}

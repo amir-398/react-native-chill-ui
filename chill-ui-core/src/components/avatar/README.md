@@ -20,7 +20,7 @@ This component comes in three versions to match your project's styling approach.
 - Requires NativeWind setup and Tailwind configuration
 - Install: `npm install react-native-chill-ui@tailwind`
 
-### 3. **Hybrid Version**
+### 3. **Hybrid Version** (Available soon)
 
 - Automatically detects if NativeWind is available
 - Falls back to StyleSheet if NativeWind is not installed

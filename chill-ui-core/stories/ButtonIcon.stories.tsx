@@ -2,24 +2,103 @@ import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
 import { action } from 'storybook/actions';
 
-import { ButtonIcon } from '../src/components';
+import { ICONS_OPTIONS } from '../src/constants';
 import UiPresentation from './storybook/UiPresentation';
+import { ButtonIconTw as ButtonIcon } from '../src/components';
 
 const meta: Meta<typeof ButtonIcon> = {
+  args: {
+    as: 'touchable-opacity',
+    colorVariant: 'primary',
+    iconName: 'bell-solid',
+    isDisabled: false,
+    isLoading: false,
+    onPress: action('onPress'),
+    rounded: 'square',
+    size: 'md',
+    variant: 'contained',
+  },
   argTypes: {
-    onPress: {
-      action: 'pressed',
+    as: {
+      table: {
+        defaultValue: {
+          summary: 'touchable-opacity',
+        },
+      },
+    },
+    colorVariant: {
+      control: 'select',
+      options: [
+        'accent',
+        'danger',
+        'dark',
+        'error',
+        'info',
+        'inverted',
+        'light',
+        'muted',
+        'neutral',
+        'primary',
+        'secondary',
+        'success',
+        'tertiary',
+        'warning',
+        'white',
+      ],
+      table: {
+        defaultValue: {
+          summary: 'primary',
+        },
+      },
+    },
+
+    iconName: {
+      control: 'select',
+      options: ICONS_OPTIONS,
+    },
+    isDisabled: {
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
+    },
+    isLoading: {
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
+    },
+    rounded: {
+      control: 'select',
+      options: ['circle', 'square'],
+      table: {
+        defaultValue: {
+          summary: 'square',
+        },
+      },
+    },
+
+    variant: {
+      control: 'select',
+      options: ['contained', 'outlined'],
+      table: {
+        defaultValue: {
+          summary: 'contained',
+        },
+      },
     },
   },
   component: ButtonIcon,
   decorators: [
     Story => (
-      <UiPresentation>
+      <UiPresentation className="items-center">
         <Story />
       </UiPresentation>
     ),
   ],
-  title: 'Components/ButtonIcon',
+  title: 'ACTIONS/ButtonIcon',
 };
 
 export default meta;
@@ -98,48 +177,6 @@ export const IconColorVariants: Story = {
   ),
 };
 
-export const TouchableOpacity: Story = {
-  args: {
-    ...Default.args,
-    as: 'TouchableOpacity',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'ButtonIcon using TouchableOpacity with opacity effect on press',
-      },
-    },
-  },
-};
-
-export const Pressable: Story = {
-  args: {
-    ...Default.args,
-    as: 'Pressable',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'ButtonIcon using Pressable with native Android ripple effect',
-      },
-    },
-  },
-};
-
-export const RipplePressable: Story = {
-  args: {
-    ...Default.args,
-    as: 'RipplePressable',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'ButtonIcon using RipplePressable with custom ripple animation',
-      },
-    },
-  },
-};
-
 export const TouchableComparison: Story = {
   parameters: {
     docs: {
@@ -150,9 +187,9 @@ export const TouchableComparison: Story = {
   },
   render: () => (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
-      <ButtonIcon as="TouchableOpacity" iconName="bell-solid" onPress={action('TouchableOpacity pressed')} size="md" />
-      <ButtonIcon as="Pressable" iconName="bell-solid" onPress={action('Pressable pressed')} size="md" />
-      <ButtonIcon as="RipplePressable" iconName="bell-solid" onPress={action('RipplePressable pressed')} size="md" />
+      <ButtonIcon as="touchable-opacity" iconName="bell-solid" onPress={action('TouchableOpacity pressed')} size="md" />
+      <ButtonIcon as="pressable" iconName="bell-solid" onPress={action('Pressable pressed')} size="md" />
+      <ButtonIcon as="ripple-pressable" iconName="bell-solid" onPress={action('RipplePressable pressed')} size="md" />
     </div>
   ),
 };

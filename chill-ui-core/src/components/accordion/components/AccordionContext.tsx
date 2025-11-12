@@ -10,14 +10,14 @@ const AccordionContext = createContext<AccordionContextType | undefined>(undefin
 export function AccordionProvider({
   animationDuration = accordionProviderDefaultProps.animationDuration,
   children,
-  collapseIcon = accordionProviderDefaultProps.collapseIcon,
+  collapseIcon,
   collapsible = accordionProviderDefaultProps.collapsible,
   defaultValue,
   disabled = accordionProviderDefaultProps.disabled,
   expandIcon = accordionProviderDefaultProps.expandIcon,
   hasAnimation = accordionProviderDefaultProps.hasAnimation,
   hasCollapseIcon = accordionProviderDefaultProps.hasCollapseIcon,
-  iconPosition = accordionProviderDefaultProps.iconPosition,
+  iconPosition,
   onValueChange,
   type,
 }: AccordionProviderProps) {

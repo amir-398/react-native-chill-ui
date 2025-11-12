@@ -5,14 +5,19 @@ import useDropdownMenu from '../hooks/useDropdownMenu';
 import { DropdownMenuProvider } from './DropdownMenuContext';
 
 /**
- * Root DropdownMenu component that provides context for all dropdown sub-components.
+ * The <DropdownMenu> component is a root component that provides context for all dropdown sub-components.
  * Must wrap all dropdown-related components.
  * Automatically manages dropdown state and provides context for all sub-components.
- * Supports both controlled and uncontrolled modes.
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { DropdownMenu } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
+ *
  *
  * @example
  * ```tsx
- * // Uncontrolled mode
  * <DropdownMenu>
  *   <DropdownMenuTrigger>
  *     <Button title="Open Menu" />
@@ -20,16 +25,6 @@ import { DropdownMenuProvider } from './DropdownMenuContext';
  *   <DropdownMenuContent>
  *     <DropdownMenuItem>Item 1</DropdownMenuItem>
  *     <DropdownMenuItem>Item 2</DropdownMenuItem>
- *   </DropdownMenuContent>
- * </DropdownMenu>
- *
- * // Controlled mode
- * <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
- *   <DropdownMenuTrigger>
- *     <Button title="Open Menu" />
- *   </DropdownMenuTrigger>
- *   <DropdownMenuContent>
- *     <DropdownMenuItem>Item 1</DropdownMenuItem>
  *   </DropdownMenuContent>
  * </DropdownMenu>
  * ```

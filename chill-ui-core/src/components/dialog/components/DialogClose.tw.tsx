@@ -1,6 +1,7 @@
 import type { DialogClosePropsTw } from '@types';
 
 import { SlotTw } from '@utils';
+import { PropsWithChildren } from 'react';
 import { Pressable, TouchableOpacity } from 'react-native';
 import { RipplePressableTw } from '@components/ripplePressable';
 
@@ -22,10 +23,10 @@ import { dialogDefaultProps } from '../utils/defaultProps';
  *
  * @param as - Type of touchable component to use (default: 'pressable')
  * @param asChild - Whether to clone the child element
- * @param children - Close trigger element
  * @returns Touchable close component with proper event handling
  */
-export function DialogClose({ as = dialogDefaultProps.as, asChild, children }: DialogClosePropsTw) {
+export function DialogClose(props: PropsWithChildren<DialogClosePropsTw>) {
+  const { as = dialogDefaultProps.as, asChild, children, className, style } = props;
   const { close } = useDialog();
 
   const handleClose = () => {
@@ -33,16 +34,32 @@ export function DialogClose({ as = dialogDefaultProps.as, asChild, children }: D
   };
 
   if (asChild) {
-    return <SlotTw onPress={handleClose}>{children}</SlotTw>;
+    return (
+      <SlotTw onPress={handleClose} className={className} style={style}>
+        {children}
+      </SlotTw>
+    );
   }
 
   if (as === 'ripple-pressable') {
-    return <RipplePressableTw onPress={handleClose}>{children}</RipplePressableTw>;
+    return (
+      <RipplePressableTw onPress={handleClose} className={className} style={style}>
+        {children}
+      </RipplePressableTw>
+    );
   }
   if (as === 'touchable-opacity') {
-    return <TouchableOpacity onPress={handleClose}>{children}</TouchableOpacity>;
+    return (
+      <TouchableOpacity onPress={handleClose} className={className} style={style}>
+        {children}
+      </TouchableOpacity>
+    );
   }
-  return <Pressable onPress={handleClose}>{children}</Pressable>;
+  return (
+    <Pressable onPress={handleClose} className={className} style={style}>
+      {children}
+    </Pressable>
+  );
 }
 
 DialogClose.displayName = 'DialogClose';

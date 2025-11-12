@@ -11,9 +11,7 @@ import { dropdownMenuItemSv, styles } from '../styles/DropdownMenu.ss.styles';
 import { dropdownMenuItemTv, twStyles } from '../styles/DropdownMenu.tw.styles';
 
 /**
- * DropdownMenuItem component that renders a selectable item within a dropdown menu.
- * Supports different touchable types, custom styling, and selection behaviors.
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ * The <DropdownMenuItem /> component is a touchable item that can be selected to close the dropdown.
  *
  * @example
  * ```tsx
@@ -28,7 +26,7 @@ import { dropdownMenuItemTv, twStyles } from '../styles/DropdownMenu.tw.styles';
  * @param children - Item content (string or React element)
  * @param className - Custom CSS classes (NativeWind only)
  * @param closeOnSelect - Close dropdown when item is selected (default: true)
- * @param disabled - Whether the item is disabled (default: false)
+ * @param isDisabled - Whether the item is disabled (default: false)
  * @param onSelect - Callback when item is selected
  * @param stringProps - Props for String component when children is a string
  * @param style - Style object for the item

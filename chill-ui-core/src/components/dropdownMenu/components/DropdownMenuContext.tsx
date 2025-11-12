@@ -1,7 +1,6 @@
 import { View } from 'react-native';
+import { DropdownMenuItemPropsTw } from '@types';
 import React, { createContext, useContext, ReactNode } from 'react';
-
-import { DropdownMenuItemProps } from '../../../types/dropdownMenu.types';
 
 interface DropdownMenuContextValue {
   // State
@@ -17,7 +16,7 @@ interface DropdownMenuContextValue {
   eventOpen: () => void;
   eventClose: () => void;
   toggleDropdown: () => void;
-  handleSelectItem: (item: DropdownMenuItemProps) => void;
+  handleSelectItem: (item: DropdownMenuItemPropsTw) => void;
   dropdownStyles: {
     top?: number;
     bottom?: number;

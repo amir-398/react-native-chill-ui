@@ -5,7 +5,13 @@ import { HighlightStringPropsTw } from '@types';
 import { twStyles } from '../styles/HightlightString.variants';
 
 /**
- * HighlightString component that highlights specific terms within text.
+ * The `<HighlightString />` component provides a high-level text component with predefined styling variants.
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { HighlightString } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
@@ -27,7 +33,7 @@ import { twStyles } from '../styles/HightlightString.variants';
  * @param highlightStringProps - Props for the highlighted string component
  * @returns Text with highlighted terms
  */
-function HighlightString(props: HighlightStringPropsTw) {
+export function HighlightStringImpl(props: HighlightStringPropsTw) {
   const {
     className,
     content,
@@ -73,6 +79,6 @@ function HighlightString(props: HighlightStringPropsTw) {
   );
 }
 
-HighlightString.displayName = 'HighlightString';
+HighlightStringImpl.displayName = 'HighlightString';
 
-export default memo(HighlightString);
+export const HighlightString = memo(HighlightStringImpl);

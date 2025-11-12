@@ -2,7 +2,6 @@ import type { StyleProp, ViewProps, ViewStyle } from 'react-native';
 
 import type { IconProps } from '../icon/icon.ss.types';
 
-import { ToastProps } from '../toast.types';
 import { StrictOmit } from '../utils/StrictOmit.types';
 import { StringProps } from '../string/string.ss.types';
 
@@ -28,8 +27,6 @@ export interface DialogProps {
 export interface DialogTriggerProps {
   /** Whether to clone the child element */
   asChild?: boolean;
-  /** Trigger element that will open the dialog */
-  children: React.ReactElement<{ onPress?: () => void }>;
   /** Type of touchable component to use */
   as?: 'pressable' | 'touchable-opacity' | 'ripple-pressable';
   /** Style object for the trigger */
@@ -44,8 +41,9 @@ export type DialogCloseProps = {
   asChild?: boolean;
   /** Type of touchable component to use */
   as?: 'pressable' | 'touchable-opacity' | 'ripple-pressable';
-  /** Close trigger element */
-  children: React.ReactElement<{ onPress?: () => void }>;
+
+  /** Style object for the close button */
+  style?: StyleProp<ViewStyle>;
 };
 
 /**
@@ -67,10 +65,7 @@ export type DialogTitleProps = StringProps;
 /**
  * Props for the DialogFooter component
  */
-export type DialogFooterProps = ViewProps & {
-  /** Footer content */
-  children: React.ReactNode;
-};
+export type DialogFooterProps = ViewProps;
 
 /**
  * Props for the DialogBackdrop component (internal)
@@ -88,8 +83,6 @@ export type DialogBackdropProps = {
 export type DialogContentProps = ViewProps & {
   /** Close when back button is pressed */
   closeOnGoBack?: boolean;
-  /** Dialog content */
-  children: React.ReactNode;
   /** Callback when dialog is requested to close */
   onRequestClose?: () => void;
   /** Use default white container */
@@ -105,13 +98,3 @@ export type DialogContentProps = ViewProps & {
   /** Whether to close dialog when backdrop is pressed */
   closeOnBackdropPress?: boolean;
 };
-
-type DialogToasterProps = {
-  position: ToastProps['position'];
-  message: ToastProps['message'];
-  variant: ToastProps['variant'];
-};
-
-export interface DialogToasterRef {
-  showToast: (props: DialogToasterProps) => void;
-}

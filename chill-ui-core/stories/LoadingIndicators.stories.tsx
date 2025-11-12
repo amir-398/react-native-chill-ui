@@ -4,7 +4,36 @@ import UiPresentation from './storybook';
 import { LoadingIndicator } from '../src/components/loadingIndicatorsKit';
 
 const meta: Meta<typeof LoadingIndicator> = {
-  argTypes: {},
+  argTypes: {
+    animating: {
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
+    },
+    color: {
+      table: {
+        defaultValue: {
+          summary: '#000',
+        },
+      },
+    },
+    hidesWhenStopped: {
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
+    },
+    size: {
+      table: {
+        defaultValue: {
+          summary: 'md',
+        },
+      },
+    },
+  },
   component: LoadingIndicator,
   decorators: [
     (Story: any) => (
@@ -13,7 +42,7 @@ const meta: Meta<typeof LoadingIndicator> = {
       </UiPresentation>
     ),
   ],
-  title: 'Components/LoadingIndicators',
+  title: 'FEEDBACK & OVERLAY/LoadingIndicator',
 };
 
 export default meta;
@@ -130,58 +159,6 @@ export const Wander: Story = {
   },
 };
 
-// Size variants
-export const Small: Story = {
-  args: {
-    animating: true,
-    color: '#007AFF',
-    hidesWhenStopped: true,
-    name: 'spinner',
-    size: 20,
-  },
-};
-
-export const Medium: Story = {
-  args: {
-    animating: true,
-    color: '#007AFF',
-    hidesWhenStopped: true,
-    name: 'spinner',
-    size: 40,
-  },
-};
-
-export const Large: Story = {
-  args: {
-    animating: true,
-    color: '#007AFF',
-    hidesWhenStopped: true,
-    name: 'spinner',
-    size: 60,
-  },
-};
-
-// Animation control
-export const NotAnimating: Story = {
-  args: {
-    animating: false,
-    color: '#007AFF',
-    hidesWhenStopped: false,
-    name: 'bounce',
-    size: 40,
-  },
-};
-
-export const HiddenWhenStopped: Story = {
-  args: {
-    animating: false,
-    color: '#FF3B30',
-    hidesWhenStopped: true,
-    name: 'pulse',
-    size: 40,
-  },
-};
-
 // Custom styling
 export const CustomStyle: Story = {
   args: {
@@ -195,18 +172,5 @@ export const CustomStyle: Story = {
       borderRadius: 8,
       padding: 16,
     },
-  },
-};
-
-// Accessibility
-export const WithAccessibility: Story = {
-  args: {
-    accessibilityLabel: 'Loading user data',
-    accessible: true,
-    animating: true,
-    color: '#007AFF',
-    hidesWhenStopped: true,
-    name: 'spinner',
-    size: 40,
   },
 };

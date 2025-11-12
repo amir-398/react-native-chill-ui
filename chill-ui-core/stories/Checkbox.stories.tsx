@@ -1,18 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
 import UiPresentation from './storybook';
-import { Checkbox } from '../src/components';
+import { CheckboxTw as Checkbox } from '../src/components';
 
 const meta: Meta<typeof Checkbox> = {
-  args: {
-    iconColor: '#FFF',
-    iconName: 'check-solid',
-    isChecked: false,
-    isDisabled: false,
-    isLabelPressable: true,
-    size: 'md',
-    variant: 'square',
-  },
   argTypes: {
     iconColor: {
       table: {
@@ -70,12 +61,12 @@ const meta: Meta<typeof Checkbox> = {
   component: Checkbox,
   decorators: [
     (Story: any) => (
-      <UiPresentation>
+      <UiPresentation className="items-center">
         <Story />
       </UiPresentation>
     ),
   ],
-  title: 'Components/Checkbox',
+  title: 'FORMS/Checkbox',
 };
 
 export default meta;
@@ -83,7 +74,6 @@ type Story = StoryObj<typeof Checkbox>;
 
 export const Default: Story = {
   args: {
-    isChecked: false,
     label: 'Default Checkbox',
   },
 };
@@ -134,7 +124,5 @@ export const Circle: Story = {
 };
 
 export const WithoutLabel: Story = {
-  args: {
-    isChecked: false,
-  },
+  args: {},
 };

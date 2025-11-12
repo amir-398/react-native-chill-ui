@@ -11,8 +11,13 @@ import { accordionDefaultProps } from '../utils/defaultProps';
 import { classNamePropsHandler } from '../../../utils/hybrid/classNamePropsHandler';
 
 /**
- * Accordion component provides a collapsible content area with support for single or multiple items.
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ * the `<Accordion />` component is a collapsible content area with support for single or multiple items.
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { Accordion } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
@@ -44,7 +49,7 @@ export default function Accordion(props: PropsWithChildren<AccordionPropsTw>) {
   const {
     children,
     className,
-    collapseIcon = accordionDefaultProps.collapseIcon,
+    collapseIcon,
     collapsible = accordionDefaultProps.collapsible,
     defaultValue,
     disabled = accordionDefaultProps.disabled,

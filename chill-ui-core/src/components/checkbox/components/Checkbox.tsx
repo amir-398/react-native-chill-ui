@@ -14,7 +14,7 @@ import { checkboxTv, twStyles } from '../styles/Checkbox.tw.styles';
 
 /**
  * The `<Checkbox />` component provides a flexible and accessible checkbox implementation.
- * Supports different variants, custom styling, and accessibility features.
+ * Supports different variants and custom styling.
  *
  *
  * <!-- STORYBOOK_IMPORT_START

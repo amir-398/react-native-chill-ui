@@ -1,19 +1,27 @@
 import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
 import UiPresentation from './storybook';
-import { HighlightString } from '../src/components';
+import { HighlightStringImpl as HighlightString } from '../src/components/highlightString/components/HighlightString.tw';
 
 const meta: Meta<typeof HighlightString> = {
-  argTypes: {},
+  argTypes: {
+    highlightClassName: {
+      table: {
+        defaultValue: {
+          summary: 'bg-[#FFE4B5]',
+        },
+      },
+    },
+  },
   component: HighlightString,
   decorators: [
     (Story: any) => (
-      <UiPresentation>
+      <UiPresentation className="items-center">
         <Story />
       </UiPresentation>
     ),
   ],
-  title: 'Components/HighlightString',
+  title: 'CONTENT/HighlightString',
 };
 
 export default meta;
@@ -88,103 +96,6 @@ export const SearchResults: Story = {
     className: 'text-sm text-gray-600',
     content: 'Found 15 results for "mobile development"',
     highlightClassName: 'bg-blue-100 text-blue-800 font-medium',
-    highlightTerm: 'mobile development',
-  },
-};
-
-export const FormValidation: Story = {
-  args: {
-    className: 'text-sm text-red-600',
-    content: 'Please enter a valid email address and password',
-    highlightClassName: 'bg-red-100 text-red-800 font-semibold',
-    highlightTerm: 'valid email address',
-  },
-};
-
-export const UserNotification: Story = {
-  args: {
-    className: 'text-sm text-gray-600',
-    content: 'User John Doe has joined the channel #general',
-    highlightClassName: 'bg-green-100 text-green-800 font-medium',
-    highlightTerm: 'John Doe',
-  },
-};
-
-export const OrderConfirmation: Story = {
-  args: {
-    className: 'text-base text-gray-800',
-    content: 'Your order #12345 has been shipped and will arrive on Monday',
-    highlightClassName: 'bg-green-100 text-green-800 font-mono font-semibold',
-    highlightTerm: '#12345',
-  },
-};
-
-export const WithoutNativeWind: Story = {
-  args: {
-    content: 'This example uses StyleSheet styles instead of NativeWind classes',
-    highlightStyle: {
-      backgroundColor: '#FEF3C7',
-      borderRadius: 4,
-      color: '#92400E',
-      fontWeight: '600',
-      paddingHorizontal: 4,
-    },
-    highlightTerm: 'StyleSheet',
-    style: {
-      color: '#374151',
-      fontSize: 16,
-      lineHeight: 24,
-    },
-  },
-};
-
-export const WithCustomStringProps: Story = {
-  args: {
-    className: 'text-base text-gray-700',
-    content: 'Click here to learn more about our services',
-    highlightClassName: 'bg-green-100 text-green-800 cursor-pointer',
-    highlightStringProps: {
-      selectable: true,
-    },
-    highlightTerm: 'click here',
-    stringProps: {
-      selectable: true,
-    },
-  },
-};
-
-export const EmptyHighlightTerm: Story = {
-  args: {
-    className: 'text-base text-gray-800',
-    content: 'This text has no highlight term specified',
-    highlightClassName: 'bg-yellow-200 font-bold',
-    highlightTerm: '',
-  },
-};
-
-export const WhitespaceHighlightTerm: Story = {
-  args: {
-    className: 'text-base text-gray-800',
-    content: 'This text has whitespace in the highlight term',
-    highlightClassName: 'bg-yellow-200 font-bold',
-    highlightTerm: '   ',
-  },
-};
-
-export const RegexSpecialCharacters: Story = {
-  args: {
-    className: 'text-sm text-gray-700 font-mono',
-    content: 'Search for patterns like (a+b)* or [0-9]+ in regex',
-    highlightClassName: 'bg-purple-100 text-purple-800 font-bold',
-    highlightTerm: '(a+b)*',
-  },
-};
-
-export const MixedContent: Story = {
-  args: {
-    className: 'text-base text-gray-800',
-    content: 'Welcome to our platform! 🚀 Learn about React Native 📱 and mobile development 📱',
-    highlightClassName: 'bg-blue-100 text-blue-800 font-semibold',
     highlightTerm: 'mobile development',
   },
 };

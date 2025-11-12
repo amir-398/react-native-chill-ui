@@ -2,6 +2,7 @@ import type { ChipPropsSs, IconPropsSs } from '@types';
 
 import { BoxSs } from '@components/box';
 import { IconSs } from '@components/icon';
+import { PropsWithChildren } from 'react';
 import { StringSs } from '@components/string';
 import { Pressable, TouchableOpacity } from 'react-native';
 import { ScalePressableSs } from '@components/scalePressable';
@@ -11,8 +12,15 @@ import { chipDefaultProps } from '../utils/defaultProps';
 import { chipSv, styles } from '../styles/Chip.ss.styles';
 
 /**
- * Chip component displays compact elements that represent an input, attribute, or action.
- * Supports both text and icon content with customizable colors, sizes, and style variants (contained/outlined).
+ * The `<Chip />` component displays compact elements that represent an input, attribute, or action.
+ * Supports both text and icon content with customizable colors, sizes, and style variants.
+ *
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { Chip } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
@@ -40,7 +48,7 @@ import { chipSv, styles } from '../styles/Chip.ss.styles';
  * @param title - Title to display in the chip (priority over children)
  * @param variant - Style variant: 'contained' | 'outlined' (default: 'contained')
  */
-export default function Chip(props: ChipPropsSs) {
+export default function Chip(props: PropsWithChildren<ChipPropsSs>) {
   const {
     as = chipDefaultProps.as,
     children,

@@ -1,6 +1,6 @@
-import { PropsWithChildren, memo } from 'react';
 import { String } from '@components/string';
 import { SliderLabelPropsTw } from '@types';
+import { PropsWithChildren, memo } from 'react';
 import { AnimatedBox } from '@components/animatedBox';
 import { cn, classNameHandler, classNamePropsHandler, isString, styleHandler } from '@utils';
 

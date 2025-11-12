@@ -9,7 +9,13 @@ import { twStyles } from '../styles/Accordion.tw.styles';
 import { accordionDefaultProps } from '../utils/defaultProps';
 
 /**
- * Accordion component provides a collapsible content area with support for single or multiple items.
+ * the `<Accordion />` component provides a collapsible content area with support for single or multiple items.
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { Accordion } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
@@ -40,7 +46,7 @@ export default function Accordion(props: PropsWithChildren<AccordionPropsTw>) {
   const {
     children,
     className,
-    collapseIcon = accordionDefaultProps.collapseIcon,
+    collapseIcon,
     collapsible = accordionDefaultProps.collapsible,
     defaultValue,
     disabled = accordionDefaultProps.disabled,

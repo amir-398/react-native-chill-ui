@@ -8,8 +8,6 @@ import { twStyles } from '../styles/HightlightString.variants';
 
 /**
  * The `<HighlightString />` component highlights specific terms within text.
- * Supports both NativeWind and traditional styling approaches.
- *
  *
  * <!-- STORYBOOK_IMPORT_START
  * ```tsx
@@ -36,7 +34,7 @@ import { twStyles } from '../styles/HightlightString.variants';
  * @param stringProps - Props for the main string component
  * @param style - Custom styles for the container
  */
-function HighlightString(props: HighlightStringPropsTw) {
+function HighlightStringImpl(props: HighlightStringPropsTw) {
   classNamePropsHandler(props, 'HighlightString');
 
   const {
@@ -84,6 +82,6 @@ function HighlightString(props: HighlightStringPropsTw) {
   );
 }
 
-HighlightString.displayName = 'HighlightString';
+HighlightStringImpl.displayName = 'HighlightString';
 
-export default memo(HighlightString);
+export const HighlightString = memo(HighlightStringImpl);

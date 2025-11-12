@@ -103,9 +103,7 @@ export default function ButtonIcon(props: ButtonIconPropsTw) {
     default:
       return (
         <BoxTw>
-          <TouchableOpacity {...commonProps} activeOpacity={0.7}>
-            {renderContent()}
-          </TouchableOpacity>
+          <TouchableOpacity {...commonProps}>{renderContent()}</TouchableOpacity>
         </BoxTw>
       );
   }

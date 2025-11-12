@@ -25,7 +25,18 @@ import {
   Montserrat_100Thin,
 } from '@expo-google-fonts/montserrat';
 
-import { Box, Slider, SliderRange, SliderThumb, SliderTrack, SliderLabel, String } from '@/components';
+import {
+  Box,
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+  Button,
+  String,
+} from '@/components';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -49,31 +60,35 @@ export default function App() {
     secondary_thin_font: Montserrat_100Thin,
   });
 
-  const [value, setValue] = useState([0.5]);
+  const [value, setValue] = useState([10]);
   console.log('value', value);
   if (!fontsLoaded) {
     return null;
   }
   return (
-    <Box className="mt-16 w-full bg-slate-500 p-10">
-      <Slider value={value} onValueChange={setValue}>
-        <SliderTrack>
-          <SliderRange />
-        </SliderTrack>
-        <SliderThumb index={0} />
-        <SliderThumb index={1} />
-        <SliderThumb index={2} />
-        <SliderThumb index={3} />
-        <SliderLabel index={0} position="top">
-          <String>{Math.round(value[0] * 100)}</String>
-        </SliderLabel>
-        <SliderLabel index={1} position="top">
-          <String>{Math.round(value[1] * 100)}</String>
-        </SliderLabel>
-        <SliderLabel index={2} position="top">
-          <String>{Math.round(value[2] * 100)}</String>
-        </SliderLabel>
-      </Slider>
+    <Box className="flex-1 p-5">
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button title="Open Dialog" />
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Default Dialog</DialogTitle>
+          </DialogHeader>
+          <String>This is a default dialog content.</String>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button title="Close" />
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <Button title="Open Dialog" />
+      <Box className="flex flex-row gap-5">
+        <Button title="Open Dialog" />
+        <Button title="Open Dialog" />
+      </Box>
+      <Button title="Open Dialog" />
     </Box>
   );
 }

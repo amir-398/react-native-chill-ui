@@ -4,12 +4,23 @@ import { action } from 'storybook/actions';
 
 import { Box, String } from '../src/components';
 import UiPresentation from './storybook/UiPresentation';
-import { ScalePressable } from '../src/components/scalePressable';
+import { ScalePressableTw as ScalePressable } from '../src/components/scalePressable';
 
 const meta: Meta<typeof ScalePressable> = {
   argTypes: {
-    onPress: {
-      action: 'pressed',
+    duration: {
+      table: {
+        defaultValue: {
+          summary: 100,
+        },
+      },
+    },
+    scaleValue: {
+      table: {
+        defaultValue: {
+          summary: 0.95,
+        },
+      },
     },
   },
   component: ScalePressable,
@@ -22,7 +33,7 @@ const meta: Meta<typeof ScalePressable> = {
       </UiPresentation>
     ),
   ],
-  title: 'components/ScalePressable',
+  title: 'ACTIONS/ScalePressable',
 };
 
 export default meta;
@@ -30,11 +41,6 @@ type Story = StoryObj<typeof ScalePressable>;
 
 export const Default: Story = {
   args: {
-    children: (
-      <Box className="w-full rounded-lg p-4" style={{ backgroundColor: '#3b82f6' }}>
-        <String style={{ color: 'white' }}>Press me</String>
-      </Box>
-    ),
     onPress: action('onPress'),
   },
   parameters: {
@@ -44,51 +50,17 @@ export const Default: Story = {
       },
     },
   },
-};
-
-export const WithIcon: Story = {
-  args: {
-    children: (
-      <Box className="rounded-full p-4" style={{ backgroundColor: '#10b981' }}>
-        <Box className="h-6 w-6 rounded-full" style={{ backgroundColor: 'white' }} />
+  render: (args: any) => (
+    <ScalePressable {...args}>
+      <Box className="w-full rounded-lg p-4" style={{ backgroundColor: '#3b82f6' }}>
+        <String style={{ color: 'white' }}>Press me</String>
       </Box>
-    ),
-    onPress: action('onPress'),
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'ScalePressable with an icon button',
-      },
-    },
-  },
-};
-
-export const LargeButton: Story = {
-  args: {
-    children: (
-      <Box className="rounded-lg p-6" style={{ backgroundColor: '#8b5cf6' }}>
-        <String style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Large Button</String>
-      </Box>
-    ),
-    onPress: action('onPress'),
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Large ScalePressable button with text',
-      },
-    },
-  },
+    </ScalePressable>
+  ),
 };
 
 export const SubtleScale: Story = {
   args: {
-    children: (
-      <Box className="rounded-lg p-4" style={{ backgroundColor: '#f59e0b' }}>
-        <String style={{ color: 'white' }}>Subtle Scale</String>
-      </Box>
-    ),
     onPress: action('onPress'),
     scaleValue: 0.98,
   },
@@ -99,15 +71,17 @@ export const SubtleScale: Story = {
       },
     },
   },
+  render: (args: any) => (
+    <ScalePressable {...args}>
+      <Box className="rounded-lg p-4" style={{ backgroundColor: '#f59e0b' }}>
+        <String style={{ color: 'white' }}>Subtle Scale</String>
+      </Box>
+    </ScalePressable>
+  ),
 };
 
 export const StrongScale: Story = {
   args: {
-    children: (
-      <Box className="rounded-lg p-4" style={{ backgroundColor: '#ef4444' }}>
-        <String style={{ color: 'white' }}>Strong Scale</String>
-      </Box>
-    ),
     onPress: action('onPress'),
     scaleValue: 0.85,
   },
@@ -118,15 +92,17 @@ export const StrongScale: Story = {
       },
     },
   },
+  render: (args: any) => (
+    <ScalePressable {...args}>
+      <Box className="rounded-lg p-4" style={{ backgroundColor: '#ef4444' }}>
+        <String style={{ color: 'white' }}>Strong Scale</String>
+      </Box>
+    </ScalePressable>
+  ),
 };
 
 export const FastAnimation: Story = {
   args: {
-    children: (
-      <Box className="rounded-lg p-4" style={{ backgroundColor: '#06b6d4' }}>
-        <String style={{ color: 'white' }}>Fast Animation</String>
-      </Box>
-    ),
     duration: 50,
     onPress: action('onPress'),
   },
@@ -137,15 +113,17 @@ export const FastAnimation: Story = {
       },
     },
   },
+  render: (args: any) => (
+    <ScalePressable {...args}>
+      <Box className="rounded-lg p-4" style={{ backgroundColor: '#06b6d4' }}>
+        <String style={{ color: 'white' }}>Fast Animation</String>
+      </Box>
+    </ScalePressable>
+  ),
 };
 
 export const SlowAnimation: Story = {
   args: {
-    children: (
-      <Box className="rounded-lg p-4" style={{ backgroundColor: '#84cc16' }}>
-        <String style={{ color: 'white' }}>Slow Animation</String>
-      </Box>
-    ),
     duration: 300,
     onPress: action('onPress'),
   },
@@ -156,15 +134,17 @@ export const SlowAnimation: Story = {
       },
     },
   },
+  render: (args: any) => (
+    <ScalePressable {...args}>
+      <Box className="rounded-lg p-4" style={{ backgroundColor: '#84cc16' }}>
+        <String style={{ color: 'white' }}>Slow Animation</String>
+      </Box>
+    </ScalePressable>
+  ),
 };
 
 export const CustomScaleAndDuration: Story = {
   args: {
-    children: (
-      <Box className="rounded-lg p-4" style={{ backgroundColor: '#ec4899' }}>
-        <String style={{ color: 'white' }}>Custom Scale & Duration</String>
-      </Box>
-    ),
     duration: 150,
     onPress: action('onPress'),
     scaleValue: 0.9,
@@ -176,15 +156,17 @@ export const CustomScaleAndDuration: Story = {
       },
     },
   },
+  render: (args: any) => (
+    <ScalePressable {...args}>
+      <Box className="rounded-lg p-4" style={{ backgroundColor: '#ec4899' }}>
+        <String style={{ color: 'white' }}>Custom Scale & Duration</String>
+      </Box>
+    </ScalePressable>
+  ),
 };
 
 export const Disabled: Story = {
   args: {
-    children: (
-      <Box className="rounded-lg p-4" style={{ backgroundColor: '#6b7280' }}>
-        <String style={{ color: 'white' }}>Disabled Button</String>
-      </Box>
-    ),
     disabled: true,
     onPress: action('onPress'),
   },
@@ -195,70 +177,17 @@ export const Disabled: Story = {
       },
     },
   },
-};
-
-export const WithCustomStyle: Story = {
-  args: {
-    children: (
-      <Box className="rounded-lg p-4">
-        <String style={{ color: 'white' }}>Custom Styled</String>
+  render: (args: any) => (
+    <ScalePressable {...args}>
+      <Box className="rounded-lg p-4" style={{ backgroundColor: '#6b7280' }}>
+        <String style={{ color: 'white' }}>Disabled Button</String>
       </Box>
-    ),
-    onPress: action('onPress'),
-    style: {
-      backgroundColor: '#7c3aed',
-      elevation: 5,
-      shadowColor: '#000',
-      shadowOffset: { height: 2, width: 0 },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-    },
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'ScalePressable with custom inline styles including shadow',
-      },
-    },
-  },
-};
-
-export const CardStyle: Story = {
-  args: {
-    children: (
-      <Box className="rounded-xl p-6" style={{ backgroundColor: 'white', borderColor: '#e5e7eb', borderWidth: 1 }}>
-        <String style={{ color: '#374151', fontSize: 16, fontWeight: '600' }}>Card Title</String>
-        <String style={{ color: '#6b7280', fontSize: 14, marginTop: 4 }}>Card description text</String>
-      </Box>
-    ),
-    duration: 100,
-    onPress: action('onPress'),
-    scaleValue: 0.95,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'ScalePressable styled as a card with subtle scale effect',
-      },
-    },
-  },
+    </ScalePressable>
+  ),
 };
 
 export const ButtonGroup: Story = {
   args: {
-    children: (
-      <Box className="flex-row gap-2">
-        <Box className="rounded-lg p-3" style={{ backgroundColor: '#3b82f6' }}>
-          <String style={{ color: 'white', fontSize: 14 }}>Option 1</String>
-        </Box>
-        <Box className="rounded-lg p-3" style={{ backgroundColor: '#10b981' }}>
-          <String style={{ color: 'white', fontSize: 14 }}>Option 2</String>
-        </Box>
-        <Box className="rounded-lg p-3" style={{ backgroundColor: '#f59e0b' }}>
-          <String style={{ color: 'white', fontSize: 14 }}>Option 3</String>
-        </Box>
-      </Box>
-    ),
     duration: 80,
     onPress: action('onPress'),
     scaleValue: 0.92,
@@ -270,4 +199,19 @@ export const ButtonGroup: Story = {
       },
     },
   },
+  render: (args: any) => (
+    <ScalePressable {...args}>
+      <Box className="flex-row gap-2">
+        <Box className="rounded-lg p-3" style={{ backgroundColor: '#3b82f6' }}>
+          <String style={{ color: 'white', fontSize: 14 }}>Option 1</String>
+        </Box>
+        <Box className="rounded-lg p-3" style={{ backgroundColor: '#10b981' }}>
+          <String style={{ color: 'white', fontSize: 14 }}>Option 2</String>
+        </Box>
+        <Box className="rounded-lg p-3" style={{ backgroundColor: '#f59e0b' }}>
+          <String style={{ color: 'white', fontSize: 14 }}>Option 3</String>
+        </Box>
+      </Box>
+    </ScalePressable>
+  ),
 };

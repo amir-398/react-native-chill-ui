@@ -1,6 +1,7 @@
 import type { DialogClosePropsSs } from '@types';
 
 import { SlotSs } from '@utils';
+import { PropsWithChildren } from 'react';
 import { Pressable, TouchableOpacity } from 'react-native';
 import { RipplePressableSs } from '@components/ripplePressable';
 
@@ -25,23 +26,40 @@ import { dialogDefaultProps } from '../utils/defaultProps';
  * @param children - Close trigger element
  * @returns Touchable close component with proper event handling
  */
-export function DialogClose({ as = dialogDefaultProps.as, asChild, children }: DialogClosePropsSs) {
+export function DialogClose(props: PropsWithChildren<DialogClosePropsSs>) {
+  const { as = dialogDefaultProps.as, asChild, children, style } = props;
   const { close } = useDialog();
   const handleClose = () => {
     close();
   };
 
   if (asChild) {
-    return <SlotSs onPress={handleClose}>{children}</SlotSs>;
+    return (
+      <SlotSs onPress={handleClose} style={style}>
+        {children}
+      </SlotSs>
+    );
   }
 
   if (as === 'ripple-pressable') {
-    return <RipplePressableSs onPress={handleClose}>{children}</RipplePressableSs>;
+    return (
+      <RipplePressableSs onPress={handleClose} style={style}>
+        {children}
+      </RipplePressableSs>
+    );
   }
   if (as === 'touchable-opacity') {
-    return <TouchableOpacity onPress={handleClose}>{children}</TouchableOpacity>;
+    return (
+      <TouchableOpacity onPress={handleClose} style={style}>
+        {children}
+      </TouchableOpacity>
+    );
   }
-  return <Pressable onPress={handleClose}>{children}</Pressable>;
+  return (
+    <Pressable onPress={handleClose} style={style}>
+      {children}
+    </Pressable>
+  );
 }
 
 DialogClose.displayName = 'DialogClose';

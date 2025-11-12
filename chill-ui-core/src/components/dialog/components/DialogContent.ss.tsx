@@ -98,7 +98,6 @@ export function DialogContent(props: DialogContentPropsSs) {
       onRequestClose={closeOnGoBack ? handleClose : undefined}
       transparent
       animationType={animation}
-      onShow={onShow}
     >
       {renderOverlay()}
       {useDefaultContainer && (hasToaster ? <ToastProvider>{renderContainer()}</ToastProvider> : renderContainer())}

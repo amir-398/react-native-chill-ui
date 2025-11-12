@@ -24,7 +24,7 @@ import { dropdownMenuItemSv, styles } from '../styles/DropdownMenu.ss.styles';
  * @param asChild - Whether to clone the child element
  * @param children - Item content (string or React element)
  * @param closeOnSelect - Close dropdown when item is selected (default: true)
- * @param disabled - Whether the item is disabled (default: false)
+ * @param isDisabled - Whether the item is disabled (default: false)
  * @param onSelect - Callback when item is selected
  * @param stringProps - Props for String component when children is a string
  * @param style - Style object for the item

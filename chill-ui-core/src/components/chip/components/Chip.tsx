@@ -2,6 +2,7 @@ import type { ChipPropsTw, IconProps } from '@types';
 
 import { Box } from '@components/box';
 import { Icon } from '@components/icon';
+import { PropsWithChildren } from 'react';
 import { String } from '@components/string';
 import { Pressable, TouchableOpacity } from 'react-native';
 import { ScalePressable } from '@components/scalePressable';
@@ -51,7 +52,7 @@ import { chipTv, chipTextTv, twStyles } from '../styles/Chip.tw.styles';
  * @param title - Title to display in the chip (priority over children)
  * @param variant - Style variant: 'contained' | 'outlined' (default: 'contained')
  */
-export default function Chip(props: ChipPropsTw) {
+export default function Chip(props: PropsWithChildren<ChipPropsTw>) {
   classNamePropsHandler(props, 'Chip');
   colorVariantPropsHandler(props, 'Chip');
   const {

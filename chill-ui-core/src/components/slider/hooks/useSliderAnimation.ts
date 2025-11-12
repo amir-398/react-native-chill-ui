@@ -21,7 +21,16 @@ export const useSliderAnimation = (
         values[thumbIndex] instanceof Animated.Value
           ? values[thumbIndex]
           : new Animated.Value(values[thumbIndex] as number);
-      Animated[animationType](animatedValue, animationConfigs).start();
+      
+      // Safely start animation (handles test environments)
+      try {
+        Animated[animationType](animatedValue as Animated.Value, animationConfigs).start();
+      } catch {
+        // In test environments or if animation fails, just set the value directly
+        if (animatedValue instanceof Animated.Value && typeof (animatedValue as any).setValue === 'function') {
+          (animatedValue as Animated.Value).setValue(val);
+        }
+      }
     },
     [animationType, animationConfig, values],
   );

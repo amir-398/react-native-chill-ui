@@ -3,6 +3,7 @@ import type { ChipPropsTw, IconPropsTw } from '@types';
 import { cn, isString } from '@utils';
 import { BoxTw } from '@components/box';
 import { IconTw } from '@components/icon';
+import { PropsWithChildren } from 'react';
 import { StringTw } from '@components/string';
 import { Pressable, TouchableOpacity } from 'react-native';
 import { ScalePressableTw } from '@components/scalePressable';
@@ -12,8 +13,15 @@ import { chipDefaultProps } from '../utils/defaultProps';
 import { chipTv, chipTextTv, twStyles } from '../styles/Chip.tw.styles';
 
 /**
- * Chip component displays compact elements that represent an input, attribute, or action.
- * Supports both text and icon content with customizable colors, sizes, and style variants (contained/outlined).
+ * The `<Chip />` component displays compact elements that represent an input, attribute, or action.
+ * Supports both text and icon content with customizable colors, sizes, and style variants.
+ *
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { Chip } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
@@ -44,7 +52,7 @@ import { chipTv, chipTextTv, twStyles } from '../styles/Chip.tw.styles';
  * @param title - Title to display in the chip (priority over children)
  * @param variant - Style variant: 'contained' | 'outlined' (default: 'contained')
  */
-export default function Chip(props: ChipPropsTw) {
+export default function Chip(props: PropsWithChildren<ChipPropsTw>) {
   const {
     as = chipDefaultProps.as,
     children,
@@ -140,7 +148,6 @@ export default function Chip(props: ChipPropsTw) {
     ...rest,
   };
 
-  // Si pas de onPress, on retourne juste une Box
   if (!onPress) {
     return (
       <BoxTw>
@@ -149,7 +156,6 @@ export default function Chip(props: ChipPropsTw) {
     );
   }
 
-  // Si onPress est fourni, on wrappe dans le composant touchable approprié
   switch (as) {
     case 'ripple-pressable':
       return (

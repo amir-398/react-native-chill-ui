@@ -1,4 +1,4 @@
 export const twStyles = {
-  container: 'self-start overflow-hidden',
+  container: 'overflow-hidden',
   disabled: 'opacity-50',
 };

@@ -4,9 +4,10 @@ import { Box } from '@components/box';
 import { String } from '@components/string';
 import { RipplePressable } from '@components/ripplePressable';
 import { Image, Pressable, TouchableOpacity } from 'react-native';
-import { cn, classNamePropsHandler, classNameHandler, styleHandler } from '@utils';
+import { classNamePropsHandler, classNameHandler, styleHandler, cn } from '@utils';
 
 import getUserInitials from '../utils/getUsersInititials';
+import { avatarDefaultProps } from '../utils/defaultProps';
 import { AvatarSv, styles } from '../styles/Avatar.ss.styles';
 import { avatarTv, twStyles } from '../styles/Avatar.tw.styles';
 
@@ -47,27 +48,24 @@ import { avatarTv, twStyles } from '../styles/Avatar.tw.styles';
 export default function Avatar(props: AvatarPropsTw) {
   classNamePropsHandler(props, 'Avatar');
   const {
-    as = 'pressable',
+    as = avatarDefaultProps.as,
     className,
     color,
     data,
     onPress,
-    size = 'md',
+    size = avatarDefaultProps.size,
     stringProps,
     style,
-    variant = 'circle',
+    variant = avatarDefaultProps.variant,
   } = props;
 
   const initials = getUserInitials(data);
   const image = data?.image_url;
 
-  const avaratStyle = AvatarSv({ size, variant });
+  const avaratStyle = AvatarSv({ size: size as any, variant: variant as any });
 
   const avatarContent = (
-    <Box
-      {...classNameHandler(cn(avatarTv({ size, variant }), className))}
-      {...styleHandler({ defaultStyle: avaratStyle, style: [{ ...(color && { backgroundColor: color }) }, style] })}
-    >
+    <Box>
       <String size={size as any} font="primarySemiBold" {...stringProps}>
         {initials}
       </String>
@@ -84,16 +82,23 @@ export default function Avatar(props: AvatarPropsTw) {
   if (onPress) {
     switch (as) {
       case 'touchable-opacity':
-        return (
-          <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
-            {avatarContent}
-          </TouchableOpacity>
-        );
+        return <TouchableOpacity onPress={onPress}>{avatarContent}</TouchableOpacity>;
       case 'ripple-pressable':
         return <RipplePressable onPress={onPress}>{avatarContent}</RipplePressable>;
       case 'pressable':
       default:
-        return <Pressable onPress={onPress}>{avatarContent}</Pressable>;
+        return (
+          <Pressable
+            onPress={onPress}
+            {...classNameHandler(cn(avatarTv({ size: size as any, variant: variant as any }), className))}
+            {...styleHandler({
+              defaultStyle: avaratStyle,
+              style: [{ ...(color && { backgroundColor: color }) }, style],
+            })}
+          >
+            {avatarContent}
+          </Pressable>
+        );
     }
   }
 

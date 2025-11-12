@@ -5,12 +5,19 @@ import { StringSs } from '@components/string';
 import { RipplePressableSs } from '@components/ripplePressable';
 import { Image, Pressable, TouchableOpacity } from 'react-native';
 
-import getUserInitials from '../utils/getUsersInititials';
+import { useAvatar } from '../hooks/useAvatar';
+import { avatarDefaultProps } from '../utils/defaultProps';
 import { AvatarSv, styles } from '../styles/Avatar.ss.styles';
 
 /**
- * Avatar component displays user profile images with fallback to initials.
+ * The <Avatar /> component displays user profile images with fallback to initials.
  * Supports different sizes, shapes, and touchable interactions.
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { Avatar } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
@@ -37,37 +44,53 @@ import { AvatarSv, styles } from '../styles/Avatar.ss.styles';
  * @see {@link https://github.com/your-repo/chill-ui/tree/main/src/components/avatar/README.md Documentation}
  */
 export default function Avatar(props: AvatarPropsSs) {
-  const { as = 'pressable', color, data, onPress, size = 'md', stringProps, style, variant = 'circle' } = props;
+  const {
+    as = avatarDefaultProps.as,
+    color,
+    data,
+    onPress,
+    size = avatarDefaultProps.size,
+    stringProps,
+    style,
+    variant = avatarDefaultProps.variant,
+  } = props;
 
-  const initials = data?.firstname ? getUserInitials(data) : '';
-  const image = data?.image_url;
+  const { image, initials } = useAvatar(data);
 
   const avaratStyle = AvatarSv({ size, variant });
 
   const avatarContent = (
-    <BoxSs style={[{ ...(color && { backgroundColor: color }) }, avaratStyle, style]}>
+    <>
+      <StringSs size={size as any} font="primarySemiBold" {...stringProps}>
+        {initials}
+      </StringSs>
+      {image && <Image style={styles.image} source={{ uri: image }} />}
+    </>
+  );
+
+  const commonProps = {
+    onPress: onPress || undefined,
+    style: [{ ...(color && { backgroundColor: color }) }, avaratStyle, style],
+  };
+
+  if (onPress) {
+    switch (as) {
+      case 'touchable-opacity':
+        return <TouchableOpacity {...commonProps}>{avatarContent}</TouchableOpacity>;
+      case 'ripple-pressable':
+        return <RipplePressableSs {...commonProps}>{avatarContent}</RipplePressableSs>;
+      case 'pressable':
+      default:
+        return <Pressable {...commonProps}>{avatarContent}</Pressable>;
+    }
+  }
+
+  return (
+    <BoxSs {...commonProps}>
       <StringSs size={size as any} font="primarySemiBold" {...stringProps}>
         {initials}
       </StringSs>
       {image && <Image style={styles.image} source={{ uri: image }} />}
     </BoxSs>
   );
-
-  if (onPress) {
-    switch (as) {
-      case 'touchable-opacity':
-        return (
-          <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
-            {avatarContent}
-          </TouchableOpacity>
-        );
-      case 'ripple-pressable':
-        return <RipplePressableSs onPress={onPress}>{avatarContent}</RipplePressableSs>;
-      case 'pressable':
-      default:
-        return <Pressable onPress={onPress}>{avatarContent}</Pressable>;
-    }
-  }
-
-  return avatarContent;
 }

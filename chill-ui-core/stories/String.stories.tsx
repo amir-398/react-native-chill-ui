@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
 import { fn } from 'storybook/test';
 
-import { String } from '../src/components/string';
 import UiPresentation from './storybook/UiPresentation';
+import { StringTw as String } from '../src/components/string';
 
 const meta: Meta<typeof String> = {
   args: {
@@ -17,17 +17,45 @@ const meta: Meta<typeof String> = {
         },
       },
     },
+    position: {
+      table: {
+        defaultValue: {
+          summary: 'left',
+        },
+      },
+    },
+    size: {
+      table: {
+        defaultValue: {
+          summary: 'md',
+        },
+      },
+    },
+    useFastText: {
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
+    },
+    variant: {
+      table: {
+        defaultValue: {
+          summary: 'body-1',
+        },
+      },
+    },
   },
   component: String,
   decorators: [
     (Story: any) => (
-      <UiPresentation>
+      <UiPresentation className="items-center">
         <Story />
       </UiPresentation>
     ),
   ],
   tags: ['autodocs'],
-  title: 'UI/String',
+  title: 'CONTENT/String',
 };
 
 export default meta;
@@ -42,7 +70,6 @@ export const Default: Story = {
     size: 'md',
     useFastText: true,
     variant: 'body-1',
-    weight: 'regular',
   },
 };
 
@@ -56,7 +83,6 @@ export const Clickable: Story = {
     size: 'md',
     useFastText: true,
     variant: 'body-1',
-    weight: 'regular',
   },
 };
 
@@ -70,7 +96,6 @@ export const ClickableTitle: Story = {
     size: 'xl',
     useFastText: true,
     variant: 'title-1',
-    weight: 'bold',
   },
 };
 
@@ -109,7 +134,6 @@ export const LightText: Story = {
     colorVariant: 'primary',
     size: 'lg',
     variant: 'body-1',
-    weight: 'light',
   },
 };
 
@@ -128,7 +152,6 @@ export const ItalicText: Story = {
     colorVariant: 'primary',
     size: 'lg',
     variant: 'body-1',
-    weight: 'italic',
   },
 };
 

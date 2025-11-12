@@ -33,11 +33,9 @@ import { loadingIndicatorSizes } from '../styles/loadingIndicator.styles';
  * />
  * ```
  *
- * @param accessible - Whether the component is accessible
- * @param accessibilityLabel - Accessibility label for screen readers
  * @param animating - Whether the animation is running (default: true)
  * @param color - Color of the loading indicator (default: '#000')
- * @param hidesWhenStopped - Whether to hide when animation stops (default: true)
+ * @param hidesWhenStopped - Whether to hide when animation stops (default: false)
  * @param name - Type of loading animation: 'bounce' | 'chase' | 'circleFade' | 'flow' | 'fold' | 'grid' | 'pulse' | 'spinner' | 'swing' | 'wander'
  * @param size - Size of the loading indicator: '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' (default: 'md')
  * @param style - Custom style object for the container

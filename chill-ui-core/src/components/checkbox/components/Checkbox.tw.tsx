@@ -11,8 +11,8 @@ import { checkboxDefaultProps } from '../utils/defaultProps';
 import { checkboxTv, twStyles } from '../styles/Checkbox.tw.styles';
 
 /**
- * Checkbox component with support for different variants, custom styling, and accessibility features.
- * Provides a flexible and accessible checkbox implementation with support for controlled and uncontrolled patterns.
+ * The `<Checkbox />` component provides a flexible and accessible checkbox implementation.
+ * Supports different variants and custom styling.
  *
  * @example
  * ```tsx

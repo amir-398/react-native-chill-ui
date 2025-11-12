@@ -19,7 +19,6 @@ import { dropdownMenuContentDefaultProps } from '../utils/defaultProps';
  * </DropdownMenuContent>
  * ```
  *
- * @param children - Dropdown content (typically DropdownMenuItem components)
  * @param width - Width of the dropdown content (default: 200)
  * @param offsetX - Horizontal offset from trigger (default: 0)
  * @param offsetY - Vertical offset from trigger (default: 5)

@@ -32,8 +32,6 @@ export interface DialogTriggerProps {
   asChild?: boolean;
   /** Custom CSS classes */
   className?: string;
-  /** Trigger element that will open the dialog */
-  children: React.ReactElement<{ onPress?: () => void }>;
   /** Type of touchable component to use */
   as?: 'pressable' | 'touchable-opacity' | 'ripple-pressable';
   /** Style object for the trigger */
@@ -48,8 +46,10 @@ export type DialogCloseProps = {
   asChild?: boolean;
   /** Type of touchable component to use */
   as?: 'pressable' | 'touchable-opacity' | 'ripple-pressable';
-  /** Close trigger element */
-  children: React.ReactElement<{ onPress?: () => void }>;
+  /** Custom CSS classes */
+  className?: string;
+  /** Style object for the close button */
+  style?: StyleProp<ViewStyle>;
 };
 
 /**
@@ -95,8 +95,6 @@ export type DialogContentProps = ViewProps & {
   className?: string;
   /** Close when back button is pressed */
   closeOnGoBack?: boolean;
-  /** Dialog content */
-  children: React.ReactNode;
   /** Callback when dialog is requested to close */
   onRequestClose?: () => void;
   /** Use default white container */

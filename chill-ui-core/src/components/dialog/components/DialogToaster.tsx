@@ -1,12 +1,12 @@
-import type { ToastProps } from '@types';
+import type { ToastPropsTw } from '@types';
 
 import { useToast } from '@components/toast';
 import React, { useImperativeHandle } from 'react';
 
 type DialogToasterProps = {
-  position: ToastProps['position'];
-  message: ToastProps['message'];
-  variant: ToastProps['variant'];
+  position: ToastPropsTw['position'];
+  message: ToastPropsTw['message'];
+  variant: ToastPropsTw['variant'];
 };
 
 export interface DialogToasterRef {

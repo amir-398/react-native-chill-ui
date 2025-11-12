@@ -1,22 +1,20 @@
-import type { AccordionPropsTw } from '@types';
+import { TIcons } from '@/constants';
 
-import { AccordionProviderProps } from '../types';
-
-export const accordionDefaultProps: Partial<AccordionPropsTw> = {
+export const accordionDefaultProps = {
   collapsible: false,
   defaultValue: undefined,
   disabled: false,
-  expandIcon: 'angle-down-solid',
+  expandIcon: 'angle-down-solid' as keyof TIcons,
   hasCollapseIcon: true,
-  iconPosition: 'right',
-  type: 'single',
+  iconPosition: 'right' as 'right' | 'left',
+  type: 'single' as 'single' | 'multiple',
 };
 
-export const accordionProviderDefaultProps: Partial<AccordionProviderProps> = {
+export const accordionProviderDefaultProps = {
   animationDuration: 300,
   collapsible: false,
   disabled: false,
-  expandIcon: 'angle-down-solid',
+  expandIcon: 'angle-down-solid' as keyof TIcons,
   hasAnimation: true,
   hasCollapseIcon: true,
   type: 'single',

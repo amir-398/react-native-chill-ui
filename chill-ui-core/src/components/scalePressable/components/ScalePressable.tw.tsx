@@ -8,14 +8,17 @@ import { twStyles } from '../styles/ScalePressable.tw.styles';
 import { scalePressableDefaultProps } from '../utils/defaultProps';
 
 /**
- * ScalePressable component that provides a scale effect on press.
+ * The `<ScalePressable />` component provides a scale effect on press.
+ * When pressed, the component scales down to give a tactile feedback effect.
  *
- * When pressed, the component scales down to give a tactile feedback effect,
- * making it feel like you're physically pressing a button.
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { ScalePressable } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic usage with scale effect
  * <ScalePressable onPress={() => console.log('Pressed!')}>
  *   <Box className="p-4 bg-blue-500 rounded-lg">
  *     <String color="white">Press me</String>

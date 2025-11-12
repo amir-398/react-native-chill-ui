@@ -93,9 +93,7 @@ export default function AccordionTrigger(props: PropsWithChildren<AccordionTrigg
             transform: [{ rotate: animatedRotation }],
           }}
         >
-          <IconTw
-            name={isOpen ? (collapseIcon as any) || 'angle-down-solid' : (expandIcon as any) || 'angle-down-solid'}
-          />
+          <IconTw name={isOpen ? collapseIcon || 'angle-down-solid' : expandIcon || 'angle-down-solid'} />
         </AnimatedBox>
       )}
 
@@ -127,9 +125,7 @@ export default function AccordionTrigger(props: PropsWithChildren<AccordionTrigg
             transform: [{ rotate: animatedRotation }],
           }}
         >
-          <IconTw
-            name={isOpen ? (collapseIcon as any) || 'angle-down-solid' : (expandIcon as any) || 'angle-down-solid'}
-          />
+          <IconTw name={isOpen ? collapseIcon || 'angle-down-solid' : expandIcon || 'angle-down-solid'} />
         </AnimatedBox>
       )}
     </>

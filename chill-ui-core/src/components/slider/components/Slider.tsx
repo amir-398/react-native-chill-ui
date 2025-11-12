@@ -17,7 +17,7 @@ import { sliderDefaultProps } from '../utils/defaultProps';
  *
  * @example
  * ```tsx
- * <Slider value={50} minimumValue={0} maximumValue={100}>
+ * <Slider defaultValue={50}>
  *   <SliderTrack>
  *     <SliderRange />
  *   </SliderTrack>
@@ -29,7 +29,7 @@ import { sliderDefaultProps } from '../utils/defaultProps';
  * @param children - Child components (SliderTrack, SliderThumb, SliderLabel, etc.)
  * @param className - Custom CSS classes for styling (NativeWind)
  * @param isDisabled - Whether the slider is disabled (default: false)
- * @param maximumValue - Maximum value of the slider (default: 1)
+ * @param maximumValue - Maximum value of the slider (default: 100)
  * @param minimumValue - Minimum value of the slider (default: 0)
  * @param onSlidingComplete - Callback when sliding completes
  * @param onSlidingStart - Callback when sliding starts
@@ -53,7 +53,7 @@ export function Slider(props: PropsWithChildren<SliderRootPropsTw>) {
     animationType = sliderDefaultProps.animationType,
     children,
     className,
-    defaultValue,
+    defaultValue = sliderDefaultProps.defaultValue,
     isDisabled = sliderDefaultProps.disabled,
     maximumValue = sliderDefaultProps.maximumValue,
     minimumValue = sliderDefaultProps.minimumValue,

@@ -7,7 +7,6 @@ export const ButtonSv = sv({
     alignItems: 'center',
     borderRadius: 8,
     borderWidth: 2,
-    flexGrow: 1,
     justifyContent: 'center',
   },
   defaultVariants: {

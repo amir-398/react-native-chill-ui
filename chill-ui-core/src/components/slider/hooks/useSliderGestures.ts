@@ -53,7 +53,8 @@ export const useSliderGestures = (props: UseSliderGesturesProps) => {
     
     // Initialize with current values from Animated.Value
     values.forEach((val, index) => {
-      if (val instanceof Animated.Value) {
+      // Check if it's an Animated.Value with addListener method
+      if (val instanceof Animated.Value && typeof (val as any).addListener === 'function') {
         // Use the internal _value property to get the current value
         // This is safer than __getValue() and only used for initialization
         // eslint-disable-next-line no-underscore-dangle
@@ -64,13 +65,14 @@ export const useSliderGestures = (props: UseSliderGesturesProps) => {
         });
         listeners.push(listenerId);
       } else {
-        currentValuesRef.current[index] = val as number;
+        // For plain numbers or in test environments
+        currentValuesRef.current[index] = typeof val === 'number' ? val : 0;
       }
     });
 
     return () => {
       values.forEach((val, index) => {
-        if (val instanceof Animated.Value && listeners[index]) {
+        if (val instanceof Animated.Value && typeof (val as any).removeListener === 'function' && listeners[index]) {
           val.removeListener(listeners[index]);
         }
       });

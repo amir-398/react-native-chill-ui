@@ -2,7 +2,7 @@ import { tv } from 'tailwind-variants';
 
 // Main Button Tailwind Variant
 export const ButtonTv = tv({
-  base: 'flex-grow items-center justify-center rounded-lg border-2',
+  base: 'items-center justify-center rounded-lg border-2',
   compoundVariants: [
     // Outlined variants
     {

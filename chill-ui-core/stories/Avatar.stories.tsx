@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 import { fn } from 'storybook/test';
 
 import UiPresentation from './storybook';
-import { Avatar, Box } from '../src/components';
+import { AvatarTw as Avatar, Box } from '../src/components';
 
 const meta: Meta<typeof Avatar> = {
   args: {
@@ -20,6 +20,8 @@ const meta: Meta<typeof Avatar> = {
       },
     },
     size: {
+      control: 'select',
+      options: ['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'],
       table: {
         defaultValue: {
           summary: 'md',
@@ -27,6 +29,8 @@ const meta: Meta<typeof Avatar> = {
       },
     },
     variant: {
+      control: 'select',
+      options: ['circle', 'square'],
       table: {
         defaultValue: {
           summary: 'circle',
@@ -37,12 +41,12 @@ const meta: Meta<typeof Avatar> = {
   component: Avatar,
   decorators: [
     (Story: any) => (
-      <UiPresentation>
+      <UiPresentation className="items-center">
         <Story />
       </UiPresentation>
     ),
   ],
-  title: 'components/Avatar',
+  title: 'DATA DISPLAY/Avatar',
 };
 
 export default meta;
@@ -64,11 +68,7 @@ export const Default: Story = {
   args: {
     data: defaultUser,
   },
-  render: (args: any) => (
-    <Box className="gap-4">
-      <Avatar {...args} />
-    </Box>
-  ),
+  render: (args: any) => <Avatar {...args} />,
 };
 
 export const WithImage: Story = {
@@ -173,23 +173,6 @@ export const TouchableOpacityAvatar: Story = {
     as: 'touchable-opacity',
     data: defaultUser,
     onPress: fn(),
-    size: 'lg',
-  },
-};
-
-// Custom Color Examples
-export const CustomColor: Story = {
-  args: {
-    color: '#FF6B6B',
-    data: defaultUser,
-    size: 'lg',
-  },
-};
-
-export const CustomColorWithImage: Story = {
-  args: {
-    color: '#4ECDC4',
-    data: userWithImage,
     size: 'lg',
   },
 };

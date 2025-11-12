@@ -13,7 +13,7 @@ export interface SliderProviderProps {
   disabled?: boolean;
   /** Minimum value of the slider (default: 0) */
   minimumValue?: number;
-  /** Maximum value of the slider (default: 1) */
+  /** Maximum value of the slider (default: 100) */
   maximumValue?: number;
   /** Animation configuration object */
   animationConfig?: Partial<Animated.TimingAnimationConfig | Animated.SpringAnimationConfig>;
@@ -46,7 +46,7 @@ export interface SliderProviderProps {
  * @example
  * ```tsx
  * <SliderProvider
- *   value={50}
+ *   defaultValue={50}
  *   minimumValue={0}
  *   maximumValue={100}
  *   onValueChange={(values) => console.log(values)}
@@ -81,7 +81,7 @@ export function SliderProvider(props: PropsWithChildren<SliderProviderProps>) {
     children,
     defaultValue,
     disabled = false,
-    maximumValue = 1,
+    maximumValue = 100,
     minimumValue = 0,
     onSlidingComplete,
     onSlidingStart,
@@ -94,7 +94,7 @@ export function SliderProvider(props: PropsWithChildren<SliderProviderProps>) {
 
   // Determine if component is controlled
   const isControlled = value !== undefined;
-  
+
   // Get initial value (from value or defaultValue) - only evaluated once on mount
   const getInitialValue = () => {
     const val = value ?? defaultValue ?? minimumValue;
@@ -108,13 +108,10 @@ export function SliderProvider(props: PropsWithChildren<SliderProviderProps>) {
   const currentValue = isControlled ? value : internalValue;
 
   // Normalize current value to always be an array
-  const normalizedValue = useMemo(
-    () => {
-      const val = currentValue ?? minimumValue;
-      return Array.isArray(val) ? [...val] : [val];
-    },
-    [currentValue, minimumValue],
-  );
+  const normalizedValue = useMemo(() => {
+    const val = currentValue ?? minimumValue;
+    return Array.isArray(val) ? [...val] : [val];
+  }, [currentValue, minimumValue]);
 
   const [values, setValues] = useState<Animated.Value[]>(() =>
     normalizedValue.map(v => new Animated.Value(Math.max(minimumValue, Math.min(maximumValue, v)))),
@@ -188,21 +185,27 @@ export function SliderProvider(props: PropsWithChildren<SliderProviderProps>) {
   // Update current values when values change
   useEffect(() => {
     const listeners: string[] = [];
-    
+
     // Initialize/sync currentValuesRef with actual Animated.Value values
     values.forEach((val, index) => {
-      // eslint-disable-next-line no-underscore-dangle
-      currentValuesRef.current[index] = (val as any)._value ?? 0;
-      
-      const listenerId = val.addListener(({ value: newValue }) => {
-        currentValuesRef.current[index] = newValue;
-      });
-      listeners.push(listenerId);
+      // Check if it's an Animated.Value with addListener method
+      if (typeof (val as any).addListener === 'function') {
+        // eslint-disable-next-line no-underscore-dangle
+        currentValuesRef.current[index] = (val as any)._value ?? 0;
+
+        const listenerId = val.addListener(({ value: newValue }) => {
+          currentValuesRef.current[index] = newValue;
+        });
+        listeners.push(listenerId);
+      } else {
+        // For plain numbers or in test environments
+        currentValuesRef.current[index] = typeof val === 'number' ? val : 0;
+      }
     });
 
     return () => {
       values.forEach((val, index) => {
-        if (listeners[index]) {
+        if (typeof (val as any).removeListener === 'function' && listeners[index]) {
           val.removeListener(listeners[index]);
         }
       });

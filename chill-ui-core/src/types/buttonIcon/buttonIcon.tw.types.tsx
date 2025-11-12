@@ -11,7 +11,7 @@ export type TouchableComponentType = 'touchable-opacity' | 'pressable' | 'ripple
 /**
  * Props for the ButtonIcon component
  */
-export type ButtonIconProps = VariantProps<typeof buttonIconTv> & {
+export type ButtonIconProps = {
   /** Custom CSS classes for the button container */
   className?: string;
   /** Color of the icon */
@@ -28,4 +28,22 @@ export type ButtonIconProps = VariantProps<typeof buttonIconTv> & {
   as?: TouchableComponentType;
   /** Style object for the button container */
   style?: StyleProp<ViewStyle>;
+
+  /** Variant of the button :
+   * - `'contained'`
+   * - `'outlined'`
+   */
+  variant?: VariantProps<typeof buttonIconTv>['variant'];
+
+  /** Whether the button is disabled */
+  isDisabled?: boolean;
+
+  /** Whether the button is loading */
+  isLoading?: boolean;
+
+  /** Shape of the button :
+   * - `'circle'`
+   * - `'square'`
+   */
+  rounded?: VariantProps<typeof buttonIconTv>['rounded'];
 };

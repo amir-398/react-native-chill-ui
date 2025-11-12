@@ -49,8 +49,8 @@ This component comes in three versions to match your project's styling approach.
 ```tsx
 import { Slider, SliderTrack, SliderRange, SliderThumb, SliderLabel } from 'react-native-chill-ui';
 
-// Basic slider
-<Slider value={50} minimumValue={0} maximumValue={100}>
+// Basic slider (uncontrolled mode with default 0-100 range)
+<Slider defaultValue={50}>
   <SliderTrack>
     <SliderRange />
   </SliderTrack>
@@ -58,7 +58,7 @@ import { Slider, SliderTrack, SliderRange, SliderThumb, SliderLabel } from 'reac
 </Slider>
 
 // Slider with label
-<Slider value={75} minimumValue={0} maximumValue={100}>
+<Slider defaultValue={75}>
   <SliderTrack>
     <SliderRange />
   </SliderTrack>
@@ -67,7 +67,7 @@ import { Slider, SliderTrack, SliderRange, SliderThumb, SliderLabel } from 'reac
 </Slider>
 
 // Range slider with two thumbs
-<Slider value={[25, 75]} minimumValue={0} maximumValue={100}>
+<Slider defaultValue={[25, 75]}>
   <SliderTrack>
     <SliderRange />
   </SliderTrack>
@@ -77,13 +77,14 @@ import { Slider, SliderTrack, SliderRange, SliderThumb, SliderLabel } from 'reac
   <SliderLabel position="top" index={1}>75%</SliderLabel>
 </Slider>
 
-// Vertical slider
-<Slider value={60} minimumValue={0} maximumValue={100} orientation="vertical">
+// Controlled slider
+const [value, setValue] = useState([50]);
+<Slider value={value} onValueChange={setValue}>
   <SliderTrack>
     <SliderRange />
   </SliderTrack>
   <SliderThumb />
-  <SliderLabel position="bottom">60%</SliderLabel>
+  <SliderLabel position="top">{value[0]}%</SliderLabel>
 </Slider>
 ```
 
@@ -130,9 +131,10 @@ All versions support custom colors through the `style` prop:
 | Prop                 | Type                                        | Default        | Description                                                     |
 | -------------------- | ------------------------------------------- | -------------- | --------------------------------------------------------------- |
 | `children`           | `ReactNode`                                 | -              | SliderTrack, SliderThumb, and SliderLabel components (required) |
-| `value`              | `number \| number[]`                        | `0`            | Current value(s) of the slider                                  |
+| `value`              | `number \| number[]`                        | -              | Current value(s) of the slider (controlled mode)                |
+| `defaultValue`       | `number \| number[]`                        | `50`           | Initial value(s) for uncontrolled mode                          |
 | `minimumValue`       | `number`                                    | `0`            | Minimum value of the slider                                     |
-| `maximumValue`       | `number`                                    | `1`            | Maximum value of the slider                                     |
+| `maximumValue`       | `number`                                    | `100`          | Maximum value of the slider                                     |
 | `step`               | `number`                                    | `0`            | Step value for discrete slider (0 for continuous)               |
 | `isDisabled`         | `boolean`                                   | `false`        | Whether the slider is disabled                                  |
 | `orientation`        | `'horizontal' \| 'vertical'`                | `'horizontal'` | Orientation of the slider                                       |
@@ -185,38 +187,80 @@ All versions support custom colors through the `style` prop:
 
 ## Usage Examples
 
-### Basic Slider with Label
+### Uncontrolled Mode (Recommended for Simple Cases)
 
 ```tsx
-const [value, setValue] = useState(50);
-
-<Slider value={value} minimumValue={0} maximumValue={100} onValueChange={values => setValue(values[0])}>
+// Simple - slider manages its own state
+<Slider defaultValue={50}>
   <SliderTrack>
     <SliderRange />
   </SliderTrack>
   <SliderThumb />
-  <SliderLabel position="top">{value}%</SliderLabel>
-</Slider>;
+  <SliderLabel position="top">50%</SliderLabel>
+</Slider>
+
+// With callback to track changes
+<Slider 
+  defaultValue={50}
+  onValueChange={(values) => console.log('Current value:', values[0])}
+>
+  <SliderTrack>
+    <SliderRange />
+  </SliderTrack>
+  <SliderThumb />
+</Slider>
 ```
 
-### Range Slider (Two Thumbs)
+### Controlled Mode (Full Control)
 
 ```tsx
-const [range, setRange] = useState([20, 80]);
+const [value, setValue] = useState([50]);
 
-<Slider value={range} minimumValue={0} maximumValue={100} onValueChange={values => setRange(values)}>
+<Slider value={value} onValueChange={setValue}>
+  <SliderTrack>
+    <SliderRange />
+  </SliderTrack>
+  <SliderThumb />
+  <SliderLabel position="top">{value[0]}%</SliderLabel>
+</Slider>
+```
+
+### Range Slider (Multiple Thumbs)
+
+```tsx
+// Uncontrolled mode
+<Slider defaultValue={[20, 80]}>
   <SliderTrack>
     <SliderRange className="bg-blue-500" />
   </SliderTrack>
   <SliderThumb index={0} />
   <SliderThumb index={1} />
-  <SliderLabel position="top" index={0}>
-    {range[0]}
-  </SliderLabel>
-  <SliderLabel position="top" index={1}>
-    {range[1]}
-  </SliderLabel>
-</Slider>;
+  <SliderLabel position="top" index={0}>20%</SliderLabel>
+  <SliderLabel position="top" index={1}>80%</SliderLabel>
+</Slider>
+
+// Controlled mode
+const [range, setRange] = useState([20, 80]);
+<Slider value={range} onValueChange={setRange}>
+  <SliderTrack>
+    <SliderRange className="bg-blue-500" />
+  </SliderTrack>
+  <SliderThumb index={0} />
+  <SliderThumb index={1} />
+  <SliderLabel position="top" index={0}>{range[0]}%</SliderLabel>
+  <SliderLabel position="top" index={1}>{range[1]}%</SliderLabel>
+</Slider>
+
+// Multiple thumbs (unlimited support)
+<Slider defaultValue={[0, 30, 60, 100]}>
+  <SliderTrack>
+    <SliderRange />
+  </SliderTrack>
+  <SliderThumb index={0} />
+  <SliderThumb index={1} />
+  <SliderThumb index={2} />
+  <SliderThumb index={3} />
+</Slider>
 ```
 
 ### Discrete Slider with Steps
@@ -346,27 +390,32 @@ const [volume, setVolume] = useState(50);
 </Box>;
 ```
 
-### Price Range Filter
+### Price Range Filter (Custom Range)
 
 ```tsx
 const [priceRange, setPriceRange] = useState([100, 500]);
 
 <Box className="p-4">
   <String className="mb-2 text-lg font-semibold">Price Range</String>
-  <Slider value={priceRange} minimumValue={0} maximumValue={1000} step={10} onValueChange={setPriceRange}>
+  <Slider 
+    value={priceRange} 
+    minimumValue={0} 
+    maximumValue={1000} 
+    step={10} 
+    onValueChange={setPriceRange}
+  >
     <SliderTrack className="h-2 bg-gray-200">
       <SliderRange className="bg-green-500" />
     </SliderTrack>
     <SliderThumb index={0} className="size-6 bg-green-500" />
     <SliderThumb index={1} className="size-6 bg-green-500" />
-    <SliderLabel position="top" index={0}>
-      ${priceRange[0]}
-    </SliderLabel>
-    <SliderLabel position="top" index={1}>
-      ${priceRange[1]}
-    </SliderLabel>
+    <SliderLabel position="top" index={0}>${priceRange[0]}</SliderLabel>
+    <SliderLabel position="top" index={1}>${priceRange[1]}</SliderLabel>
   </Slider>
-</Box>;
+  <String className="mt-2 text-sm text-gray-600">
+    ${priceRange[0]} - ${priceRange[1]}
+  </String>
+</Box>
 ```
 
 ### With Custom Labels
@@ -387,12 +436,23 @@ const [priceRange, setPriceRange] = useState([100, 500]);
 
 ## Performance Notes
 
-- The component uses separate contexts for state and actions to prevent unnecessary re-renders
+### Optimizations Implemented
+
+- ✅ **React.memo** on all slider components to prevent unnecessary re-renders
+- ✅ **Separate contexts** for state and actions to minimize re-renders
+- ✅ **Memoized calculations** for interpolations and styles with `useMemo`
+- ✅ **Official Animated API** - no private API usage (`__getValue` replaced with listeners)
+- ✅ **Optimized gesture handlers** with proper cleanup
+- ✅ **Unlimited thumbs support** - SliderRange automatically spans from first to last thumb
+- ✅ **Smart constraints** - each thumb is constrained by its neighbors
+
+### Performance Tips
+
 - Animations use `useNativeDriver: false` due to animated layout properties
 - Touch area is configurable for better performance on low-end devices
 - The component automatically cleans up event listeners and animations on unmount
 - For maximum performance, consider using discrete steps instead of continuous values
-- Multiple thumbs (range slider) have minimal performance impact due to optimized rendering
+- Use uncontrolled mode (`defaultValue`) when you don't need external control
 
 ## TypeScript Support
 
@@ -422,16 +482,28 @@ The component supports React Native accessibility features:
 
 ### Controlled vs Uncontrolled
 
-The Slider component is a controlled component, meaning you need to manage the value state:
+The Slider supports both controlled and uncontrolled modes:
 
 ```tsx
-// Controlled (recommended)
-const [value, setValue] = useState(50);
+// Uncontrolled mode (simple)
+<Slider defaultValue={50}>
+  <SliderTrack><SliderRange /></SliderTrack>
+  <SliderThumb />
+</Slider>
 
-<Slider value={value} onValueChange={values => setValue(values[0])}>
-  {/* ... */}
-</Slider>;
+// Controlled mode (full control)
+const [value, setValue] = useState([50]);
+<Slider value={value} onValueChange={setValue}>
+  <SliderTrack><SliderRange /></SliderTrack>
+  <SliderThumb />
+</Slider>
 ```
+
+**Rules:**
+- ❌ Never mix `value` and `defaultValue` together
+- ✅ Use `defaultValue` for simple cases (uncontrolled)
+- ✅ Use `value` + `onValueChange` when you need external control
+- ⚠️ With `value`, you MUST provide `onValueChange` or slider won't move
 
 ### Handling Multiple Callbacks
 

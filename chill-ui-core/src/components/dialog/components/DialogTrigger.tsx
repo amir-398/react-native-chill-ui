@@ -1,3 +1,4 @@
+import { PropsWithChildren } from 'react';
 import { DialogTriggerPropsTw } from '@types';
 import { Pressable, TouchableOpacity } from 'react-native';
 import { RipplePressable } from '@components/ripplePressable';
@@ -30,7 +31,7 @@ import { dialogDefaultProps } from '../utils/defaultProps';
  * @param style - Style object for the trigger
  * @returns Touchable trigger component with proper event handling
  */
-export function DialogTrigger(props: DialogTriggerPropsTw) {
+export function DialogTrigger(props: PropsWithChildren<DialogTriggerPropsTw>) {
   classNamePropsHandler(props, 'DialogTrigger');
   const { as = dialogDefaultProps.as, asChild, children, className, style } = props;
   const { open } = useDialog();

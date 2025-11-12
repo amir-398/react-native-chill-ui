@@ -1,9 +1,9 @@
 import type { DialogClosePropsTw } from '@types';
 
+import { PropsWithChildren } from 'react';
 import { Pressable, TouchableOpacity } from 'react-native';
 import { RipplePressable } from '@components/ripplePressable';
-
-import { SlotTw } from '@/utils';
+import { classNameHandler, SlotTw, styleHandler } from '@utils';
 
 import { useDialog } from './DialogContext';
 import { dialogDefaultProps } from '../utils/defaultProps';
@@ -23,26 +23,44 @@ import { dialogDefaultProps } from '../utils/defaultProps';
  *
  * @param as - Type of touchable component to use (default: 'pressable')
  * @param asChild - Whether to clone the child element
- * @param children - Close trigger element
  * @returns Touchable close component with proper event handling
  */
-export function DialogClose({ as = dialogDefaultProps.as, asChild, children }: DialogClosePropsTw) {
+function DialogClose(props: PropsWithChildren<DialogClosePropsTw>) {
+  const { as = dialogDefaultProps.as, asChild, children, className, style } = props;
   const { close } = useDialog();
   const handleClose = () => {
     close();
   };
 
   if (asChild) {
-    return <SlotTw onPress={handleClose}>{children}</SlotTw>;
+    return (
+      <SlotTw onPress={handleClose} {...classNameHandler(className)} style={style}>
+        {children}
+      </SlotTw>
+    );
   }
 
   if (as === 'ripple-pressable') {
-    return <RipplePressable onPress={handleClose}>{children}</RipplePressable>;
+    return (
+      <RipplePressable onPress={handleClose} {...classNameHandler(className)} {...styleHandler({ style })}>
+        {children}
+      </RipplePressable>
+    );
   }
   if (as === 'touchable-opacity') {
-    return <TouchableOpacity onPress={handleClose}>{children}</TouchableOpacity>;
+    return (
+      <TouchableOpacity onPress={handleClose} {...classNameHandler(className)} {...styleHandler({ style })}>
+        {children}
+      </TouchableOpacity>
+    );
   }
-  return <Pressable onPress={handleClose}>{children}</Pressable>;
+  return (
+    <Pressable onPress={handleClose} {...classNameHandler(className)} {...styleHandler({ style })}>
+      {children}
+    </Pressable>
+  );
 }
 
 DialogClose.displayName = 'DialogClose';
+
+export { DialogClose };

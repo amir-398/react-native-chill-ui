@@ -64,7 +64,11 @@ export type SliderThumbProps = ViewProps & {
   index?: number;
   /** Touch area size in pixels */
   touchSize?: number;
-  /** Animation type for the thumb */
+  /** Animation type for the thumb:
+   * - `'scale'` : for scale animation
+   * - `'extend'` : for extend animation
+   * - `'none'` : for no animation
+   */
   animationType?: 'scale' | 'extend' | 'none';
 };
 
@@ -73,7 +77,10 @@ export type SliderLabelProps = ViewProps & {
   className?: string;
   /** Index of the thumb to follow (for multiple thumbs) */
   index?: number;
-  /** Position relative to the thumb */
+  /** Position relative to the thumb:
+   * - `'top'` : for top position
+   * - `'bottom'` : for bottom position
+   */
   position?: 'top' | 'bottom';
   /** Props for String component when children is a string */
   stringProps?: StringProps;

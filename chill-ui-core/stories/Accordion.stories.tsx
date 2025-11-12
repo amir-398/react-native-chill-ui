@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
+import UiPresentation from './storybook';
 import { Box, String } from '../src/components';
+import { ICONS_OPTIONS } from '../src/constants';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '../src/components/accordion';
 
 const meta = {
@@ -12,6 +14,15 @@ const meta = {
     type: 'single',
   },
   argTypes: {
+    collapseIcon: {
+      control: 'select',
+      options: ICONS_OPTIONS,
+      table: {
+        defaultValue: {
+          summary: 'angle-up-solid',
+        },
+      },
+    },
     collapsible: {
       table: {
         defaultValue: {
@@ -23,6 +34,15 @@ const meta = {
       table: {
         defaultValue: {
           summary: false,
+        },
+      },
+    },
+    expandIcon: {
+      control: 'select',
+      options: ICONS_OPTIONS,
+      table: {
+        defaultValue: {
+          summary: 'angle-down-solid',
         },
       },
     },
@@ -50,16 +70,114 @@ const meta = {
         },
       },
     },
+
+    // AccordionItem Props
+    'className²': {
+      control: 'text',
+      description: 'Custom class name for the item container',
+      table: {
+        category: 'AccordionItem Props',
+        type: { summary: 'string' },
+      },
+    },
+    'disabled²': {
+      control: 'boolean',
+      description: 'Disable this specific accordion item',
+      table: {
+        category: 'AccordionItem Props',
+        defaultValue: { summary: false },
+        type: { summary: 'boolean' },
+      },
+    },
+    value: {
+      control: 'text',
+      description: 'Unique identifier for the accordion item',
+      table: {
+        category: 'AccordionItem Props',
+        type: { summary: 'string' },
+      },
+    },
+    ViewProps: {
+      control: 'object',
+      description: 'accept all View props',
+      table: {
+        category: 'AccordionItem Props',
+      },
+    },
+
+    // AccordionTrigger Props
+    as: {
+      control: 'select',
+      options: ['touchable-opacity', 'pressable', 'ripple-pressable'],
+      table: {
+        category: 'AccordionTrigger Props',
+        defaultValue: { summary: 'touchable-opacity' },
+        type: { summary: 'string' },
+      },
+    },
+    asChild: {
+      control: 'boolean',
+      description: 'Use the child component as the trigger element instead of wrapping it',
+      table: {
+        category: 'AccordionTrigger Props',
+        defaultValue: { summary: false },
+        type: { summary: 'boolean' },
+      },
+    },
+    'classname³': {
+      action: 'text',
+      description: 'Custom class name for the trigger container',
+      table: {
+        category: 'AccordionTrigger Props',
+        type: { summary: 'string' },
+      },
+    },
+    stringProps: {
+      control: 'object',
+      description: 'accept all String props',
+      table: {
+        category: 'AccordionTrigger Props',
+      },
+    },
+
+    // AccordionContent Props
+    'classname⁴': {
+      control: 'text',
+      description: 'Custom class name for the content container',
+      table: {
+        category: 'AccordionContent Props',
+        type: { summary: 'string' },
+      },
+    },
+    'stringProps²': {
+      control: 'object',
+      description: 'accept all String props',
+      table: {
+        category: 'AccordionContent Props',
+      },
+    },
+    'ViewProps²': {
+      control: 'object',
+      description: 'accept all View props',
+      table: {
+        category: 'AccordionContent Props',
+      },
+    },
   },
   component: Accordion,
   decorators: [
     Story => (
-      <Box style={{ maxWidth: 600, padding: 16 }}>
+      <UiPresentation>
         <Story />
-      </Box>
+      </UiPresentation>
     ),
   ],
-  title: 'components/Accordion',
+  subcomponents: {
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+  },
+  title: 'DATA DISPLAY/Accordion',
 } satisfies Meta<typeof Accordion>;
 
 export default meta;
@@ -69,8 +187,8 @@ type Story = StoryObj<typeof Accordion>;
 export const Default: Story = {
   args: {
     collapsible: true,
+    expandIcon: 'angle-down-solid',
     hasCollapseIcon: true,
-
     iconPosition: 'right',
     type: 'single',
   },
@@ -184,32 +302,6 @@ export const LeftIconPosition: Story = {
   ),
 };
 
-export const NoAnimation: Story = {
-  args: {
-    collapsible: true,
-    hasCollapseIcon: true,
-    iconPosition: 'right',
-    type: 'single',
-  },
-  render: (args: any) => (
-    <Accordion {...args}>
-      <AccordionItem value="item1">
-        <AccordionTrigger>No Animation Example</AccordionTrigger>
-        <AccordionContent>
-          <String className="text-gray-700">This accordion does not use animations for instant expand/collapse.</String>
-        </AccordionContent>
-      </AccordionItem>
-
-      <AccordionItem value="item2">
-        <AccordionTrigger>Another Item</AccordionTrigger>
-        <AccordionContent>
-          <String className="text-gray-700">Content appears instantly without animation.</String>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
-  ),
-};
-
 export const DisabledAccordion: Story = {
   args: {
     collapsible: true,
@@ -272,9 +364,9 @@ export const CustomTriggerContent: Story = {
 
 export const CustomIcons: Story = {
   args: {
-    collapseIcon: 'minus-solid',
+    collapseIcon: 'dot-solid',
     collapsible: true,
-    expandIcon: 'plus-solid',
+    expandIcon: 'lock-solid',
     iconPosition: 'right',
     type: 'single',
   },
@@ -293,36 +385,6 @@ export const CustomIcons: Story = {
         <AccordionTrigger>Another Item with Custom Icons</AccordionTrigger>
         <AccordionContent>
           <String className="text-gray-700">Notice how the icons change when you expand/collapse items.</String>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
-  ),
-};
-
-export const WithCallback: Story = {
-  args: {
-    collapsible: true,
-    iconPosition: 'right',
-    onValueChange: (value: any) => console.log('Accordion value changed:', value),
-    type: 'single',
-  },
-  render: (args: any) => (
-    <Accordion {...args}>
-      <AccordionItem value="item1">
-        <AccordionTrigger>Item with Callback</AccordionTrigger>
-        <AccordionContent>
-          <String className="text-gray-700">
-            Check the console to see the callback being triggered when you expand/collapse items.
-          </String>
-        </AccordionContent>
-      </AccordionItem>
-
-      <AccordionItem value="item2">
-        <AccordionTrigger>Another Item</AccordionTrigger>
-        <AccordionContent>
-          <String className="text-gray-700">
-            The onValueChange callback will log the current state to the console.
-          </String>
         </AccordionContent>
       </AccordionItem>
     </Accordion>

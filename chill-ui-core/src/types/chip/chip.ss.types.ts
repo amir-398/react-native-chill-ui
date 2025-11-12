@@ -21,13 +21,9 @@ export type ChipProps = VariantProps<typeof chipSv> & {
 
   /** Left icon configuration */
   leftIconAction?: {
-    /** Custom icon component to display instead of name */
     customIcon?: React.ReactNode;
-    /** Icon name from the available icon set */
     name?: keyof TIcons;
-    /** Color of the icon */
     color?: string;
-    /** Size of the icon */
     size?: IconProps['size'];
   };
   /** Press callback function for the chip */
@@ -35,19 +31,14 @@ export type ChipProps = VariantProps<typeof chipSv> & {
 
   /** Right icon configuration */
   rightIconAction?: {
-    /** Custom icon component to display instead of name */
     customIcon?: React.ReactNode;
-    /** Icon name from the available icon set */
     name?: keyof TIcons;
-    /** Color of the icon */
     color?: string;
-    /** Size of the icon */
     size?: IconProps['size'];
   };
+
   /** Props for the string/text component */
   stringProps?: StringProps;
-  /** Content to display in the chip */
-  children?: React.ReactNode;
   /** Title to display in the chip */
   title?: string;
 

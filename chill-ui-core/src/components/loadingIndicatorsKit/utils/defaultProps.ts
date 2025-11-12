@@ -1,6 +1,6 @@
 export default {
   animating: true,
   color: '#000',
-  hidesWhenStopped: true,
+  hidesWhenStopped: false,
   size: 24,
 };

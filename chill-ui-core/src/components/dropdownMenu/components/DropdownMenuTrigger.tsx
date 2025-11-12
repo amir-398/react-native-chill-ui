@@ -23,7 +23,6 @@ import { dropdownMenuTriggerDefaultProps } from '../utils/defaultProps';
  *
  * @param as - Type of touchable component to use (default: 'pressable')
  * @param asChild - Whether to clone the child element
- * @param children - Trigger element that will open the dropdown
  * @param className - Custom CSS classes (NativeWind only)
  * @param style - Style object for the trigger
  * @returns Touchable trigger component with proper event handling

@@ -3,18 +3,20 @@ import { FlatListProps, StyleProp, ViewProps, ViewStyle } from 'react-native';
 import { IconProps } from '../icon/icon.ss.types';
 
 export interface CarouselProps {
-  initialIndex?: number;
-  style?: StyleProp<ViewStyle>;
-  onScrollChange?: (index: number) => void;
-}
-
-export type CarouselContentProps = {
   autoPlay?: boolean;
+  initialIndex?: number;
   autoPlayLoop?: boolean;
   autoPlayInterval?: number;
+  style?: StyleProp<ViewStyle>;
   orientation?: 'horizontal' | 'vertical';
+  onScrollChange?: (index: number) => void;
   autoPlayDirection?: 'forward' | 'backward';
-} & Omit<FlatListProps<any>, 'renderItem' | 'data' | 'horizontal' | 'onViewableItemsChanged' | 'ref'>;
+}
+
+export type CarouselContentProps = Omit<
+  FlatListProps<any>,
+  'renderItem' | 'data' | 'horizontal' | 'onViewableItemsChanged' | 'ref'
+>;
 
 export type CarouselItemProps = ViewProps;
 
