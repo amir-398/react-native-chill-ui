@@ -1,5 +1,5 @@
 // Hybrid version (default)
-export { AutocompleteDropdown } from './components/AutocompleteDropdown';
+export { AutocompleteDropdown } from './components/AutocompleteDropdown.hybrid';
 
 // StyleSheet version
 export { AutocompleteDropdown as AutocompleteDropdownSs } from './components/AutocompleteDropdown.ss';

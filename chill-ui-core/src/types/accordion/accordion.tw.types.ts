@@ -1,7 +1,7 @@
 import type { TIcons } from '@constants';
 import type { ViewProps, StyleProp, ViewStyle } from 'react-native';
 
-import type { StringPropsTw } from '../string';
+import type { StringProps } from '../string/string.tw.types';
 
 // Accordion types
 
@@ -67,7 +67,7 @@ export type AccordionTriggerProps = {
   /** Custom CSS classes */
   className?: string;
   /** Props to pass to String component when children is a string */
-  stringProps?: StringPropsTw;
+  stringProps?: StringProps;
   /** Component type to use for the trigger - default: 'TouchableOpacity' */
   as?: 'touchable-opacity' | 'pressable' | 'ripple-pressable';
   /** Use the child component as the trigger element instead of wrapping it */
@@ -89,5 +89,5 @@ export type AccordionContentProps = {
   /** Custom CSS classes */
   className?: string;
   /** Props to pass to String component when children is a string */
-  stringProps?: StringPropsTw;
+  stringProps?: StringProps;
 } & ViewProps;

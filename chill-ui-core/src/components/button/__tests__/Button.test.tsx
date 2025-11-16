@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react-native';
 
-import Button from '../components/Button';
+import Button from '../components/Button.hybrid';
 
 // Mocks
 jest.mock('../../../utils', () => ({

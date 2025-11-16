@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import { render, screen } from '@testing-library/react-native';
 
-import { ToastProvider } from '../components/ToastProvider';
+import { ToastProvider } from '../components/ToastProvider.hybrid';
 import { ToastVariantTypeProps } from '@/types/toast/toast.tw.types';
 
 // Mock SafeAreaProvider

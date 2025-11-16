@@ -1,14 +1,14 @@
 import { render } from '@testing-library/react-native';
 
 // Import des variantes
-import Accordion from '../components/Accordion';
+import Accordion from '../components/Accordion.hybrid';
 import AccordionTw from '../components/Accordion.tw';
 import AccordionSs from '../components/Accordion.ss';
-import AccordionItem from '../components/AccordionItem';
+import AccordionItem from '../components/AccordionItem.hybrid';
 import AccordionItemTw from '../components/AccordionItem.tw';
 import AccordionItemSs from '../components/AccordionItem.ss';
-import AccordionTrigger from '../components/AccordionTrigger';
-import AccordionContent from '../components/AccordionContent';
+import AccordionTrigger from '../components/AccordionTrigger.hybrid';
+import AccordionContent from '../components/AccordionContent.hybrid';
 import AccordionTriggerTw from '../components/AccordionTrigger.tw';
 import AccordionTriggerSs from '../components/AccordionTrigger.ss';
 import AccordionContentTw from '../components/AccordionContent.tw';

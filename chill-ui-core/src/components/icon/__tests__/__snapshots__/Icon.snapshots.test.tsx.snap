@@ -3,7 +3,6 @@
 exports[`Icon Component Snapshots should match snapshot for basic icon 1`] = `
 <div
   data-color="#000"
-  testID="icon-heart-solid"
 >
   heart-solid
 </div>
@@ -12,7 +11,6 @@ exports[`Icon Component Snapshots should match snapshot for basic icon 1`] = `
 exports[`Icon Component Snapshots should match snapshot for icon with custom color 1`] = `
 <div
   data-color="#FF6B6B"
-  testID="icon-star-solid"
 >
   star-solid
 </div>
@@ -21,7 +19,6 @@ exports[`Icon Component Snapshots should match snapshot for icon with custom col
 exports[`Icon Component Snapshots should match snapshot for icon with size 1`] = `
 <div
   data-color="#000"
-  testID="icon-star-solid"
 >
   star-solid
 </div>
@@ -69,7 +66,6 @@ exports[`Icon Component Snapshots should match snapshot for pressable icon 1`] =
   >
     <div
       data-color="#000"
-      testID="icon-heart-solid"
     >
       heart-solid
     </div>

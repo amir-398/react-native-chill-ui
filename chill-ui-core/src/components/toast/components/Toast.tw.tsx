@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 
 import ToastContainer from './ToastContainer.tw';
-import { variantConfig } from '../utils/toastConfig.tw';
+import { variantConfig } from '../utils/toastConfig';
 import { toastDefaultProps } from '../utils/defaultProps';
 import { ToastProps, ToastRefProps } from '../types/toast.tw.types';
 

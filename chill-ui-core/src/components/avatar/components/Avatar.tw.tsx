@@ -1,11 +1,10 @@
 import type { AvatarPropsTw } from '@types';
 
 import { cn } from '@utils';
+import { BoxTw } from '@components/box';
 import { StringTw } from '@components/string';
 import { RipplePressableTw } from '@components/ripplePressable';
 import { Image, Pressable, TouchableOpacity } from 'react-native';
-
-import { BoxTw } from '@/components/box';
 
 import { useAvatar } from '../hooks/useAvatar';
 import { avatarDefaultProps } from '../utils/defaultProps';

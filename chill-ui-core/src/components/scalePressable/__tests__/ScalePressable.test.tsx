@@ -1,7 +1,7 @@
 import { Text, View } from 'react-native';
 import { render, fireEvent } from '@testing-library/react-native';
 
-import { ScalePressable } from '../components/ScalePressable';
+import { ScalePressable } from '../components/ScalePressable.hybrid';
 
 // Mock utils
 jest.mock('../../../utils', () => ({

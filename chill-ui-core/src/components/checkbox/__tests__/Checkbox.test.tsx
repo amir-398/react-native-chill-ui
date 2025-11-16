@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react-native';
 
-import Checkbox from '../components/Checkbox';
+import Checkbox from '../components/Checkbox.hybrid';
 
 // Mocks
 jest.mock('../../../utils', () => ({

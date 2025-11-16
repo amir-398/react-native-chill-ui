@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react-native';
 
-import { PhoneNumberInput } from '../components/PhoneNumberInput';
+import { PhoneNumberInput } from '../components/PhoneNumberInput.hybrid';
 
 // Mocks simples
 jest.mock('../../../utils', () => ({

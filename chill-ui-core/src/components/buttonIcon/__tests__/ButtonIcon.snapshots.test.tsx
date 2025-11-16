@@ -1,7 +1,7 @@
 import renderer from 'react-test-renderer';
 import { act } from '@testing-library/react-native';
 
-import ButtonIcon from '../components/buttonIcon';
+import ButtonIcon from '../components/buttonIcon.hybrid';
 
 // Mocks
 jest.mock('../../../utils', () => ({

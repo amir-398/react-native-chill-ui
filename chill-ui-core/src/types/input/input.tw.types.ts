@@ -5,8 +5,8 @@ import type { TextInputProps, View } from 'react-native';
 
 import { inputFieldTv } from '@components/input/styles/Input.tw.styles';
 
-import { StringPropsTw } from '../string';
 import { StrictOmit, OptionalProp } from '../utils';
+import { StringProps } from '../string/string.tw.types';
 
 /**
  * Props for the Input component
@@ -38,7 +38,7 @@ export type InputProps = TextInputProps &
     /** Error message to display below input */
     errorMessage?: string;
     /** Props for the error message String component */
-    errorStringProps?: StringPropsTw;
+    errorStringProps?: StringProps;
     /** Whether to show clear icon when input has value */
     hasClearIcon?: boolean;
     /** Whether input is in error state */
@@ -54,7 +54,7 @@ export type InputProps = TextInputProps &
     /** Label text to display above input */
     label?: string;
     /** Props for the label String component */
-    labelStringProps?: StringPropsTw;
+    labelStringProps?: StringProps;
     /** Left icon configuration */
     leftIconAction?: {
       iconName?: keyof TIcons;
@@ -65,7 +65,7 @@ export type InputProps = TextInputProps &
       hasPressEffect?: boolean;
     };
     /** Props for the character count String component */
-    lengthStringProps?: StringPropsTw;
+    lengthStringProps?: StringProps;
     /** Maximum number of characters allowed */
     maxLength?: number;
     /** Whether input supports multiple lines */

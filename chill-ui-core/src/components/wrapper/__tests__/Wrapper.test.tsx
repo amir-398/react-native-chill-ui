@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react-native';
 
-import { Wrapper } from '../components/Wrapper';
+import { Wrapper } from '../components/Wrapper.hybrid';
 
 describe('Wrapper Component', () => {
   it('should render basic wrapper correctly', () => {

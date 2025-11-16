@@ -6,7 +6,7 @@ import { Modal, Pressable } from 'react-native';
 import { ToastProvider } from '@components/toast';
 
 import { useDialog } from './DialogContext';
-import { DialogToaster } from './DialogToaster';
+import { DialogToaster } from './DialogToaster.hybrid';
 import { dialogDefaultProps } from '../utils/defaultProps';
 import { dialogSv, styles } from '../styles/Dialog.ss.styles';
 

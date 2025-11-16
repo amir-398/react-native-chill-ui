@@ -1,7 +1,7 @@
 import { FlatListProps } from 'react-native';
 
-import { InputProps } from '../input';
-import { StringPropsTw } from '../string';
+import { InputProps } from '../input/input.types';
+import { StringProps } from '../string/string.tw.types';
 import { HighlightStringProps } from '../highlightString/highlightString.ss.types';
 import { InputDropdownListProps, InputDropdownProps } from '../inputDropdown/inputDropdown.tw.types';
 
@@ -85,7 +85,7 @@ export interface AutocompleteDropdownProps<T> {
   dropdownItemProps?: {
     className?: string;
     activeBackgroundColor?: string;
-    stringItemProps?: StringPropsTw;
+    stringItemProps?: StringProps;
   };
   /** Props for the dropdown FlatList component */
   dropdownListProps?: Omit<FlatListProps<any>, 'renderItem' | 'data'> &

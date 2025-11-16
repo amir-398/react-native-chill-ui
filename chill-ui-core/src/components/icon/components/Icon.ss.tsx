@@ -1,9 +1,8 @@
 import { IconPropsSs } from '@types';
+import { BoxSs } from '@components/box';
 import { Pressable, TouchableOpacity } from 'react-native';
 import { RipplePressableSs } from '@components/ripplePressable';
 import { IconConfig } from '@components/icon/context/IconContext';
-
-import { BoxSs } from '@/components/box';
 
 import CustomIcon from './CustomIcon.ss';
 import { iconDefaultProps } from '../utils/defaultProps';

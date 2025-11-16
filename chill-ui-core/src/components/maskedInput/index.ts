@@ -1,5 +1,5 @@
 // Main components (Hybrid - auto-detect)
-export { MaskedInput } from './components/MaskedInput';
+export { MaskedInput } from './components/MaskedInput.hybrid';
 
 // Tailwind components
 export { MaskedInput as MaskedInputTw } from './components/MaskedInput.tw';

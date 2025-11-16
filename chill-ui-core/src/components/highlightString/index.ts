@@ -1,5 +1,5 @@
 // Hybrid version (default)
-export { HighlightString } from './components/HighlightString';
+export { HighlightString } from './components/HighlightString.hybrid';
 
 // StyleSheet version
 export { HighlightString as HighlightStringSs } from './components/HighlightString.ss';

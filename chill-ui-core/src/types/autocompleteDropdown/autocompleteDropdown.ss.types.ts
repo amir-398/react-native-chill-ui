@@ -1,7 +1,7 @@
 import { FlatListProps } from 'react-native';
 
-import { InputPropsSs } from '../input';
-import { StringPropsSs } from '../string';
+import { InputProps } from '../input/input.ss.types';
+import { StringProps } from '../string/string.ss.types';
 import { HighlightStringProps } from '../highlightString/highlightString.ss.types';
 import { InputDropdownListProps, InputDropdownProps } from '../inputDropdown/inputDropdown.tw.types';
 
@@ -52,7 +52,7 @@ export interface AutocompleteDropdownProps<T> {
   /** Field to search in (defaults to valueField) */
   searchField?: keyof T;
   /** Props to pass to the input component */
-  inputProps?: Omit<InputPropsSs, 'onChangeText'>;
+  inputProps?: Omit<InputProps, 'onChangeText'>;
   /** Enable search functionality */
   hasPerformSearch?: boolean;
   /** Require confirmation before selecting */
@@ -84,7 +84,7 @@ export interface AutocompleteDropdownProps<T> {
   /** Props for styling dropdown items */
   dropdownItemProps?: {
     activeBackgroundColor?: string;
-    stringItemProps?: StringPropsSs;
+    stringItemProps?: StringProps;
   };
   /** Props for the dropdown FlatList component */
   dropdownListProps?: Omit<FlatListProps<any>, 'renderItem' | 'data'> &

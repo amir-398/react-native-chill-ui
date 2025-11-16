@@ -1,12 +1,12 @@
 import { Text, View } from 'react-native';
 import { render, fireEvent } from '@testing-library/react-native';
 
-import { SegmentedControl } from '../components/SegmentedControl';
-import { SegmentedControlPanel } from '../components/SegmentedControlPanel';
-import { SegmentedControlTrigger } from '../components/SegmentedControlTrigger';
-import { SegmentedControlIndicator } from '../components/SegmentedControlIndicator';
-import { SegmentedControlPanelContent } from '../components/SegmentedControlPanelContent';
-import { SegmentedControlTriggerContent } from '../components/SegmentedControlTriggerContent';
+import { SegmentedControl } from '../components/SegmentedControl.hybrid';
+import { SegmentedControlPanel } from '../components/SegmentedControlPanel.hybrid';
+import { SegmentedControlTrigger } from '../components/SegmentedControlTrigger.hybrid';
+import { SegmentedControlIndicator } from '../components/SegmentedControlIndicator.hybrid';
+import { SegmentedControlPanelContent } from '../components/SegmentedControlPanelContent.hybrid';
+import { SegmentedControlTriggerContent } from '../components/SegmentedControlTriggerContent.hybrid';
 
 // Mock utils
 jest.mock('../../../utils', () => ({

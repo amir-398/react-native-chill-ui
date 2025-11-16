@@ -4,7 +4,7 @@ import type { PropsWithChildren } from 'react';
 import { BoxSs } from '@components/box';
 
 import { wrapperSv } from '../styles/Wrapper.ss.styles';
-import { WrapperSafeAreaView } from './WrapperSafeAreaView';
+import { WrapperSafeAreaView } from './WrapperSafeAreaView.hybrid';
 
 /**
  * The `<Wrapper />` component provides a flexible container with default styling and SafeAreaView support.

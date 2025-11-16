@@ -1,4 +1,4 @@
-export { InputSelectDropdown } from './components/InputSelectDropdown';
+export { InputSelectDropdown } from './components/InputSelectDropdown.hybrid';
 
 export { InputSelectDropdown as InputSelectDropdownTw } from './components/InputSelectDropdown.tw';
 

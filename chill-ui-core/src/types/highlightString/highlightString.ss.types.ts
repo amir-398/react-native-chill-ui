@@ -1,4 +1,4 @@
-import { StringPropsSs } from '../string';
+import { StringProps } from '../string/string.ss.types';
 
 /**
  * Props for the HighlightString component
@@ -9,11 +9,11 @@ export interface HighlightStringProps {
   /** The term to highlight within the text */
   highlightTerm: string;
   /** Custom styles for the container */
-  style?: StringPropsSs['style'];
+  style?: StringProps['style'];
   /** Custom styles for the highlighted text */
-  highlightStyle?: StringPropsSs['style'];
+  highlightStyle?: StringProps['style'];
   /** Props for the main string component */
-  stringProps?: Omit<StringPropsSs, 'children' | 'style'>;
+  stringProps?: Omit<StringProps, 'children' | 'style'>;
   /** Props for the highlighted string component */
-  highlightStringProps?: Omit<StringPropsSs, 'children' | 'style'>;
+  highlightStringProps?: Omit<StringProps, 'children' | 'style'>;
 }

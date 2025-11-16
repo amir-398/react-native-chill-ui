@@ -1,9 +1,8 @@
 import { cn } from '@utils';
 import { Animated } from 'react-native';
 import { StringTw } from '@components/string';
+import { TimePickerItemPropsTw } from '@types';
 import { AnimatedBoxTw } from '@components/animatedBox';
-
-import { TimePickerItemPropsTw } from '@/types';
 
 import { twStyles } from '../styles/TimePicker.tw.styles';
 import { useTimePickerItem } from '../hooks/useTimePickerItem';

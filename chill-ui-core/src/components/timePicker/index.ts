@@ -13,11 +13,11 @@ export { TimePickerContent as TimePickerContentSs } from './components/TimePicke
 export { TimePickerTitle as TimePickerTitleSs } from './components/TimePickerTitle.ss';
 
 // Hybrid exports
-export { TimePicker } from './components/TimePicker';
-export { TimePickerScroller } from './components/TimePickerScroller';
-export { TimePickerItem } from './components/TimePickerItem';
-export { TimePickerContent } from './components/TimePickerContent';
-export { TimePickerTitle } from './components/TimePickerTitle';
+export { TimePicker } from './components/TimePicker.hybrid';
+export { TimePickerScroller } from './components/TimePickerScroller.hybrid';
+export { TimePickerItem } from './components/TimePickerItem.hybrid';
+export { TimePickerContent } from './components/TimePickerContent.hybrid';
+export { TimePickerTitle } from './components/TimePickerTitle.hybrid';
 
 // Utils
 export { getTimePickerDateNow } from './utils/createTimePickerDate';

@@ -1,11 +1,11 @@
 import { Text } from 'react-native';
 import { render } from '@testing-library/react-native';
 
-import { Slider } from '../components/Slider';
-import { SliderTrack } from '../components/SliderTrack';
-import { SliderRange } from '../components/SliderRange';
-import { SliderThumb } from '../components/SliderThumb';
-import { SliderLabel } from '../components/SliderLabel';
+import { Slider } from '../components/Slider.hybrid';
+import { SliderTrack } from '../components/SliderTrack.hybrid';
+import { SliderRange } from '../components/SliderRange.hybrid';
+import { SliderThumb } from '../components/SliderThumb.hybrid';
+import { SliderLabel } from '../components/SliderLabel.hybrid';
 
 // Mock utils
 jest.mock('../../../utils', () => ({

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react-native';
 
-import Icon from '../components/Icon';
+import Icon from '../components/Icon.hybrid';
 
 // Mock des utilitaires hybrid pour éviter les erreurs
 jest.mock('../../../utils/hybrid/classNamePropsHandler', () => ({

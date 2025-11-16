@@ -1,7 +1,6 @@
 import { InputTw } from '@components/input';
+import { MaskedInputPropsTw } from '@types';
 import { useCallback, useEffect, useState } from 'react';
-
-import { MaskedInputPropsTw } from '@/types';
 
 import { handleApplyMask, removeMask } from '../utils/maskUtils';
 

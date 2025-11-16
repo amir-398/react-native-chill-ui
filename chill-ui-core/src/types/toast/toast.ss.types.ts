@@ -31,6 +31,7 @@ export interface ToastVariantConfig {
 }
 
 export type ToastVariantTypeProps = {
+  // eslint-disable-next-line
   [key in ToastVariantProps]?: ToastVariantConfig;
 };
 

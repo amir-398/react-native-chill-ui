@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react-native';
 
-import String from '../components/String';
+import String from '../components/String.hybrid';
 
 // Mocks pour StyleSheet
 jest.mock('../styles/String.ss.styles', () => ({

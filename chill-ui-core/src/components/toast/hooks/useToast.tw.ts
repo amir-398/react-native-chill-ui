@@ -3,7 +3,7 @@ import { ToastVariantPropsTw, ToastPositionPropsTw } from '@types';
 
 import { useToastState } from './useToastState.tw';
 import { useToastAnimation } from './useToastAnimation';
-import { variantConfig } from '../utils/toastConfig.tw';
+import { variantConfig } from '../utils/toastConfig';
 
 export const useToast = (variants: any) => {
   const {

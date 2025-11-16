@@ -2,7 +2,7 @@ import type { BoxPropsTw } from '@types';
 
 import { cn, classNamePropsHandler, classNameHandler, styleHandler } from '@utils';
 
-import { View as NativeView } from './View';
+import { View as NativeView } from './View.hybrid';
 import styles from '../styles/Box.ss.styles';
 import { twStyles } from '../styles/Box.tw.styles';
 

@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react-native';
 
-import { Skeleton } from '../components/Skeleton';
+import { Skeleton } from '../components/Skeleton.hybrid';
 
 // Mock Animated
 jest.mock('react-native', () => {

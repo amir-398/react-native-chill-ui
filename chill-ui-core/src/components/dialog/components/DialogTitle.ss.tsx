@@ -1,8 +1,7 @@
 import type { DialogTitlePropsSs } from '@types';
 
+import { isString } from '@utils';
 import { StringSs } from '@components/string';
-
-import { isString } from '@/utils';
 
 import { styles } from '../styles/Dialog.ss.styles';
 

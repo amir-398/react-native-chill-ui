@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react-native';
 
-import { HighlightString } from '../components/HighlightString';
+import { HighlightString } from '../components/HighlightString.hybrid';
 
 // Mock the String components
 jest.mock('../../string', () => ({

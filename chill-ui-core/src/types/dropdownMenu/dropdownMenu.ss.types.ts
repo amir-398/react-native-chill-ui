@@ -2,7 +2,7 @@ import { VariantProps } from '@utils';
 import { StyleProp, ViewProps, ViewStyle } from 'react-native';
 import { dropdownMenuItemSv } from '@components/dropdownMenu/styles/DropdownMenu.ss.styles';
 
-import { StringPropsSs } from '../string';
+import { StringProps } from '../string/string.ss.types';
 
 export interface DropdownMenuProps {
   open?: boolean;
@@ -24,7 +24,7 @@ export type DropdownMenuItemProps = VariantProps<typeof dropdownMenuItemSv> & {
   onSelect?: () => void;
   underlayColor?: string;
   closeOnSelect?: boolean;
-  stringProps?: StringPropsSs;
+  stringProps?: StringProps;
   style?: StyleProp<ViewStyle>;
   as?: 'touchable-opacity' | 'pressable' | 'touchable-highlight';
   asChild?: boolean;
@@ -32,7 +32,7 @@ export type DropdownMenuItemProps = VariantProps<typeof dropdownMenuItemSv> & {
 };
 
 export type DropdownMenuLabelProps = ViewProps & {
-  stringProps?: StringPropsSs;
+  stringProps?: StringProps;
   asChild?: boolean;
 };
 

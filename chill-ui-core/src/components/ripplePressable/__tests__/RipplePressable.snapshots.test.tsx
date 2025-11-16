@@ -1,7 +1,7 @@
 import { Text, View } from 'react-native';
 import { render } from '@testing-library/react-native';
 
-import RipplePressable from '../components/RipplePressable';
+import RipplePressable from '../components/RipplePressable.hybrid';
 
 // Mock utils
 jest.mock('../../../utils', () => ({

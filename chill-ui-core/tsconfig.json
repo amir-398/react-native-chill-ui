@@ -53,7 +53,8 @@
     "src/types/utils/index.ts",
     "src/types/inputDropdown/index.ts",
     "src/components/maskedInput/utils/index.ts",
-    "src/components/segmentedControl/components/SegmentedControlProvider.tsx"
+    "src/components/segmentedControl/components/SegmentedControlProvider.tsx",
+    "src/components/separator/components/Separator.hybrid.tsx"
   ],
   "exclude": [
     "node_modules",

@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react-native';
 
-import Icon from '../components/Icon';
+import Icon from '../components/Icon.hybrid';
 
 // Mock du composant CustomIcon
 jest.mock(
@@ -8,7 +8,7 @@ jest.mock(
   () =>
     function MockCustomIcon({ color, name, style }: any) {
       return (
-        <div testID={`icon-${name}`} style={style} data-color={color}>
+        <div style={style} data-color={color}>
           {name}
         </div>
       );

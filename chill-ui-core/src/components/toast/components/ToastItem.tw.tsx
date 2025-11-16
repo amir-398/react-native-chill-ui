@@ -11,7 +11,7 @@ import type { ToastItemProps } from '../types/toast.tw.types';
 import { useToast, useToastSwipe } from '../hooks';
 import { twStyles } from '../styles/Toast.tw.styles';
 import { toastDefaultProps } from '../utils/defaultProps';
-import { variantConfig, PROGRESS_BAR_HEIGHT } from '../utils/toastConfig.tw';
+import { variantConfig, PROGRESS_BAR_HEIGHT } from '../utils/toastConfig';
 
 /**
  * ToastItem component representing a single toast

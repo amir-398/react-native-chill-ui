@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react-native';
 
-import Avatar from '../components/Avatar';
+import Avatar from '../components/Avatar.hybrid';
 
 // Mock des utilitaires hybrid pour éviter les erreurs
 jest.mock('../../../utils/hybrid/classNamePropsHandler', () => ({

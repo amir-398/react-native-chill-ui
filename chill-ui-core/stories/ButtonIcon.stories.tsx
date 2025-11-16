@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
 import { action } from 'storybook/actions';
 
-import { ICONS_OPTIONS } from '../src/constants';
+import { ICON_OPTIONS } from '../src/constants';
 import UiPresentation from './storybook/UiPresentation';
 import { ButtonIconTw as ButtonIcon } from '../src/components';
 
@@ -54,7 +54,7 @@ const meta: Meta<typeof ButtonIcon> = {
 
     iconName: {
       control: 'select',
-      options: ICONS_OPTIONS,
+      options: ICON_OPTIONS,
     },
     isDisabled: {
       table: {
@@ -166,7 +166,7 @@ export const IconColorVariants: Story = {
       },
     },
   },
-  render: () => (
+  render: (_args: any) => (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
       <ButtonIcon iconName="bell-solid" iconColor="#007AFF" onPress={action('Blue icon pressed')} size="md" />
       <ButtonIcon iconName="home-solid" iconColor="#34C759" onPress={action('Green icon pressed')} size="md" />
@@ -185,7 +185,7 @@ export const TouchableComparison: Story = {
       },
     },
   },
-  render: () => (
+  render: (_args: any) => (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
       <ButtonIcon as="touchable-opacity" iconName="bell-solid" onPress={action('TouchableOpacity pressed')} size="md" />
       <ButtonIcon as="pressable" iconName="bell-solid" onPress={action('Pressable pressed')} size="md" />

@@ -1,6 +1,6 @@
 import renderer, { act } from 'react-test-renderer';
 
-import Checkbox from '../components/Checkbox';
+import Checkbox from '../components/Checkbox.hybrid';
 
 // Mocks
 jest.mock('../../../utils', () => ({

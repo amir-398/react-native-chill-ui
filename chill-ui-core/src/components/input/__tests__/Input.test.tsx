@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react-native';
 
-import Input from '../components/Input';
+import Input from '../components/Input.hybrid';
 
 // Mocks simples
 jest.mock('../styles/Input.ss.styles', () => ({

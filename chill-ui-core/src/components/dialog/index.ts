@@ -1,12 +1,12 @@
 // Hybrid version (auto-detects NativeWind)
-export { Dialog } from './components/Dialog';
-export { DialogClose } from './components/DialogClose';
-export { DialogContent } from './components/DialogContent';
-export { DialogFooter } from './components/DialogFooter';
-export { DialogHeader } from './components/DialogHeader';
-export { DialogTitle } from './components/DialogTitle';
-export { DialogToaster } from './components/DialogToaster';
-export { DialogTrigger } from './components/DialogTrigger';
+export { Dialog } from './components/Dialog.hybrid';
+export { DialogClose } from './components/DialogClose.hybrid';
+export { DialogContent } from './components/DialogContent.hybrid';
+export { DialogFooter } from './components/DialogFooter.hybrid';
+export { DialogHeader } from './components/DialogHeader.hybrid';
+export { DialogTitle } from './components/DialogTitle.hybrid';
+export { DialogToaster } from './components/DialogToaster.hybrid';
+export { DialogTrigger } from './components/DialogTrigger.hybrid';
 
 // StyleSheet version
 export { Dialog as DialogSs } from './components/Dialog.ss';
@@ -29,4 +29,4 @@ export { DialogToaster as DialogToasterTw } from './components/DialogToaster.tw'
 export { DialogTrigger as DialogTriggerTw } from './components/DialogTrigger.tw';
 
 // Types
-export type { DialogToasterRef } from './components/DialogToaster';
+export type { DialogToasterRef } from './components/DialogToaster.hybrid';

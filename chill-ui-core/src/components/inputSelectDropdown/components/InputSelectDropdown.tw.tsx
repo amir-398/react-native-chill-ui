@@ -5,8 +5,7 @@ import { StringTw } from '@components/string';
 import { forwardRef, useCallback } from 'react';
 import { InputSelectDropdownPropsTw } from '@types';
 import { HighlightStringTw } from '@components/highlightString';
-
-import { InputDropdownModalTw } from '@/components/inputDropdown';
+import { InputDropdownModalTw } from '@components/inputDropdown';
 
 import { IDropdownRef } from '../types';
 import { useInputSelectDropdown } from '../hooks';

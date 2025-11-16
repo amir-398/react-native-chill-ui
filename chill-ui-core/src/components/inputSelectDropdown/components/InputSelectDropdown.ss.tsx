@@ -5,8 +5,7 @@ import { InputSs } from '@components/input';
 import { StringSs } from '@components/string';
 import { InputSelectDropdownPropsSs } from '@types';
 import { HighlightStringSs } from '@components/highlightString';
-
-import { InputDropdownModalSs } from '@/components/inputDropdown';
+import { InputDropdownModalSs } from '@components/inputDropdown';
 
 import { IDropdownRef } from '../types';
 import { useInputSelectDropdown } from '../hooks';

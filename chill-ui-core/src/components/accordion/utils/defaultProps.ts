@@ -1,4 +1,4 @@
-import { TIcons } from '@/constants';
+import { TIcons } from '@constants';
 
 export const accordionDefaultProps = {
   collapsible: false,

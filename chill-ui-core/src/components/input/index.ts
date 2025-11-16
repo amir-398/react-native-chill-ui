@@ -1,5 +1,5 @@
 // Hybrid version (default)
-export { default as Input } from './components/Input';
+export { default as Input } from './components/Input.hybrid';
 
 // StyleSheet version
 export { default as InputSs } from './components/Input.ss';

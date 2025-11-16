@@ -1,7 +1,7 @@
-export { default as Accordion } from './components/Accordion';
-export { default as AccordionItem } from './components/AccordionItem';
-export { default as AccordionTrigger } from './components/AccordionTrigger';
-export { default as AccordionContent } from './components/AccordionContent';
+export { default as Accordion } from './components/Accordion.hybrid';
+export { default as AccordionItem } from './components/AccordionItem.hybrid';
+export { default as AccordionTrigger } from './components/AccordionTrigger.hybrid';
+export { default as AccordionContent } from './components/AccordionContent.hybrid';
 
 // SS versions
 export { default as AccordionSs } from './components/Accordion.ss';

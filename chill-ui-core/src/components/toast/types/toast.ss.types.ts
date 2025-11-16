@@ -2,7 +2,7 @@ import {
   IconPropsSs,
   StringPropsSs,
   ToastPositionPropsSs,
-  ToastPropsSs,
+  ToastPropsSs as DefaultToastProps,
   ToastVariantPropsSs,
   ToastVariantTypePropsSs,
 } from '@types';
@@ -12,7 +12,7 @@ import {
  */
 export type ToastContextPropsType = {
   /** Function to show a toast */
-  toast: (options: ToastPropsSs) => void;
+  toast: (options: DefaultToastProps) => void;
 };
 
 /**
@@ -56,9 +56,9 @@ export interface ToastItemProps {
   scale: number;
   yOffset: number;
   stackIndex: number;
-  toast: ToastPropsSs;
   swipeable?: boolean;
   onDismiss: () => void;
+  toast: DefaultToastProps;
   additionalOffsetY?: number;
   variants?: ToastVariantTypePropsSs;
   safeAreaInsets: { top: number; bottom: number };

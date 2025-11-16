@@ -1,8 +1,7 @@
 import { Animated } from 'react-native';
 import { StringSs } from '@components/string';
+import { TimePickerItemPropsSs } from '@types';
 import { AnimatedBoxSs } from '@components/animatedBox';
-
-import { TimePickerItemPropsSs } from '@/types';
 
 import { styles } from '../styles/TimePicker.ss.styles';
 import { useTimePickerItem } from '../hooks/useTimePickerItem';

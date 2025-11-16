@@ -1,13 +1,12 @@
 import type { ButtonIconPropsTw } from '@types';
 
 import { cn } from '@utils';
+import { BoxTw } from '@components/box';
 import { IconTw } from '@components/icon';
 import { Pressable, TouchableOpacity } from 'react-native';
+import { ScalePressableTw } from '@components/scalePressable';
 import { RipplePressableTw } from '@components/ripplePressable';
 import { LoadingIndicator } from '@components/loadingIndicatorsKit';
-
-import { BoxTw } from '@/components/box';
-import { ScalePressableTw } from '@/components/scalePressable';
 
 import { buttonIconDefaultProps } from '../utils/defaultProps';
 import { buttonIconTv, twStyles } from '../styles/buttonIcon.tw.styles';

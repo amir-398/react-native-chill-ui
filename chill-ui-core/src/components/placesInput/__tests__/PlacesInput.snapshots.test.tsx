@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react-native';
 
-import { PlacesInput } from '../components/PlacesInput';
+import { PlacesInput } from '../components/PlacesInput.hybrid';
 
 // Mocks
 jest.mock('../../../utils', () => ({

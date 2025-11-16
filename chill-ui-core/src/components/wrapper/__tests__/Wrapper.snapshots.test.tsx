@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react-native';
 
-import { Wrapper } from '../components/Wrapper';
+import { Wrapper } from '../components/Wrapper.hybrid';
 
 describe('Wrapper Snapshots', () => {
   it('should match snapshot with basic props', () => {

@@ -1,9 +1,8 @@
 import { useCallback } from 'react';
 import { BoxTw } from '@components/box';
 import { StringTw } from '@components/string';
+import { LoadingIndicator } from '@components/loadingIndicatorsKit';
 import { FlatList, TouchableOpacity, Pressable, TouchableHighlight } from 'react-native';
-
-import { LoadingIndicator } from '@/components/loadingIndicatorsKit';
 
 import type { InputDropdownListProps } from '../../../types/inputDropdown/inputDropdown.tw.types';
 

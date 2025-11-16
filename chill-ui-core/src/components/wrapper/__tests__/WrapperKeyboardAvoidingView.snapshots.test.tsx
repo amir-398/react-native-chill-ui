@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react-native';
 
-import { WrapperKeyboardAvoidingView } from '../components/WrapperKeyboardAvoidingView';
+import { WrapperKeyboardAvoidingView } from '../components/WrapperKeyboardAvoidingView.hybrid';
 
 describe('WrapperKeyboardAvoidingView Snapshots', () => {
   it('should match snapshot with basic props', () => {

@@ -10,7 +10,7 @@ export * from './icon';
 export * from './autocompleteDropdown';
 export * from './highlightString';
 export * from './inputDropdown';
-export * from './loadingIndicator';
+export * from './loadingIndicatorsKit';
 export * from './scalePressable';
 export * from './buttonIcon';
 export * from './carousel';

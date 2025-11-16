@@ -1,16 +1,16 @@
 import { View, FlatListProps, ModalProps, StyleProp, ViewStyle } from 'react-native';
 
-import type { LoadingIndicatorProps } from '../loadingIndicator/loadingIndicator.types';
+import type { LoadingIndicatorProps } from '../loadingIndicatorsKit/loadingIndicatorsKit.types';
 
-import { InputPropsTw } from '../input';
-import { StringPropsTw } from '../string';
+import { InputProps } from '../input/input.tw.types';
+import { StringProps } from '../string/string.tw.types';
 
 /**
  * Props for dropdown items
  */
 export interface DropdownItemProps {
   /** Props for the string component within the item */
-  stringItemProps?: StringPropsTw;
+  stringItemProps?: StringProps;
   /** Background color when item is active/selected */
   activeBackgroundColor?: string;
 }
@@ -40,7 +40,7 @@ export interface InputDropdownBaseProps {
   /** Child components */
   children: React.ReactNode;
   /** Props for the search input */
-  searchInputProps?: InputPropsTw;
+  searchInputProps?: InputProps;
   /** Custom search input component */
   customSearchInput?: React.ReactNode;
 }

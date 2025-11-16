@@ -3,7 +3,7 @@ import type { StyleProp, ViewStyle } from 'react-native';
 
 import type { AvatarSv } from '@/components/avatar/styles/Avatar.ss.styles';
 
-import type { StringPropsSs } from '../string';
+import type { StringProps } from '../string/string.ss.types';
 
 export type AvatarProps = VariantProps<typeof AvatarSv> & {
   /** Component to use when avatar is pressable:
@@ -27,7 +27,7 @@ export type AvatarProps = VariantProps<typeof AvatarSv> & {
   onPress?: () => void;
 
   /** Props for the String component displaying initials */
-  stringProps?: StringPropsSs;
+  stringProps?: StringProps;
   /** Custom inline styles */
   style?: StyleProp<ViewStyle>;
 };

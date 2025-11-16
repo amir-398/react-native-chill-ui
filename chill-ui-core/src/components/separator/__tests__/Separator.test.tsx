@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react-native';
 
-import { Separator } from '../components/Separator';
+import { Separator } from '../components/Separator.hybrid.tsx';
 
 // Mock utils
 jest.mock('../../../utils', () => ({

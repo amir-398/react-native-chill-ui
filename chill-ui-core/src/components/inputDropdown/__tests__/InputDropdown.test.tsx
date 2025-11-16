@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react-native';
 
-import InputDropdown from '../components/InputDropdown';
+import InputDropdown from '../components/InputDropdown.hybrid';
 
 // Mocks simples
 jest.mock('../styles/InputDropdownBase.ss.styles', () => ({

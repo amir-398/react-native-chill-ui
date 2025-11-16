@@ -1,4 +1,4 @@
-import { BtnPropsTw } from '@/types';
+import { BtnPropsTw } from '@types';
 
 export const buttonDefaultProps: Partial<BtnPropsTw> = {
   as: 'touchable-opacity',

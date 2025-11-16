@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react-native';
 
-import { WrapperSafeAreaView } from '../components/WrapperSafeAreaView';
+import { WrapperSafeAreaView } from '../components/WrapperSafeAreaView.hybrid';
 
 describe('WrapperSafeAreaView Snapshots', () => {
   it('should match snapshot with basic props', () => {

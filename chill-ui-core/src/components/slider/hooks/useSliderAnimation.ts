@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { Animated } from 'react-native';
 
-import DEFAULT_ANIMATION_CONFIGS from '../constants';
+import DEFAULT_ANIMATION_CONFIGS from '../utils/constants';
 
 export const useSliderAnimation = (
   values: (number | Animated.Value)[],

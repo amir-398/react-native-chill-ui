@@ -1,9 +1,9 @@
 // Slider hybrid components (auto-detects NativeWind)
-export { Slider } from './components/Slider';
-export { SliderTrack } from './components/SliderTrack';
-export { SliderRange } from './components/SliderRange';
-export { SliderThumb } from './components/SliderThumb';
-export { SliderLabel } from './components/SliderLabel';
+export { Slider } from './components/Slider.hybrid';
+export { SliderTrack } from './components/SliderTrack.hybrid';
+export { SliderRange } from './components/SliderRange.hybrid';
+export { SliderThumb } from './components/SliderThumb.hybrid';
+export { SliderLabel } from './components/SliderLabel.hybrid';
 
 // Slider tailwind components
 export { Slider as SliderTw } from './components/Slider.tw';

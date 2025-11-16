@@ -2,7 +2,7 @@ import { VariantProps } from 'tailwind-variants';
 import { StyleProp, ViewProps, ViewStyle } from 'react-native';
 import { dropdownMenuItemTv } from '@components/dropdownMenu/styles/DropdownMenu.tw.styles';
 
-import { StringPropsTw } from '../string';
+import { StringProps } from '../string/string.tw.types';
 
 export interface DropdownMenuProps {
   open?: boolean;
@@ -28,7 +28,7 @@ export type DropdownMenuItemProps = VariantProps<typeof dropdownMenuItemTv> & {
   onSelect?: () => void;
   underlayColor?: string;
   closeOnSelect?: boolean;
-  stringProps?: StringPropsTw;
+  stringProps?: StringProps;
   style?: StyleProp<ViewStyle>;
   as?: 'touchable-opacity' | 'pressable' | 'touchable-highlight';
   asChild?: boolean;
@@ -37,7 +37,7 @@ export type DropdownMenuItemProps = VariantProps<typeof dropdownMenuItemTv> & {
 
 export type DropdownMenuLabelProps = ViewProps & {
   className?: string;
-  stringProps?: StringPropsTw;
+  stringProps?: StringProps;
   asChild?: boolean;
 };
 

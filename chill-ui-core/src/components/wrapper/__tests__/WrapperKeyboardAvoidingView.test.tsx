@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react-native';
 
-import { WrapperKeyboardAvoidingView } from '../components/WrapperKeyboardAvoidingView';
+import { WrapperKeyboardAvoidingView } from '../components/WrapperKeyboardAvoidingView.hybrid';
 
 describe('WrapperKeyboardAvoidingView Component', () => {
   it('should render basic keyboard avoiding view correctly', () => {

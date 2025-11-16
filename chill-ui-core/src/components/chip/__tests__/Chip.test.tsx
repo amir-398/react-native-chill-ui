@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react-native';
 
-import Chip from '../components/Chip';
+import Chip from '../components/Chip.hybrid';
 
 // Mocks
 jest.mock('../../../utils', () => ({

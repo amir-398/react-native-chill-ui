@@ -1,9 +1,9 @@
 import { render } from '@testing-library/react-native';
 
-import Accordion from '../components/Accordion';
-import AccordionItem from '../components/AccordionItem';
-import AccordionTrigger from '../components/AccordionTrigger';
-import AccordionContent from '../components/AccordionContent';
+import Accordion from '../components/Accordion.hybrid';
+import AccordionItem from '../components/AccordionItem.hybrid';
+import AccordionTrigger from '../components/AccordionTrigger.hybrid';
+import AccordionContent from '../components/AccordionContent.hybrid';
 
 // Mock des utilitaires hybrid pour éviter les erreurs
 jest.mock('../../../utils/hybrid/classNamePropsHandler', () => ({

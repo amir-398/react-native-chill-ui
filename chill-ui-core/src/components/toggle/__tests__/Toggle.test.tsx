@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import { render, screen } from '@testing-library/react-native';
 
-import { Toggle } from '../components/toggle';
+import { Toggle } from '../components/toggle.hybrid';
 
 // Mocks
 jest.mock('../../../utils', () => ({

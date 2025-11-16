@@ -1,10 +1,10 @@
-import { Carousel } from '../components/Carousel';
-import { CarouselContent } from '../components/CarouselContent';
-import { CarouselItem } from '../components/CarouselItem';
-import { CarouselElement } from '../components/CarouselElement';
-import { CarouselDots } from '../components/CarouselDots';
-import { CarouselPrevious } from '../components/CarouselPrevious';
-import { CarouselNext } from '../components/CarouselNext';
+import { Carousel } from '../components/Carousel.hybrid';
+import { CarouselContent } from '../components/CarouselContent.hybrid';
+import { CarouselItem } from '../components/CarouselItem.hybrid';
+import { CarouselElement } from '../components/CarouselElement.hybrid';
+import { CarouselDots } from '../components/CarouselDots.hybrid';
+import { CarouselPrevious } from '../components/CarouselPrevious.hybrid';
+import { CarouselNext } from '../components/CarouselNext.hybrid';
 
 describe('Carousel Component (Hybrid)', () => {
   it('should export Carousel component', () => {
