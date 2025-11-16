@@ -1,6 +1,6 @@
-import { IconProps } from '@/types/icon/icon.tw.types';
+import { TIcons } from '@constants';
 
-import { TIcons } from '../../../constants/ICONS';
+import { IconProps } from '@/types/icon/icon.tw.types';
 
 export const carouselDefaultProps = {
   autoPlay: false,

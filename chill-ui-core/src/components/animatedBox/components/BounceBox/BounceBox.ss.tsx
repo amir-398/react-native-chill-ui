@@ -17,14 +17,14 @@ import { AnimatedBox } from '../animatedBox/AnimatedBox.ss';
  * @example
  * ```tsx
  * // Basic auto-bouncing notification
- * <BounceBox 
- *   autoStart 
- *   infiniteLoop 
- *   bounceHeight={15} 
- *   style={{ 
- *     backgroundColor: 'red', 
- *     padding: 16, 
- *     borderRadius: 20 
+ * <BounceBox
+ *   autoStart
+ *   infiniteLoop
+ *   bounceHeight={15}
+ *   style={{
+ *     backgroundColor: 'red',
+ *     padding: 16,
+ *     borderRadius: 20
  *   }}
  * >
  *   <String style={{ color: 'white', fontWeight: 'bold' }}>New Message!</String>

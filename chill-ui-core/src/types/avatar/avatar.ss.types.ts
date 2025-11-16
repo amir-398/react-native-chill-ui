@@ -25,23 +25,9 @@ export type AvatarProps = VariantProps<typeof AvatarSv> & {
   };
   /** Callback when avatar is pressed */
   onPress?: () => void;
-  /** Avatar size variant:
-   * - `'2xs'`
-   * - `'xs'`
-   * - `'sm'`
-   * - `'md'`
-   * - `'lg'`
-   * - `'xl'`
-   * - `'2xl'`
-   */
-  size?: VariantProps<typeof AvatarSv>['size'];
+
   /** Props for the String component displaying initials */
   stringProps?: StringPropsSs;
   /** Custom inline styles */
   style?: StyleProp<ViewStyle>;
-  /** Avatar shape variant:
-   * - `'circle'`
-   * - `'square'`
-   */
-  variant?: VariantProps<typeof AvatarSv>['variant'];
 };

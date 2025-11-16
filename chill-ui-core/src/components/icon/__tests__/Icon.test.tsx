@@ -23,7 +23,7 @@ jest.mock(
   () =>
     function MockCustomIcon({ className, color, name, style }: any) {
       return (
-        <div testID={`icon-${name}`} style={style} className={className} data-color={color}>
+        <div style={style} className={className} data-color={color}>
           {name}
         </div>
       );

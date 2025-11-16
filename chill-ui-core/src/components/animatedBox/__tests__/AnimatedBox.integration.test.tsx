@@ -35,11 +35,11 @@ jest.mock('../components/animatedBox/AnimatedBox', () => ({
 }));
 
 jest.mock('../../box', () => ({
-  Box: ({ children, ...props }: any) => children,
+  Box: ({ children }: any) => children,
 }));
 
 jest.mock('../../box/components/View', () => ({
-  AnimatedView: ({ children, ...props }: any) => children,
+  AnimatedView: ({ children }: any) => children,
 }));
 
 jest.mock('../../box/styles/Box.ss.styles', () => ({

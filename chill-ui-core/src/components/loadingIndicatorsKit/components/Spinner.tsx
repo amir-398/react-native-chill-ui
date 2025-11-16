@@ -1,8 +1,8 @@
 import { ICONS } from '@constants';
-import { Animated } from 'react-native';
 import { useEffect, useRef } from 'react';
 import Svg, { Path } from 'react-native-svg';
 import { LoadingIndicatorsProps } from '@types';
+import { Animated, Platform } from 'react-native';
 import { AnimatedBox } from '@components/animatedBox';
 
 import defaultProps from '../utils/defaultProps';
@@ -37,7 +37,7 @@ export default function Spinner(props: LoadingIndicatorsProps) {
       Animated.timing(spinValue, {
         duration: 1000,
         toValue: 1,
-        useNativeDriver: true,
+        useNativeDriver: Platform.OS !== 'web',
       }),
     ).start();
   }, [spinValue]);

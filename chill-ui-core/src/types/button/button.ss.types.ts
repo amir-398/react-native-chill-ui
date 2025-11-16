@@ -34,7 +34,7 @@ export type BtnProps = VariantProps<typeof ButtonSv> & {
   leftIconAction?: {
     customIcon?: React.ReactNode;
     position?: 'left' | 'right';
-    name: keyof TIcons;
+    name?: keyof TIcons;
     size?: IconPropsSs['size'];
   };
   /** Props to pass to the loading indicator */
@@ -45,7 +45,7 @@ export type BtnProps = VariantProps<typeof ButtonSv> & {
   rightIconAction?: {
     customIcon?: React.ReactNode;
     position?: 'left' | 'right';
-    name: keyof TIcons;
+    name?: keyof TIcons;
     size?: IconPropsSs['size'];
   };
   /** Style object for the button container */

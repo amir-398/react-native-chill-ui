@@ -39,7 +39,7 @@ export type TimePickerItemInternalProps = TimePickerItemPropsTw & {
  * @returns Animated item component with smooth opacity and scale transitions
  */
 export function TimePickerItem(props: TimePickerItemPropsTw) {
-  const { className, defaultData, index, item, itemSize, scrollAnimatedValuerRef, stringProps } =
+  const { className, defaultData, index, item, itemSize, scrollAnimatedValuerRef, stringProps, style } =
     props as TimePickerItemInternalProps;
 
   const { makeAnimated } = useTimePickerItem({ defaultData, itemSize });
@@ -57,6 +57,7 @@ export function TimePickerItem(props: TimePickerItemPropsTw) {
           ],
           width: itemSize,
         },
+        style,
       ]}
     >
       <StringTw {...stringProps}>{item}</StringTw>

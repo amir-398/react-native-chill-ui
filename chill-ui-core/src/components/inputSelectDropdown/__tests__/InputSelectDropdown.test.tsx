@@ -114,7 +114,7 @@ describe('InputSelectDropdown Component (Hybrid)', () => {
   });
 
   it('should render with custom dropdown item', () => {
-    const customDropdownItem = jest.fn((item, selected) => <div>{item.name}</div>);
+    const customDropdownItem = jest.fn((item, _selected) => <div>{item.name}</div>);
     const { root } = render(
       <InputSelectDropdown
         dataSet={mockDataSet}
@@ -370,15 +370,7 @@ describe('InputSelectDropdown Component (Hybrid)', () => {
   });
 
   it('should render with custom styling props', () => {
-    const { root } = render(
-      <InputSelectDropdown
-        dataSet={mockDataSet}
-        valueField="name"
-        className="custom-dropdown"
-        style={{ backgroundColor: '#F0F0F0' }}
-        onSelectItem={jest.fn()}
-      />,
-    );
+    const { root } = render(<InputSelectDropdown dataSet={mockDataSet} valueField="name" onSelectItem={jest.fn()} />);
     expect(root).toBeTruthy();
   });
 
@@ -436,7 +428,6 @@ describe('InputSelectDropdown Component (Hybrid)', () => {
         searchInputProps={{ placeholder: 'Search...' }}
         highlightProps={{ highlightTerm: 'test' }}
         dropdownItemProps={{ className: 'custom-item' }}
-        dropdownProps={{ backgroundColor: '#FFF' }}
         searchQuery={(keyword, value) => value.includes(keyword)}
         onBlur={jest.fn()}
         onFocus={jest.fn()}

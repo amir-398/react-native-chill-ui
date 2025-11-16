@@ -15,7 +15,7 @@ import { classNamePropsHandler } from '../../../utils/hybrid/classNamePropsHandl
  *
  * <!-- STORYBOOK_IMPORT_START
  * ```tsx
- * import { Accordion } from 'react-native-chill-ui';
+ * import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from 'react-native-chill-ui';
  * ```
  * STORYBOOK_IMPORT_END -->
  *

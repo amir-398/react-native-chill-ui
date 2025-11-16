@@ -1,5 +1,6 @@
-import type { TIcons } from '@constants';
+import type { ICONS } from '@constants';
 import type { VariantProps } from '@utils';
+import type { IconConfig } from '@components/icon/context/IconContext';
 import type { iconPaddingSv, iconSizeSv } from '@components/icon/styles/Icon.ss.styles';
 
 import { StyleProp, ViewStyle } from 'react-native';
@@ -7,7 +8,7 @@ import { StyleProp, ViewStyle } from 'react-native';
 /**
  * Props for the Icon component
  */
-export type IconProps = VariantProps<typeof iconSizeSv> &
+export type IconProps<T extends IconConfig = typeof ICONS> = VariantProps<typeof iconSizeSv> &
   VariantProps<typeof iconPaddingSv> & {
     /** Component to use when pressable:
      * - `'pressable'`
@@ -20,24 +21,13 @@ export type IconProps = VariantProps<typeof iconSizeSv> &
     /** Whether to show press effect when pressed */
     hasPressEffect?: boolean;
     /** Icon name from the available icon set (required) */
-    name: keyof TIcons;
+    name: keyof T | keyof typeof ICONS;
     /** Callback function when icon is pressed */
     onPress?: () => void;
     /** Custom CSS classes for the press effect */
     pressEffectClassName?: string;
     /** Inline styles for the press effect */
     pressEffectStyle?: StyleProp<ViewStyle>;
-    /** Icon size variant:
-     * - `'2xs'`
-     * - `'xs'`
-     * - `'sm'`
-     * - `'md'`
-     * - `'lg'`
-     * - `'xl'`
-     * - `'2xl'`
-     * - `'3xl'`
-     */
-    size?: VariantProps<typeof iconSizeSv>['size'];
     /** Additional inline styles */
     style?: StyleProp<ViewStyle>;
   };

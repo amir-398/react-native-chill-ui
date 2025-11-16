@@ -1,5 +1,5 @@
 module.exports = function babelConfig(api) {
-  api.cache(true);
+  api.cache(false);
   const plugins = ['@babel/plugin-transform-class-static-block'];
 
   // Check if NativeWind is available

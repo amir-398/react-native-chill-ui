@@ -5,7 +5,6 @@ import { Box, String, ButtonTw } from '../src/components';
 
 const meta = {
   args: {
-    as: 'touchable-opacity',
     colorVariant: 'primary',
     contentPosition: 'center',
     isDisabled: false,

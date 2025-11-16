@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { render } from '@testing-library/react-native';
 
 import { Button } from '../index';
@@ -89,12 +89,12 @@ function TestNavigation() {
       <div data-testid="current-page">{currentPage}</div>
       <Button
         title="Go to Profile"
-        rightIconAction={{ name: 'arrow-right-solid', size: 'md' }}
+        rightIconAction={{ name: 'angle-down-solid', size: 'md' }}
         onPress={() => setCurrentPage('profile')}
       />
       <Button
         title="Go to Settings"
-        leftIconAction={{ name: 'settings-solid', size: 'md' }}
+        leftIconAction={{ name: 'angle-down-solid', size: 'md' }}
         onPress={() => setCurrentPage('settings')}
       />
     </div>
@@ -121,8 +121,8 @@ describe('Button Integration Tests', () => {
       const { root } = render(
         <Button
           title="Complex Button"
-          leftIconAction={{ name: 'home-solid', size: 'md' }}
-          rightIconAction={{ name: 'arrow-right-solid', size: 'md' }}
+          leftIconAction={{ name: 'angle-down-solid', size: 'md' }}
+          rightIconAction={{ name: 'angle-down-solid', size: 'md' }}
           variant="contained"
           colorVariant="primary"
           size="lg"
@@ -135,8 +135,8 @@ describe('Button Integration Tests', () => {
     it('should handle custom content with icons', () => {
       const { root } = render(
         <Button
-          leftIconAction={{ name: 'star-solid', size: 'md' }}
-          rightIconAction={{ name: 'heart-solid', size: 'md' }}
+          leftIconAction={{ name: 'angle-down-solid', size: 'md' }}
+          rightIconAction={{ name: 'angle-down-solid', size: 'md' }}
         >
           <div data-testid="custom-content">Custom Button Content</div>
         </Button>,

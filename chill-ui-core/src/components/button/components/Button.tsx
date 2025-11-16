@@ -135,7 +135,8 @@ function ButtonContent({
             ],
           })}
         >
-          {leftIconAction.customIcon || <Icon {...leftIconAction} size={sizingVariant} />}
+          {leftIconAction.customIcon ||
+            (leftIconAction.name && <Icon name={leftIconAction.name} size={sizingVariant} {...leftIconAction} />)}
         </Box>
       )}
 
@@ -178,7 +179,8 @@ function ButtonContent({
             ],
           })}
         >
-          {rightIconAction.customIcon || <Icon {...rightIconAction} size={sizingVariant} />}
+          {rightIconAction.customIcon ||
+            (rightIconAction.name && <Icon name={rightIconAction.name} size={sizingVariant} {...rightIconAction} />)}
         </Box>
       )}
     </Box>

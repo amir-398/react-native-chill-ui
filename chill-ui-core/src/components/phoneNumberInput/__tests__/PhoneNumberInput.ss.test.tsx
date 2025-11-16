@@ -73,8 +73,8 @@ jest.mock('../utils/defaultProps', () => ({
 }));
 
 jest.mock('../utils/phone', () => ({
-  applyMaskPhoneNumber: jest.fn((countryCode, phoneNumber) => phoneNumber),
-  getPhoneNumberWithSuffix: jest.fn((countryCode, phoneNumber) => phoneNumber),
+  applyMaskPhoneNumber: jest.fn((_countryCode, phoneNumber) => phoneNumber),
+  getPhoneNumberWithSuffix: jest.fn((_countryCode, phoneNumber) => phoneNumber),
   isValidNumber: jest.fn(() => true),
 }));
 
@@ -164,7 +164,6 @@ describe('PhoneNumberInput Component (StyleSheet)', () => {
   it('should render with error styling using StyleSheet', () => {
     const { root } = render(
       <PhoneNumberInput
-        hasError
         errorMessage="Invalid phone number"
         inputProps={{
           style: {

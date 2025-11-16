@@ -1,31 +1,272 @@
-import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
+import type { StoryObj } from '@storybook/react-native-web-vite';
 
 import { action } from 'storybook/actions';
 
-import { Box, String } from '../src/components';
 import UiPresentation from './storybook/UiPresentation';
+import { BoxTw as Box, StringTw as String } from '../src/components';
 import {
-  SegmentedControl,
-  SegmentedControlIndicator,
-  SegmentedControlPanel,
-  SegmentedControlPanelContent,
-  SegmentedControlPanelSliderContent,
-  SegmentedControlTrigger,
-  SegmentedControlTriggerContent,
+  SegmentedControlTw as SegmentedControl,
+  SegmentedControlIndicatorTw as SegmentedControlIndicator,
+  SegmentedControlPanelTw as SegmentedControlPanel,
+  SegmentedControlPanelContentTw as SegmentedControlPanelContent,
+  SegmentedControlPanelSliderContentTw as SegmentedControlPanelSliderContent,
+  SegmentedControlTriggerTw as SegmentedControlTrigger,
+  SegmentedControlTriggerContentTw as SegmentedControlTriggerContent,
 } from '../src/components/segmentedControl';
 
-const meta: Meta<typeof SegmentedControl> = {
+const meta = {
+  argTypes: {
+    // Base SegmentedControl props
+    className: {
+      control: 'text',
+      description: 'Custom class name for the trigger content container',
+      table: {
+        category: 'SegmentedControlTriggerContent Props',
+        type: { summary: 'string' },
+      },
+    },
+    'className²': {
+      control: 'text',
+      description: 'Custom class name for the panel slider content container',
+      table: {
+        category: 'SegmentedControlPanelSliderContent Props',
+        type: { summary: 'string' },
+      },
+    },
+    'className⁶': {
+      control: 'text',
+      description: 'Custom class name for the panel slider content container',
+      table: {
+        category: 'SegmentedControlPanelContent Props',
+        type: { summary: 'string' },
+      },
+    },
+    defaultValue: {
+      control: 'text',
+      description: 'Initial selected option value (must match one of the trigger values)',
+      table: {
+        category: 'SegmentedControlTriggerContent Props',
+        type: { summary: 'string' },
+      },
+    },
+    onChange: {
+      action: 'onChange',
+      description: 'Callback function called when the selected option changes, receives the new option value',
+      table: {
+        category: 'SegmentedControlTriggerContent Props',
+        type: { summary: '(value: string) => void' },
+      },
+    },
+
+    style: {
+      control: 'object',
+      description: 'Custom style for the trigger content container',
+      table: {
+        category: 'SegmentedControlTriggerContent Props',
+        type: { summary: 'ViewStyle' },
+      },
+    },
+    'style²': {
+      control: 'object',
+      description: 'Custom style for the panel slider content container',
+      table: {
+        category: 'SegmentedControlPanelContent Props',
+        type: { summary: 'ViewStyle' },
+      },
+    },
+
+    // TriggerContent props
+    internalPadding: {
+      control: { max: 20, min: 0, step: 1, type: 'number' },
+      description: 'Internal padding between trigger items in pixels',
+      table: {
+        category: 'SegmentedControlTriggerContent Props',
+        defaultValue: { summary: '10' },
+        type: { summary: 'number' },
+      },
+    },
+    // Indicator props
+    'className³': {
+      control: 'text',
+      description: 'Custom CSS classes for the indicator',
+      table: {
+        category: 'SegmentedControlIndicator Props',
+        type: { summary: 'string' },
+      },
+    },
+    duration: {
+      control: { max: 1000, min: 0, step: 50, type: 'number' },
+      description: 'Duration of the indicator animation in milliseconds',
+      table: {
+        category: 'SegmentedControlIndicator Props',
+        defaultValue: { summary: '200' },
+        type: { summary: 'number' },
+      },
+    },
+    'style³': {
+      control: 'object',
+      description: 'Custom style for the indicator',
+      table: {
+        category: 'SegmentedControlIndicator Props',
+        type: { summary: 'ViewStyle' },
+      },
+    },
+    // Trigger props
+    activeClassName: {
+      control: 'text',
+      description: 'Custom CSS classes for the active trigger item',
+      table: {
+        category: 'SegmentedControlTrigger Props',
+        type: { summary: 'string' },
+      },
+    },
+    activeStyle: {
+      control: 'object',
+      description: 'Custom active style for the trigger item',
+      table: {
+        category: 'SegmentedControlTrigger Props',
+        type: { summary: 'ViewStyle' },
+      },
+    },
+    as: {
+      control: 'select',
+      description: 'Type of the trigger component',
+      options: ['touchable-opacity', 'pressable'],
+      table: {
+        category: 'SegmentedControlTrigger Props',
+        defaultValue: { summary: 'pressable' },
+        type: { summary: 'touchable-opacity | pressable' },
+      },
+    },
+    asChild: {
+      control: 'boolean',
+      description: 'Whether the trigger is a child',
+      table: {
+        category: 'SegmentedControlTrigger Props',
+        defaultValue: { summary: 'false' },
+        type: { summary: 'boolean' },
+      },
+    },
+    'asChild⁵': {
+      control: 'boolean',
+      description: 'Whether the trigger is a child',
+      table: {
+        category: 'SegmentedControlPanelContent Props',
+        defaultValue: { summary: 'false' },
+        type: { summary: 'boolean' },
+      },
+    },
+    'className⁴': {
+      control: 'text',
+      description: 'Custom class name for the trigger item',
+      table: {
+        category: 'SegmentedControlTrigger Props',
+        type: { summary: 'string' },
+      },
+    },
+    isDisabled: {
+      control: 'boolean',
+      description: 'Whether the trigger is disabled',
+      table: {
+        category: 'SegmentedControlTrigger Props',
+        defaultValue: { summary: 'false' },
+        type: { summary: 'boolean' },
+      },
+    },
+    stringProps: {
+      control: 'object',
+      description: 'Props for the String component',
+      table: {
+        category: 'SegmentedControlTrigger Props',
+        type: { summary: 'StringProps' },
+      },
+    },
+    'style⁴': {
+      control: 'object',
+      description: 'Custom style for the trigger item',
+      table: {
+        category: 'SegmentedControlTrigger Props',
+        type: { summary: 'ViewStyle' },
+      },
+    },
+    'style⁶': {
+      control: 'object',
+      description: 'Custom style for the trigger item',
+      table: {
+        category: 'SegmentedControlPanel Props',
+        type: { summary: 'ViewStyle' },
+      },
+    },
+    'style⁷': {
+      control: 'object',
+      description: 'Custom style for the trigger item',
+      table: {
+        category: 'SegmentedControlPanelSliderContent Props',
+        type: { summary: 'ViewStyle' },
+      },
+    },
+    value: {
+      control: 'text',
+      description: 'Value of the trigger item',
+      table: {
+        category: 'SegmentedControlTrigger Props',
+        type: { summary: 'string' },
+      },
+      type: { required: true },
+    },
+    // Panel props
+    'asChild²': {
+      control: 'boolean',
+      description: 'Whether the panel should use asChild pattern',
+      table: {
+        category: 'SegmentedControlPanel Props',
+        defaultValue: { summary: 'false' },
+        type: { summary: 'boolean' },
+      },
+    },
+    'className⁵': {
+      control: 'text',
+      description: 'Custom class name for the panel item',
+      table: {
+        category: 'SegmentedControlPanel Props',
+        type: { summary: 'string' },
+      },
+    },
+    forceRender: {
+      control: 'boolean',
+      description: 'Whether the panel should be force rendered',
+      table: {
+        category: 'SegmentedControlPanel Props',
+        defaultValue: { summary: 'false' },
+        type: { summary: 'boolean' },
+      },
+    },
+    'value²': {
+      control: 'text',
+      description: 'Value of the panel item',
+      table: {
+        category: 'SegmentedControlPanel Props',
+        type: { summary: 'string' },
+      },
+    },
+  },
   component: SegmentedControl,
   decorators: [
     (Story: any) => (
       <UiPresentation>
-        <Box className="w-full p-4">
-          <Story />
-        </Box>
+        <Story />
       </UiPresentation>
     ),
   ],
-  title: 'components/SegmentedControl',
+  subcomponents: {
+    SegmentedControlIndicator,
+    SegmentedControlPanel,
+    SegmentedControlPanelContent,
+    SegmentedControlPanelSliderContent,
+    SegmentedControlTrigger,
+    SegmentedControlTriggerContent,
+  },
+  title: 'FEEDBACK & OVERLAY/SegmentedControl',
 };
 
 export default meta;
@@ -39,7 +280,7 @@ export const Default: Story = {
       },
     },
   },
-  render: () => (
+  render: (_args: any) => (
     <SegmentedControl>
       <SegmentedControlTriggerContent onChange={action('onChange')}>
         <SegmentedControlTrigger value="option1">Option 1</SegmentedControlTrigger>
@@ -59,7 +300,7 @@ export const WithDefaultValue: Story = {
       },
     },
   },
-  render: () => (
+  render: (_args: any) => (
     <SegmentedControl>
       <SegmentedControlTriggerContent defaultValue="option2" onChange={action('onChange')}>
         <SegmentedControlTrigger value="option1">Option 1</SegmentedControlTrigger>
@@ -79,7 +320,7 @@ export const WithConditionalContent: Story = {
       },
     },
   },
-  render: () => (
+  render: (_args: any) => (
     <SegmentedControl>
       <SegmentedControlTriggerContent defaultValue="home" onChange={action('onChange')}>
         <SegmentedControlTrigger value="home">Home</SegmentedControlTrigger>
@@ -120,7 +361,7 @@ export const WithSliderContent: Story = {
       },
     },
   },
-  render: () => (
+  render: (_args: any) => (
     <SegmentedControl>
       <SegmentedControlTriggerContent onChange={action('onChange')}>
         <SegmentedControlTrigger value="slide1">Slide 1</SegmentedControlTrigger>
@@ -161,7 +402,7 @@ export const WithDisabledOption: Story = {
       },
     },
   },
-  render: () => (
+  render: (_args: any) => (
     <SegmentedControl>
       <SegmentedControlTriggerContent onChange={action('onChange')}>
         <SegmentedControlTrigger value="option1">Enabled</SegmentedControlTrigger>
@@ -183,7 +424,7 @@ export const WithCustomStyling: Story = {
       },
     },
   },
-  render: () => (
+  render: (_args: any) => (
     <SegmentedControl>
       <SegmentedControlTriggerContent className="rounded-xl p-2" style={{ backgroundColor: '#F3F4F6' }}>
         <SegmentedControlTrigger
@@ -239,7 +480,7 @@ export const WithCustomDuration: Story = {
       },
     },
   },
-  render: () => (
+  render: (_args: any) => (
     <SegmentedControl>
       <SegmentedControlTriggerContent onChange={action('onChange')}>
         <SegmentedControlTrigger value="option1">Fast</SegmentedControlTrigger>
@@ -259,7 +500,7 @@ export const TwoOptions: Story = {
       },
     },
   },
-  render: () => (
+  render: (_args: any) => (
     <SegmentedControl>
       <SegmentedControlTriggerContent onChange={action('onChange')}>
         <SegmentedControlTrigger value="yes">Yes</SegmentedControlTrigger>
@@ -278,7 +519,7 @@ export const FourOptions: Story = {
       },
     },
   },
-  render: () => (
+  render: (_args: any) => (
     <SegmentedControl>
       <SegmentedControlTriggerContent onChange={action('onChange')}>
         <SegmentedControlTrigger value="option1">1</SegmentedControlTrigger>
@@ -299,38 +540,12 @@ export const WithCustomInternalPadding: Story = {
       },
     },
   },
-  render: () => (
+  render: (_args: any) => (
     <SegmentedControl>
       <SegmentedControlTriggerContent internalPadding={16} onChange={action('onChange')}>
         <SegmentedControlTrigger value="option1">Wide</SegmentedControlTrigger>
         <SegmentedControlTrigger value="option2">Spacing</SegmentedControlTrigger>
         <SegmentedControlTrigger value="option3">Here</SegmentedControlTrigger>
-      </SegmentedControlTriggerContent>
-      <SegmentedControlIndicator />
-    </SegmentedControl>
-  ),
-};
-
-export const WithTouchableOpacity: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'SegmentedControl using TouchableOpacity instead of Pressable',
-      },
-    },
-  },
-  render: () => (
-    <SegmentedControl>
-      <SegmentedControlTriggerContent onChange={action('onChange')}>
-        <SegmentedControlTrigger value="option1" as="touchable-opacity">
-          Option 1
-        </SegmentedControlTrigger>
-        <SegmentedControlTrigger value="option2" as="touchable-opacity">
-          Option 2
-        </SegmentedControlTrigger>
-        <SegmentedControlTrigger value="option3" as="touchable-opacity">
-          Option 3
-        </SegmentedControlTrigger>
       </SegmentedControlTriggerContent>
       <SegmentedControlIndicator />
     </SegmentedControl>
@@ -345,7 +560,7 @@ export const CompactStyle: Story = {
       },
     },
   },
-  render: () => (
+  render: (_args: any) => (
     <SegmentedControl>
       <SegmentedControlTriggerContent
         className="rounded-lg"

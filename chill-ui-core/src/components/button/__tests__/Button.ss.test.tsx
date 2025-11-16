@@ -73,13 +73,15 @@ describe('Button Component (StyleSheet)', () => {
   });
 
   it('should render with left icon', () => {
-    const { root } = render(<Button title="Button with Icon" leftIconAction={{ name: 'home-solid', size: 'md' }} />);
+    const { root } = render(
+      <Button title="Button with Icon" leftIconAction={{ name: 'angle-down-solid', size: 'md' }} />,
+    );
     expect(root).toBeTruthy();
   });
 
   it('should render with right icon', () => {
     const { root } = render(
-      <Button title="Button with Icon" rightIconAction={{ name: 'arrow-right-solid', size: 'md' }} />,
+      <Button title="Button with Icon" rightIconAction={{ name: 'angle-down-solid', size: 'md' }} />,
     );
     expect(root).toBeTruthy();
   });

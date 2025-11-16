@@ -1,5 +1,5 @@
 export const avatarDefaultProps = {
-  as: 'pressable',
-  size: 'md',
-  variant: 'circle',
+  as: 'pressable' as const,
+  size: 'md' as const,
+  variant: 'circle' as const,
 };

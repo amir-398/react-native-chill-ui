@@ -2,6 +2,7 @@ import { View, Text } from 'react-native';
 import { render, screen } from '@testing-library/react-native';
 
 import { ToastProvider } from '../components/ToastProvider.ss';
+import { ToastVariantTypePropsSs } from '@types';
 
 // Mock SafeAreaProvider
 jest.mock('react-native-safe-area-context', () => ({
@@ -48,9 +49,9 @@ describe('Toast.ss', () => {
   });
 
   it('supports StyleSheet variants', () => {
-    const styleSheetVariants = {
+    const styleSheetVariants: ToastVariantTypePropsSs = {
       success: {
-        iconProps: { style: { color: '#FFFFFF' } },
+        iconProps: { style: { color: '#FFFFFF' }, name: 'angle-down-solid' },
         messageStringProps: { style: { color: '#FFFFFF' } },
         style: { backgroundColor: '#10B981' },
         titleStringProps: { style: { color: '#FFFFFF', fontWeight: 'bold' } },
@@ -69,7 +70,7 @@ describe('Toast.ss', () => {
   });
 
   it('supports multiple StyleSheet variants', () => {
-    const styleSheetVariants = {
+    const styleSheetVariants: ToastVariantTypePropsSs = {
       error: {
         iconProps: { style: { color: '#FFFFFF', fontSize: 22 } },
         messageStringProps: { style: { color: '#FFFFFF', fontSize: 16 } },
@@ -108,7 +109,7 @@ describe('Toast.ss', () => {
   });
 
   it('supports StyleSheet with all props', () => {
-    const styleSheetVariants = {
+    const styleSheetVariants: ToastVariantTypePropsSs = {
       success: {
         iconProps: { style: { color: '#FFFFFF', fontSize: 20 } },
         messageStringProps: { style: { color: '#FFFFFF', fontSize: 14 } },
@@ -145,7 +146,7 @@ describe('Toast.ss', () => {
   });
 
   it('supports complex StyleSheet styles', () => {
-    const styleSheetVariants = {
+    const styleSheetVariants: ToastVariantTypePropsSs = {
       success: {
         iconProps: {
           style: {

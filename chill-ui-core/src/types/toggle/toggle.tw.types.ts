@@ -5,7 +5,7 @@ import { toggleTv } from '@components/toggle/styles/toggle.tw.styles';
 /**
  * Props for the Toggle component
  */
-export type ToggleProps = VariantProps<typeof toggleTv> & {
+export type ToggleProps = {
   /** Current toggle state (true for on, false for off) */
   value?: boolean;
   /** Custom CSS classes for the container */
@@ -22,4 +22,10 @@ export type ToggleProps = VariantProps<typeof toggleTv> & {
   trackColorOn?: string;
   /** Custom CSS classes for the container */
   style?: StyleProp<ViewStyle>;
+  /** Whether the toggle is in loading state */
+  isLoading?: VariantProps<typeof toggleTv>['isLoading'];
+  /** Whether the toggle is disabled */
+  isDisabled?: VariantProps<typeof toggleTv>['isDisabled'];
+  /** Size of the toggle */
+  size?: VariantProps<typeof toggleTv>['size'];
 };

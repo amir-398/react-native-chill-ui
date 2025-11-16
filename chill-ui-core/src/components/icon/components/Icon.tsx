@@ -2,6 +2,7 @@ import { IconProps } from '@types';
 import { Box } from '@components/box';
 import { Pressable, TouchableOpacity } from 'react-native';
 import { RipplePressable } from '@components/ripplePressable';
+import { IconConfig } from '@components/icon/context/IconContext';
 import { cn, classNamePropsHandler, classNameHandler, styleHandler } from '@utils';
 
 import CustomIcon from './CustomIcon';
@@ -11,8 +12,6 @@ import { iconSizeTv, iconPaddingTv, iconPressableTv, twStyles } from '../styles/
 
 /**
  * The `<Icon />` component displays SVG icons with customizable size, color, and press interactions.
- * Supports both static and interactive icons with press effects.
- *
  *
  * <!-- STORYBOOK_IMPORT_START
  * ```tsx
@@ -36,7 +35,7 @@ import { iconSizeTv, iconPaddingTv, iconPressableTv, twStyles } from '../styles/
  * @param size - Icon size variant: '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' (default: 'md')
  * @param style - Additional inline styles
  */
-export default function Icon(props: IconProps) {
+export default function Icon<T extends IconConfig>(props: IconProps<T>) {
   classNamePropsHandler(props, 'Icon');
 
   const {

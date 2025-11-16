@@ -36,19 +36,25 @@ export interface SegmentedControlIndicatorProps {
  * Props for the SegmentedControlPanel component
  */
 export type SegmentedControlPanelProps = ViewProps & {
+  /** The value of the item that should be active when initially rendered */
   value: string;
+  /** Whether the panel is a child */
   asChild?: boolean;
+  /** Whether the panel should be force rendered */
   forceRender?: boolean;
 };
 
 export type SegmentedControlPanelsProps = ViewProps & {
+  /** Custom style for the panel content container */
   style?: StyleProp<ViewStyle>;
+  /** Whether the panel content is a child */
   asChild?: boolean;
 };
 /**
  * Props for the SegmentedControlPanelSliderContent component
  */
 export type SegmentedControlPanelSliderContentProps = {
+  /** Custom style for the panel slider content container */
   style?: StyleProp<ViewStyle>;
 };
 
@@ -56,8 +62,12 @@ export type SegmentedControlPanelSliderContentProps = {
  * Props for the SegmentedControlTriggerContent component
  */
 export interface SegmentedControlTriggerContentProps {
+  /** Initial selected option value (must match one of the trigger values) */
   defaultValue?: string;
+  /** Internal padding between trigger items in pixels */
   internalPadding?: number;
+  /** Custom style for the trigger content container */
   style?: StyleProp<ViewStyle>;
+  /** Callback function called when the selected option changes, receives the new option value */
   onChange?: (option: string) => void;
 }

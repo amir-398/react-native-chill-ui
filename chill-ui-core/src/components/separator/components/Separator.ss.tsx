@@ -4,12 +4,16 @@ import { SeparatorPropsSs } from '@types';
 import { styles } from '../styles/Separator.ss.styles';
 
 /**
- * Separator component that displays a horizontal line for visual separation.
- * A simple and lightweight component for creating visual dividers between content sections.
+ * The `<Separator />` component displays a horizontal line for visual separation.
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { Separator } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic separator
  * <Separator />
  * ```
  *

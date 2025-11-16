@@ -3,70 +3,28 @@ import { BoxTw } from '@components/box';
 import { PropsWithChildren } from 'react';
 import { TimePickerPropsTw } from '@types';
 
-import { useTimePicker } from '../hooks/useTimePicker';
+import TimePickerNotifier from './TimePickerNotifier';
 import { TimePickerProvider } from './TimePickerProvider';
 import { twStyles } from '../styles/TimePicker.tw.styles';
 
 /**
- * Internal component that observes time values and formats output
- */
-function TimePickerWithProvider(props: PropsWithChildren<TimePickerPropsTw>) {
-  const { children, className, onTimeChange, ...rest } = props;
-
-  useTimePicker({ onTimeChange });
-
-  return (
-    <BoxTw className={cn(twStyles.container, className)} {...rest}>
-      {children}
-    </BoxTw>
-  );
-}
-
-/**
- * TimePicker component that provides a customizable time selection interface.
- * Features animated scrolling pickers for hours and minutes with customizable styling.
+ * The `<TimePicker />` component provides a customizable time selection interface.
+ * It features animated scrolling pickers for hours and minutes with customizable styling.
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { TimePicker, TimePickerContent, TimePickerScroller, TimePickerItem,TimePickerTitle, createTimePickerDate } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * import { TimePicker, TimePickerContent, TimePickerScroller, TimePickerItem, createTimePickerDate } from '@components';
- *
- * // Basic time picker
- * <TimePicker
- *   onTimeChange={(time) => {
- *     console.log(time.formatted); // "12:30:45"
- *     console.log(time.hour);      // 12
- *     console.log(time.date);      // Date object (UTC)
- *   }}
- * >
+ * <TimePicker>
  *   <TimePickerContent>
  *     <TimePickerScroller mode="hour">
  *       <TimePickerItem />
  *     </TimePickerScroller>
  *     <TimePickerScroller mode="minute">
- *       <TimePickerItem />
- *     </TimePickerScroller>
- *   </TimePickerContent>
- * </TimePicker>
- *
- * // With default time (use createTimePickerDate to avoid timezone issues)
- * <TimePicker defaultTime={createTimePickerDate()}>
- *   <TimePickerContent>
- *     <TimePickerScroller mode="hour">
- *       <TimePickerItem />
- *     </TimePickerScroller>
- *     <TimePickerScroller mode="minute" interval={5}>
- *       <TimePickerItem />
- *     </TimePickerScroller>
- *   </TimePickerContent>
- * </TimePicker>
- *
- * // Or with specific default values per scroller
- * <TimePicker>
- *   <TimePickerContent>
- *     <TimePickerScroller mode="hour" defaultValue={14}>
- *       <TimePickerItem />
- *     </TimePickerScroller>
- *     <TimePickerScroller mode="minute" defaultValue={30}>
  *       <TimePickerItem />
  *     </TimePickerScroller>
  *   </TimePickerContent>
@@ -79,11 +37,14 @@ function TimePickerWithProvider(props: PropsWithChildren<TimePickerPropsTw>) {
  * @returns TimePicker component with animated time selection
  */
 export function TimePicker(props: PropsWithChildren<TimePickerPropsTw>) {
-  const { defaultTime } = props;
+  const { children, className, defaultTime, onTimeChange, ...rest } = props;
 
   return (
     <TimePickerProvider defaultTime={defaultTime}>
-      <TimePickerWithProvider {...props} />
+      {onTimeChange && <TimePickerNotifier onTimeChange={onTimeChange} />}
+      <BoxTw className={cn(twStyles.container, className)} {...rest}>
+        {children}
+      </BoxTw>
     </TimePickerProvider>
   );
 }

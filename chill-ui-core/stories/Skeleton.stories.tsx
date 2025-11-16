@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
 import UiPresentation from './storybook/UiPresentation';
-import { Skeleton, Box, String } from '../src/components';
+import { SkeletonTw as Skeleton, BoxTw as Box, StringTw as String } from '../src/components';
 
 const meta: Meta<typeof Skeleton> = {
   args: {
@@ -28,13 +28,11 @@ const meta: Meta<typeof Skeleton> = {
   decorators: [
     (Story: any) => (
       <UiPresentation>
-        <Box className="w-full p-4">
-          <Story />
-        </Box>
+        <Story />
       </UiPresentation>
     ),
   ],
-  title: 'components/Skeleton',
+  title: 'FEEDBACK & OVERLAY/Skeleton',
 };
 
 export default meta;
@@ -163,35 +161,6 @@ export const ExtraLarge: Story = {
     docs: {
       description: {
         story: 'Extra large skeleton size',
-      },
-    },
-  },
-};
-
-export const WithCustomClassName: Story = {
-  args: {
-    className: 'mb-4 rounded-lg',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Skeleton with custom Tailwind classes',
-      },
-    },
-  },
-};
-
-export const WithCustomStyle: Story = {
-  args: {
-    style: {
-      alignSelf: 'center',
-      marginBottom: 16,
-    },
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Skeleton with custom style object',
       },
     },
   },
@@ -335,72 +304,6 @@ export const TextContentSkeleton: Story = {
   },
 };
 
-export const WithChildren: Story = {
-  args: {
-    size: 'lg',
-    variant: 'rectangle',
-  },
-  decorators: [
-    (StoryBox: any) => (
-      <UiPresentation>
-        <Box className="w-full p-4">
-          <StoryBox>
-            <String className="text-center text-gray-500">Loading content...</String>
-          </StoryBox>
-        </Box>
-      </UiPresentation>
-    ),
-  ],
-  parameters: {
-    docs: {
-      description: {
-        story: 'Skeleton with children content inside',
-      },
-    },
-  },
-};
-
-export const AllSizes: Story = {
-  args: {},
-  decorators: [
-    () => (
-      <UiPresentation>
-        <Box className="w-full p-4">
-          <Box className="space-y-4">
-            <Box>
-              <String className="mb-2 text-sm font-semibold">Extra Small (xs)</String>
-              <Skeleton variant="rectangle" size="xs" />
-            </Box>
-            <Box>
-              <String className="mb-2 text-sm font-semibold">Small (sm)</String>
-              <Skeleton variant="rectangle" size="sm" />
-            </Box>
-            <Box>
-              <String className="mb-2 text-sm font-semibold">Medium (md)</String>
-              <Skeleton variant="rectangle" size="md" />
-            </Box>
-            <Box>
-              <String className="mb-2 text-sm font-semibold">Large (lg)</String>
-              <Skeleton variant="rectangle" size="lg" />
-            </Box>
-            <Box>
-              <String className="mb-2 text-sm font-semibold">Extra Large (xl)</String>
-              <Skeleton variant="rectangle" size="xl" />
-            </Box>
-          </Box>
-        </Box>
-      </UiPresentation>
-    ),
-  ],
-  parameters: {
-    docs: {
-      description: {
-        story: 'All skeleton sizes compared',
-      },
-    },
-  },
-};
-
 export const AllVariants: Story = {
   args: {},
   decorators: [
@@ -433,43 +336,6 @@ export const AllVariants: Story = {
     docs: {
       description: {
         story: 'All skeleton variants compared',
-      },
-    },
-  },
-};
-
-export const Accessibility: Story = {
-  args: {
-    accessibilityLabel: 'Loading skeleton',
-    accessible: true,
-    testID: 'skeleton',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Skeleton with accessibility props',
-      },
-    },
-  },
-};
-
-export const AllProps: Story = {
-  args: {
-    accessibilityLabel: 'Custom skeleton',
-    accessible: true,
-    className: 'custom-skeleton',
-    size: 'lg',
-    style: {
-      alignSelf: 'center',
-      marginBottom: 16,
-    },
-    testID: 'custom-skeleton',
-    variant: 'circle',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Skeleton with all props combined',
       },
     },
   },

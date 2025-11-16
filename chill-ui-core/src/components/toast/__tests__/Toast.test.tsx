@@ -2,6 +2,7 @@ import { View, Text } from 'react-native';
 import { render, screen } from '@testing-library/react-native';
 
 import { ToastProvider } from '../components/ToastProvider';
+import { ToastVariantTypeProps } from '@/types/toast/toast.tw.types';
 
 // Mock SafeAreaProvider
 jest.mock('react-native-safe-area-context', () => ({
@@ -98,10 +99,9 @@ describe('Toast', () => {
   });
 
   it('supports custom variants', () => {
-    const customVariants = {
+    const customVariants: ToastVariantTypeProps = {
       success: {
-        backgroundColor: '#10B981',
-        iconProps: { color: '#FFFFFF' },
+        iconProps: { color: '#FFFFFF', name: 'angle-down-solid' },
         messageStringProps: { color: '#FFFFFF' },
         titleStringProps: { color: '#FFFFFF' },
       },
@@ -119,28 +119,24 @@ describe('Toast', () => {
   });
 
   it('supports multiple custom variants', () => {
-    const customVariants = {
+    const customVariants: ToastVariantTypeProps = {
       error: {
-        backgroundColor: '#EF4444',
-        iconProps: { color: '#FFFFFF' },
+        iconProps: { color: '#FFFFFF', name: 'angle-down-solid' },
         messageStringProps: { color: '#FFFFFF' },
         titleStringProps: { color: '#FFFFFF' },
       },
       info: {
-        backgroundColor: '#3B82F6',
-        iconProps: { color: '#FFFFFF' },
+        iconProps: { color: '#FFFFFF', name: 'angle-down-solid' },
         messageStringProps: { color: '#FFFFFF' },
         titleStringProps: { color: '#FFFFFF' },
       },
       success: {
-        backgroundColor: '#10B981',
-        iconProps: { color: '#FFFFFF' },
+        iconProps: { color: '#FFFFFF', name: 'angle-down-solid' },
         messageStringProps: { color: '#FFFFFF' },
         titleStringProps: { color: '#FFFFFF' },
       },
       warning: {
-        backgroundColor: '#F59E0B',
-        iconProps: { color: '#FFFFFF' },
+        iconProps: { color: '#FFFFFF', name: 'angle-down-solid' },
         messageStringProps: { color: '#FFFFFF' },
         titleStringProps: { color: '#FFFFFF' },
       },
@@ -158,10 +154,9 @@ describe('Toast', () => {
   });
 
   it('supports all props combined', () => {
-    const customVariants = {
+    const customVariants: ToastVariantTypeProps = {
       success: {
-        backgroundColor: '#10B981',
-        iconProps: { color: '#FFFFFF' },
+        iconProps: { color: '#FFFFFF', name: 'angle-down-solid' },
         messageStringProps: { color: '#FFFFFF' },
         titleStringProps: { color: '#FFFFFF' },
       },

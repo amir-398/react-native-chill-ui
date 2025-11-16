@@ -130,7 +130,6 @@ describe('AutocompleteDropdown Component (Hybrid)', () => {
         valueField="name"
         searchField="name"
         onSelectItem={jest.fn()}
-        closeModalWhenSelectedItem
         hasPerformSearch
         hasHighlightString
         maxHeight={300}

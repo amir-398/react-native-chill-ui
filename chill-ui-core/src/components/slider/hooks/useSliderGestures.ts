@@ -50,7 +50,7 @@ export const useSliderGestures = (props: UseSliderGesturesProps) => {
   // Track current values using listeners instead of __getValue()
   useEffect(() => {
     const listeners: string[] = [];
-    
+
     // Initialize with current values from Animated.Value
     values.forEach((val, index) => {
       // Check if it's an Animated.Value with addListener method
@@ -59,7 +59,7 @@ export const useSliderGestures = (props: UseSliderGesturesProps) => {
         // This is safer than __getValue() and only used for initialization
         // eslint-disable-next-line no-underscore-dangle
         currentValuesRef.current[index] = (val as any)._value ?? 0;
-        
+
         const listenerId = val.addListener(({ value: newValue }) => {
           currentValuesRef.current[index] = newValue;
         });
@@ -114,12 +114,12 @@ export const useSliderGestures = (props: UseSliderGesturesProps) => {
       // Range bounding logic for multi-thumb sliders
       if (values.length > 1) {
         const currentIndex = activeThumbIndexRef.current;
-        
+
         // Constrain by previous thumb (if exists)
         if (currentIndex > 0) {
           minValue = rawValues[currentIndex - 1] + effectiveStep;
         }
-        
+
         // Constrain by next thumb (if exists)
         if (currentIndex < values.length - 1) {
           maxValue = rawValues[currentIndex + 1] - effectiveStep;

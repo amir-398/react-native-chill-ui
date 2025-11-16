@@ -184,6 +184,11 @@ export const useTimePickerScrollerRenderItem = ({
 }: PropsWithChildren<UseTimePickerScrollerRenderItemProps>) => {
   const renderItem: ListRenderItem<string | undefined> = useCallback(
     ({ index, item }) => {
+      if (!children) {
+        console.warn('<TimePickerItem /> as children is required but was not provided');
+        return null;
+      }
+
       const clonedItem = cloneElement(
         children as React.ReactElement,
         {

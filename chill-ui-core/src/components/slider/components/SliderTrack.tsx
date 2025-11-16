@@ -1,6 +1,6 @@
-import { PropsWithChildren, memo } from 'react';
 import { Box } from '@components/box';
 import { SliderTrackPropsTw } from '@types';
+import { PropsWithChildren, memo } from 'react';
 import { cn, classNameHandler, classNamePropsHandler, styleHandler } from '@utils';
 
 import { styles } from '../styles/Slider.ss.styles';

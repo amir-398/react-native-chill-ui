@@ -5,13 +5,13 @@ import { BoxTw } from '@components/box';
 import { Pressable, TouchableOpacity } from 'react-native';
 import { RipplePressable } from '@components/ripplePressable';
 
+import type { IconConfig } from '@/components/icon/context/IconContext';
+
 import CustomIcon from './CustomIcon.tw';
 import { iconDefaultProps } from '../utils/defaultProps';
 import { iconSizeTv, iconPressableTv, iconPaddingTv, twStyles } from '../styles/Icon.tw.styles';
 /**
  * The `<Icon />` component displays SVG icons with customizable size, color, and press interactions.
- * Uses NativeWind for styling.
- *
  *
  * <!-- STORYBOOK_IMPORT_START
  * ```tsx
@@ -35,7 +35,7 @@ import { iconSizeTv, iconPressableTv, iconPaddingTv, twStyles } from '../styles/
  * @param size - Icon size variant: '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' (default: 'md')
  * @param style - Additional inline styles
  */
-export default function Icon(props: IconPropsTw) {
+export default function Icon<T extends IconConfig>(props: IconPropsTw<T>) {
   const {
     as,
     className,

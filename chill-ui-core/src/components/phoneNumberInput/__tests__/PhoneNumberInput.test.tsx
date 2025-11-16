@@ -79,8 +79,8 @@ jest.mock('../utils/defaultProps', () => ({
 }));
 
 jest.mock('../utils/phone', () => ({
-  applyMaskPhoneNumber: jest.fn((countryCode, phoneNumber) => phoneNumber),
-  getPhoneNumberWithSuffix: jest.fn((countryCode, phoneNumber) => phoneNumber),
+  applyMaskPhoneNumber: jest.fn((_countryCode, phoneNumber) => phoneNumber),
+  getPhoneNumberWithSuffix: jest.fn((_countryCode, phoneNumber) => phoneNumber),
   isValidNumber: jest.fn(() => true),
 }));
 
@@ -161,7 +161,6 @@ describe('PhoneNumberInput Component (Hybrid)', () => {
     const { root } = render(
       <PhoneNumberInput
         inputProps={{
-          placeholder: 'Custom placeholder',
           size: 'lg',
         }}
         onPhoneNumberChange={jest.fn()}
@@ -234,9 +233,7 @@ describe('PhoneNumberInput Component (Hybrid)', () => {
         dropdownPosition="auto"
         dropdownProps={{ hasSearch: true }}
         errorMessage="Invalid phone number"
-        hasError={false}
         hasErrorOnChange
-        inputProps={{ placeholder: 'Custom input' }}
         language="en"
         maxHeight={340}
         minHeight={0}

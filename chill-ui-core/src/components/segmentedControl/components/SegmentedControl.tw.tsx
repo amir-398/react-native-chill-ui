@@ -7,7 +7,13 @@ import { SegmentedControlTriggerContent } from './SegmentedControlTriggerContent
 import { SegmentedControlPanelSliderContent } from './SegmentedControlPanelSliderContent.tw';
 
 /**
- * Tab-like interface for switching between options.
+ * The `<SegmentedControl/>` component is a Tab-like interface for switching between options.
+ *
+ *<!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { SegmentedControl, SegmentedControlTriggerContent, SegmentedControlTrigger, SegmentedControlPanelContent, SegmentedControlPanel, SegmentedControlIndicator } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
@@ -27,11 +33,8 @@ import { SegmentedControlPanelSliderContent } from './SegmentedControlPanelSlide
  *   </SegmentedControlPanelContent>
  * </SegmentedControl>
  * ```
- *
- * @param children - SegmentedControlTriggerContent, SegmentedControlIndicator, and SegmentedControlPanelContent components (required)
- * @returns SegmentedControl component that manages segmented control state and context
  */
-export function SegmentedControl(props: PropsWithChildren<any>) {
+export function SegmentedControl(props: PropsWithChildren) {
   const { children } = props;
 
   const childrenArray = useMemo(() => {

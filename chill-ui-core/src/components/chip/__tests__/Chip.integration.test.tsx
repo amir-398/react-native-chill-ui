@@ -81,7 +81,7 @@ describe('Chip Component (Integration)', () => {
         <Chip variant="outlined" colorVariant="secondary">
           Secondary
         </Chip>
-        <Chip leftIconAction={{ name: 'star-solid' }}>With Icon</Chip>
+        <Chip leftIconAction={{ name: 'angle-down-solid' }}>With Icon</Chip>
       </div>,
     );
     expect(root).toBeTruthy();

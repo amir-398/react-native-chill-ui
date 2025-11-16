@@ -7,7 +7,13 @@ import { SegmentedControlTriggerContent } from './SegmentedControlTriggerContent
 import { SegmentedControlPanelSliderContent } from './SegmentedControlPanelSliderContent.ss';
 
 /**
- * Tab-like interface for switching between options.
+ * The <SegmentedControl/> component is a Tab-like interface for switching between options.
+ *
+ *<!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { SegmentedControl, SegmentedControlTriggerContent, SegmentedControlTrigger, SegmentedControlPanelContent, SegmentedControlPanel, SegmentedControlIndicator } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx

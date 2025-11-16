@@ -153,6 +153,21 @@ All versions support custom colors through the `style` prop and variant configur
 | `messageStringProps` | `StringProps`                                 | -          | Props to pass to the message String component       |
 | `iconProps`          | `IconProps`                                   | -          | Props to pass to the icon component                 |
 
+### ToastVariantConfig
+
+Configuration object for customizing individual toast variants (`success`, `error`, `info`, `warning`):
+
+| Property             | Type                   | Default | Description                                                |
+| -------------------- | ---------------------- | ------- | ---------------------------------------------------------- |
+| `style`              | `StyleProp<ViewStyle>` | -       | Style object for the entire toast container                |
+| `className`          | `string`               | -       | CSS classes for the toast container (Tailwind/Hybrid only) |
+| `titleStringProps`   | `StringProps`          | -       | Props to customize the title String component              |
+| `messageStringProps` | `StringProps`          | -       | Props to customize the message String component            |
+| `iconProps`          | `IconProps`            | -       | Props to customize the icon component                      |
+| `customIcon`         | `React.ReactNode`      | -       | Custom icon component to replace the default icon          |
+| `render`             | `React.ReactNode`      | -       | Custom render function for complete toast content          |
+| `progressBarColor`   | `string`               | -       | Color of the progress bar indicator                        |
+
 ## Usage Examples
 
 ### Basic Usage

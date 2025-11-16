@@ -16,6 +16,24 @@ export type ButtonIconProps = {
   className?: string;
   /** Color of the icon */
   iconColor?: string;
+
+  /** Color variant of the button :
+   * - `'primary'`
+   * - `'secondary'`
+   * - `'error'`
+   * - `'warning'`
+   * - `'success'`
+   * - `'accent'`
+   * - `'dark'`
+   * - `'light'`
+   * - `'danger'`
+   * - `'neutral'`
+   * - `'muted'`
+   * - `'tertiary'`
+   * - `'inverted'`
+   * - `'white'`
+   */
+  colorVariant?: VariantProps<typeof buttonIconTv>['colorVariant'];
   /** Press callback function */
   onPress?: () => void;
   /** Icon name from the available icon set */

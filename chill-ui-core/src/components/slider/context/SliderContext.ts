@@ -2,39 +2,39 @@ import { createContext, useContext } from 'react';
 import { Animated, PanResponderInstance } from 'react-native';
 
 export interface SliderStateContextValue {
-  allMeasured: boolean;
-  containerSize: { width: number; height: number };
+  step: number;
   disabled: boolean;
-  interpolatedThumbValues: Animated.AnimatedInterpolation<number>[];
-  interpolatedTrackValues: Animated.AnimatedInterpolation<number>[];
   isSliding: boolean;
+  allMeasured: boolean;
   maximumValue: number;
   minimumValue: number;
-  orientation: 'horizontal' | 'vertical';
-  step: number;
-  thumbSize: { width: number; height: number };
-  thumbTouchSize: { width: number; height: number };
   trackClickable: boolean;
   values: (number | Animated.Value)[];
+  orientation: 'horizontal' | 'vertical';
   valueVisibleStyle: { opacity?: number };
+  thumbSize: { width: number; height: number };
+  containerSize: { width: number; height: number };
+  thumbTouchSize: { width: number; height: number };
+  interpolatedThumbValues: Animated.AnimatedInterpolation<number>[];
+  interpolatedTrackValues: Animated.AnimatedInterpolation<number>[];
 }
 
 export interface SliderActionsContextValue {
+  panResponder: PanResponderInstance | null;
+  setThumbTouchSize: (size: number) => void;
+  setTrackClickable: (clickable: boolean) => void;
+  getTouchOverflowSize: () => { width: number; height: number };
+  onValueChange?: (values: number[], activeThumbIndex: number) => void;
+  onSlidingStart?: (values: number[], activeThumbIndex: number) => void;
+  onSlidingComplete?: (values: number[], activeThumbIndex: number) => void;
+  measureThumb: (e: { nativeEvent: { layout: { width: number; height: number } } }) => void;
+  measureTrack: (e: { nativeEvent: { layout: { width: number; height: number } } }) => void;
+  measureContainer: (e: { nativeEvent: { layout: { width: number; height: number } } }) => void;
   getMinimumTrackStyle: () => {
     left: Animated.Value | Animated.AnimatedAddition<number>;
     width: Animated.AnimatedAddition<number>;
     opacity?: number;
   };
-  getTouchOverflowSize: () => { width: number; height: number };
-  measureContainer: (e: { nativeEvent: { layout: { width: number; height: number } } }) => void;
-  measureThumb: (e: { nativeEvent: { layout: { width: number; height: number } } }) => void;
-  measureTrack: (e: { nativeEvent: { layout: { width: number; height: number } } }) => void;
-  onSlidingComplete?: (values: number[], activeThumbIndex: number) => void;
-  onSlidingStart?: (values: number[], activeThumbIndex: number) => void;
-  onValueChange?: (values: number[], activeThumbIndex: number) => void;
-  panResponder: PanResponderInstance | null;
-  setThumbTouchSize: (size: number) => void;
-  setTrackClickable: (clickable: boolean) => void;
 }
 
 export const SliderStateContext = createContext<SliderStateContextValue>({

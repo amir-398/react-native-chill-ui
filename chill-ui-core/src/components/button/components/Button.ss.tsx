@@ -99,7 +99,8 @@ function ButtonContent({
             styles.pointerEventsNone,
           ]}
         >
-          {leftIconAction.customIcon || <IconSs {...leftIconAction} size={sizingVariant} />}
+          {leftIconAction.customIcon ||
+            (leftIconAction.name && <IconSs name={leftIconAction.name} size={leftIconAction.size || sizingVariant} />)}
         </BoxSs>
       )}
 
@@ -128,7 +129,8 @@ function ButtonContent({
             styles.pointerEventsNone,
           ]}
         >
-          {rightIconAction.customIcon || <IconSs {...rightIconAction} size={sizingVariant} />}
+          {rightIconAction.customIcon ||
+            (rightIconAction.name && <IconSs name={rightIconAction.name} size={sizingVariant} {...rightIconAction} />)}
         </BoxSs>
       )}
     </BoxSs>

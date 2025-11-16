@@ -20,7 +20,7 @@ const meta: Meta<typeof BoxRowBetween> = {
       description: 'Any other props accepted by the native `View` component',
       type: 'object',
     },
-  },      
+  },
   component: BoxRowBetween,
   decorators: [
     Story => (

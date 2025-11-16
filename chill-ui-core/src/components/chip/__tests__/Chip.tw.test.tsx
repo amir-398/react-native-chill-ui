@@ -68,14 +68,14 @@ describe('Chip Component (Tailwind)', () => {
   });
 
   it('should render with icons', () => {
-    const { root: leftIcon } = render(<Chip leftIconAction={{ name: 'star-solid' }}>Left Icon</Chip>);
+    const { root: leftIcon } = render(<Chip leftIconAction={{ name: 'angle-down-solid' }}>Left Icon</Chip>);
     expect(leftIcon).toBeTruthy();
 
-    const { root: rightIcon } = render(<Chip rightIconAction={{ name: 'close-solid' }}>Right Icon</Chip>);
+    const { root: rightIcon } = render(<Chip rightIconAction={{ name: 'angle-down-solid' }}>Right Icon</Chip>);
     expect(rightIcon).toBeTruthy();
 
     const { root: bothIcons } = render(
-      <Chip leftIconAction={{ name: 'star-solid' }} rightIconAction={{ name: 'close-solid' }}>
+      <Chip leftIconAction={{ name: 'angle-down-solid' }} rightIconAction={{ name: 'angle-down-solid' }}>
         Both Icons
       </Chip>,
     );

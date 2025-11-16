@@ -57,7 +57,7 @@ export default function Avatar(props: AvatarPropsSs) {
 
   const { image, initials } = useAvatar(data);
 
-  const avaratStyle = AvatarSv({ size, variant });
+  const avatarStyle = AvatarSv({ size, variant });
 
   const avatarContent = (
     <>
@@ -70,7 +70,7 @@ export default function Avatar(props: AvatarPropsSs) {
 
   const commonProps = {
     onPress: onPress || undefined,
-    style: [{ ...(color && { backgroundColor: color }) }, avaratStyle, style],
+    style: [{ ...(color && { backgroundColor: color }) }, avatarStyle, style],
   };
 
   if (onPress) {

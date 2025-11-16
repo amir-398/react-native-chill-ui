@@ -11,7 +11,7 @@ import { DropdownMenuProvider } from './DropdownMenuContext';
  *
  * <!-- STORYBOOK_IMPORT_START
  * ```tsx
- * import { DropdownMenu } from 'react-native-chill-ui';
+ * import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from 'react-native-chill-ui';
  * ```
  * STORYBOOK_IMPORT_END -->
  *

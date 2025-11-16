@@ -6,6 +6,5 @@ export { default as Fold } from './components/Fold';
 export { default as Grid } from './components/Grid';
 export { default as Pulse } from './components/Pulse';
 export { default as Swing } from './components/Swing';
-export { default as Wander } from './components/Wander';
 export { default as Spinner } from './components/Spinner';
 export { default as LoadingIndicator } from './components/LoadingIndicator';

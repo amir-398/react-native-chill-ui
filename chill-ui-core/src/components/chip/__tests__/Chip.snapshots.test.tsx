@@ -69,8 +69,8 @@ describe('Chip Snapshots', () => {
   it('should match snapshot for icons', () => {
     const tree = render(
       <div>
-        <Chip leftIconAction={{ name: 'star-solid' }}>Left Icon</Chip>
-        <Chip rightIconAction={{ name: 'close-solid' }}>Right Icon</Chip>
+        <Chip leftIconAction={{ name: 'angle-down-solid' }}>Left Icon</Chip>
+        <Chip rightIconAction={{ name: 'angle-down-solid' }}>Right Icon</Chip>
       </div>,
     ).toJSON();
     expect(tree).toMatchSnapshot();

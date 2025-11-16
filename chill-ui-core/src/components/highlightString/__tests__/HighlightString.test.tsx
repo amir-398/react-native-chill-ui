@@ -1,7 +1,6 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react-native';
 
-import HighlightString from '../components/HighlightString';
+import { HighlightString } from '../components/HighlightString';
 
 // Mock the String components
 jest.mock('../../string', () => ({
@@ -64,7 +63,7 @@ describe('HighlightString Component', () => {
       const customStyle = { color: 'red', fontSize: 18 };
       const customHighlightStyle = { backgroundColor: 'yellow', fontWeight: 'bold' };
 
-      render(<HighlightString {...defaultProps} style={customStyle} highlightStyle={customHighlightStyle} />);
+      render(<HighlightString {...defaultProps} style={customStyle} />);
 
       const textElement = screen.getByText(defaultProps.content);
       const highlightedElements = screen.getAllByText('world');

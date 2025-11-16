@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import { TimePickerValue } from '@types';
+import { TimePickerValueTw } from '@types';
 
 import { useTimePickerState } from '../context/TimePickerContext';
 
 type UseTimePickerProps = {
-  onTimeChange?: (time: TimePickerValue) => void;
+  onTimeChange?: (time: TimePickerValueTw) => void;
 };
 
 export const useTimePicker = ({ onTimeChange }: UseTimePickerProps) => {

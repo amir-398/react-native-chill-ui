@@ -118,7 +118,8 @@ function ButtonContent({
         <BoxTw
           className={cn(IconPositionTv({ isAbsolute: isIconAbsolute, position: 'left' }), twStyles.pointerEventsNone)}
         >
-          {leftIconAction.customIcon || <IconTw {...leftIconAction} size={sizingVariant} />}
+          {leftIconAction.customIcon ||
+            (leftIconAction.name && <IconTw name={leftIconAction.name} size={sizingVariant} {...leftIconAction} />)}
         </BoxTw>
       )}
 
@@ -136,7 +137,8 @@ function ButtonContent({
         <BoxTw
           className={cn(IconPositionTv({ isAbsolute: isIconAbsolute, position: 'right' }), twStyles.pointerEventsNone)}
         >
-          {rightIconAction.customIcon || <IconTw {...rightIconAction} size={sizingVariant} />}
+          {rightIconAction.customIcon ||
+            (rightIconAction.name && <IconTw name={rightIconAction.name} size={sizingVariant} {...rightIconAction} />)}
         </BoxTw>
       )}
     </BoxTw>

@@ -1,4 +1,3 @@
-import React from 'react';
 import renderer from 'react-test-renderer';
 import { act } from '@testing-library/react-native';
 
@@ -60,7 +59,7 @@ describe('ButtonIcon Snapshots', () => {
   it('should match basic button snapshot', () => {
     let tree: any;
     act(() => {
-      tree = renderer.create(<ButtonIcon iconName="heart-solid" onPress={() => {}} />);
+      tree = renderer.create(<ButtonIcon iconName="angle-down-solid" onPress={() => {}} />);
     });
     expect(tree.toJSON()).toMatchSnapshot();
   });
@@ -68,7 +67,7 @@ describe('ButtonIcon Snapshots', () => {
   it('should match disabled button snapshot', () => {
     let tree: any;
     act(() => {
-      tree = renderer.create(<ButtonIcon iconName="heart-solid" isDisabled onPress={() => {}} />);
+      tree = renderer.create(<ButtonIcon iconName="angle-down-solid" isDisabled onPress={() => {}} />);
     });
     expect(tree.toJSON()).toMatchSnapshot();
   });
@@ -76,7 +75,7 @@ describe('ButtonIcon Snapshots', () => {
   it('should match loading button snapshot', () => {
     let tree: any;
     act(() => {
-      tree = renderer.create(<ButtonIcon iconName="heart-solid" isLoading onPress={() => {}} />);
+      tree = renderer.create(<ButtonIcon iconName="angle-down-solid" isLoading onPress={() => {}} />);
     });
     expect(tree.toJSON()).toMatchSnapshot();
   });
@@ -84,7 +83,7 @@ describe('ButtonIcon Snapshots', () => {
   it('should match outlined variant snapshot', () => {
     let tree: any;
     act(() => {
-      tree = renderer.create(<ButtonIcon iconName="heart-solid" variant="outlined" onPress={() => {}} />);
+      tree = renderer.create(<ButtonIcon iconName="angle-down-solid" variant="outlined" onPress={() => {}} />);
     });
     expect(tree.toJSON()).toMatchSnapshot();
   });
@@ -92,7 +91,7 @@ describe('ButtonIcon Snapshots', () => {
   it('should match circle shape snapshot', () => {
     let tree: any;
     act(() => {
-      tree = renderer.create(<ButtonIcon iconName="heart-solid" rounded="circle" onPress={() => {}} />);
+      tree = renderer.create(<ButtonIcon iconName="angle-down-solid" rounded="circle" onPress={() => {}} />);
     });
     expect(tree.toJSON()).toMatchSnapshot();
   });
@@ -100,7 +99,7 @@ describe('ButtonIcon Snapshots', () => {
   it('should match ripple pressable snapshot', () => {
     let tree: any;
     act(() => {
-      tree = renderer.create(<ButtonIcon iconName="heart-solid" as="ripple-pressable" onPress={() => {}} />);
+      tree = renderer.create(<ButtonIcon iconName="angle-down-solid" as="ripple-pressable" onPress={() => {}} />);
     });
     expect(tree.toJSON()).toMatchSnapshot();
   });
@@ -108,7 +107,7 @@ describe('ButtonIcon Snapshots', () => {
   it('should match scale pressable snapshot', () => {
     let tree: any;
     act(() => {
-      tree = renderer.create(<ButtonIcon iconName="heart-solid" as="scale-pressable" onPress={() => {}} />);
+      tree = renderer.create(<ButtonIcon iconName="angle-down-solid" as="scale-pressable" onPress={() => {}} />);
     });
     expect(tree.toJSON()).toMatchSnapshot();
   });
@@ -116,7 +115,7 @@ describe('ButtonIcon Snapshots', () => {
   it('should match primary color variant snapshot', () => {
     let tree: any;
     act(() => {
-      tree = renderer.create(<ButtonIcon iconName="heart-solid" colorVariant="primary" onPress={() => {}} />);
+      tree = renderer.create(<ButtonIcon iconName="angle-down-solid" colorVariant="primary" onPress={() => {}} />);
     });
     expect(tree.toJSON()).toMatchSnapshot();
   });
@@ -124,7 +123,7 @@ describe('ButtonIcon Snapshots', () => {
   it('should match error color variant snapshot', () => {
     let tree: any;
     act(() => {
-      tree = renderer.create(<ButtonIcon iconName="heart-solid" colorVariant="error" onPress={() => {}} />);
+      tree = renderer.create(<ButtonIcon iconName="angle-down-solid" colorVariant="error" onPress={() => {}} />);
     });
     expect(tree.toJSON()).toMatchSnapshot();
   });
@@ -134,7 +133,7 @@ describe('ButtonIcon Snapshots', () => {
     act(() => {
       tree = renderer.create(
         <ButtonIcon
-          iconName="settings-solid"
+          iconName="angle-down-solid"
           variant="outlined"
           rounded="circle"
           colorVariant="primary"

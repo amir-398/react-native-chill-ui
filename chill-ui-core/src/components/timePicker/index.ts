@@ -19,11 +19,5 @@ export { TimePickerItem } from './components/TimePickerItem';
 export { TimePickerContent } from './components/TimePickerContent';
 export { TimePickerTitle } from './components/TimePickerTitle';
 
-// Legacy export
-export { TimePicker as TimePickerLegacy } from './TimePicker';
-
 // Utils
 export { getTimePickerDateNow } from './utils/createTimePickerDate';
-
-// Types
-export type { TimePickerValueTw as TimePickerValue } from '@types';

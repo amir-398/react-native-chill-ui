@@ -264,7 +264,7 @@ export function PhoneNumberInput(props: PhoneNumberInputProps) {
 
       const masked = applyMaskPhoneNumber(selectedCountry.code, raw);
       const numberWithSuffix = getPhoneNumberWithSuffix(selectedCountry.code, raw);
-      const valid = isValidNumber(numberWithSuffix, selectedCountry.dial_code);
+      const valid = isValidNumber(numberWithSuffix, selectedCountry.code);
       setIsValid(valid);
 
       onError?.({

@@ -7,8 +7,6 @@ import { twStyles } from '../styles/Separator.tw.styles';
 
 /**
  * The `<Separator />` component displays a horizontal line for visual separation.
- * A simple and lightweight component for creating visual dividers between content sections.
- *
  *
  * <!-- STORYBOOK_IMPORT_START
  * ```tsx

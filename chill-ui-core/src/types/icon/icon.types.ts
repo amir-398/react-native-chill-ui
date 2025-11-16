@@ -1,13 +1,15 @@
-import type { TIcons } from '@constants';
 import type { VariantProps } from 'tailwind-variants';
 import type { StyleProp, ViewStyle } from 'react-native';
 
+import { ICONS } from '@constants';
+
+import type { IconConfig } from '@/components/icon/context/IconContext';
 import type { iconSizeTv, iconPaddingTv } from '@/components/icon/styles/Icon.tw.styles';
 
 /**
  * Props for the Icon component
  */
-export type IconProps = {
+export type IconProps<T extends IconConfig = typeof ICONS> = {
   /** Component to use when pressable:
    * - `'pressable'`
    * - `'touchable-opacity'`
@@ -21,7 +23,7 @@ export type IconProps = {
   /** Whether to show press effect when pressed */
   hasPressEffect?: boolean;
   /** Icon name from the available icon set (required) */
-  name: keyof TIcons;
+  name: keyof T | keyof typeof ICONS;
   /** Callback function when icon is pressed */
   onPress?: () => void;
   /** Size of the press effect padding */

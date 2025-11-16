@@ -26,10 +26,8 @@ const meta: Meta<typeof ScalePressable> = {
   component: ScalePressable,
   decorators: [
     (Story: any) => (
-      <UiPresentation>
-        <Box className="w-full items-center justify-center p-4">
-          <Story />
-        </Box>
+      <UiPresentation className="items-center">
+        <Story />
       </UiPresentation>
     ),
   ],

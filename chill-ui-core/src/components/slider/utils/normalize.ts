@@ -1,12 +1,11 @@
 import { Animated } from 'react-native';
+import { SliderRootPropsTw } from '@types';
 
-import { SliderProps } from '../../../types/slider.types';
-
-export const normalizeValue = (props: SliderProps, value: number | number[]) => {
+export const normalizeValue = (props: SliderRootPropsTw, value: number | number[]) => {
   if (!value || (Array.isArray(value) && value.length === 0)) {
     return [0];
   }
-  const { maximumValue, minimumValue } = props;
+  const { maximumValue = 100, minimumValue = 0 } = props;
   const getBetweenValue = (inputValue: number) => Math.max(Math.min(inputValue, maximumValue), minimumValue);
   if (!Array.isArray(value)) {
     return [getBetweenValue(value)];

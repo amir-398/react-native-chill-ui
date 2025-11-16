@@ -2,14 +2,14 @@ import { ToastVariantTypePropsTw } from '@types';
 
 export const variantConfig: ToastVariantTypePropsTw = {
   error: {
-    iconProps: { color: '#FFFFFF', name: 'xmark-circle-solid' },
+    iconProps: { color: '#FFFFFF', name: 'xmark-solid' },
     messageStringProps: { color: '#FFFFFF', size: 'sm' },
     progressBarColor: '#FFFFFF',
     style: { backgroundColor: '#F44336' },
     titleStringProps: { color: '#FFFFFF', variant: 'body-2' },
   },
   info: {
-    iconProps: { color: '#FFFFFF', name: 'circle-info-solid' },
+    iconProps: { color: '#FFFFFF', name: 'eye-solid' },
     messageStringProps: { color: '#FFFFFF', size: 'sm' },
     progressBarColor: '#FFFFFF',
     style: { backgroundColor: '#2196F3' },
@@ -23,7 +23,7 @@ export const variantConfig: ToastVariantTypePropsTw = {
     titleStringProps: { color: '#FFFFFF' },
   },
   warning: {
-    iconProps: { color: '#FFFFFF', name: 'warning-solid' },
+    iconProps: { color: '#FFFFFF', name: 'dot-solid' },
     messageStringProps: { color: '#FFFFFF', size: 'sm' },
     progressBarColor: '#FFFFFF',
     style: { backgroundColor: '#FF9800' },

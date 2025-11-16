@@ -73,7 +73,6 @@ describe('InputDropdown Component (Tailwind)', () => {
         isLoading={false}
         emptyText="No options"
         className="test-class"
-        itemClickableAs="TouchableOpacity"
         DropdownItemRender={({ item }: any) => <div>{item.label}</div>}
       />,
     );

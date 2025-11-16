@@ -7,7 +7,6 @@ import Chase from './Chase';
 import Pulse from './Pulse';
 import Swing from './Swing';
 import Bounce from './Bounce';
-import Wander from './Wander';
 import Spinner from './Spinner';
 import CircleFade from './CircleFade';
 import { loadingIndicatorSizes } from '../styles/loadingIndicator.styles';
@@ -67,8 +66,6 @@ function LoadingIndicator(props: LoadingIndicatorProps) {
       return <Spinner {...commonProps} />;
     case 'swing':
       return <Swing {...commonProps} />;
-    case 'wander':
-      return <Wander {...commonProps} />;
     default:
       return <Spinner {...commonProps} />;
   }

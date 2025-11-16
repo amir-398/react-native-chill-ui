@@ -32,7 +32,7 @@ export type BtnProps = VariantProps<typeof ButtonTv> & {
   /** Left icon configuration */
   leftIconAction?: {
     customIcon?: React.ReactNode;
-    name: keyof TIcons;
+    name?: keyof TIcons;
     size?: IconPropsTw['size'];
     color?: string;
   };
@@ -43,7 +43,7 @@ export type BtnProps = VariantProps<typeof ButtonTv> & {
   /** Right icon configuration */
   rightIconAction?: {
     customIcon?: React.ReactNode;
-    name: keyof TIcons;
+    name?: keyof TIcons;
     size?: IconPropsTw['size'];
     color?: string;
   };

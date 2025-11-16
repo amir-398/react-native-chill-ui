@@ -1,12 +1,10 @@
-import {
-  Carousel,
-  CarouselContent,
-  CarouselDots,
-  CarouselElement,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from '../components/Carousel.ss';
+import { Carousel } from '../components/Carousel.ss';
+import { CarouselContent } from '../components/CarouselContent.ss';
+import { CarouselItem } from '../components/CarouselItem.ss';
+import { CarouselElement } from '../components/CarouselElement.ss';
+import { CarouselDots } from '../components/CarouselDots.ss';
+import { CarouselPrevious } from '../components/CarouselPrevious.ss';
+import { CarouselNext } from '../components/CarouselNext.ss';
 
 describe('Carousel Component (StyleSheet)', () => {
   it('should export Carousel component', () => {

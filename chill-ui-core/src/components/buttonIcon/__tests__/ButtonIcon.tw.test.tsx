@@ -43,20 +43,20 @@ jest.mock('../styles/buttonIcon.tw.styles', () => ({
 
 describe('ButtonIconTw Component', () => {
   it('should render without crashing', () => {
-    const { root } = render(<ButtonIconTw iconName="bell-solid" />);
+    const { root } = render(<ButtonIconTw iconName="angle-down-solid" />);
     expect(root).toBeTruthy();
   });
 
   it('should render with onPress prop', () => {
     const onPressMock = jest.fn();
-    const { root } = render(<ButtonIconTw iconName="bell-solid" onPress={onPressMock} />);
+    const { root } = render(<ButtonIconTw iconName="angle-down-solid" onPress={onPressMock} />);
     expect(root).toBeTruthy();
   });
 
   it('should handle different touchable types', () => {
     const touchableTypes = ['touchable-opacity', 'pressable', 'ripple-pressable', 'scale-pressable'] as const;
     touchableTypes.forEach(type => {
-      const { root } = render(<ButtonIconTw iconName="bell-solid" as={type} />);
+      const { root } = render(<ButtonIconTw iconName="angle-down-solid" as={type} />);
       expect(root).toBeTruthy();
     });
   });
@@ -66,7 +66,7 @@ describe('ButtonIconTw Component', () => {
     const shapes = ['circle', 'square'] as const;
     variants.forEach(variant => {
       shapes.forEach(shape => {
-        const { root } = render(<ButtonIconTw iconName="bell-solid" variant={variant} rounded={shape} />);
+        const { root } = render(<ButtonIconTw iconName="angle-down-solid" variant={variant} rounded={shape} />);
         expect(root).toBeTruthy();
       });
     });
@@ -75,7 +75,7 @@ describe('ButtonIconTw Component', () => {
   it('should handle color variants', () => {
     const colors = ['primary', 'secondary', 'error', 'warning', 'success', 'accent'] as const;
     colors.forEach(color => {
-      const { root } = render(<ButtonIconTw iconName="bell-solid" colorVariant={color} />);
+      const { root } = render(<ButtonIconTw iconName="angle-down-solid" colorVariant={color} />);
       expect(root).toBeTruthy();
     });
   });

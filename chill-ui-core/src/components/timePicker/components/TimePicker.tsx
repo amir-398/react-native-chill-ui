@@ -1,79 +1,32 @@
-import { BoxSs } from '@components/box';
+import { Box } from '@components/box';
 import { PropsWithChildren } from 'react';
 import { TimePickerPropsTw } from '@types';
-import { classNameHandler, classNamePropsHandler, cn, styleHandler } from '@utils';
+import { classNameHandler, cn, styleHandler } from '@utils';
 
-import { useTimePicker } from '../hooks/useTimePicker';
+import TimePickerNotifier from './TimePickerNotifier';
 import { styles } from '../styles/TimePicker.ss.styles';
 import { TimePickerProvider } from './TimePickerProvider';
 import { twStyles } from '../styles/TimePicker.tw.styles';
 
 /**
- * Internal component that observes time values and formats output
- */
-function TimePickerWithProvider(props: PropsWithChildren<TimePickerPropsTw>) {
-  classNamePropsHandler(props, 'TimePicker');
-  const { children, className, onTimeChange, style, ...rest } = props;
-
-  useTimePicker({ onTimeChange });
-
-  return (
-    <BoxSs
-      {...classNameHandler(cn(twStyles.container, className))}
-      {...styleHandler({ defaultStyle: styles.container, style })}
-      {...rest}
-    >
-      {children}
-    </BoxSs>
-  );
-}
-
-/**
- * TimePicker component that provides a customizable time selection interface.
- * Features animated scrolling pickers for hours and minutes with customizable styling.
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
+ *
+ * The `<TimePicker />` component provides a customizable time selection interface.
+ * It features animated scrolling pickers for hours and minutes with customizable styling.
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { TimePicker, TimePickerContent, TimePickerScroller, TimePickerItem,TimePickerTitle, createTimePickerDate } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * import { TimePicker, TimePickerContent, TimePickerScroller, TimePickerItem, getTimePickerDateNow } from '@components';
- *
- * // Basic time picker
- * <TimePicker
- *   onTimeChange={(time) => {
- *     console.log(time.formatted); // "12:30:45"
- *     console.log(time.hour);      // 12
- *     console.log(time.date);      // Date object (UTC)
- *   }}
- * >
+ * <TimePicker>
  *   <TimePickerContent>
  *     <TimePickerScroller mode="hour">
  *       <TimePickerItem />
  *     </TimePickerScroller>
  *     <TimePickerScroller mode="minute">
- *       <TimePickerItem />
- *     </TimePickerScroller>
- *   </TimePickerContent>
- * </TimePicker>
- *
- * // With default time (use getTimePickerDateNow to avoid timezone issues)
- * <TimePicker defaultTime={getTimePickerDateNow()}>
- *   <TimePickerContent>
- *     <TimePickerScroller mode="hour">
- *       <TimePickerItem />
- *     </TimePickerScroller>
- *     <TimePickerScroller mode="minute" interval={5}>
- *       <TimePickerItem />
- *     </TimePickerScroller>
- *   </TimePickerContent>
- * </TimePicker>
- *
- * // Or with specific default values per scroller
- * <TimePicker>
- *   <TimePickerContent>
- *     <TimePickerScroller mode="hour" defaultValue={14}>
- *       <TimePickerItem />
- *     </TimePickerScroller>
- *     <TimePickerScroller mode="minute" defaultValue={30}>
  *       <TimePickerItem />
  *     </TimePickerScroller>
  *   </TimePickerContent>
@@ -87,11 +40,18 @@ function TimePickerWithProvider(props: PropsWithChildren<TimePickerPropsTw>) {
  * @returns TimePicker component with animated time selection
  */
 export function TimePicker(props: PropsWithChildren<TimePickerPropsTw>) {
-  const { defaultTime } = props;
+  const { children, className, defaultTime, onTimeChange, style, ...rest } = props;
 
   return (
     <TimePickerProvider defaultTime={defaultTime}>
-      <TimePickerWithProvider {...props} />
+      {onTimeChange && <TimePickerNotifier onTimeChange={onTimeChange} />}
+      <Box
+        {...classNameHandler(cn(twStyles.container, className))}
+        {...styleHandler({ defaultStyle: styles.container, style })}
+        {...rest}
+      >
+        {children}
+      </Box>
     </TimePickerProvider>
   );
 }

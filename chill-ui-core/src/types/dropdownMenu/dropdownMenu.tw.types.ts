@@ -32,6 +32,7 @@ export type DropdownMenuItemProps = VariantProps<typeof dropdownMenuItemTv> & {
   style?: StyleProp<ViewStyle>;
   as?: 'touchable-opacity' | 'pressable' | 'touchable-highlight';
   asChild?: boolean;
+  onPress?: () => void;
 };
 
 export type DropdownMenuLabelProps = ViewProps & {

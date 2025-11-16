@@ -51,20 +51,20 @@ jest.mock('../styles/buttonIcon.tw.styles', () => ({
 
 describe('ButtonIcon Component (Hybrid)', () => {
   it('should render without crashing', () => {
-    const { root } = render(<ButtonIcon iconName="bell-solid" />);
+    const { root } = render(<ButtonIcon iconName="search-solid" />);
     expect(root).toBeTruthy();
   });
 
   it('should render with onPress prop', () => {
     const onPressMock = jest.fn();
-    const { root } = render(<ButtonIcon iconName="bell-solid" onPress={onPressMock} />);
+    const { root } = render(<ButtonIcon iconName="search-solid" onPress={onPressMock} />);
     expect(root).toBeTruthy();
   });
 
   it('should handle different touchable types', () => {
     const touchableTypes = ['touchable-opacity', 'pressable', 'ripple-pressable', 'scale-pressable'] as const;
     touchableTypes.forEach(type => {
-      const { root } = render(<ButtonIcon iconName="bell-solid" as={type} />);
+      const { root } = render(<ButtonIcon iconName="search-solid" as={type} />);
       expect(root).toBeTruthy();
     });
   });
@@ -74,7 +74,7 @@ describe('ButtonIcon Component (Hybrid)', () => {
     const shapes = ['circle', 'square'] as const;
     variants.forEach(variant => {
       shapes.forEach(shape => {
-        const { root } = render(<ButtonIcon iconName="bell-solid" variant={variant} rounded={shape} />);
+        const { root } = render(<ButtonIcon iconName="search-solid" variant={variant} rounded={shape} />);
         expect(root).toBeTruthy();
       });
     });
@@ -83,7 +83,7 @@ describe('ButtonIcon Component (Hybrid)', () => {
   it('should handle color variants (NativeWind)', () => {
     const colors = ['primary', 'secondary', 'error', 'warning', 'success', 'accent'] as const;
     colors.forEach(color => {
-      const { root } = render(<ButtonIcon iconName="bell-solid" colorVariant={color} />);
+      const { root } = render(<ButtonIcon iconName="search-solid" colorVariant={color} />);
       expect(root).toBeTruthy();
     });
   });

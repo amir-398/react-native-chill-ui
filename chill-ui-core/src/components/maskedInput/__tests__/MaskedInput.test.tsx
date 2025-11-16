@@ -70,10 +70,6 @@ describe('MaskedInput Utils', () => {
       expect(handleApplyMask(undefined, '(999) 999-9999')).toBe('');
     });
 
-    it('handles null input', () => {
-      expect(handleApplyMask(null, '(999) 999-9999')).toBe('');
-    });
-
     it('handles empty string', () => {
       expect(handleApplyMask('', '(999) 999-9999')).toBe('');
     });

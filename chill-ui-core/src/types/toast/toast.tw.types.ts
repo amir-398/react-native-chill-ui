@@ -23,7 +23,7 @@ export interface ToastVariantConfig {
   /** Props for the message String component */
   messageStringProps?: StringProps;
   /** Props for the Icon component */
-  iconProps?: IconProps;
+  iconProps?: Partial<IconProps>;
   /** Custom icon component for toast */
   customIcon?: React.ReactNode;
   /** Custom render function for toast content */

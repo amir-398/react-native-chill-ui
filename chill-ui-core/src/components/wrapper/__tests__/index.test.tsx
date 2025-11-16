@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from '@testing-library/react-native';
 
 import { Wrapper, WrapperSafeAreaView, WrapperKeyboardAvoidingView, WrapperKeyboardAvoidingStickyView } from '../index';
@@ -75,7 +74,6 @@ describe('Wrapper Components Integration', () => {
               <Wrapper
                 fill
                 grow
-                px="2xl"
                 className="final-wrapper"
                 style={{ backgroundColor: '#b8b8b8' }}
                 testID="final-wrapper"
@@ -97,13 +95,8 @@ describe('Wrapper Components Integration', () => {
 
   it('should handle accessibility props correctly', () => {
     const { getByTestId } = render(
-      <Wrapper accessible accessibilityLabel="Main wrapper" accessibilityRole="container" testID="wrapper">
-        <WrapperSafeAreaView
-          accessible
-          accessibilityLabel="Safe area content"
-          accessibilityRole="container"
-          testID="safe-area-view"
-        >
+      <Wrapper accessible accessibilityLabel="Main wrapper" testID="wrapper">
+        <WrapperSafeAreaView accessible accessibilityLabel="Safe area content" testID="safe-area-view">
           Content
         </WrapperSafeAreaView>
       </Wrapper>,

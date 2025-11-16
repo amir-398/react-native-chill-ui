@@ -53,9 +53,9 @@ describe('ButtonIcon Integration Tests', () => {
   it('should handle toolbar with multiple buttons', () => {
     const { root } = render(
       <div>
-        <ButtonIcon iconName="heart-solid" onPress={() => {}} colorVariant="error" />
-        <ButtonIcon iconName="share-solid" onPress={() => {}} colorVariant="info" />
-        <ButtonIcon iconName="gear-solid" onPress={() => {}} colorVariant="neutral" />
+        <ButtonIcon iconName="angle-down-solid" onPress={() => {}} colorVariant="error" />
+        <ButtonIcon iconName="angle-up-solid" onPress={() => {}} colorVariant="info" />
+        <ButtonIcon iconName="arrow-left-solid" onPress={() => {}} colorVariant="neutral" />
       </div>,
     );
     expect(root).toBeTruthy();
@@ -70,7 +70,7 @@ describe('ButtonIcon Integration Tests', () => {
 
   it('should handle complex button combinations', () => {
     const { root } = render(
-      <ButtonIcon iconName="gear-solid" variant="outlined" rounded="circle" colorVariant="primary" size="lg" />,
+      <ButtonIcon iconName="angle-down-solid" variant="outlined" rounded="circle" colorVariant="primary" size="lg" />,
     );
     expect(root).toBeTruthy();
   });

@@ -19,7 +19,7 @@ try {
   }
 } catch {
   customConsole.warn(
-    'react-native-keyboard-controller is not installed. To use WrapperKeyboardAvoidingView, please install it: npm install react-native-keyboard-controller',
+    'react-native-keyboard-controller is not installed. To use WrapperKeyboardAvoidingStickyView, please install it: npm install react-native-keyboard-controller',
   );
 }
 

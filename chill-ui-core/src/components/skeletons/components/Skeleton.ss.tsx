@@ -6,12 +6,18 @@ import { useEffect, useRef, PropsWithChildren } from 'react';
 import { skeletonSv } from '../styles/Skeleton.ss.styles';
 
 /**
- * Skeleton component that provides loading placeholders with animated pulse effect.
+ * The `<Skeleton />` component provides loading placeholders with animated pulse effect.
  * Supports multiple variants and sizes for different content types.
+ *
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { Skeleton } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic rectangle skeleton
  * <Skeleton variant="rectangle" size="md" />
  * ```
  *

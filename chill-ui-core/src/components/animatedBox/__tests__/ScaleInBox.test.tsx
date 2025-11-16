@@ -36,7 +36,7 @@ jest.mock('../components/animatedBox/AnimatedBox', () => ({
 
 // Mock Box component
 jest.mock('../../box/components/View', () => ({
-  AnimatedView: ({ children, ...props }: any) => children,
+  AnimatedView: ({ children }: any) => children,
 }));
 
 // Mock Tailwind utilities

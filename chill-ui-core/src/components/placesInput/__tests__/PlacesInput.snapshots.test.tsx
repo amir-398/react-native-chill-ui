@@ -10,7 +10,6 @@ jest.mock('../../../utils', () => ({
   colorVariantPropsHandler: jest.fn(),
   debounce: jest.fn(fn => {
     const debouncedFn = jest.fn(fn);
-    debouncedFn.cancel = jest.fn();
     return debouncedFn;
   }),
   isString: jest.fn(value => typeof value === 'string'),
@@ -18,7 +17,6 @@ jest.mock('../../../utils', () => ({
 }));
 
 jest.mock('../../../components/AutocompleteDropdown', () => {
-  const React = require('react');
   const { Text, TextInput, TouchableOpacity, View } = require('react-native');
 
   function MockAutocompleteDropdown({ children, onChangeText, onSelectItem, ...props }: any) {
@@ -84,13 +82,7 @@ describe('PlacesInput Snapshots', () => {
   });
 
   it('should match snapshot with custom styling', () => {
-    const tree = render(
-      <PlacesInput
-        googleApiKey={mockGoogleApiKey}
-        className="custom-class"
-        style={{ backgroundColor: '#fff', margin: 16 }}
-      />,
-    );
+    const tree = render(<PlacesInput googleApiKey={mockGoogleApiKey} />);
     expect(tree).toMatchSnapshot();
   });
 

@@ -1,12 +1,10 @@
-import {
-  Carousel,
-  CarouselContent,
-  CarouselDots,
-  CarouselElement,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from '../components/Carousel.tw';
+import { Carousel } from '../components/Carousel.tw';
+import { CarouselContent } from '../components/CarouselContent.tw';
+import { CarouselItem } from '../components/CarouselItem.tw';
+import { CarouselElement } from '../components/CarouselElement.tw';
+import { CarouselDots } from '../components/CarouselDots.tw';
+import { CarouselPrevious } from '../components/CarouselPrevious.tw';
+import { CarouselNext } from '../components/CarouselNext.tw';
 
 describe('Carousel Component (Tailwind)', () => {
   it('should export Carousel component', () => {

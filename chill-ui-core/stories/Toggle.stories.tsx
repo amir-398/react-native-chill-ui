@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
+import { action } from 'storybook/actions';
+
 import { Toggle } from '../src/components';
 import UiPresentation from './storybook/UiPresentation';
 
@@ -7,11 +9,6 @@ const meta: Meta<typeof Toggle> = {
   args: {
     isDisabled: false,
     isLoading: false,
-    size: 'md',
-    thumbColorOff: '#f3f3f3',
-    thumbColorOn: '#FFF',
-    trackColorOff: '#CBCFD3',
-    trackColorOn: '#3f83f8',
   },
   argTypes: {
     isDisabled: {
@@ -28,10 +25,11 @@ const meta: Meta<typeof Toggle> = {
         },
       },
     },
-    onChange: {
-      action: 'onChange',
-    },
     size: {
+      control: {
+        type: 'select',
+      },
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
       table: {
         defaultValue: {
           summary: 'md',
@@ -39,6 +37,9 @@ const meta: Meta<typeof Toggle> = {
       },
     },
     thumbColorOff: {
+      control: {
+        type: 'color',
+      },
       table: {
         defaultValue: {
           summary: '#f3f3f3',
@@ -46,6 +47,9 @@ const meta: Meta<typeof Toggle> = {
       },
     },
     thumbColorOn: {
+      control: {
+        type: 'color',
+      },
       table: {
         defaultValue: {
           summary: '#FFF',
@@ -53,6 +57,9 @@ const meta: Meta<typeof Toggle> = {
       },
     },
     trackColorOff: {
+      control: {
+        type: 'color',
+      },
       table: {
         defaultValue: {
           summary: '#CBCFD3',
@@ -60,6 +67,9 @@ const meta: Meta<typeof Toggle> = {
       },
     },
     trackColorOn: {
+      control: {
+        type: 'color',
+      },
       table: {
         defaultValue: {
           summary: '#3f83f8',
@@ -70,12 +80,12 @@ const meta: Meta<typeof Toggle> = {
   component: Toggle,
   decorators: [
     (Story: any) => (
-      <UiPresentation>
+      <UiPresentation className="items-center">
         <Story />
       </UiPresentation>
     ),
   ],
-  title: 'components/Toggle',
+  title: 'FORMS/Toggle',
 };
 
 export default meta;
@@ -86,6 +96,7 @@ export const Default: Story = {
     onChange: action('onChange'),
     value: false,
   },
+  render: () => <Toggle />,
 };
 
 export const Checked: Story = {
@@ -98,7 +109,7 @@ export const Checked: Story = {
 export const Small: Story = {
   args: {
     onChange: action('onChange'),
-    size: 'small',
+    size: 'sm',
     value: false,
   },
 };
@@ -128,28 +139,7 @@ export const WithCustomColors: Story = {
     trackColorOn: 'yellow',
     value: false,
   },
-};
-
-export const WithCustomClass: Story = {
-  args: {
-    className: 'p-2 bg-primary',
-    onChange: action('onChange'),
-    thumbColorOff: 'red',
-    thumbColorOn: 'blue',
-    trackColorOff: 'green',
-    trackColorOn: 'yellow',
-    value: false,
-  },
-};
-
-export const DifferentStates: Story = {
-  render: () => (
-    <UiPresentation>
-      <Toggle onChange={action('onChange')} value={false} />
-      <Toggle onChange={action('onChange')} value />
-      <Toggle onChange={action('onChange')} isDisabled value={false} />
-      <Toggle onChange={action('onChange')} isLoading value={false} />
-      <Toggle onChange={action('onChange')} size="small" value={false} />
-    </UiPresentation>
+  render: (_args: any) => (
+    <Toggle thumbColorOff="red" thumbColorOn="blue" trackColorOff="green" trackColorOn="yellow" />
   ),
 };

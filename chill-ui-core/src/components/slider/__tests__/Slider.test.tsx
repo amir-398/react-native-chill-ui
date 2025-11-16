@@ -586,7 +586,7 @@ describe('Slider Component', () => {
         <SliderLabel position="top" index={0} className="label-1">
           30%
         </SliderLabel>
-        <SliderLabel position="bottom" index={1} className="label-2" stringProps={{ weight: 'bold' }}>
+        <SliderLabel position="bottom" index={1} className="label-2">
           70%
         </SliderLabel>
       </Slider>,

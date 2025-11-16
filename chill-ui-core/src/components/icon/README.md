@@ -41,13 +41,33 @@ This component comes in three versions to match your project's styling approach.
 ## Quick Start
 
 ```tsx
-import { Icon } from 'react-native-chill-ui';
+import { Icon, IconProvider } from 'react-native-chill-ui';
 
-// Basic icon
+// Define your custom icons
+const CUSTOM_ICONS = {
+  'amir': {
+    path: ['M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z'],
+    viewBox: '0 0 384 512',
+  },
+} as const;
+
+// Wrap your app with IconProvider
+function App() {
+  return (
+    <IconProvider icons={CUSTOM_ICONS}>
+      <YourAppContent />
+    </IconProvider>
+  );
+}
+
+// Basic icon (default icons)
 <Icon name="heart-solid" />
 
 // Customized with size and color
 <Icon name="star-solid" size="lg" color="#FFD700" />
+
+// Custom icon (from your ICONS provider)
+<Icon<typeof CUSTOM_ICONS> name="amir" />
 
 // Interactive icon with press effect
 <Icon
@@ -62,6 +82,230 @@ import { Icon } from 'react-native-chill-ui';
   onPress={handleUserPress}
   as="touchable-opacity"
 />
+```
+
+## IconProvider
+
+The `IconProvider` allows you to register custom icons that can be used alongside the default icon set. This is useful when you want to add your own SVG icons to your application.
+
+### Basic Usage
+
+```tsx
+import { Icon, IconProvider } from 'react-native-chill-ui';
+
+// Define your custom icons
+const CUSTOM_ICONS = {
+  amir: {
+    path: [
+      'M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z',
+    ],
+    viewBox: '0 0 384 512',
+  },
+  meberbeche: {
+    path: [
+      'M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z',
+    ],
+    viewBox: '0 0 512 512',
+  },
+} as const;
+
+export type TIcons = typeof CUSTOM_ICONS;
+
+function App() {
+  return (
+    <IconProvider icons={CUSTOM_ICONS}>
+      <YourAppContent />
+    </IconProvider>
+  );
+}
+
+// Using custom icons with TypeScript
+function MyComponent() {
+  return (
+    <Box>
+      {/* Custom icon with TypeScript support */}
+      <Icon<TIcons> name="amir" />
+
+      {/* Default icon still works */}
+      <Icon name="heart-solid" />
+
+      {/* Both work in the same component */}
+      <Icon<TIcons> name="meberbeche" size="lg" color="#FF6B6B" />
+      <Icon name="star-solid" size="lg" color="#FFD700" />
+    </Box>
+  );
+}
+```
+
+### IconProvider Props
+
+| Prop    | Type         | Default | Description                                    |
+| ------- | ------------ | ------- | ---------------------------------------------- |
+| `icons` | `IconConfig` | `{}`    | Object containing your custom icon definitions |
+
+### TypeScript Support
+
+When using custom icons, you can pass the icon type as a generic to get full TypeScript support and autocompletion:
+
+```tsx
+// Define your custom icons
+const MY_ICONS = { /* ... */ } as const;
+type MyIcons = typeof MY_ICONS;
+
+// Get autocompletion for your custom icons
+<Icon<MyIcons> name="my-custom-icon" />
+
+// Still works with default icons
+<Icon<MyIcons> name="heart-solid" />
+```
+
+## Converting SVG to Icon Constants
+
+To easily convert your SVG files to the icon format required by the library, you can use this Node.js script:
+
+### Installation
+
+```bash
+npm install --save-dev jsdom
+```
+
+### Usage
+
+1. Create a `scripts/svg-to-icons.js` file:
+
+```javascript
+const fs = require('fs');
+const path = require('path');
+const jsdom = require('jsdom');
+
+// Configuration
+const CONFIG = {
+  iconPrefix: '', // Optional: prefix for all icon names
+  outputFile: 'example/ICONS.ts', // path to the output file
+  svgDir: 'example/svg', // path to the directory containing the SVG files
+};
+
+function convertSvgToIcons() {
+  const svgPath = path.resolve(process.cwd(), CONFIG.svgDir);
+
+  if (!fs.existsSync(svgPath)) {
+    console.error(`❌ Directory not found: ${svgPath}`);
+    process.exit(1);
+  }
+
+  const files = fs.readdirSync(svgPath);
+  const icons = {};
+  let successCount = 0;
+  let errorCount = 0;
+
+  files.forEach(file => {
+    const filePath = path.join(svgPath, file);
+    const [fileName, fileExt] = file.split('.');
+
+    if (fileExt !== 'svg') return;
+
+    try {
+      const fileContent = fs.readFileSync(filePath, 'utf8');
+      const dom = new jsdom.JSDOM(fileContent);
+      const svg = dom.window.document.querySelector('svg');
+
+      if (!svg) {
+        console.warn(`⚠️  No SVG element found in ${file}`);
+        errorCount += 1;
+        return;
+      }
+
+      const viewBox = svg.getAttribute('viewBox') || '0 0 24 24';
+      const paths = [];
+      const pathElements = dom.window.document.querySelectorAll('path');
+
+      pathElements.forEach(element => {
+        const pathD = element.getAttribute('d');
+        if (pathD && pathD.trim() !== '') {
+          paths.push(pathD);
+        }
+      });
+
+      if (paths.length === 0) {
+        console.warn(`⚠️  No paths found in ${file}`);
+        errorCount += 1;
+        return;
+      }
+
+      const iconName = CONFIG.iconPrefix + fileName;
+      icons[iconName] = { path: paths, viewBox };
+      successCount += 1;
+    } catch (error) {
+      console.error(`❌ Error processing ${file}:`, error.message);
+      errorCount += 1;
+    }
+  });
+
+  if (Object.keys(icons).length === 0) {
+    console.error('❌ No icons generated');
+    process.exit(1);
+  }
+
+  const iconObj = JSON.stringify(icons, null, 2);
+  const output = `// Auto-generated by svg-to-icons script
+// Do not edit manually
+
+export const ICONS = ${iconObj} as const;
+
+export type AppIcons = typeof ICONS;
+export type AppIconName = keyof AppIcons;
+export const ICON_NAMES = Object.keys(ICONS) as AppIconName[];
+`;
+
+  const outputPath = path.resolve(process.cwd(), CONFIG.outputFile);
+  fs.writeFileSync(outputPath, output);
+
+  console.log('\n✅ Icons generated successfully!');
+  console.log(`   Success: ${successCount} icons`);
+  if (errorCount > 0) {
+    console.log(`   Errors: ${errorCount} files`);
+  }
+  console.log(`   Output: ${outputPath}\n`);
+}
+
+convertSvgToIcons();
+```
+
+2. Add to your `package.json`:
+
+```json
+{
+  "scripts": {
+    "generate-icons": "node scripts/svg-to-icons.js"
+  }
+}
+```
+
+3. Run the script:
+
+```bash
+npm run generate-icons
+```
+
+### Manual Conversion
+
+If you prefer not to use the script, you can manually create your icons:
+
+```typescript
+export const ICONS = {
+  home: {
+    viewBox: '0 0 24 24',
+    path: ['M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z'],
+  },
+  heart: {
+    viewBox: '0 0 24 24',
+    path: [
+      'M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z',
+    ],
+  },
+} as const;
+
+export type TIcons = typeof ICONS;
 ```
 
 ## Choosing the Right Version

@@ -233,13 +233,15 @@ describe('Button Snapshots', () => {
 
   describe('Icon Buttons', () => {
     it('should match snapshot for left icon', () => {
-      const tree = render(<Button title="Left Icon Button" leftIconAction={{ name: 'home-solid', size: 'md' }} />);
+      const tree = render(
+        <Button title="Left Icon Button" leftIconAction={{ name: 'angle-down-solid', size: 'md' }} />,
+      );
       expect(tree).toMatchSnapshot();
     });
 
     it('should match snapshot for right icon', () => {
       const tree = render(
-        <Button title="Right Icon Button" rightIconAction={{ name: 'arrow-right-solid', size: 'md' }} />,
+        <Button title="Right Icon Button" rightIconAction={{ name: 'angle-down-solid', size: 'md' }} />,
       );
       expect(tree).toMatchSnapshot();
     });
@@ -248,8 +250,8 @@ describe('Button Snapshots', () => {
       const tree = render(
         <Button
           title="Both Icons Button"
-          leftIconAction={{ name: 'home-solid', size: 'md' }}
-          rightIconAction={{ name: 'arrow-right-solid', size: 'md' }}
+          leftIconAction={{ name: 'angle-down-solid', size: 'md' }}
+          rightIconAction={{ name: 'angle-down-solid', size: 'md' }}
         />,
       );
       expect(tree).toMatchSnapshot();
@@ -297,8 +299,8 @@ describe('Button Snapshots', () => {
           variant="contained"
           colorVariant="primary"
           size="lg"
-          leftIconAction={{ name: 'home-solid', size: 'md' }}
-          rightIconAction={{ name: 'arrow-right-solid', size: 'md' }}
+          leftIconAction={{ name: 'angle-down-solid', size: 'md' }}
+          rightIconAction={{ name: 'angle-down-solid', size: 'md' }}
           contentPosition="center"
           className="custom-class"
           style={{ marginTop: 10 }}
@@ -310,7 +312,7 @@ describe('Button Snapshots', () => {
 
     it('should match snapshot for loading button with custom props', () => {
       const tree = render(
-        <Button title="Loading Button" isLoading loadingIndicatorProps={{ color: 'white', size: 24 }} isDisabled />,
+        <Button title="Loading Button" isLoading loadingIndicatorProps={{ color: 'white' }} isDisabled />,
       );
       expect(tree).toMatchSnapshot();
     });

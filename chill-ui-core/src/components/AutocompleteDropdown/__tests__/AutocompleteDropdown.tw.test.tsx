@@ -171,7 +171,6 @@ describe('AutocompleteDropdown Component (Tailwind)', () => {
         valueField="name"
         searchField="name"
         onSelectItem={jest.fn()}
-        closeModalWhenSelectedItem
         hasPerformSearch
         hasHighlightString
         maxHeight={300}

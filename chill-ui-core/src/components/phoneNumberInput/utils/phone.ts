@@ -1,6 +1,4 @@
-// import parsePhoneNumberLib, { AsYouType, isValidPhoneNumber } from 'libphonenumber-js';
-
-import { CountryCodesProps } from './countryCodes';
+import { PhoneNumberInputCountryCodesProps } from '@types';
 
 let hasLibrary: boolean = false;
 let parsePhoneNumberLib: any;
@@ -36,7 +34,7 @@ export const formatPhoneNumber = (phoneNumber: string) => {
 };
 
 export const getPhoneNumberWithSuffix = (
-  countryCode: CountryCodesProps['code'] = 'FR',
+  countryCode: PhoneNumberInputCountryCodesProps['code'] = 'FR',
   phoneNumber: string | undefined = '',
 ) => {
   if (!hasLibrary) {
@@ -54,7 +52,7 @@ export const getCountryCode = (phoneNumber: string | undefined = '') => {
   return parsedNumber?.country;
 };
 
-export const isValidNumber = (number: string, countryCode: CountryCodesProps['code']): boolean => {
+export const isValidNumber = (number: string, countryCode: PhoneNumberInputCountryCodesProps['code']): boolean => {
   if (!hasLibrary) {
     return true;
   }
@@ -88,7 +86,10 @@ export const getPhoneNumberWithoutSuffix = (phoneNumber: string | undefined = ''
   return parsedNumber?.nationalNumber || '';
 };
 
-export const applyMaskPhoneNumber = (countryCode?: CountryCodesProps['code'], phoneNumber: string | undefined = '') => {
+export const applyMaskPhoneNumber = (
+  countryCode?: PhoneNumberInputCountryCodesProps['code'],
+  phoneNumber: string | undefined = '',
+) => {
   if (!hasLibrary) {
     return phoneNumber;
   }
