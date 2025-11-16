@@ -126,7 +126,7 @@ jobs:
         run: bun run lint:generated-cors --fix || true
 
       - name: Upload generated files as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: generated-cors-${{ github.sha }}
           path: generated/
@@ -218,7 +218,7 @@ jobs:
         run: bun run pack:all
 
       - name: Upload packed artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: packages-${{ github.sha }}
           path: |
