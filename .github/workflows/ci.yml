@@ -70,7 +70,40 @@ jobs:
   type-check-core:
     name: 📘 Type Check (Core)
     runs-on: ubuntu-latest
-    needs: [lint-core]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Cache Bun dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-v2-${{ hashFiles('bun.lockb') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-v2-
+
+      - name: Clean install dependencies
+        run: |
+          rm -rf node_modules
+          rm -rf packages/*/node_modules
+          bun install --frozen-lockfile
+
+      - name: Run TypeScript check
+        run: cd packages/chill-ui-core && bun run ts:check
+
+  # ==========================================
+  # 4. TESTS (Core)
+  # ==========================================
+  tests-core:
+    name: ✅ Tests (Core)
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -87,9 +120,9 @@ jobs:
           path: |
             ~/.bun/install/cache
             node_modules
-          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lockb') }}
+          key: ${{ runner.os }}-bun-v2-${{ hashFiles('bun.lockb') }}
           restore-keys: |
-            ${{ runner.os }}-bun-
+            ${{ runner.os }}-bun-v2-
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
@@ -103,7 +136,6 @@ jobs:
   tests-core:
     name: ✅ Tests (Core)
     runs-on: ubuntu-latest
-    needs: [type-check-core]
 
     steps:
       - name: Checkout code
@@ -146,7 +178,7 @@ jobs:
   check-components:
     name: 📚 Check Components Documentation
     runs-on: ubuntu-latest
-    needs: [tests-core]
+    needs: [lint-core, type-check-core, tests-core]
 
     steps:
       - name: Checkout code
