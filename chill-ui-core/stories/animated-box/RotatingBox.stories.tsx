@@ -1,34 +1,69 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { String } from '../../src/components';
 import UiPresentation from '../storybook/UiPresentation';
-import RotatingBox from '../../src/components/animatedBox/components/RotatingBox/RotatingBox';
+import { RotatingBox, String } from '../../src/components';
 
 const meta = {
+  args: {
+    autoStart: false,
+    continuous: false,
+    delay: 0,
+    duration: 1000,
+    infiniteLoop: false,
+    useFastView: true,
+  },
   argTypes: {
-    autoStart: {
-      control: 'boolean',
-      description: 'Whether to start the animation automatically',
-    },
-    children: {
+    AnimatedViewProps: {
       control: 'object',
-      description: 'Content to display inside the rotating box',
+      table: {
+        type: {
+          summary: 'Animated.ViewProps',
+        },
+      },
     },
-    className: {
-      control: 'text',
-      description: 'Additional className for the rotating box',
+    autoStart: {
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
+    },
+    continuous: {
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
     },
     delay: {
-      control: 'number',
-      description: 'Delay before starting the rotation animation',
+      table: {
+        defaultValue: {
+          summary: 0,
+        },
+      },
     },
     duration: {
-      control: 'number',
-      description: 'Duration of one complete rotation',
+      table: {
+        defaultValue: {
+          summary: 1000,
+        },
+      },
     },
     infiniteLoop: {
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
+    },
+    useFastView: {
       control: 'boolean',
-      description: 'Whether to loop the animation infinitely',
+      description: 'Use optimized RCTView component for better performance',
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
     },
   },
   component: RotatingBox,
@@ -43,7 +78,7 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  title: 'Components/AnimatedBox/RotatingBox',
+  title: 'LAYOUT/AnimatedBox/RotatingBox',
 } satisfies Meta<typeof RotatingBox>;
 
 export default meta;
@@ -52,76 +87,70 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     autoStart: true,
-    children: (
+  },
+  render: (args: any) => (
+    <RotatingBox {...args}>
       <String size="lg" className="text-center" color="black">
         Rotating Box
       </String>
-    ),
-    className: 'rounded-lg bg-secondary p-6',
-  },
+    </RotatingBox>
+  ),
 };
 
 export const Fast: Story = {
   args: {
     autoStart: true,
-    children: (
-      <String size="lg" className="text-center">
+    duration: 500,
+  },
+  render: (args: any) => (
+    <RotatingBox {...args}>
+      <String size="lg" className="text-center" color="black">
         Fast Rotation
       </String>
-    ),
-    className: 'rounded-lg bg-secondary p-6',
-    duration: 1000,
-  },
+    </RotatingBox>
+  ),
 };
 
 export const Slow: Story = {
   args: {
     autoStart: true,
-    children: (
-      <String size="lg" className="text-center">
-        Slow Rotation
-      </String>
-    ),
-    className: 'rounded-lg bg-secondary p-6',
     duration: 4000,
   },
-};
-
-export const Single: Story = {
-  args: {
-    autoStart: true,
-    children: (
-      <String size="lg" className="text-center">
-        Single Rotation
+  render: (args: any) => (
+    <RotatingBox {...args}>
+      <String size="lg" className="text-center" color="black">
+        Slow Rotation
       </String>
-    ),
-    className: 'rounded-lg bg-secondary p-6',
-  },
+    </RotatingBox>
+  ),
 };
 
 export const WithDelay: Story = {
   args: {
     autoStart: true,
-    children: (
-      <String size="lg" className="text-center">
+    delay: 1000,
+    duration: 4000,
+  },
+  render: (args: any) => (
+    <RotatingBox {...args}>
+      <String size="lg" className="text-center" color="black">
         Delayed Rotation
       </String>
-    ),
-    className: 'rounded-lg bg-secondary p-6',
-    delay: 1000,
-  },
+    </RotatingBox>
+  ),
 };
 
 export const InfiniteLoop: Story = {
   args: {
     autoStart: true,
-    children: (
-      <String size="lg" className="text-center">
-        Infinite Rotation Loop
-      </String>
-    ),
-    className: 'rounded-lg bg-secondary p-6',
     duration: 1500,
     infiniteLoop: true,
   },
+  render: (args: any) => (
+    <RotatingBox {...args}>
+      <String size="lg" className="text-center" color="black">
+        Infinite Rotation Loop
+      </String>
+    </RotatingBox>
+  ),
 };

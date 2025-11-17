@@ -1,12 +1,18 @@
-import { StorybookConfig } from '@storybook/react-native';
+import type { StorybookConfig } from '@storybook/react-native-web-vite';
 
-const main: StorybookConfig = {
-  stories: ['../stories/**/*.stories.?(ts|tsx|js|jsx)'],
-  addons: [
-    '@storybook/addon-ondevice-controls',
-    '@storybook/addon-ondevice-actions',
-    '@storybook/addon-ondevice-notes',
+const config: StorybookConfig = {
+  "stories": [
+    "../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)"
   ],
+  "addons": ['@storybook/addon-docs'],
+  "framework": {
+    "name": "@storybook/react-native-web-vite",
+    "options": {
+      pluginReactOptions: {
+        jsxImportSource: "nativewind",
+      },
+    }
+  }
 };
+export default config
 
-export default main;

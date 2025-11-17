@@ -218,7 +218,7 @@ export function AutocompleteDropdownContext({ children, headerOffset = 0 }: IAut
 
   return (
     <AutocompleteContext.Provider value={contextValue}>
-      <View ref={wrapperRef} className="flex-1">
+      <View ref={wrapperRef} style={{ flex: 1 }}>
         {children}
       </View>
       {/* Render dropdowns for all instances */}

@@ -1,0 +1,79 @@
+import { InputSs } from '@components/input';
+import { MaskedInputPropsSs } from '@types';
+import { useCallback, useEffect, useState } from 'react';
+
+import { handleApplyMask, removeMask } from '../utils/maskUtils';
+
+/**
+ * MaskedInput component (StyleSheet version) that applies formatting masks to input text.
+ * Supports phone numbers, credit cards, dates, and other formatted inputs.
+ *
+ * @example
+ * ```tsx
+ * <MaskedInputSs
+ *   mask="(999) 999-9999"
+ *   placeholder="Enter phone number"
+ *   onChangeText={({ maskedText, unmaskedText }) => {
+ *     console.log('Masked:', maskedText); // "(123) 456-7890"
+ *     console.log('Unmasked:', unmaskedText); // "1234567890"
+ *   }}
+ * />
+ * ```
+ *
+ * @param mask - The mask pattern (use '9' for digits, other characters are literals)
+ * @param onChangeText - Callback with both masked and unmasked text
+ * @param value - Current input value
+ * @param label - Label text for the input
+ * @param style - Custom style for the input container
+ * @param labelStyle - Custom style for the label
+ * @param wrapperRef - Reference to the wrapper component
+ * @param hasError - Whether the input has an error
+ * @param errorMessage - Error message to display
+ * @param errorStyle - Custom style for the error message
+ * @param errorIconName - Icon name to display with error
+ * @param hasClearIcon - Whether to show clear icon
+ * @param inputStyle - Custom style for the input field
+ * @param leftIconAction - Left icon configuration
+ * @param rightIconAction - Right icon configuration
+ * @param hasSecureTextEntry - Whether to show secure text entry
+ * @param clickableAs - Type of clickable interaction
+ * @param showLength - Whether to show character count
+ * @param customRegex - Custom regex pattern for validation
+ * @param allow - Allowed input types
+ * @param isDisabled - Whether the input is disabled
+ * @param isStretchable - Whether the input stretches to fill container
+ * @param size - Size variant for the input
+ * @param placeholder - Placeholder text
+ * @param multiline - Whether input supports multiple lines
+ * @param editable - Whether input is editable
+ * @param onPress - Callback when input is pressed
+ * @param secureTextEntry - Whether to show secure text entry
+ * @returns MaskedInput component with automatic formatting
+ */
+export function MaskedInput(props: MaskedInputPropsSs) {
+  const { mask, onChangeText, value, ...rest } = props;
+  const [inputValue, setInputValue] = useState(handleApplyMask(value, mask));
+  const maxDigits = mask.length;
+
+  /**
+   * Handles text changes by removing mask, applying new mask, and calling onChangeText
+   * @param text - The new text value
+   */
+  const handleChangeText = useCallback(
+    (text: string) => {
+      const removedMaskText = removeMask(text);
+      const maskedText = handleApplyMask(removedMaskText, mask);
+      setInputValue(maskedText);
+      onChangeText?.({ maskedText, unmaskedText: removedMaskText });
+    },
+    [mask, onChangeText],
+  );
+
+  useEffect(() => {
+    setInputValue(handleApplyMask(value, mask));
+  }, [value, mask]);
+
+  return <InputSs value={inputValue} onChangeText={handleChangeText} maxLength={maxDigits} {...rest} />;
+}
+
+MaskedInput.displayName = 'MaskedInput';

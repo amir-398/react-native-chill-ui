@@ -1,301 +1,390 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { useRef } from 'react';
-import { SafeAreaView } from 'react-native';
+import { useState } from 'react';
 
-import UiPresentation from './storybook';
-import Chip from '../src/components/chip';
-import { Box } from '../src/components/box';
-import Button from '../src/components/button';
-import { String } from '../src/components/string';
-import { Dialog, DialogContent, DialogTrigger } from '../src/components/dialog';
-import { DialogClose, DialogToaster, DialogToasterRef } from '../src/components/dialog/Dialog';
+import {
+  BoxTw as Box,
+  ButtonTw as Button,
+  StringTw as String,
+  DialogTw as Dialog,
+  DialogTriggerTw as DialogTrigger,
+  DialogContentTw as DialogContent,
+  DialogHeaderTw as DialogHeader,
+  DialogTitleTw as DialogTitle,
+  DialogFooterTw as DialogFooter,
+  DialogCloseTw as DialogClose,
+} from '../src/components';
 
-const meta: Meta<typeof DialogContent> = {
+const meta: Meta<typeof Dialog> = {
   argTypes: {
+    // DialogContent Props
     animation: {
       control: 'select',
       description: 'Animation type for the dialog',
       options: ['fade', 'slide', 'none'],
+      table: {
+        category: 'DialogContent Props',
+        defaultValue: { summary: 'fade' },
+        type: { summary: 'string' },
+      },
     },
-
     backdropColor: {
-      control: 'text',
+      control: 'color',
       description: 'Custom backdrop color',
+      table: {
+        category: 'DialogContent Props',
+        type: { summary: 'string' },
+      },
     },
-    children: {
+    'className²': {
       control: 'text',
-      description: 'Dialog content',
-    },
-    className: {
-      control: 'text',
-      description: 'Custom CSS classes for dialog content (NativeWind only)',
-    },
-    closeMarkPosition: {
-      control: 'select',
-      description: 'Position of the close mark',
-      options: ['right', 'left'],
+      description: 'Custom class name for the dialog content',
+      table: {
+        category: 'DialogContent Props',
+        type: { summary: 'string' },
+      },
     },
     closeOnBackdropPress: {
       control: 'boolean',
-      description: 'Close the dialog when the backdrop is pressed',
+      description: 'Whether to close dialog when backdrop is pressed',
+      table: {
+        category: 'DialogContent Props',
+        defaultValue: { summary: true },
+        type: { summary: 'boolean' },
+      },
     },
     closeOnGoBack: {
       control: 'boolean',
-      description: 'Close the dialog when the user goes back',
+      description: 'Whether to close dialog when back button is pressed',
+      table: {
+        category: 'DialogContent Props',
+        defaultValue: { summary: true },
+        type: { summary: 'boolean' },
+      },
     },
-    defaultOpen: {
+    hasBackdrop: {
       control: 'boolean',
-      description: 'Control dialog visibility',
-    },
-    hasCloseMark: {
-      control: 'boolean',
-      description: 'Show close button in the top right corner',
-    },
-    hasOverlay: {
-      control: 'boolean',
-      description: 'Show overlay behind the dialog',
-    },
-    onOpenChange: {
-      action: 'text',
-      description: 'Function to control dialog visibility',
+      description: 'Whether to show backdrop',
+      table: {
+        category: 'DialogContent Props',
+        defaultValue: { summary: true },
+        type: { summary: 'boolean' },
+      },
     },
     onRequestClose: {
-      action: 'text',
-      description: 'Function to close the dialog',
-    },
-    onShow: {
-      action: 'text',
-      description: 'Function to show the dialog',
-    },
-    rounded: {
-      control: 'select',
-      description: 'Border radius variant for the dialog',
-      options: ['sm', 'md', 'lg', 'xl'],
+      action: 'onRequestClose',
+      description: 'Callback when dialog is requested to close',
+      table: {
+        category: 'DialogContent Props',
+        type: { summary: '() => void' },
+      },
     },
     size: {
       control: 'select',
       description: 'Size variant for the dialog',
       options: ['sm', 'md', 'lg', 'xl'],
-    },
-    style: {
-      control: 'object',
-      description: 'Additional inline styles (StyleSheet only)',
+      table: {
+        category: 'DialogContent Props',
+        defaultValue: { summary: 'md' },
+        type: { summary: 'string' },
+      },
     },
     useDefaultContainer: {
       control: 'boolean',
-      description: 'Wrap content in a default container with white background and padding',
+      description: 'Whether to use default white container',
+      table: {
+        category: 'DialogContent Props',
+        defaultValue: { summary: true },
+        type: { summary: 'boolean' },
+      },
+    },
+
+    // DialogHeader Props
+    'className³': {
+      control: 'text',
+      description: 'Custom class name for the dialog header',
+      table: {
+        category: 'DialogHeader Props',
+        type: { summary: 'string' },
+      },
+    },
+    closeMarkProps: {
+      control: 'object',
+      description: 'Custom close mark icon props',
+      table: {
+        category: 'DialogHeader Props',
+        type: {
+          summary: 'IconProps',
+        },
+      },
+    },
+    hasCloseMark: {
+      control: 'boolean',
+      description: 'Show close button in header',
+      table: {
+        category: 'DialogHeader Props',
+        type: { summary: 'boolean' },
+      },
+    },
+    ViewProps: {
+      control: 'object',
+      description: 'accept all View props',
+      table: {
+        category: 'DialogHeader Props',
+      },
+    },
+
+    // DialogTrigger Props
+    'as²': {
+      control: 'select',
+      description: 'Type of touchable component to use',
+      options: ['pressable', 'touchable-opacity', 'ripple-pressable'],
+      table: {
+        category: 'DialogTrigger Props',
+        defaultValue: { summary: 'pressable' },
+        type: { summary: 'string' },
+      },
+    },
+    'asChild²': {
+      control: 'boolean',
+      description: 'Use the child component as the trigger element',
+      table: {
+        category: 'DialogTrigger Props',
+        defaultValue: { summary: false },
+        type: { summary: 'boolean' },
+      },
+    },
+    'className⁴': {
+      control: 'text',
+      description: 'Custom class name for the trigger',
+      table: {
+        category: 'DialogTrigger Props',
+        type: { summary: 'string' },
+      },
+    },
+    'style²': {
+      control: 'object',
+      description: 'Custom styles for the trigger element',
+      table: {
+        category: 'DialogTrigger Props',
+        type: {
+          detail:
+            '{\n  [key: string]: any;\n  opacity?: number;\n  elevation?: number;\n  // ... other ViewStyle properties\n}',
+          summary: 'StyleProp<ViewStyle>',
+        },
+      },
+    },
+
+    // DialogFooter Props
+    'className⁶': {
+      control: 'text',
+      description: 'Custom class name for the dialog footer',
+      table: {
+        category: 'DialogFooter Props',
+        type: { summary: 'string' },
+      },
+    },
+    'ViewProps²': {
+      control: 'object',
+      description: 'accept all View props',
+      table: {
+        category: 'DialogFooter Props',
+      },
+    },
+
+    // DialogClose Props
+    'as³': {
+      control: 'select',
+      description: 'Type of touchable component to use',
+      options: ['pressable', 'touchable-opacity', 'ripple-pressable'],
+      table: {
+        category: 'DialogClose Props',
+        defaultValue: { summary: 'pressable' },
+        type: { summary: 'string' },
+      },
+    },
+    'asChild³': {
+      control: 'boolean',
+      description: 'Use the child component as the close button',
+      table: {
+        category: 'DialogClose Props',
+        defaultValue: { summary: false },
+        type: { summary: 'boolean' },
+      },
+    },
+    'className⁵': {
+      control: 'text',
+      description: 'Custom class name for the close button',
+      table: {
+        category: 'DialogClose Props',
+        type: { summary: 'string' },
+      },
+    },
+    'style³': {
+      control: 'object',
+      description: 'Custom styles for the close button',
+      table: {
+        category: 'DialogClose Props',
+        type: {
+          detail:
+            '{\n  [key: string]: any;\n  opacity?: number;\n  elevation?: number;\n  // ... other ViewStyle properties\n}',
+          summary: 'StyleProp<ViewStyle>',
+        },
+      },
+    },
+
+    // DialogTitle Props
+    'className⁷': {
+      control: 'text',
+      description: 'Custom CSS classes for additional styling (NativeWind)',
+      table: {
+        category: 'DialogTitle Props',
+        type: { summary: 'string' },
+      },
+    },
+    color: {
+      control: 'color',
+      description: 'Custom color override (hex, rgb, etc.)',
+      table: {
+        category: 'DialogTitle Props',
+        type: { summary: 'string' },
+      },
+    },
+    onPress: {
+      action: 'onPress',
+      description: 'Callback when text is pressed',
+      table: {
+        category: 'DialogTitle Props',
+        type: { summary: '() => void' },
+      },
+    },
+    useFastText: {
+      control: 'boolean',
+      description: 'Use fast text rendering',
+      table: {
+        category: 'DialogTitle Props',
+        defaultValue: { summary: true },
+        type: { summary: 'boolean' },
+      },
     },
   },
-  component: DialogContent,
-  decorators: [
-    (Story: any) => (
-      <UiPresentation>
-        <Story />
-      </UiPresentation>
-    ),
-  ],
-  title: 'Components/Dialog',
+  component: Dialog,
+  parameters: {
+    layout: 'centered',
+  },
+  subcomponents: {
+    DialogClose,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+  },
+  tags: ['autodocs'],
+  title: 'FEEDBACK & OVERLAY/Dialog',
 };
 
 export default meta;
-type Story = StoryObj<typeof DialogContent>;
-
-function DialogExample(props: any) {
-  return (
-    <Dialog>
-      <DialogTrigger>
-        <Chip>Open Dialog</Chip>
-      </DialogTrigger>
-      <DialogContent {...props}>
-        <String>This is a dialog content</String>
-      </DialogContent>
-    </Dialog>
-  );
-}
-
-function DialogWithoutDefaultContainer(props: any) {
-  return (
-    <Dialog>
-      <DialogTrigger>
-        <Chip>Open Dialog</Chip>
-      </DialogTrigger>
-      <DialogContent {...props}>
-        <SafeAreaView className="bg-primary flex-1 items-center justify-center">
-          <Box>
-            <String>This is a dialog content</String>
-          </Box>
-          <Box className="w-full p-3">
-            <DialogClose asChild>
-              <Button title="Close" variant="contained" />
-            </DialogClose>
-          </Box>
-        </SafeAreaView>
-      </DialogContent>
-    </Dialog>
-  );
-}
-
-function DialogWithToaster(props: any) {
-  const toasterRef = useRef<DialogToasterRef>(null);
-
-  const handleShowToast = () => {
-    toasterRef.current?.showToast({
-      message: 'Hello',
-      position: 'top',
-      variant: 'success',
-    });
-  };
-
-  return (
-    <Dialog>
-      <DialogTrigger>
-        <Chip>Open Dialog</Chip>
-      </DialogTrigger>
-      <DialogContent {...props}>
-        <DialogToaster ref={toasterRef} />
-        <SafeAreaView className="bg-primary flex-1 items-center justify-center">
-          <Box>
-            <String>This is a dialog content with toaster</String>
-          </Box>
-          <Box className="w-full p-3">
-            <Button title="show toast" colorVariant="warning" onPress={handleShowToast} />
-          </Box>
-          <Box className="w-full p-3">
-            <DialogClose asChild>
-              <Button title="Close" colorVariant="info" />
-            </DialogClose>
-          </Box>
-        </SafeAreaView>
-      </DialogContent>
-    </Dialog>
-  );
-}
-
-function DialogWithCustomBackdrop(props: any) {
-  return (
-    <Dialog>
-      <DialogTrigger>
-        <Chip>Open Dialog</Chip>
-      </DialogTrigger>
-      <DialogContent {...props}>
-        <String>This is a dialog content</String>
-      </DialogContent>
-    </Dialog>
-  );
-}
+type Story = StoryObj<typeof Dialog>;
 
 export const Default: Story = {
-  args: {
-    animation: 'fade',
-    className: 'h-48 items-center justify-center bg-white',
-    closeOnBackdropPress: true,
-    closeOnGoBack: true,
-    hasCloseMark: false,
-    hasOverlay: true,
-    rounded: 'lg',
-    size: 'md',
-    useDefaultContainer: true,
-  },
-  render: (args: any) => <DialogExample {...args} />,
+  render: (_args: any) => (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button title="Open Dialog" />
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Default Dialog</DialogTitle>
+        </DialogHeader>
+        <String>This is a default dialog content.</String>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button title="Close" />
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  ),
 };
 
 export const WithCloseMark: Story = {
-  args: {
-    animation: 'fade',
-    className: 'h-48 items-center justify-center bg-white',
-    hasCloseMark: true,
-    hasOverlay: true,
-    rounded: 'lg',
-    size: 'md',
-    useDefaultContainer: true,
-  },
-  render: (args: any) => <DialogExample {...args} />,
+  render: (_args: any) => (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button title="Open Dialog with Close Mark" />
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader hasCloseMark>
+          <DialogTitle>Dialog with Close Mark</DialogTitle>
+        </DialogHeader>
+        <String>This dialog has a close mark in the header.</String>
+        <DialogFooter>
+          <Button title="Action" />
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  ),
 };
 
-export const WithoutDefaultContainer: Story = {
-  args: {
-    animation: 'fade',
-    hasCloseMark: false,
-    hasOverlay: true,
-    rounded: 'lg',
-    size: 'md',
-    useDefaultContainer: false,
+export const Controlled: Story = {
+  render: (_args: any) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+      <Box className="flex flex-col items-center gap-4">
+        <String className="text-lg font-semibold">Controlled Dialog</String>
+        <Button title={isOpen ? 'Close Dialog' : 'Open Dialog'} onPress={() => setIsOpen(!isOpen)} />
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+          <DialogTrigger asChild>
+            <Button title="Open via Trigger" />
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader hasCloseMark>
+              <DialogTitle>Controlled Dialog</DialogTitle>
+            </DialogHeader>
+            <String>This dialog is controlled by parent state.</String>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button title="Close" />
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </Box>
+    );
   },
-  render: (args: any) => <DialogWithoutDefaultContainer {...args} />,
 };
 
-export const WithoutBackdrop: Story = {
-  args: {
-    animation: 'fade',
-    className: 'h-48 items-center justify-center bg-white',
-    hasCloseMark: true,
-    hasOverlay: false,
-    rounded: 'lg',
-    size: 'md',
-    useDefaultContainer: true,
-  },
-  render: (args: any) => <DialogExample {...args} />,
-};
+export const MultipleDialogs: Story = {
+  render: (args: any) => (
+    <Box className="flex flex-col gap-4">
+      <String className="text-lg font-semibold">Multiple Dialogs</String>
+      <Box className="flex flex-row gap-4">
+        <Dialog {...args}>
+          <DialogTrigger asChild>
+            <Button title="Dialog 1" />
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader hasCloseMark>
+              <DialogTitle>First Dialog</DialogTitle>
+            </DialogHeader>
+            <String>This is the first dialog.</String>
+          </DialogContent>
+        </Dialog>
 
-export const WithAnimation: Story = {
-  args: {
-    animation: 'slide',
-    rounded: 'lg',
-    size: 'md',
-    useDefaultContainer: false,
-  },
-  render: (args: any) => <DialogWithoutDefaultContainer {...args} />,
-};
-
-export const WithToaster: Story = {
-  args: {
-    animation: 'fade',
-    rounded: 'lg',
-    size: 'md',
-    useDefaultContainer: false,
-  },
-  render: (args: any) => <DialogWithToaster {...args} />,
-};
-
-export const WithCustomBackdrop: Story = {
-  args: {
-    animation: 'fade',
-    backdropColor: 'red',
-    className: 'h-48 items-center justify-center bg-white',
-    closeOnBackdropPress: true,
-    closeOnGoBack: true,
-    hasCloseMark: true,
-    hasOverlay: true,
-    rounded: 'lg',
-    size: 'md',
-    useDefaultContainer: true,
-  },
-  render: (args: any) => <DialogWithCustomBackdrop {...args} />,
-};
-
-export const WithSizeVariants: Story = {
-  args: {
-    animation: 'fade',
-    className: 'items-center justify-center bg-white',
-    hasCloseMark: true,
-    hasOverlay: true,
-    rounded: 'lg',
-    size: 'lg',
-    useDefaultContainer: true,
-  },
-  render: (args: any) => <DialogExample {...args} />,
-};
-
-export const WithRoundedVariants: Story = {
-  args: {
-    animation: 'fade',
-    className: 'h-48 items-center justify-center bg-white',
-    hasCloseMark: true,
-    hasOverlay: true,
-    rounded: 'xl',
-    size: 'md',
-    useDefaultContainer: true,
-  },
-  render: (args: any) => <DialogExample {...args} />,
+        <Dialog {...args}>
+          <DialogTrigger asChild>
+            <Button title="Dialog 2" />
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader hasCloseMark>
+              <DialogTitle>Second Dialog</DialogTitle>
+            </DialogHeader>
+            <String>This is the second dialog.</String>
+          </DialogContent>
+        </Dialog>
+      </Box>
+    </Box>
+  ),
 };

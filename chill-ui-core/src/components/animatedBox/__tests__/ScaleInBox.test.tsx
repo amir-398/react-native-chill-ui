@@ -1,19 +1,60 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react-native';
 
-import String from '../../string/components/String';
-import ScaleInBox from '../components/ScaleInBox/ScaleInBox';
+import { String } from '../../string';
+import { ScaleInBox } from '../index';
 
 // Mock StyleSheet styles
-jest.mock('../styles/AnimatedBox.styles', () => ({
+jest.mock('../styles/AnimatedBox.ss.styles', () => ({
   __esModule: true,
   default: jest.fn(() => ({})),
+}));
+
+jest.mock('../styles/AnimatedBox.tw.styles', () => ({
+  twStyles: jest.fn(() => ({})),
+}));
+
+// Mock String styles
+jest.mock('../../string/styles/String.ss.styles', () => ({
+  __esModule: true,
+  default: jest.fn(() => ({})),
+  StringSv: jest.fn(() => ({})),
+  styles: jest.fn(() => ({})),
+}));
+
+jest.mock('../../string/styles/String.tw.styles', () => ({
+  stringTv: jest.fn(() => ({})),
+  twStyles: jest.fn(() => ({})),
+}));
+
+// Mock AnimatedBox component
+jest.mock('../components/animatedBox/AnimatedBox', () => ({
+  __esModule: true,
+  AnimatedBox: ({ children }: any) => children,
+  default: ({ children }: any) => children,
+}));
+
+// Mock Box component
+jest.mock('../../box/components/View', () => ({
+  AnimatedView: ({ children }: any) => children,
 }));
 
 // Mock Tailwind utilities
 jest.mock('../../../utils/tw/cn', () => ({
   __esModule: true,
   default: jest.fn((...args) => args.filter(Boolean).join(' ')),
+}));
+
+// Mock cn from @utils
+jest.mock('../../../utils', () => ({
+  classNameHandler: jest.fn(className => ({ className })),
+  classNamePropsHandler: jest.fn(),
+  cn: jest.fn((...args) => args.filter(Boolean).join(' ')),
+  colorVariantPropsHandler: jest.fn(),
+  isNativeWindInstalled: jest.fn(() => false),
+  StringSv: jest.fn(() => ({})),
+  styleHandler: jest.fn(style => ({ style: style.defaultStyle })),
+  sv: jest.fn(() => ({})),
 }));
 
 // Mock Hybrid utilities

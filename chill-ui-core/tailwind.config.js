@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./App.{js,ts,tsx}', './src/**/*.{js,ts,tsx}'],
+  content: ['./App.{js,ts,tsx}', './src/**/*.{js,ts,tsx}', './.storybook/*.{js,ts,tsx}', './stories/**/*.{js,ts,tsx}'],
 
   plugins: [],
   // eslint-disable-next-line global-require
@@ -11,59 +11,59 @@ module.exports = {
         button: {
           accent: {
             background: '#CBD2D9',
-            text: '#FF0000',
+            content: '#FF0000',
           },
           danger: {
             background: '#FF0000',
-            text: '#FFF',
+            content: '#FFF',
           },
           dark: {
             background: '#323F4B',
-            text: '#FFF',
+            content: '#FFF',
           },
           disabled: {
             background: '#CBD2D9',
-            text: '#666',
+            content: '#666',
           },
           error: {
             background: '#FF0000',
-            text: '#FFF',
+            content: '#FFF',
           },
           info: {
             background: '#6EE7B7',
-            text: '#000',
+            content: '#000',
           },
           inverted: {
             background: '#F5F7FA',
-            text: '#000',
+            content: '#000',
           },
           light: {
             background: '#F5F7FA',
-            text: '#000',
+            content: '#000',
           },
           muted: {
             background: '#CBD2D9',
-            text: '#666',
+            content: '#666',
           },
           neutral: {
             background: '#CBD2D9',
-            text: '#333',
+            content: '#333',
           },
           primary: {
             background: '#7DD3FC',
-            text: '#000',
+            content: '#000',
           },
           secondary: {
             background: '#CBD2D9',
-            text: '#333',
+            content: '#FCD34D',
           },
           warning: {
             background: '#FCD34D',
-            text: '#000',
+            content: '#000',
           },
           white: {
             background: '#F5F7FA',
-            text: '#000',
+            content: '#000',
           },
         },
         chip: {

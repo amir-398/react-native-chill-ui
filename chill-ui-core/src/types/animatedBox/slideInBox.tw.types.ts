@@ -8,22 +8,27 @@ import { AnimatedBoxProps } from './animatedBox.tw.types';
  *
  */
 export interface SlideInBoxProps extends AnimatedBoxProps {
-  /** Delay before starting the slide-in animation in milliseconds. @default 0 */
+  /** Delay before starting the slide-in animation in milliseconds.   */
   delay?: number;
 
-  /** Duration of the slide-in animation in milliseconds. @default 500 */
+  /** Duration of the slide-in animation in milliseconds.  */
   duration?: number;
 
-  /** Distance to slide from in pixels. @default 100 */
+  /** Distance to slide from in pixels.  */
   distance?: number;
 
-  /** Direction from which to slide in. @default 'left' */
+  /** Direction from which to slide in :
+   * - `'left'`
+   * - `'right'`
+   * - `'up'`
+   * - `'down'`
+   */
   direction?: 'left' | 'right' | 'up' | 'down';
 
-  /** Whether to start the animation automatically. @default false */
+  /** Whether to start the animation automatically. */
   autoStart?: boolean;
 
-  /** Whether to loop the animation infinitely. @default false */
+  /** Whether to loop the animation infinitely. */
   infiniteLoop?: boolean;
 }
 

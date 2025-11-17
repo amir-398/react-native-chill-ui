@@ -1,63 +1,91 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 
-import Toggle from '../src/components/toggle/toggle';
+import { Toggle } from '../src/components';
 import UiPresentation from './storybook/UiPresentation';
 
 const meta: Meta<typeof Toggle> = {
+  args: {
+    isDisabled: false,
+    isLoading: false,
+  },
   argTypes: {
-    className: {
-      control: 'text',
-      description: 'The class name of the toggle',
-    },
     isDisabled: {
-      control: 'boolean',
-      description: 'Whether the toggle is disabled',
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
     },
     isLoading: {
-      control: 'boolean',
-      description: 'Whether the toggle is in loading state',
-    },
-    onChange: {
-      action: 'onChange',
-      description: 'The function to call when the toggle is changed',
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
     },
     size: {
-      control: 'select',
-      description: 'The size of the toggle',
-      options: ['small', 'large'],
+      control: {
+        type: 'select',
+      },
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
+      table: {
+        defaultValue: {
+          summary: 'md',
+        },
+      },
     },
     thumbColorOff: {
-      control: 'color',
-      description: 'The color of the thumb when the toggle is off',
+      control: {
+        type: 'color',
+      },
+      table: {
+        defaultValue: {
+          summary: '#f3f3f3',
+        },
+      },
     },
     thumbColorOn: {
-      control: 'color',
-      description: 'The color of the thumb when the toggle is on',
+      control: {
+        type: 'color',
+      },
+      table: {
+        defaultValue: {
+          summary: '#FFF',
+        },
+      },
     },
     trackColorOff: {
-      control: 'color',
-      description: 'The color of the track when the toggle is off',
+      control: {
+        type: 'color',
+      },
+      table: {
+        defaultValue: {
+          summary: '#CBCFD3',
+        },
+      },
     },
     trackColorOn: {
-      control: 'color',
-      description: 'The color of the track when the toggle is on',
-    },
-    value: {
-      control: 'boolean',
-      description: 'The value of the toggle',
+      control: {
+        type: 'color',
+      },
+      table: {
+        defaultValue: {
+          summary: '#3f83f8',
+        },
+      },
     },
   },
   component: Toggle,
   decorators: [
     (Story: any) => (
-      <UiPresentation>
+      <UiPresentation className="items-center">
         <Story />
       </UiPresentation>
     ),
   ],
-  title: 'components/Toggle',
+  title: 'FORMS/Toggle',
 };
 
 export default meta;
@@ -68,6 +96,7 @@ export const Default: Story = {
     onChange: action('onChange'),
     value: false,
   },
+  render: () => <Toggle />,
 };
 
 export const Checked: Story = {
@@ -80,7 +109,7 @@ export const Checked: Story = {
 export const Small: Story = {
   args: {
     onChange: action('onChange'),
-    size: 'small',
+    size: 'sm',
     value: false,
   },
 };
@@ -110,28 +139,7 @@ export const WithCustomColors: Story = {
     trackColorOn: 'yellow',
     value: false,
   },
-};
-
-export const WithCustomClass: Story = {
-  args: {
-    className: 'p-2 bg-primary',
-    onChange: action('onChange'),
-    thumbColorOff: 'red',
-    thumbColorOn: 'blue',
-    trackColorOff: 'green',
-    trackColorOn: 'yellow',
-    value: false,
-  },
-};
-
-export const DifferentStates: Story = {
-  render: () => (
-    <UiPresentation>
-      <Toggle onChange={action('onChange')} value={false} />
-      <Toggle onChange={action('onChange')} value />
-      <Toggle onChange={action('onChange')} isDisabled value={false} />
-      <Toggle onChange={action('onChange')} isLoading value={false} />
-      <Toggle onChange={action('onChange')} size="small" value={false} />
-    </UiPresentation>
+  render: (_args: any) => (
+    <Toggle thumbColorOff="red" thumbColorOn="blue" trackColorOff="green" trackColorOn="yellow" />
   ),
 };

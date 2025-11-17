@@ -1,28 +1,42 @@
 import type { TextProps } from 'react-native';
 import type { VariantProps } from 'tailwind-variants';
-
-import type stringTv from '../../components/string/styles/String.variants';
+import type { stringTv } from '@components/string/styles/String.tw.styles';
 
 /**
  * Props for the String component
  */
-export interface StringProps extends TextProps {
-  /** Custom color for the text */
-  color?: string;
-  /** Custom CSS classes for the text */
+export type StringProps = TextProps & {
+  /** Custom CSS classes for additional styling (NativeWind only) */
   className?: string;
+  /** Custom color override (hex, rgb, etc.) */
+  color?: string;
   /** Callback when text is pressed */
   onPress?: () => void;
   /** Whether to use fast text rendering */
   useFastText?: boolean;
-  /** Size variant for the text */
-  size?: VariantProps<typeof stringTv>['size'];
-  /** Font family variant */
-  font?: VariantProps<typeof stringTv>['font'];
-  /** Text style variant */
+
+  /**
+   * Variant of the text
+   */
   variant?: VariantProps<typeof stringTv>['variant'];
-  /** Color variant for the text */
-  colorVariant?: VariantProps<typeof stringTv>['color'];
-  /** Text alignment position */
+
+  /**
+   * Size of the text
+   */
+  size?: VariantProps<typeof stringTv>['size'];
+
+  /**
+   * Position of the text
+   */
   position?: VariantProps<typeof stringTv>['position'];
-}
+
+  /**
+   * Color variant of the text (NativeWind only)
+   */
+  colorVariant?: VariantProps<typeof stringTv>['colorVariant'];
+
+  /**
+   * Font of the text (NativeWind only)
+   */
+  font?: VariantProps<typeof stringTv>['font'];
+};

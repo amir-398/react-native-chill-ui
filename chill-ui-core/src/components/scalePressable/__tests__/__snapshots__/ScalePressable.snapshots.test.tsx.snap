@@ -1,0 +1,272 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ScalePressable Snapshots should match snapshot with basic props 1`] = `
+<View
+  style={
+    {
+      "transform": [
+        {
+          "scale": 1,
+        },
+      ],
+    }
+  }
+  testID="animated-box"
+>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+  >
+    <Text>
+      Basic Content
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`ScalePressable Snapshots should match snapshot with custom duration 1`] = `
+<View
+  style={
+    {
+      "transform": [
+        {
+          "scale": 1,
+        },
+      ],
+    }
+  }
+  testID="animated-box"
+>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+  >
+    <Text>
+      Fast Animation
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`ScalePressable Snapshots should match snapshot with custom scaleValue 1`] = `
+<View
+  style={
+    {
+      "transform": [
+        {
+          "scale": 1,
+        },
+      ],
+    }
+  }
+  testID="animated-box"
+>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+  >
+    <Text>
+      Small Scale
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`ScalePressable Snapshots should match snapshot with custom styling 1`] = `
+<View
+  style={
+    {
+      "transform": [
+        {
+          "scale": 1,
+        },
+      ],
+    }
+  }
+  testID="animated-box"
+>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+  >
+    <View
+      style={
+        {
+          "backgroundColor": "#10B981",
+          "borderRadius": 8,
+          "padding": 16,
+        }
+      }
+    >
+      <Text
+        style={
+          {
+            "color": "white",
+          }
+        }
+      >
+        Styled Button
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`ScalePressable Snapshots should match snapshot with disabled state 1`] = `
+<View
+  style={
+    {
+      "transform": [
+        {
+          "scale": 1,
+        },
+      ],
+    }
+  }
+  testID="animated-box"
+>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": true,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+  >
+    <Text>
+      Disabled
+    </Text>
+  </View>
+</View>
+`;

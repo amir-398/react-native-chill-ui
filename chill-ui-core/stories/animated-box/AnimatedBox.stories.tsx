@@ -1,18 +1,39 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
 import { Animated } from 'react-native';
 import { useRef, useEffect } from 'react';
 
-import { String } from '../../src/components';
-import AnimatedBox from '../../src/components/animatedBox/components/animatedBox/AnimatedBox';
+import { String, AnimatedBox } from '../../src/components';
 
 const meta = {
+  args: {
+    useFastView: true,
+  },
+  argTypes: {
+    AnimatedViewProps: {
+      control: 'object',
+      table: {
+        type: {
+          summary: 'Animated.ViewProps',
+        },
+      },
+    },
+    useFastView: {
+      control: 'boolean',
+      description: 'Use optimized RCTView component for better performance',
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
+    },
+  },
   component: AnimatedBox,
   parameters: {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  title: 'Components/AnimatedBox/AnimatedBox',
+  title: 'LAYOUT/AnimatedBox/AnimatedBox',
 } satisfies Meta<typeof AnimatedBox>;
 
 export default meta;

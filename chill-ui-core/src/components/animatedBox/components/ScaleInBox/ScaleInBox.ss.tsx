@@ -3,41 +3,43 @@ import type { ScaleInBoxPropsSs, ScaleInBoxRefSs } from '@types';
 import { Animated } from 'react-native';
 import { useRef, useEffect, useImperativeHandle, forwardRef, useCallback, PropsWithChildren } from 'react';
 
-import AnimatedBox from '../animatedBox/AnimatedBox.ss';
+import { AnimatedBox } from '../animatedBox/AnimatedBox.ss';
 
 /**
- * ScaleInBox - Dynamic scale-in animation component
+ * The `<ScaleInBox />` component creates a smooth scale animation for its children.
  *
- * Creates an engaging scale-in effect using spring physics for natural feel. Animates scale
- * from 0.8 to 1.0 with smooth spring transition. Perfect for emphasizing content appearance
- * with bouncy, organic motion.
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { ScaleInBox } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic auto-start scale in
- * <ScaleInBox autoStart style={{ backgroundColor: 'green', padding: 24, borderRadius: 12 }}>
- *   <String style={{ color: 'white', fontWeight: 'bold' }}>Scaling in smoothly</String>
- * </ScaleInBox>
- *
- * // With custom timing and delay
  * <ScaleInBox
  *   autoStart
- *   duration={1200}
- *   delay={500}
- *   style={{ backgroundColor: 'purple', padding: 16, borderRadius: 8, shadowOpacity: 0.3 }}
+ *   infiniteLoop
+ *   duration={1000}
+ *   style={{
+ *     width: 100,
+ *     height: 100,
+ *     backgroundColor: '#3b82f6',
+ *     justifyContent: 'center',
+ *     alignItems: 'center',
+ *     borderRadius: 8
+ *   }}
  * >
- *   <String style={{ color: 'white' }}>Delayed spring entrance</String>
+ *   <Text style={{ color: 'white', fontWeight: 'bold' }}>Scale Me</Text>
  * </ScaleInBox>
  * ```
  *
- * @param autoStart - Automatically start animation when component mounts (default: false)
- * @param duration - Animation duration in milliseconds (default: 800)
- * @param delay - Delay before starting animation in milliseconds (default: 0)
- * @param infiniteLoop - Loop animation continuously (default: false)
- * @param style - Inline styles for traditional styling or style overrides
+ * @param autoStart - Automatically start animation when component mounts (default: `false`)
+ * @param delay - Delay before starting animation in milliseconds (default: `0`)
+ * @param duration - Duration of the scale animation in milliseconds (default: `800`)
+ * @param infiniteLoop - Loop animation continuously (default: `false`)
  * @param children - Content to be animated
- * @param ref - Ref for manual animation control (start, stop methods)
- * @returns Animated component with scale-in effect using spring physics
+ * @param style - Inline styles for the component
+ * @param ref - Ref for manual animation control (start, stop)
  */
 const ScaleInBox = forwardRef<ScaleInBoxRefSs, PropsWithChildren<ScaleInBoxPropsSs>>((props, ref) => {
   const { autoStart = false, children, delay = 0, infiniteLoop = false, style, ...rest } = props;

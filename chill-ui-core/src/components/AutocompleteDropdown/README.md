@@ -1,108 +1,269 @@
 # AutocompleteDropdown Component
 
-The AutocompleteDropdown component provides a smart dropdown with search functionality and auto-completion features. It's built with React Native and supports customizable rendering, positioning, and advanced search capabilities.
+A comprehensive and performant autocomplete dropdown component for React Native that provides smart search functionality, auto-completion features, and customizable item rendering across three different styling approaches.
+
+## Available Versions
+
+This component comes in three versions to match your project's styling approach. You choose the version during installation, but the import statement remains consistent across all versions:
+
+### 1. **StyleSheet Version**
+
+- Uses React Native's built-in StyleSheet API
+- Perfect for projects that don't use CSS-in-JS libraries
+- Lightweight and performant
+- Install: `npm install react-native-chill-ui@stylesheet`
+
+### 2. **Tailwind Version**
+
+- Uses NativeWind/Tailwind CSS classes
+- Ideal for projects already using Tailwind CSS
+- Requires NativeWind setup and Tailwind configuration
+- Install: `npm install react-native-chill-ui@tailwind`
+
+### 3. **Hybrid Version**
+
+- Automatically detects if NativeWind is available
+- Falls back to StyleSheet if NativeWind is not installed
+- Best for component libraries or projects that need flexibility
+- Install: `npm install react-native-chill-ui@hybrid`
+
+**Note**: Regardless of the version you choose, the import statement remains the same: `import { AutocompleteDropdown } from 'react-native-chill-ui'`
 
 ## Features
 
-- **Search & Filter**: Real-time search with customizable query functions
-- **Auto-positioning**: Automatic dropdown positioning based on available space
+- **Smart Search & Filtering**: Real-time search with customizable query functions and debouncing
+- **Auto-positioning**: Automatic dropdown positioning (top/bottom) based on available screen space
 - **Keyboard Support**: Full keyboard navigation and mobile keyboard handling
-- **Custom Rendering**: Customizable dropdown items and loading indicators
-- **Highlight Search**: Automatic highlighting of search terms in results
-- **TypeScript**: Complete type safety with generic support
-- **Performance**: Optimized with memoization and debouncing
-- **Accessible**: Screen reader support and proper focus management
+- **Highlight Search Terms**: Automatic highlighting of matching search terms in results
+- **Custom Rendering**: Fully customizable dropdown items and loading indicators
+- **Loading States**: Built-in loading indicators with custom component support
+- **Exclude Items**: Ability to exclude specific items from the dropdown
+- **Confirmation Mode**: Optional confirmation step before item selection
+- **TypeScript Support**: Complete type safety with generic support for any data structure
+- **Performance Optimized**: Built with memoization, debouncing, and efficient rendering
 
-## Basic Usage
+## Quick Start
 
 ```tsx
-import { AutocompleteDropdown } from 'chill-ui';
+import { AutocompleteDropdown } from 'react-native-chill-ui';
 
-const data = [
-  { id: '1', name: 'Apple', category: 'Fruit' },
-  { id: '2', name: 'Banana', category: 'Fruit' },
-  { id: '3', name: 'Carrot', category: 'Vegetable' },
-];
+// Basic autocomplete dropdown
+<AutocompleteDropdown
+  dataSet={data}
+  valueField="name"
+  searchField="name"
+  onSelectItem={(item) => console.log('Selected:', item)}
+  inputProps={{
+    placeholder: 'Search...',
+  }}
+/>
 
-function Example() {
+// With custom rendering and highlight
+<AutocompleteDropdown
+  dataSet={products}
+  valueField="name"
+  hasHighlightString
+  customDropdownItem={(item) => (
+    <Box className="p-3">
+      <String className="font-bold">{item.name}</String>
+      <String className="text-sm text-gray-500">{item.category}</String>
+    </Box>
+  )}
+  onSelectItem={handleSelect}
+/>
+```
+
+## Installation Guide
+
+Choose the version that matches your project's styling approach:
+
+| Version        | Command                                        | When to Use                                                                                          | Pros                                                                            | Cons                                                  |
+| -------------- | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| **StyleSheet** | `npm install react-native-chill-ui@stylesheet` | • No CSS-in-JS dependencies<br/>• Maximum performance priority<br/>• Simple React Native project     | • Lightweight<br/>• Fast<br/>• No dependencies                                  | • Limited styling flexibility                         |
+| **Tailwind**   | `npm install react-native-chill-ui@tailwind`   | • Already using NativeWind<br/>• Team familiar with Tailwind<br/>• Design system based on utilities  | • Consistent with web Tailwind<br/>• Powerful utility system<br/>• Easy theming | • Requires NativeWind setup<br/>• Larger bundle size  |
+| **Hybrid**     | `npm install react-native-chill-ui@hybrid`     | • Building component library<br/>• Uncertain about styling approach<br/>• Want maximum compatibility | • Works in any environment<br/>• Future-proof<br/>• Automatic detection         | • Slightly larger bundle<br/>• More complex internals |
+
+## Configuration
+
+### For Tailwind and Hybrid Versions
+
+When using the Tailwind or Hybrid versions, you must define your application's color palette in your `tailwind.config.js` file.
+
+### Colors
+
+The `className` prop is only available for **Tailwind** and **Hybrid** versions when NativeWind is installed.
+
+### For All Versions
+
+All versions support custom colors through the `style` prop:
+
+```tsx
+<AutocompleteDropdown
+  dataSet={data}
+  valueField="name"
+  dropdownProps={{ style: { backgroundColor: '#fff', borderColor: '#ccc' } }}
+/>
+```
+
+## Examples
+
+### Basic Usage
+
+```tsx
+import React, { useState } from 'react';
+import { AutocompleteDropdown } from 'react-native-chill-ui';
+
+const BasicAutocomplete = () => {
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const data = [
+    { id: 1, name: 'Apple', category: 'Fruit' },
+    { id: 2, name: 'Banana', category: 'Fruit' },
+    { id: 3, name: 'Carrot', category: 'Vegetable' },
+  ];
+
   return (
     <AutocompleteDropdown
       dataSet={data}
       valueField="name"
       searchField="name"
-      onSelectItem={item => console.log('Selected:', item)}
+      onSelectItem={item => setSelectedItem(item)}
       inputProps={{
         placeholder: 'Search fruits and vegetables...',
       }}
     />
   );
-}
+};
 ```
 
-## Advanced Usage
+### With Search Highlighting
+
+```tsx
+const HighlightedAutocomplete = () => {
+  return (
+    <AutocompleteDropdown
+      dataSet={data}
+      valueField="name"
+      searchField="name"
+      hasHighlightString={true}
+      highlightProps={{
+        highlightStyle: { backgroundColor: '#FFEB3B', fontWeight: 'bold' },
+      }}
+      onSelectItem={item => console.log('Selected:', item)}
+    />
+  );
+};
+```
+
+### Custom Item Rendering
+
+```tsx
+const CustomRenderAutocomplete = () => {
+  const products = [
+    { id: '1', name: 'iPhone 14', brand: 'Apple', price: 999 },
+    { id: '2', name: 'Samsung Galaxy S23', brand: 'Samsung', price: 899 },
+    { id: '3', name: 'Google Pixel 7', brand: 'Google', price: 699 },
+  ];
+
+  return (
+    <AutocompleteDropdown
+      dataSet={products}
+      valueField="name"
+      searchField="name"
+      customDropdownItem={item => (
+        <Box className="border-b border-gray-200 p-4">
+          <String className="text-lg font-semibold">{item.name}</String>
+          <String className="text-sm text-gray-600">{item.brand}</String>
+          <String className="mt-1 font-bold text-green-600">${item.price}</String>
+        </Box>
+      )}
+      onSelectItem={product => console.log('Selected product:', product)}
+    />
+  );
+};
+```
+
+### With Loading State
+
+```tsx
+const LoadingAutocomplete = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState([]);
+
+  const handleSearch = async (text: string) => {
+    setIsLoading(true);
+    try {
+      const results = await searchAPI(text);
+      setData(results);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <AutocompleteDropdown
+      dataSet={data}
+      valueField="title"
+      searchField="title"
+      isLoading={isLoading}
+      onChangeText={handleSearch}
+      onSelectItem={item => console.log('Selected:', item)}
+      inputProps={{
+        placeholder: 'Search...',
+      }}
+    />
+  );
+};
+```
 
 ### Custom Search Query
 
 ```tsx
-<AutocompleteDropdown
-  dataSet={data}
-  valueField="name"
-  searchField="name"
-  searchQuery={(keyword, labelValue) => {
-    // Custom search logic
-    return (
-      labelValue.toLowerCase().includes(keyword.toLowerCase()) ||
-      item.category.toLowerCase().includes(keyword.toLowerCase())
-    );
-  }}
-  onSelectItem={item => console.log('Selected:', item)}
-/>
+const CustomSearchAutocomplete = () => {
+  return (
+    <AutocompleteDropdown
+      dataSet={data}
+      valueField="name"
+      searchQuery={(keyword, labelValue) => {
+        // Search in multiple fields
+        const searchTerm = keyword.toLowerCase();
+        return (
+          labelValue.toLowerCase().includes(searchTerm) ||
+          item.category.toLowerCase().includes(searchTerm) ||
+          item.description.toLowerCase().includes(searchTerm)
+        );
+      }}
+      onSelectItem={item => console.log('Selected:', item)}
+    />
+  );
+};
 ```
 
-### Custom Dropdown Item Rendering
+### With Excluded Items
 
 ```tsx
-<AutocompleteDropdown
-  dataSet={data}
-  valueField="name"
-  searchField="name"
-  customDropdownItem={(item, selected) => (
-    <Box className={`p-3 ${selected ? 'bg-blue-100' : 'bg-white'}`}>
-      <String className="font-bold">{item.name}</String>
-      <String className="text-sm text-gray-500">{item.category}</String>
-    </Box>
-  )}
-  onSelectItem={item => console.log('Selected:', item)}
-/>
-```
+const ExcludeItemsAutocomplete = () => {
+  const [selectedItems, setSelectedItems] = useState([]);
 
-### With Highlight and Custom Styling
-
-```tsx
-<AutocompleteDropdown
-  dataSet={data}
-  valueField="name"
-  searchField="name"
-  hasHighlightString={true}
-  highlightProps={{
-    highlightStyle: { backgroundColor: 'yellow', fontWeight: 'bold' },
-  }}
-  dropdownItemProps={{
-    className: 'border-b border-gray-200',
-    activeBackgroundColor: '#f0f9ff',
-    stringItemProps: { className: 'text-gray-800' },
-  }}
-  onSelectItem={item => console.log('Selected:', item)}
-/>
+  return (
+    <AutocompleteDropdown
+      dataSet={allItems}
+      valueField="name"
+      excludeItems={selectedItems} // Don't show already selected items
+      onSelectItem={item => {
+        setSelectedItems([...selectedItems, item]);
+      }}
+    />
+  );
+};
 ```
 
 ### Using Ref for Control
 
 ```tsx
 import { useRef } from 'react';
-import { AutocompleteDropdown } from 'chill-ui';
 
-function ControlledExample() {
+const ControlledAutocomplete = () => {
   const dropdownRef = useRef<AutocompleteDropdownRefProps>(null);
 
   return (
@@ -111,207 +272,271 @@ function ControlledExample() {
         ref={dropdownRef}
         dataSet={data}
         valueField="name"
-        searchField="name"
         onSelectItem={item => console.log('Selected:', item)}
       />
 
       <Box className="mt-4 flex-row gap-2">
-        <Button onPress={() => dropdownRef.current?.open()}>Open Dropdown</Button>
-        <Button onPress={() => dropdownRef.current?.close()}>Close Dropdown</Button>
-        <Button onPress={() => dropdownRef.current?.toggle()}>Toggle Dropdown</Button>
+        <Button onPress={() => dropdownRef.current?.open()}>Open</Button>
+        <Button onPress={() => dropdownRef.current?.close()}>Close</Button>
+        <Button onPress={() => dropdownRef.current?.toggle()}>Toggle</Button>
       </Box>
     </Box>
   );
-}
+};
 ```
 
-## Props
+### Dropdown Positioning
 
-### AutocompleteDropdown Props
+```tsx
+const PositionedAutocomplete = () => {
+  return (
+    <AutocompleteDropdown
+      dataSet={data}
+      valueField="name"
+      dropdownPosition="top" // Force dropdown to open above input
+      offsetY={10} // Add 10px vertical offset
+      offsetX={0} // No horizontal offset
+      maxHeight={200} // Limit dropdown height
+      minHeight={100} // Minimum dropdown height
+      onSelectItem={item => console.log('Selected:', item)}
+    />
+  );
+};
+```
 
-| Prop                         | Type                                                          | Required | Default      | Description                                |
-| ---------------------------- | ------------------------------------------------------------- | -------- | ------------ | ------------------------------------------ |
-| `dataSet`                    | `T[]`                                                         | ✅       | `[]`         | Array of data items to display             |
-| `valueField`                 | `keyof T`                                                     | ✅       | -            | Field to use as the display value          |
-| `onSelectItem`               | `(item: T) => void`                                           | ✅       | -            | Callback when an item is selected          |
-| `searchField`                | `keyof T`                                                     | ❌       | `valueField` | Field to search in                         |
-| `offsetX`                    | `number`                                                      | ❌       | `0`          | Horizontal offset for dropdown positioning |
-| `offsetY`                    | `number`                                                      | ❌       | `0`          | Vertical offset for dropdown positioning   |
-| `maxHeight`                  | `number`                                                      | ❌       | `300`        | Maximum height of dropdown                 |
-| `minHeight`                  | `number`                                                      | ❌       | `0`          | Minimum height of dropdown                 |
-| `excludeItems`               | `T[]`                                                         | ❌       | `[]`         | Items to exclude from dropdown             |
-| `isLoading`                  | `boolean`                                                     | ❌       | `false`      | Show loading indicator                     |
-| `hasPerformSearch`           | `boolean`                                                     | ❌       | `true`       | Enable search functionality                |
-| `hasHighlightString`         | `boolean`                                                     | ❌       | `true`       | Highlight search terms in results          |
-| `confirmSelectItem`          | `boolean`                                                     | ❌       | `false`      | Require confirmation before selecting      |
-| `closeModalWhenSelectedItem` | `boolean`                                                     | ❌       | `true`       | Close dropdown after selection             |
-| `dropdownPosition`           | `'auto' \| 'top' \| 'bottom'`                                 | ❌       | `'auto'`     | Dropdown positioning                       |
-| `onBlur`                     | `() => void`                                                  | ❌       | -            | Callback when input loses focus            |
-| `onFocus`                    | `() => void`                                                  | ❌       | -            | Callback when input gains focus            |
-| `onConfirmSelectItem`        | `(item: T) => void`                                           | ❌       | -            | Callback for confirmed selection           |
-| `searchQuery`                | `(keyword: string, labelValue: string) => boolean`            | ❌       | -            | Custom search function                     |
-| `customDropdownItem`         | `(item: T, selected?: boolean) => React.ReactElement \| null` | ❌       | -            | Custom item renderer                       |
-| `inputProps`                 | `InputProps`                                                  | ❌       | -            | Props for the input component              |
-| `dropdownItemProps`          | `DropdownItemProps`                                           | ❌       | -            | Props for dropdown items                   |
-| `dropdownListProps`          | `FlatListProps`                                               | ❌       | -            | Props for the dropdown list                |
-| `dropdownProps`              | `InputDropdownProps`                                          | ❌       | -            | Props for the dropdown container           |
-| `highlightProps`             | `HighlightStringProps`                                        | ❌       | -            | Props for text highlighting                |
+### With Confirmation
+
+```tsx
+const ConfirmAutocomplete = () => {
+  return (
+    <AutocompleteDropdown
+      dataSet={data}
+      valueField="name"
+      confirmSelectItem={true}
+      onConfirmSelectItem={item => {
+        Alert.alert('Confirm Selection', `Do you want to select ${item.name}?`, [
+          { text: 'Cancel', style: 'cancel' },
+          {
+            text: 'OK',
+            onPress: () => console.log('Confirmed:', item),
+          },
+        ]);
+      }}
+      onSelectItem={item => console.log('Selected:', item)}
+    />
+  );
+};
+```
+
+## Component Architecture
+
+The AutocompleteDropdown component is composed of several sub-components and utilities:
+
+### Core Components
+
+1. **AutocompleteDropdown** (Main Component)
+   - Combines input field with intelligent dropdown
+   - Manages search state and filtering
+   - Handles user interactions
+
+2. **AutoCompleteDropdownContext**
+   - Provides global state management
+   - Handles dropdown visibility and positioning
+   - Manages keyboard interactions
+
+### Hooks
+
+1. **useAutocompleteDropdownProvider**
+   - Global state management for dropdowns
+   - Instance registration and tracking
+
+2. **useDropdownActions**
+   - Handles open/close/toggle actions
+   - Manages user interactions
+
+3. **useDropdownKeyboard**
+   - Mobile keyboard handling
+   - Auto-scroll on keyboard show
+
+4. **useGetDropdownPosition**
+   - Calculates optimal dropdown position
+   - Handles screen boundary detection
+
+## API Reference
+
+### AutocompleteDropdownProps
+
+| Prop                         | Type                                                          | Default      | Description                                      |
+| ---------------------------- | ------------------------------------------------------------- | ------------ | ------------------------------------------------ |
+| `dataSet`                    | `T[]`                                                         | **required** | Array of data items to display                   |
+| `valueField`                 | `keyof T`                                                     | **required** | Field to use as the display value and identifier |
+| `onSelectItem`               | `(item: T) => void`                                           | **required** | Callback when an item is selected                |
+| `searchField`                | `keyof T`                                                     | `valueField` | Field to search in (defaults to valueField)      |
+| `closeModalWhenSelectedItem` | `boolean`                                                     | `true`       | Close dropdown after selection                   |
+| `confirmSelectItem`          | `boolean`                                                     | `false`      | Require confirmation before selecting            |
+| `onConfirmSelectItem`        | `(item: T) => void`                                           | -            | Callback for confirmed selection                 |
+| `customDropdownItem`         | `(item: T, selected?: boolean) => React.ReactElement \| null` | -            | Custom renderer for dropdown items               |
+| `dropdownItemProps`          | `DropdownItemProps`                                           | -            | Props for styling dropdown items                 |
+| `dropdownListProps`          | `Omit<FlatListProps<any>, 'renderItem' \| 'data'>`            | -            | Props for the dropdown FlatList                  |
+| `dropdownPosition`           | `'auto' \| 'top' \| 'bottom'`                                 | `'auto'`     | Dropdown positioning: 'auto', 'top', or 'bottom' |
+| `dropdownProps`              | `InputDropdownProps`                                          | -            | Props for the dropdown container                 |
+| `excludeItems`               | `T[]`                                                         | `[]`         | Items to exclude from dropdown                   |
+| `hasHighlightString`         | `boolean`                                                     | `true`       | Highlight search terms in results                |
+| `hasPerformSearch`           | `boolean`                                                     | `true`       | Enable search functionality                      |
+| `highlightProps`             | `HighlightStringProps`                                        | -            | Props for text highlighting configuration        |
+| `inputProps`                 | `InputProps`                                                  | -            | Props to pass to the input component             |
+| `isLoading`                  | `boolean`                                                     | `false`      | Show loading indicator                           |
+| `maxHeight`                  | `number`                                                      | `300`        | Maximum height of dropdown                       |
+| `minHeight`                  | `number`                                                      | `0`          | Minimum height of dropdown                       |
+| `offsetX`                    | `number`                                                      | `0`          | Horizontal offset for dropdown positioning       |
+| `offsetY`                    | `number`                                                      | `0`          | Vertical offset for dropdown positioning         |
+| `onBlur`                     | `() => void`                                                  | -            | Callback when input loses focus                  |
+| `onChangeText`               | `(text: string) => void`                                      | -            | Callback function when the input text changes    |
+| `onFocus`                    | `() => void`                                                  | -            | Callback when input gains focus                  |
+| `searchQuery`                | `(keyword: string, labelValue: string) => boolean`            | -            | Custom search function for filtering items       |
 
 ### AutocompleteDropdownRefProps
 
-| Method     | Description                |
-| ---------- | -------------------------- |
-| `open()`   | Open the dropdown          |
-| `close()`  | Close the dropdown         |
-| `toggle()` | Toggle dropdown visibility |
+| Method     | Description                     |
+| ---------- | ------------------------------- |
+| `open()`   | Programmatically open dropdown  |
+| `close()`  | Programmatically close dropdown |
+| `toggle()` | Toggle dropdown visibility      |
 
-## File Structure
+### DropdownItemProps
 
-```
-AutocompleteDropdown/
-├── README.md                           # This documentation
-├── AutocompleteDropdown.tsx           # Main component
-├── index.ts                           # Exports
-├── context/
-│   ├── AutoCompleteDropdownContext.tsx        # Context for dropdown state
-│   └── AutoCompleteDropdownContext.props.ts   # Context props
-├── hooks/
-│   ├── useAutocompleteDropdownProvider.ts     # Provider hook
-│   ├── useDropdownActions.ts                  # Action hooks
-│   ├── useDropdownKeyboard.ts                 # Keyboard handling
-│   └── useGetDropdownPosition.ts              # Position calculation
-└── types/
-    └── index.ts                               # Local types
-```
+| Prop                    | Type          | Description                            |
+| ----------------------- | ------------- | -------------------------------------- |
+| `className`             | `string`      | Custom CSS classes for the item        |
+| `stringItemProps`       | `StringProps` | Props for the string component in item |
+| `activeBackgroundColor` | `string`      | Background color when item is selected |
 
-## Examples
+## Best Practices
 
-### E-commerce Product Search
+### Performance
+
+1. **Use debounced search** for better UX:
 
 ```tsx
-const products = [
-  { id: '1', name: 'iPhone 14', brand: 'Apple', price: 999 },
-  { id: '2', name: 'Samsung Galaxy S23', brand: 'Samsung', price: 899 },
-  { id: '3', name: 'Google Pixel 7', brand: 'Google', price: 699 },
-];
+const [searchQuery, setSearchQuery] = useState('');
+const debouncedSearch = useDebounce(searchQuery, 300);
 
 <AutocompleteDropdown
-  dataSet={products}
-  valueField="name"
-  searchField="name"
-  customDropdownItem={(product, selected) => (
-    <Box className={`p-4 ${selected ? 'bg-blue-50' : 'bg-white'}`}>
-      <String className="font-semibold">{product.name}</String>
-      <String className="text-gray-600">{product.brand}</String>
-      <String className="font-bold text-green-600">${product.price}</String>
-    </Box>
-  )}
-  onSelectItem={product => {
-    console.log('Selected product:', product);
-  }}
+  onChangeText={setSearchQuery}
+  // Filter data based on debouncedSearch
 />;
 ```
 
-### Multi-field Search
+2. **Limit dataset size** for optimal performance:
+
+```tsx
+// Limit to top 50 results
+const limitedData = filteredData.slice(0, 50);
+```
+
+3. **Implement `keyExtractor`** for FlatList:
 
 ```tsx
 <AutocompleteDropdown
-  dataSet={users}
-  valueField="name"
-  searchQuery={(keyword, labelValue) => {
-    const searchTerm = keyword.toLowerCase();
-    return (
-      labelValue.toLowerCase().includes(searchTerm) ||
-      user.email.toLowerCase().includes(searchTerm) ||
-      user.department.toLowerCase().includes(searchTerm)
-    );
+  dropdownListProps={{
+    keyExtractor: item => item.id.toString(),
   }}
-  customDropdownItem={(user, selected) => (
-    <Box className={`p-3 ${selected ? 'bg-blue-50' : 'bg-white'}`}>
-      <String className="font-medium">{user.name}</String>
-      <String className="text-sm text-gray-500">{user.email}</String>
-      <String className="text-sm text-blue-600">{user.department}</String>
-    </Box>
-  )}
-  onSelectItem={user => console.log('Selected user:', user)}
 />
 ```
 
-### With Loading State
+### Accessibility
+
+1. **Add accessibility labels**:
 
 ```tsx
-const [isLoading, setIsLoading] = useState(false);
-const [data, setData] = useState([]);
-
-const handleSearch = async (keyword: string) => {
-  setIsLoading(true);
-  try {
-    const results = await searchAPI(keyword);
-    setData(results);
-  } finally {
-    setIsLoading(false);
-  }
-};
-
 <AutocompleteDropdown
-  dataSet={data}
-  valueField="title"
-  searchField="title"
-  isLoading={isLoading}
-  onSelectItem={item => console.log('Selected:', item)}
   inputProps={{
-    placeholder: 'Search...',
-    onChangeText: handleSearch,
+    accessibilityLabel: 'Search products',
+    accessibilityHint: 'Type to search and select a product',
   }}
-/>;
+/>
+```
+
+2. **Use semantic rendering**:
+
+```tsx
+const renderAccessibleItem = item => (
+  <View accessibilityRole="button" accessibilityLabel={`Select ${item.name}`}>
+    <Text>{item.name}</Text>
+  </View>
+);
+```
+
+### Styling
+
+1. **Use consistent spacing** with Tailwind:
+
+```tsx
+<AutocompleteDropdown inputProps={{ className: 'mx-4 mb-2' }} dropdownProps={{ className: 'rounded-lg shadow-lg' }} />
+```
+
+2. **Handle different screen sizes**:
+
+```tsx
+const screenHeight = Dimensions.get('window').height;
+const maxHeight = screenHeight * 0.4; // 40% of screen height
+
+<AutocompleteDropdown maxHeight={maxHeight} />;
 ```
 
 ## Troubleshooting
 
 ### Common Issues
 
-**Dropdown not positioning correctly**
+1. **Dropdown not positioning correctly**
+   - Check `offsetX` and `offsetY` values
+   - Ensure parent container has proper layout
+   - Try different `dropdownPosition` values ('auto', 'top', 'bottom')
+   - Verify screen boundaries are being detected
 
-- Check `offsetX` and `offsetY` values
-- Ensure parent container has proper layout
-- Verify screen boundaries are considered
+2. **Search not working**
+   - Ensure `hasPerformSearch` is `true`
+   - Check if `searchField` is set correctly
+   - Verify data structure matches expected format
+   - Implement custom `searchQuery` if needed
 
-**Search not working**
+3. **Custom rendering not showing**
+   - Ensure `customDropdownItem` returns valid ReactElement
+   - Check if data is properly passed to the function
+   - Verify styling doesn't hide the content
 
-- Ensure `searchField` is set correctly
-- Check if `hasPerformSearch` is enabled
-- Verify data structure matches expected format
+4. **Performance issues with large datasets**
+   - Use `excludeItems` to filter unnecessary items
+   - Implement server-side search for large datasets
+   - Limit displayed results (e.g., top 50)
+   - Consider implementing pagination
 
-**Custom rendering not showing**
+5. **Highlight not working**
+   - Ensure `hasHighlightString` is `true`
+   - Verify search term is being detected
+   - Check `highlightProps` configuration
 
-- Ensure `customDropdownItem` returns valid ReactElement
-- Check if data is properly passed to the function
-- Verify styling doesn't hide the content
+### Version-Specific Issues
 
-**Performance issues with large datasets**
+**Tailwind Version:**
 
-- Use `excludeItems` to filter unnecessary items
-- Implement server-side search for large datasets
-- Consider virtualization for very large lists
+- Ensure NativeWind is properly configured
+- Check if required Tailwind classes are available
+- Verify `tailwind.config.js` includes necessary utilities
 
-### Performance Tips
+**StyleSheet Version:**
 
-- Use `React.memo` for custom item renderers
-- Implement debounced search for API calls
-- Limit `dataSet` size for better performance
-- Use `searchQuery` for efficient filtering
+- Custom styles may override default styles
+- Use `StyleSheet.flatten()` for complex style combinations
 
-## Accessibility
+**Hybrid Version:**
 
-The component includes:
-
-- Proper ARIA labels and roles
-- Keyboard navigation support
-- Screen reader compatibility
-- Focus management
-- High contrast support
+- Component automatically detects NativeWind availability
+- Falls back gracefully to StyleSheet if Tailwind is not available
 
 ## Integration with Forms
+
+### With Formik
 
 ```tsx
 import { useFormik } from 'formik';
@@ -330,8 +555,48 @@ const formik = useFormik({
 />;
 ```
 
-## Storybook
+### With React Hook Form
 
-See the Storybook documentation for interactive examples:
+```tsx
+import { useForm, Controller } from 'react-hook-form';
 
-- `components/AutocompleteDropdown` - Complete examples with all features
+const { control } = useForm();
+
+<Controller
+  control={control}
+  name="selectedItem"
+  render={({ field: { onChange, value } }) => (
+    <AutocompleteDropdown dataSet={data} valueField="name" onSelectItem={onChange} />
+  )}
+/>;
+```
+
+## File Structure
+
+```
+AutocompleteDropdown/
+├── README.md                                  # This documentation
+├── index.ts                                   # Exports
+├── components/
+│   ├── AutocompleteDropdown.tsx              # Main hybrid component
+│   ├── AutocompleteDropdown.ss.tsx           # StyleSheet variant
+│   └── AutocompleteDropdown.tw.tsx           # Tailwind variant
+├── context/
+│   ├── AutoCompleteDropdownContext.tsx       # Context for dropdown state
+│   └── AutoCompleteDropdownContext.props.ts  # Context props
+├── hooks/
+│   ├── useAutocompleteDropdownProvider.ts    # Provider hook
+│   ├── useDropdownActions.ts                 # Action hooks
+│   ├── useDropdownKeyboard.ts                # Keyboard handling
+│   └── useGetDropdownPosition.ts             # Position calculation
+└── types/
+    └── index.ts                               # Local types
+```
+
+## Contributing
+
+We welcome contributions! Please see our [Contributing Guide](../../CONTRIBUTING.md) for details.
+
+## License
+
+This component is part of the react-native-chill-ui library. See [LICENSE](../../LICENSE.md) for details.

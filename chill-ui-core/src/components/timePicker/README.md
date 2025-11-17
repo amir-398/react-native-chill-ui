@@ -1,646 +1,765 @@
-# TimePicker
+# TimePicker Component
 
-A React Native component that provides a customizable time selection interface with smooth animations and gesture support. Features animated scrolling pickers for hours and minutes with extensive styling options.
+A React Native component that provides a beautiful and customizable time selection interface with animated scrolling pickers. Built with React Native's Animated API for native performance, featuring smooth animations, composable architecture, and intelligent timezone handling across three different styling approaches.
+
+## Available Versions
+
+This component comes in three versions to match your project's styling approach. You choose the version during installation, but the import statement remains consistent across all versions:
+
+### 1. **StyleSheet Version**
+
+- Uses React Native's built-in StyleSheet API
+- Perfect for projects that don't use CSS-in-JS libraries
+- Lightweight and performant
+- Install: `npm install react-native-chill-ui@stylesheet`
+
+### 2. **Tailwind Version**
+
+- Uses NativeWind/Tailwind CSS classes
+- Ideal for projects already using Tailwind CSS
+- Requires NativeWind setup and Tailwind configuration
+- Install: `npm install react-native-chill-ui@tailwind`
+
+### 3. **Hybrid Version**
+
+- Automatically detects if NativeWind is available
+- Falls back to StyleSheet if NativeWind is not installed
+- Best for component libraries or projects that need flexibility
+- Install: `npm install react-native-chill-ui@hybrid`
+
+**Note**: Regardless of the version you choose, the import statement remains the same: `import { TimePicker } from 'react-native-chill-ui'`
 
 ## Features
 
-- ✅ **Animated Scrolling**: Smooth scroll animations with snap-to-interval behavior
-- ✅ **Customizable Styling**: Full control over colors, fonts, sizes, and appearance
-- ✅ **Flexible Intervals**: Configurable minute intervals (1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60)
-- ✅ **Gesture Support**: Touch and scroll interactions for time selection
-- ✅ **Visual Feedback**: Opacity and scale animations for selected items
-- ✅ **Performance Optimized**: Efficient rendering with React Native Animated
-- ✅ **TypeScript**: Full type safety with detailed interfaces
-- ✅ **Accessibility**: Screen reader support and accessibility features
-- ✅ **24-Hour Format**: Support for 24-hour time format
+- **Composable Architecture**: Mix and match scrollers for hours, minutes, and seconds
+- **Auto-Generated Data**: Automatically creates time values based on mode (hour/minute/second)
+- **Custom Intervals**: Support for 5-minute, 15-minute, or any custom interval
+- **Smooth Animations**: Native driver animations with opacity and scale transitions
+- **Default Time Support**: Initialize with current time or any Date object
+- **Timezone-Safe**: Helper function to avoid timezone display confusion
+- **Auto-Rounding**: Automatically rounds default values to nearest interval
+- **Flexible Styling**: Support for NativeWind classes and StyleSheet objects
+- **TypeScript Support**: Fully typed for a better development experience
+- **Accessibility**: Inherits all React Native accessibility features
+- **Performance Optimized**: Separate contexts for state and actions to prevent unnecessary re-renders
 
 ## Quick Start
 
 ```tsx
-import TimePicker from '@/components/timePicker/TimePicker';
+import {
+  TimePicker,
+  TimePickerContent,
+  TimePickerScroller,
+  TimePickerItem,
+  TimePickerTitle,
+  getTimePickerDateNow,
+} from 'react-native-chill-ui';
 
-// Basic time picker
-<TimePicker
-  onTimeChange={(time) => console.log('Selected time:', time)}
-  minuteInterval={15}
-/>
-
-// Customized time picker
-<TimePicker
-  onTimeChange={(time) => setSelectedTime(time)}
-  minuteInterval={30}
-  options={{
-    backgroundColor: '#f8f9fa',
-    mainColor: '#007AFF',
-    height: 300,
-    textDefaultColor: '#333',
-  }}
-/>
-```
-
-## Examples
-
-### Basic Usage
-
-```tsx
-import TimePicker from '@/components/timePicker/TimePicker';
-
-// Simple time picker with 15-minute intervals
-<TimePicker
-  onTimeChange={(time) => setTime(time)}
-  minuteInterval={15}
-/>
-
-// Time picker with 1-minute precision
-<TimePicker
-  onTimeChange={(time) => setTime(time)}
-  minuteInterval={1}
-/>
-
-// Time picker with 30-minute intervals
-<TimePicker
-  onTimeChange={(time) => setTime(time)}
-  minuteInterval={30}
-/>
-```
-
-### Custom Styling
-
-```tsx
-// Custom colors and styling
-<TimePicker
-  onTimeChange={(time) => setTime(time)}
-  minuteInterval={15}
-  options={{
-    backgroundColor: '#f8f9fa',
-    mainColor: '#007AFF',
-    textDefaultColor: '#333',
-    textHeaderColor: '#666',
-    selectedTextColor: '#fff',
-    height: 280,
-  }}
-/>
-
-// Dark theme styling
-<TimePicker
-  onTimeChange={(time) => setTime(time)}
-  minuteInterval={10}
-  options={{
-    backgroundColor: '#1a1a1a',
-    mainColor: '#00ff88',
-    textDefaultColor: '#ffffff',
-    textHeaderColor: '#cccccc',
-    textSecondaryColor: '#888888',
-    selectedTextColor: '#000000',
-    height: 250,
-  }}
-/>
-
-// Custom fonts and sizes
-<TimePicker
-  onTimeChange={(time) => setTime(time)}
-  minuteInterval={20}
-  options={{
-    backgroundColor: '#ffffff',
-    mainColor: '#ff6b6b',
-    defaultFont: 'Helvetica',
-    headerFont: 'Helvetica-Bold',
-    textFontSize: 18,
-    textHeaderFontSize: 20,
-    height: 320,
-  }}
-/>
-```
-
-### Different Minute Intervals
-
-```tsx
-// 5-minute intervals (default)
-<TimePicker
-  onTimeChange={(time) => setTime(time)}
-  minuteInterval={5}
-/>
-
-// 10-minute intervals
-<TimePicker
-  onTimeChange={(time) => setTime(time)}
-  minuteInterval={10}
-/>
-
-// 15-minute intervals (common for scheduling)
-<TimePicker
-  onTimeChange={(time) => setTime(time)}
-  minuteInterval={15}
-/>
-
-// 30-minute intervals
-<TimePicker
-  onTimeChange={(time) => setTime(time)}
-  minuteInterval={30}
-/>
-
-// 60-minute intervals (hourly)
-<TimePicker
-  onTimeChange={(time) => setTime(time)}
-  minuteInterval={60}
-/>
-```
-
-### Integration with Forms
-
-```tsx
-import { useState } from 'react';
-import TimePicker from '@/components/timePicker/TimePicker';
-
-const AppointmentForm = () => {
-  const [selectedTime, setSelectedTime] = useState('09:00');
-  const [isTimePickerVisible, setIsTimePickerVisible] = useState(false);
-
-  return (
-    <Box className="p-4">
-      <String size="lg" weight="bold" className="mb-4">
-        Schedule Appointment
-      </String>
-
-      <Pressable
-        onPress={() => setIsTimePickerVisible(!isTimePickerVisible)}
-        className="mb-4 rounded-lg border border-gray-300 p-4"
-      >
-        <String size="md" colorVariant="secondary">
-          Selected Time: {selectedTime}
-        </String>
-      </Pressable>
-
-      {isTimePickerVisible && (
-        <TimePicker
-          onTimeChange={time => {
-            setSelectedTime(time);
-            setIsTimePickerVisible(false);
-          }}
-          minuteInterval={15}
-          options={{
-            backgroundColor: '#ffffff',
-            mainColor: '#007AFF',
-            height: 250,
-          }}
-        />
-      )}
-    </Box>
-  );
-};
-```
-
-### Custom Time Validation
-
-```tsx
-const [selectedTime, setSelectedTime] = useState('09:00');
-const [error, setError] = useState('');
-
-const validateTime = (time: string) => {
-  const [hours, minutes] = time.split(':').map(Number);
-
-  // Check if time is within business hours (9 AM - 5 PM)
-  if (hours < 9 || hours >= 17) {
-    setError('Please select a time between 9:00 AM and 5:00 PM');
-    return false;
-  }
-
-  setError('');
-  return true;
-};
-
-<Box className="p-4">
-  <TimePicker
-    onTimeChange={time => {
-      if (validateTime(time)) {
-        setSelectedTime(time);
-      }
-    }}
-    minuteInterval={30}
-    options={{
-      backgroundColor: '#ffffff',
-      mainColor: error ? '#ff6b6b' : '#007AFF',
-      height: 250,
-    }}
-  />
-
-  {error && (
-    <String size="sm" colorVariant="error" className="mt-2">
-      {error}
-    </String>
-  )}
-</Box>;
-```
-
-## Props Reference
-
-### TimePickerProps
-
-| Prop             | Type                                                             | Default | Description                         |
-| ---------------- | ---------------------------------------------------------------- | ------- | ----------------------------------- |
-| `minuteInterval` | `1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 10 \| 12 \| 15 \| 20 \| 30 \| 60` | `5`     | Interval between minutes            |
-| `onTimeChange`   | `(time: string) => void`                                         | -       | Callback function when time changes |
-| `options`        | `TimePickerOptionsProps`                                         | -       | Custom styling options              |
-
-### TimePickerOptionsProps
-
-| Prop                      | Type     | Default                      | Description                    |
-| ------------------------- | -------- | ---------------------------- | ------------------------------ |
-| `backgroundColor`         | `string` | `'#fff'`                     | Background color of the picker |
-| `borderColor`             | `string` | `'rgba(122, 146, 165, 0.1)'` | Border color                   |
-| `daysAnimationDistance`   | `number` | `200`                        | Animation distance for days    |
-| `defaultFont`             | `string` | `'System'`                   | Font family for time values    |
-| `headerAnimationDistance` | `number` | `100`                        | Animation distance for headers |
-| `headerFont`              | `string` | `'System'`                   | Font family for headers        |
-| `height`                  | `number` | `220`                        | Height of the picker           |
-| `mainColor`               | `string` | `'#61dafb'`                  | Primary color for highlights   |
-| `selectedTextColor`       | `string` | `'#fff'`                     | Color of selected text         |
-| `textDefaultColor`        | `string` | `'#2d4150'`                  | Default text color             |
-| `textFontSize`            | `number` | `15`                         | Font size for time values      |
-| `textHeaderColor`         | `string` | `'#212c35'`                  | Header text color              |
-| `textHeaderFontSize`      | `number` | `17`                         | Header font size               |
-| `textSecondaryColor`      | `string` | `'#7a92a5'`                  | Secondary text color           |
-
-## Best Practices
-
-### 1. Choose Appropriate Minute Intervals
-
-```tsx
-// ✅ Good - 15-minute intervals for scheduling
-<TimePicker
-  onTimeChange={setTime}
-  minuteInterval={15}
-/>
-
-// ✅ Good - 1-minute intervals for precise timing
-<TimePicker
-  onTimeChange={setTime}
-  minuteInterval={1}
-/>
-
-// ❌ Avoid - Too many options for simple use cases
-<TimePicker
-  onTimeChange={setTime}
-  minuteInterval={1} // For appointment scheduling
-/>
-```
-
-### 2. Use Consistent Styling
-
-```tsx
-// ✅ Good - Consistent color scheme
-<TimePicker
-  onTimeChange={setTime}
-  minuteInterval={15}
-  options={{
-    backgroundColor: '#ffffff',
-    mainColor: '#007AFF',
-    textDefaultColor: '#333333',
-    textHeaderColor: '#666666',
-  }}
-/>
-
-// ❌ Avoid - Inconsistent colors
-<TimePicker
-  onTimeChange={setTime}
-  minuteInterval={15}
-  options={{
-    backgroundColor: '#ffffff',
-    mainColor: '#ff0000',
-    textDefaultColor: '#00ff00',
-    textHeaderColor: '#0000ff',
-  }}
-/>
-```
-
-### 3. Handle Time Changes Appropriately
-
-```tsx
-// ✅ Good - Proper state management
-const [selectedTime, setSelectedTime] = useState('09:00');
-
+// Basic time picker (hours and minutes)
 <TimePicker
   onTimeChange={(time) => {
-    setSelectedTime(time);
-    // Additional logic like validation or API calls
+    console.log(time.formatted); // "14:30"
+    console.log(time.hour);      // 14
+    console.log(time.date);      // Date object
   }}
-  minuteInterval={15}
-/>
-
-// ❌ Avoid - Missing state management
-<TimePicker
-  onTimeChange={(time) => console.log(time)}
-  minuteInterval={15}
-/>
-```
-
-### 4. Consider User Experience
-
-```tsx
-// ✅ Good - Clear visual feedback
-<TimePicker
-  onTimeChange={setTime}
-  minuteInterval={15}
-  options={{
-    mainColor: '#007AFF',
-    selectedTextColor: '#ffffff',
-    height: 250, // Adequate height for touch targets
-  }}
-/>
-
-// ❌ Avoid - Poor visual feedback
-<TimePicker
-  onTimeChange={setTime}
-  minuteInterval={15}
-  options={{
-    mainColor: '#cccccc',
-    selectedTextColor: '#333333',
-    height: 150, // Too small for comfortable interaction
-  }}
-/>
-```
-
-### 5. Provide Accessibility Support
-
-```tsx
-// ✅ Good - Accessible time picker
-<Box
-  accessible={true}
-  accessibilityLabel="Time picker"
-  accessibilityHint="Scroll to select hours and minutes"
 >
-  <TimePicker
-    onTimeChange={setTime}
-    minuteInterval={15}
-    options={{
-      mainColor: '#007AFF',
-      textDefaultColor: '#333333',
-    }}
-  />
-</Box>
+  <TimePickerContent>
+    <TimePickerScroller mode="hour">
+      <TimePickerItem />
+    </TimePickerScroller>
+    <TimePickerTitle>:</TimePickerTitle>
+    <TimePickerScroller mode="minute">
+      <TimePickerItem />
+    </TimePickerScroller>
+  </TimePickerContent>
+</TimePicker>
 
-// ❌ Avoid - No accessibility context
+// With default time and intervals
+<TimePicker defaultTime={getTimePickerDateNow()}>
+  <TimePickerContent>
+    <TimePickerScroller mode="hour">
+      <TimePickerItem />
+    </TimePickerScroller>
+    <TimePickerTitle>:</TimePickerTitle>
+    <TimePickerScroller mode="minute" interval={5}>
+      <TimePickerItem />
+    </TimePickerScroller>
+    <TimePickerTitle>:</TimePickerTitle>
+    <TimePickerScroller mode="second">
+      <TimePickerItem />
+    </TimePickerScroller>
+  </TimePickerContent>
+</TimePicker>
+```
+
+## Installation Guide
+
+Choose the version that matches your project's styling approach:
+
+| Version        | Command                                        | When to Use                                                                                          | Pros                                                                            | Cons                                                  |
+| -------------- | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| **StyleSheet** | `npm install react-native-chill-ui@stylesheet` | • No CSS-in-JS dependencies<br/>• Maximum performance priority<br/>• Simple React Native project     | • Lightweight<br/>• Fast<br/>• No dependencies                                  | • Limited styling flexibility                         |
+| **Tailwind**   | `npm install react-native-chill-ui@tailwind`   | • Already using NativeWind<br/>• Team familiar with Tailwind<br/>• Design system based on utilities  | • Consistent with web Tailwind<br/>• Powerful utility system<br/>• Easy theming | • Requires NativeWind setup<br/>• Larger bundle size  |
+| **Hybrid**     | `npm install react-native-chill-ui@hybrid`     | • Building component library<br/>• Uncertain about styling approach<br/>• Want maximum compatibility | • Works in any environment<br/>• Future-proof<br/>• Automatic detection         | • Slightly larger bundle<br/>• More complex internals |
+
+## Configuration
+
+### For Tailwind Version
+
+If you chose the Tailwind version, ensure you have NativeWind properly configured:
+
+```bash
+npm install nativewind
+npm install --save-dev tailwindcss
+```
+
+Configure your `tailwind.config.js`:
+
+```js
+module.exports = {
+  content: ['./App.{js,jsx,ts,tsx}', './src/**/*.{js,jsx,ts,tsx}'],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+};
+```
+
+## Core Components
+
+### TimePicker
+
+The root component that provides context for all child components.
+
+**Props:**
+
+| Prop           | Type                              | Default     | Description                                                         |
+| -------------- | --------------------------------- | ----------- | ------------------------------------------------------------------- |
+| `defaultTime`  | `Date`                            | `undefined` | Default time to initialize scrollers (use `getTimePickerDateNow()`) |
+| `onTimeChange` | `(time: TimePickerValue) => void` | `undefined` | Callback called when time changes                                   |
+| `className`    | `string`                          | `undefined` | TailwindCSS class name (Tailwind/Hybrid only)                       |
+| `style`        | `StyleProp<ViewStyle>`            | `undefined` | StyleSheet styles                                                   |
+
+**TimePickerValue Type:**
+
+```typescript
+type TimePickerValue = {
+  hour?: number; // Selected hour (0-23)
+  minute?: number; // Selected minute (0-59)
+  second?: number; // Selected second (0-59)
+  formatted: string; // Formatted time string (e.g., "14:30:45")
+  date?: Date; // Date object in UTC
+};
+```
+
+### TimePickerContent
+
+Container that wraps TimePickerScroller components. Handles measurement and spacing.
+
+**Props:**
+
+| Prop        | Type                   | Default     | Description                                   |
+| ----------- | ---------------------- | ----------- | --------------------------------------------- |
+| `className` | `string`               | `undefined` | TailwindCSS class name (Tailwind/Hybrid only) |
+| `style`     | `StyleProp<ViewStyle>` | `undefined` | StyleSheet styles                             |
+
+### TimePickerScroller
+
+Animated scrolling picker for time values. Auto-generates data based on mode.
+
+**Props:**
+
+| Prop           | Type                             | Default     | Description                                           |
+| -------------- | -------------------------------- | ----------- | ----------------------------------------------------- |
+| `mode`         | `'hour' \| 'minute' \| 'second'` | `'hour'`    | Mode to determine data generation                     |
+| `interval`     | `number`                         | `1`         | Interval between values (e.g., 5 for every 5 minutes) |
+| `defaultValue` | `number`                         | `0`         | Initial value (will be rounded to nearest interval)   |
+| `data`         | `(string \| number)[]`           | `undefined` | Custom data array (overrides mode)                    |
+| `onChange`     | `(value: number) => void`        | `undefined` | Callback when value is selected                       |
+| `className`    | `string`                         | `undefined` | TailwindCSS class name (Tailwind/Hybrid only)         |
+| `style`        | `StyleProp<ViewStyle>`           | `undefined` | StyleSheet styles                                     |
+
+**Mode Behavior:**
+
+- `mode="hour"`: Generates 0-23 (24-hour format)
+- `mode="minute"`: Generates 0-59
+- `mode="second"`: Generates 0-59
+
+**Interval Examples:**
+
+- `interval={1}`: 0, 1, 2, 3... (default)
+- `interval={5}`: 0, 5, 10, 15, 20...
+- `interval={15}`: 0, 15, 30, 45
+
+### TimePickerItem
+
+Renders individual time values with animations. Used internally by TimePickerScroller.
+
+**Props:**
+
+| Prop          | Type          | Default     | Description                                   |
+| ------------- | ------------- | ----------- | --------------------------------------------- |
+| `className`   | `string`      | `undefined` | TailwindCSS class name (Tailwind/Hybrid only) |
+| `stringProps` | `StringProps` | `undefined` | Props to pass to the String component         |
+
+### TimePickerTitle
+
+Displays labels or separators between scrollers.
+
+**Props:**
+
+| Prop          | Type          | Default     | Description                     |
+| ------------- | ------------- | ----------- | ------------------------------- |
+| `children`    | `string`      | `undefined` | Text content (must be a string) |
+| `stringProps` | `StringProps` | `undefined` | Props for String component      |
+
+## Usage Examples
+
+### 1. Basic Time Picker
+
+```tsx
+<TimePicker onTimeChange={time => console.log(time.formatted)}>
+  <TimePickerContent>
+    <TimePickerScroller mode="hour">
+      <TimePickerItem />
+    </TimePickerScroller>
+    <TimePickerTitle>:</TimePickerTitle>
+    <TimePickerScroller mode="minute">
+      <TimePickerItem />
+    </TimePickerScroller>
+  </TimePickerContent>
+</TimePicker>
+```
+
+### 2. With Default Time
+
+```tsx
+// Use getTimePickerDateNow() to avoid timezone display issues
+<TimePicker defaultTime={getTimePickerDateNow()}>
+  <TimePickerContent>
+    <TimePickerScroller mode="hour">
+      <TimePickerItem />
+    </TimePickerScroller>
+    <TimePickerTitle>:</TimePickerTitle>
+    <TimePickerScroller mode="minute">
+      <TimePickerItem />
+    </TimePickerScroller>
+  </TimePickerContent>
+</TimePicker>
+```
+
+### 3. With Intervals
+
+```tsx
+// Minutes in 5-minute intervals (0, 5, 10, 15...)
+<TimePicker>
+  <TimePickerContent>
+    <TimePickerScroller mode="hour">
+      <TimePickerItem />
+    </TimePickerScroller>
+    <TimePickerTitle>:</TimePickerTitle>
+    <TimePickerScroller mode="minute" interval={5}>
+      <TimePickerItem />
+    </TimePickerScroller>
+  </TimePickerContent>
+</TimePicker>
+```
+
+### 4. Hours, Minutes, and Seconds
+
+```tsx
+<TimePicker defaultTime={getTimePickerDateNow()}>
+  <TimePickerContent>
+    <TimePickerScroller mode="hour">
+      <TimePickerItem />
+    </TimePickerScroller>
+    <TimePickerTitle>:</TimePickerTitle>
+    <TimePickerScroller mode="minute">
+      <TimePickerItem />
+    </TimePickerScroller>
+    <TimePickerTitle>:</TimePickerTitle>
+    <TimePickerScroller mode="second">
+      <TimePickerItem />
+    </TimePickerScroller>
+  </TimePickerContent>
+</TimePicker>
+```
+
+### 5. With Specific Default Values
+
+```tsx
+// Hour at 14, minute at 30
+<TimePicker>
+  <TimePickerContent>
+    <TimePickerScroller mode="hour" defaultValue={14}>
+      <TimePickerItem />
+    </TimePickerScroller>
+    <TimePickerTitle>:</TimePickerTitle>
+    <TimePickerScroller mode="minute" defaultValue={30}>
+      <TimePickerItem />
+    </TimePickerScroller>
+  </TimePickerContent>
+</TimePicker>
+```
+
+### 6. Custom Styling (Tailwind)
+
+```tsx
+<TimePicker className="rounded-xl bg-white p-4">
+  <TimePickerContent className="gap-2">
+    <TimePickerScroller mode="hour" className="rounded-lg bg-gray-100">
+      <TimePickerItem className="py-2" stringProps={{ className: 'text-blue-600 font-bold' }} />
+    </TimePickerScroller>
+    <TimePickerTitle className="text-2xl text-gray-400">:</TimePickerTitle>
+    <TimePickerScroller mode="minute" className="rounded-lg bg-gray-100">
+      <TimePickerItem className="py-2" stringProps={{ className: 'text-blue-600 font-bold' }} />
+    </TimePickerScroller>
+  </TimePickerContent>
+</TimePicker>
+```
+
+### 7. Custom Data
+
+```tsx
+// Custom values instead of numeric time
+<TimePicker>
+  <TimePickerContent>
+    <TimePickerScroller data={['Morning', 'Afternoon', 'Evening', 'Night']} onChange={value => console.log(value)}>
+      <TimePickerItem />
+    </TimePickerScroller>
+  </TimePickerContent>
+</TimePicker>
+```
+
+### 8. Only Minutes and Seconds
+
+```tsx
+// Timer/stopwatch style (no hours)
 <TimePicker
-  onTimeChange={setTime}
-  minuteInterval={15}
-/>
+  onTimeChange={time => console.log(time.formatted)} // Will output "25:30"
+>
+  <TimePickerContent>
+    <TimePickerScroller mode="minute">
+      <TimePickerItem />
+    </TimePickerScroller>
+    <TimePickerTitle>:</TimePickerTitle>
+    <TimePickerScroller mode="second">
+      <TimePickerItem />
+    </TimePickerScroller>
+  </TimePickerContent>
+</TimePicker>
 ```
 
 ## Advanced Usage
 
-### Custom Time Formatting
+### Working with Timezones
+
+The TimePicker returns a `Date` object in UTC to avoid timezone display confusion. Use `getTimePickerDateNow()` helper:
 
 ```tsx
-const [selectedTime, setSelectedTime] = useState('09:00');
+// ❌ WRONG - Will show timezone offset in logs
+<TimePicker defaultTime={new Date()}>
+  {/* Date: 2025-10-13T12:30:00.000Z (2 hours off for UTC+2) */}
+</TimePicker>
 
-const formatTime = (time: string) => {
-  const [hours, minutes] = time.split(':').map(Number);
-  const period = hours >= 12 ? 'PM' : 'AM';
-  const displayHours = hours % 12 || 12;
-  return `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`;
-};
-
-<Box className="p-4">
-  <String size="lg" weight="bold" className="mb-2">
-    Selected Time: {formatTime(selectedTime)}
-  </String>
-
-  <TimePicker
-    onTimeChange={setSelectedTime}
-    minuteInterval={15}
-    options={{
-      backgroundColor: '#ffffff',
-      mainColor: '#007AFF',
-      height: 250,
-    }}
-  />
-</Box>;
+// ✅ CORRECT - Shows actual time
+<TimePicker defaultTime={getTimePickerDateNow()}>
+  {/* Date: 2025-10-13T14:30:00.000Z (matches displayed time) */}
+</TimePicker>
 ```
 
-### Time Range Validation
+**Helper function usage:**
 
 ```tsx
-const [selectedTime, setSelectedTime] = useState('09:00');
-const [isValid, setIsValid] = useState(true);
+// Current time
+const now = getTimePickerDateNow();
 
-const validateTimeRange = (time: string) => {
-  const [hours, minutes] = time.split(':').map(Number);
-  const totalMinutes = hours * 60 + minutes;
+// Specific time
+const customTime = getTimePickerDateNow(14, 30); // 14:30
 
-  // Check if time is between 8:00 AM and 6:00 PM
-  const startMinutes = 8 * 60; // 8:00 AM
-  const endMinutes = 18 * 60; // 6:00 PM
-
-  return totalMinutes >= startMinutes && totalMinutes <= endMinutes;
-};
-
-<Box className="p-4">
-  <TimePicker
-    onTimeChange={time => {
-      const valid = validateTimeRange(time);
-      setIsValid(valid);
-      if (valid) {
-        setSelectedTime(time);
-      }
-    }}
-    minuteInterval={15}
-    options={{
-      backgroundColor: '#ffffff',
-      mainColor: isValid ? '#007AFF' : '#ff6b6b',
-      height: 250,
-    }}
-  />
-
-  {!isValid && (
-    <String size="sm" colorVariant="error" className="mt-2">
-      Please select a time between 8:00 AM and 6:00 PM
-    </String>
-  )}
-</Box>;
+// From existing Date
+const existingDate = new Date();
+const convertedDate = getTimePickerDateNow(existingDate);
 ```
 
-### Performance Optimization
-
-```tsx
-import React from 'react';
-import TimePicker from '@/components/timePicker/TimePicker';
-
-// Memoized time picker for performance
-const MemoizedTimePicker = React.memo(({ onTimeChange, minuteInterval, options }) => (
-  <TimePicker onTimeChange={onTimeChange} minuteInterval={minuteInterval} options={options} />
-));
-
-// Usage
-<MemoizedTimePicker
-  onTimeChange={setTime}
-  minuteInterval={15}
-  options={{
-    backgroundColor: '#ffffff',
-    mainColor: '#007AFF',
-    height: 250,
-  }}
-/>;
-```
-
-### Custom Animation Configuration
+### Handling Time Changes
 
 ```tsx
 <TimePicker
-  onTimeChange={setTime}
-  minuteInterval={15}
-  options={{
-    backgroundColor: '#ffffff',
-    mainColor: '#007AFF',
-    height: 250,
-    // Custom animation distances
-    daysAnimationDistance: 300,
-    headerAnimationDistance: 150,
-    // Custom fonts and sizes
-    defaultFont: 'Helvetica',
-    headerFont: 'Helvetica-Bold',
-    textFontSize: 18,
-    textHeaderFontSize: 20,
+  onTimeChange={time => {
+    // Formatted string for display
+    console.log(time.formatted); // "14:30:45"
+
+    // Individual values
+    console.log(time.hour); // 14
+    console.log(time.minute); // 30
+    console.log(time.second); // 45
+
+    // Date object for API calls
+    api.saveAppointment({ time: time.date });
+
+    // Custom formatting
+    const custom = `${time.hour}h${time.minute}`;
   }}
-/>
-```
-
-## Performance Considerations
-
-- **Animated Components**: Uses React Native Animated for smooth performance
-- **Efficient Rendering**: Optimized FlatList rendering with proper key extraction
-- **Memory Management**: Proper cleanup of animation listeners
-- **Gesture Handling**: Optimized scroll event handling with native driver
-
-## Accessibility
-
-The TimePicker component includes accessibility features:
-
-- **Screen reader support**: Proper accessibility labels and hints
-- **Gesture navigation**: Support for touch and scroll interactions
-- **Visual feedback**: Clear visual indicators for selected items
-- **Keyboard navigation**: Support for keyboard interactions
-
-### Accessibility Best Practices
-
-```tsx
-// Always provide accessibility context
-<Box
-  accessible={true}
-  accessibilityLabel="Time picker"
-  accessibilityHint="Scroll horizontally to select hours and minutes"
 >
-  <TimePicker
-    onTimeChange={setTime}
-    minuteInterval={15}
-    options={{
-      mainColor: '#007AFF',
-      textDefaultColor: '#333333',
-    }}
-  />
-</Box>
+  {/* ... */}
+</TimePicker>
+```
 
-// Use appropriate contrast ratios
+### Auto-Rounding with Intervals
+
+When using intervals, default values are automatically rounded to the nearest valid value:
+
+```tsx
+// If current time is 14:27
+<TimePicker defaultTime={getTimePickerDateNow()}>
+  <TimePickerContent>
+    <TimePickerScroller mode="hour">
+      <TimePickerItem />
+      {/* Shows: 14 */}
+    </TimePickerScroller>
+    <TimePickerScroller mode="minute" interval={5}>
+      <TimePickerItem />
+      {/* Shows: 25 (rounded from 27) */}
+    </TimePickerScroller>
+  </TimePickerContent>
+</TimePicker>
+```
+
+### Dynamic Format Based on Scrollers
+
+The `formatted` output adapts based on which scrollers are present:
+
+```tsx
+// Only hours → "14"
+<TimePickerScroller mode="hour">
+  <TimePickerItem />
+</TimePickerScroller>
+
+// Hours + Minutes → "14:30"
+<TimePickerScroller mode="hour"><TimePickerItem /></TimePickerScroller>
+<TimePickerScroller mode="minute"><TimePickerItem /></TimePickerScroller>
+
+// Hours + Minutes + Seconds → "14:30:45"
+<TimePickerScroller mode="hour"><TimePickerItem /></TimePickerScroller>
+<TimePickerScroller mode="minute"><TimePickerItem /></TimePickerScroller>
+<TimePickerScroller mode="second"><TimePickerItem /></TimePickerScroller>
+
+// Minutes + Seconds → "30:45"
+<TimePickerScroller mode="minute"><TimePickerItem /></TimePickerScroller>
+<TimePickerScroller mode="second"><TimePickerItem /></TimePickerScroller>
+```
+
+## TypeScript Support
+
+All components are fully typed:
+
+```typescript
+import type {
+  TimePickerValue,
+  TimePickerPropsTw,
+  TimePickerScrollerPropsTw,
+  TimePickerContentPropsTw,
+  TimePickerItemPropsTw,
+  TimePickerTitlePropsTw,
+} from 'react-native-chill-ui';
+
+// TimePickerValue structure
+const handleTimeChange = (time: TimePickerValue) => {
+  time.hour; // number | undefined
+  time.minute; // number | undefined
+  time.second; // number | undefined
+  time.formatted; // string
+  time.date; // Date | undefined
+};
+```
+
+## Styling Guide
+
+### Tailwind Version
+
+```tsx
+<TimePicker className="rounded-xl bg-white p-6 shadow-lg">
+  <TimePickerContent className="gap-4">
+    <TimePickerScroller mode="hour" className="rounded-lg bg-gray-50 px-4">
+      <TimePickerItem
+        className="py-3"
+        stringProps={{
+          className: 'text-blue-600 font-semibold text-xl',
+        }}
+      />
+    </TimePickerScroller>
+
+    <TimePickerTitle className="text-3xl font-bold text-gray-300">:</TimePickerTitle>
+
+    <TimePickerScroller mode="minute" className="rounded-lg bg-gray-50 px-4">
+      <TimePickerItem
+        className="py-3"
+        stringProps={{
+          className: 'text-blue-600 font-semibold text-xl',
+        }}
+      />
+    </TimePickerScroller>
+  </TimePickerContent>
+</TimePicker>
+```
+
+### StyleSheet Version
+
+```tsx
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+  },
+  content: {
+    gap: 16,
+  },
+  scroller: {
+    backgroundColor: '#f9fafb',
+    borderRadius: 8,
+    paddingHorizontal: 16,
+  },
+  item: {
+    paddingVertical: 12,
+  },
+});
+
+<TimePicker style={styles.container}>
+  <TimePickerContent style={styles.content}>
+    <TimePickerScroller mode="hour" style={styles.scroller}>
+      <TimePickerItem
+        style={styles.item}
+        stringProps={{
+          style: {
+            color: '#2563eb',
+            fontWeight: '600',
+            fontSize: 20,
+          },
+        }}
+      />
+    </TimePickerScroller>
+  </TimePickerContent>
+</TimePicker>;
+```
+
+## Performance Tips
+
+1. **Avoid inline functions in onChange**: Use `useCallback` for `onChange` handlers
+2. **Memoize custom data**: Use `useMemo` for custom data arrays
+3. **Limit intervals**: Smaller intervals mean more items to render
+4. **Default to necessary scrollers**: Only include scrollers you need
+
+```tsx
+// ✅ Good
+const handleTimeChange = useCallback((time: TimePickerValue) => {
+  saveTime(time);
+}, []);
+
+const customData = useMemo(() => ['Morning', 'Afternoon', 'Evening'], []);
+
+<TimePicker onTimeChange={handleTimeChange}>
+  <TimePickerContent>
+    <TimePickerScroller mode="hour">
+      <TimePickerItem />
+    </TimePickerScroller>
+    <TimePickerScroller mode="minute" interval={5}>
+      {' '}
+      {/* 12 items instead of 60 */}
+      <TimePickerItem />
+    </TimePickerScroller>
+  </TimePickerContent>
+</TimePicker>;
+```
+
+## Common Patterns
+
+### 1. Appointment Scheduler
+
+```tsx
+const [appointment, setAppointment] = useState<Date | null>(null);
+
 <TimePicker
-  onTimeChange={setTime}
-  minuteInterval={15}
-  options={{
-    backgroundColor: '#ffffff',
-    mainColor: '#007AFF',
-    textDefaultColor: '#333333',
-    selectedTextColor: '#ffffff',
-  }}
-/>
+  defaultTime={getTimePickerDateNow(9, 0)} // Start at 9:00 AM
+  onTimeChange={time => setAppointment(time.date)}
+>
+  <TimePickerContent>
+    <TimePickerScroller mode="hour">
+      <TimePickerItem />
+    </TimePickerScroller>
+    <TimePickerTitle>:</TimePickerTitle>
+    <TimePickerScroller mode="minute" interval={15}>
+      {' '}
+      {/* 15-min slots */}
+      <TimePickerItem />
+    </TimePickerScroller>
+  </TimePickerContent>
+</TimePicker>;
+```
+
+### 2. Alarm Clock
+
+```tsx
+const [alarmTime, setAlarmTime] = useState('');
+
+<TimePicker onTimeChange={time => setAlarmTime(time.formatted)}>
+  <TimePickerContent>
+    <TimePickerScroller mode="hour">
+      <TimePickerItem />
+    </TimePickerScroller>
+    <TimePickerTitle>:</TimePickerTitle>
+    <TimePickerScroller mode="minute">
+      <TimePickerItem />
+    </TimePickerScroller>
+  </TimePickerContent>
+</TimePicker>;
+```
+
+### 3. Timer/Stopwatch
+
+```tsx
+<TimePicker onTimeChange={time => setDuration(time.formatted)}>
+  <TimePickerContent>
+    <TimePickerScroller mode="minute">
+      <TimePickerItem />
+    </TimePickerScroller>
+    <TimePickerTitle>:</TimePickerTitle>
+    <TimePickerScroller mode="second">
+      <TimePickerItem />
+    </TimePickerScroller>
+  </TimePickerContent>
+</TimePicker>
+```
+
+## API Reference
+
+### Utilities
+
+#### `getTimePickerDateNow(source?, minute?, second?): Date`
+
+Helper function to create timezone-safe Date objects for TimePicker.
+
+**Parameters:**
+
+- `source` (optional): `Date | number` - Source Date object or hour value
+- `minute` (optional): `number` - Minute value when first param is hour
+- `second` (optional): `number` - Second value
+
+**Returns:** `Date` object with UTC time matching local time values
+
+**Examples:**
+
+```tsx
+// Current time
+const now = getTimePickerDateNow();
+
+// Specific hour and minute
+const time = getTimePickerDateNow(14, 30);
+
+// From existing Date
+const date = new Date();
+const converted = getTimePickerDateNow(date);
 ```
 
 ## Troubleshooting
 
-### Common Issues
+### Issue: Timezone offset in Date logs
 
-1. **Time not updating**: Check if onTimeChange callback is provided
-2. **Animations not working**: Verify React Native Animated is properly configured
-3. **Styling not applying**: Check options object structure and values
-4. **Performance issues**: Ensure proper memoization for frequently re-rendered components
-5. **Accessibility issues**: Add proper accessibility props to container
+**Problem:** Date shows wrong time in console (e.g., "12:30" when you selected "14:30")
 
-### Debug Example
+**Solution:** Use `getTimePickerDateNow()` helper function instead of `new Date()`
 
 ```tsx
-const [debugInfo, setDebugInfo] = useState({});
+// ❌ Wrong
+<TimePicker defaultTime={new Date()}>
 
-<TimePicker
-  onTimeChange={time => {
-    setSelectedTime(time);
-    setDebugInfo({
-      selectedTime: time,
-      timestamp: Date.now(),
-      minuteInterval: 15,
-    });
-  }}
-  minuteInterval={15}
-  options={{
-    backgroundColor: '#ffffff',
-    mainColor: '#007AFF',
-    height: 250,
-  }}
-/>;
-
-{
-  debugInfo.selectedTime && (
-    <Box className="mt-4 rounded bg-gray-100 p-4">
-      <String size="sm">Debug: {JSON.stringify(debugInfo)}</String>
-    </Box>
-  );
-}
+// ✅ Correct
+<TimePicker defaultTime={getTimePickerDateNow()}>
 ```
 
-## Migration from Other Libraries
+### Issue: Default value not showing
 
-### From react-native-wheel-picker
+**Problem:** Scroller doesn't scroll to `defaultValue`
+
+**Causes & Solutions:**
+
+1. **Value not in data range**
+
+   ```tsx
+   // ❌ Wrong - 70 is outside 0-59 range
+   <TimePickerScroller mode="minute" defaultValue={70}>
+
+   // ✅ Correct
+   <TimePickerScroller mode="minute" defaultValue={30}>
+   ```
+
+2. **Value doesn't match interval**
+   ```tsx
+   // Will auto-round: 27 → 25
+   <TimePickerScroller mode="minute" interval={5} defaultValue={27}>
+   ```
+
+### Issue: onTimeChange not firing
+
+**Problem:** Callback not being called
+
+**Solution:** Make sure `onTimeChange` is passed to `TimePicker`, not to scrollers
 
 ```tsx
-// Old (react-native-wheel-picker)
-<WheelPicker
-  selectedValue={selectedTime}
-  onValueChange={setSelectedTime}
-  style={styles.picker}
-/>
+// ❌ Wrong
+<TimePicker>
+  <TimePickerScroller mode="hour" onChange={...}>
 
-// New (TimePicker)
-<TimePicker
-  onTimeChange={setSelectedTime}
-  minuteInterval={15}
-  options={{
-    backgroundColor: '#ffffff',
-    mainColor: '#007AFF',
-    height: 250,
-  }}
-/>
+// ✅ Correct
+<TimePicker onTimeChange={...}>
+  <TimePickerScroller mode="hour">
 ```
 
-### From custom time picker implementation
+## Migration from Legacy TimePicker
+
+If you're using the old `TimePickerLegacy` component:
 
 ```tsx
-// Old (custom implementation)
-<View style={styles.container}>
-  <Picker selectedValue={hours} onValueChange={setHours}>
-    {hourOptions.map(hour => (
-      <Picker.Item key={hour} label={hour} value={hour} />
-    ))}
-  </Picker>
-  <Picker selectedValue={minutes} onValueChange={setMinutes}>
-    {minuteOptions.map(minute => (
-      <Picker.Item key={minute} label={minute} value={minute} />
-    ))}
-  </Picker>
-</View>
-
-// New (TimePicker)
-<TimePicker
-  onTimeChange={(time) => {
-    const [hours, minutes] = time.split(':');
-    setHours(parseInt(hours));
-    setMinutes(parseInt(minutes));
-  }}
-  minuteInterval={15}
+// Old API
+<TimePickerLegacy
+  onTimeChange={(time) => console.log(time)}
+  minuteInterval={5}
 />
+
+// New Composable API
+<TimePicker onTimeChange={(time) => console.log(time)}>
+  <TimePickerContent>
+    <TimePickerScroller mode="hour">
+      <TimePickerItem />
+    </TimePickerScroller>
+    <TimePickerTitle>:</TimePickerTitle>
+    <TimePickerScroller mode="minute" interval={5}>
+      <TimePickerItem />
+    </TimePickerScroller>
+  </TimePickerContent>
+</TimePicker>
 ```
+
+**Benefits of new API:**
+
+- More flexible (add/remove scrollers as needed)
+- Better performance (only render what you need)
+- Easier styling (target individual components)
+- More customizable (custom data, intervals per scroller)
+
+## License
+
+MIT © React Native Chill UI
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Support
+
+For issues and questions, please open an issue on our GitHub repository.

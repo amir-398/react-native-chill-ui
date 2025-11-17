@@ -1,91 +1,58 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 
 import UiPresentation from './storybook';
-import { String } from '../src/components';
-import PlacesInput from '../src/components/places-input/PlacesInput';
-import { AutocompleteDropdownContext } from '../src/components/AutocompleteDropdown';
+import { String, PlacesInput, PlaceInputContext } from '../src/components';
 
 const meta: Meta<typeof PlacesInput> = {
+  args: {
+    clearQueryOnSelect: false,
+    defaultOpen: false,
+    requiredCharactersBeforeSearch: 2,
+    requiredTimeBeforeSearch: 500,
+  },
   argTypes: {
     clearQueryOnSelect: {
-      control: 'boolean',
-      description: 'Whether to clear the input after selecting a place',
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
     },
-    customDropdownItem: {
-      control: 'object',
-      description: 'Custom render function for dropdown items',
-    },
-    dropdownItemProps: {
-      control: 'object',
-      description: 'Props for styling dropdown items',
-    },
-    dropdownListProps: {
-      control: 'object',
-      description: 'Additional props for the FlatList component',
-    },
-    dropdownProps: {
-      control: 'object',
-      description: 'Props for the dropdown container',
-    },
-    googleApiKey: {
-      control: 'text',
-      description: 'Google Places API key (required)',
-    },
-    inputProps: {
-      control: 'object',
-      description: 'Props for the input component',
-    },
-    isLoading: {
-      control: 'boolean',
-      description: 'Show loading indicator',
-    },
-    maxHeight: {
-      control: 'number',
-      description: 'Maximum height of the results list',
-    },
-    onChangeText: {
-      action: 'changed',
-      description: 'Callback when input text changes',
-    },
-    onSelect: {
-      action: 'selected',
-      description: 'Callback when a place is selected (with error handling)',
-    },
-    query: {
-      control: 'text',
-      description: 'External query value to control the input',
-    },
-    queryCountries: {
-      control: 'object',
-      description: 'List of country codes to restrict the search to',
+    defaultOpen: {
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
     },
     requiredCharactersBeforeSearch: {
-      control: 'number',
-      description: 'Minimum number of characters before triggering a search',
+      table: {
+        defaultValue: {
+          summary: 2,
+        },
+      },
     },
     requiredTimeBeforeSearch: {
-      control: 'number',
-      description: 'Delay in milliseconds before triggering a search (debounce)',
-    },
-    selectedValue: {
-      control: 'select',
-      description: 'Type of address component to display after selection',
-      options: ['longAddress', 'shortAddress', 'postal_code', 'locality', 'country', 'street_number', 'route'],
+      table: {
+        defaultValue: {
+          summary: 500,
+        },
+      },
     },
   },
   component: PlacesInput,
   decorators: [
     (Story: any) => (
-      <AutocompleteDropdownContext>
-        <UiPresentation className="items-start justify-center px-5">
+      <PlaceInputContext>
+        <UiPresentation>
           <Story />
         </UiPresentation>
-      </AutocompleteDropdownContext>
+      </PlaceInputContext>
     ),
   ],
-  title: 'components/Inputs/PlacesInput',
+  title: 'FORMS/PlacesInput',
 };
 
 export default meta;
@@ -182,13 +149,6 @@ export const CustomColors: Story = {
   },
 };
 
-export const ClearOnSelect: Story = {
-  args: {
-    ...Default.args,
-    clearQueryOnSelect: true,
-  },
-};
-
 export const CountryRestricted: Story = {
   args: {
     ...Default.args,
@@ -211,36 +171,6 @@ export const CustomRenderItem: Story = {
   },
 };
 
-export const AddressComponentExtraction: Story = {
-  args: {
-    ...Default.args,
-    inputProps: {
-      placeholder: 'Search for a city...',
-    },
-    selectedValue: 'locality',
-  },
-};
-
-export const PostalCodeExtraction: Story = {
-  args: {
-    ...Default.args,
-    inputProps: {
-      placeholder: 'Search for postal code...',
-    },
-    selectedValue: 'postal_code',
-  },
-};
-
-export const StreetAddressExtraction: Story = {
-  args: {
-    ...Default.args,
-    inputProps: {
-      placeholder: 'Search for street address...',
-    },
-    selectedValue: 'street_number',
-  },
-};
-
 export const FastSearch: Story = {
   args: {
     ...Default.args,
@@ -260,29 +190,5 @@ export const SlowSearch: Story = {
     },
     requiredCharactersBeforeSearch: 4,
     requiredTimeBeforeSearch: 2000,
-  },
-};
-
-export const CustomHeight: Story = {
-  args: {
-    ...Default.args,
-    inputProps: {
-      placeholder: 'Limited height dropdown...',
-    },
-    maxHeight: 150,
-  },
-};
-
-export const ErrorHandlingDemo: Story = {
-  args: {
-    ...Default.args,
-    googleApiKey: 'invalid-key-for-demo',
-    inputProps: {
-      placeholder: 'Demo with error handling...',
-    },
-    onSelect: (place: any) => {
-      action('onSelect')(place);
-      console.log('Selected place (may be fallback data):', place);
-    },
   },
 };

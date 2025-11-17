@@ -1,15 +1,17 @@
 import { render, screen } from '@testing-library/react-native';
 
 import { String } from '../../string';
-import { Box, BoxCenter } from '../components/Box';
+import { Box } from '../components/Box.ss';
+import { BoxCenter } from '../components/BoxCenter.ss';
 
 // Mock des utilitaires hybrid pour éviter les erreurs
-jest.mock('../../../utils/hybrid/classNameMissingError', () => ({
+jest.mock('../../../utils/hybrid/classNamePropsHandler', () => ({
   classNamePropsHandler: jest.fn(),
 }));
 
 jest.mock('../../../utils/hybrid/colorVariantPropsHandler', () => ({
   __esModule: true,
+  colorVariantPropsHandler: jest.fn(),
   default: jest.fn(),
 }));
 

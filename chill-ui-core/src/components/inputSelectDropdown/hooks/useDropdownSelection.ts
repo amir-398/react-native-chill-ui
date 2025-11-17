@@ -1,8 +1,8 @@
 import { FlatList } from 'react-native';
 import { useCallback, useEffect, useMemo } from 'react';
 
-import { DEFAULT_CONFIG } from '../types';
 import { get, debounce, isEqual, findIndex } from '../../../utils';
+import { inputSelectDropdownDefaultProps } from '../utils/defaultProps';
 
 interface DropdownSelectionParams {
   dataSet: any[];
@@ -52,7 +52,7 @@ export default function useDropdownSelection({
             console.warn(`scrollToIndex error: ${error}`);
           }
         }
-      }, DEFAULT_CONFIG.DEBOUNCE_DELAY),
+      }, inputSelectDropdownDefaultProps.debounceDelay),
     [dataSet?.length, listData, inputValue, valueField, refList],
   );
 

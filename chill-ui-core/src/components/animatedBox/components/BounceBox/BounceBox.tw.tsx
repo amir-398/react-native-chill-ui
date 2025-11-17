@@ -3,44 +3,35 @@ import type { BounceBoxPropsTw, BounceBoxRefTw } from '@types';
 import { Animated } from 'react-native';
 import { useRef, useEffect, useCallback, useImperativeHandle, forwardRef, PropsWithChildren } from 'react';
 
-import AnimatedBox from '../animatedBox/AnimatedBox.tw';
+import { AnimatedBox } from '../animatedBox/AnimatedBox.tw';
 
 /**
- * BounceBox - Playful bounce animation component
+ * The `<BounceBox />` component creates a playful bounce animation effect for its children.
  *
- * Creates an attention-grabbing bounce effect by animating vertical translation. Perfect for
- * notifications, call-to-action elements, or any content that needs to catch the user's eye.
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { BounceBox } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic auto-bouncing notification
  * <BounceBox autoStart infiniteLoop bounceHeight={15} className="bg-red-500 p-4 rounded-full">
  *   <String className="text-white font-bold">New Message!</String>
  * </BounceBox>
- *
- * // Custom bounce timing and height
- * <BounceBox
- *   autoStart
- *   bounceHeight={30}
- *   bounceInterval={1500}
- *   infiniteLoop
- *   className="bg-orange-500 p-3 rounded-lg"
- * >
- *   <Icon name="bell" className="text-white" />
- * </BounceBox>
  * ```
  *
- * @param bounceHeight - Height of bounce in pixels (default: 20)
- * @param bounceInterval - Time between bounces in milliseconds (default: 2000)
- * @param autoStart - Automatically start animation when component mounts (default: false)
- * @param duration - Single bounce duration in milliseconds (default: 400)
- * @param infiniteLoop - Loop animation continuously (default: false)
- * @param onBounce - Callback function called on each bounce
+ * @param children - Content to be rendered inside the bouncing container
  * @param className - CSS classes for NativeWind styling
+ * @param bounceHeight - Height of bounce in pixels (default: `20`)
+ * @param bounceInterval - Time between bounces in milliseconds (default: `2000`)
+ * @param autoStart - Automatically start animation when component mounts (default: `false`)
+ * @param duration - Duration of the bounce animation in milliseconds (default: `400`)
+ * @param infiniteLoop - Loop animation continuously (default: `false`)
+ * @param onBounce - Callback function called on each bounce
  * @param style - Inline styles for traditional styling or style overrides
- * @param children - Content to be animated
  * @param ref - Ref for manual animation control (bounce, start, stop methods)
- * @returns Animated component with bouncing effect
+ * @param AnimatedBoxProps - Any other props accepted by the `AnimatedBox` component
  */
 const BounceBox = forwardRef<BounceBoxRefTw, PropsWithChildren<BounceBoxPropsTw>>((props, ref) => {
   const {

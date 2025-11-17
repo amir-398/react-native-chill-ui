@@ -1,93 +1,12 @@
 import type { RipplePressablePropsTw } from '@types';
 
 import { cn } from '@utils';
-import { AnimatedBoxTw } from '@components/animatedBox';
-import { View, Animated, Pressable } from 'react-native';
-import { useState, useRef, useEffect, PropsWithChildren, Children, isValidElement } from 'react';
+import { View, Pressable } from 'react-native';
+import { useState, useRef, PropsWithChildren } from 'react';
 
-/**
- * Individual ripple effect component using native Animated API
- */
-interface RippleEffectProps {
-  x: number;
-  y: number;
-  duration: number;
-  effectColor: string;
-  containerWidth: number;
-  containerHeight: number;
-}
-
-function RippleEffect({ containerHeight, containerWidth, duration, effectColor, x, y }: RippleEffectProps) {
-  const scaleAnim = useRef(new Animated.Value(0)).current;
-  const opacityAnim = useRef(new Animated.Value(0.6)).current;
-
-  const distanceToCorners = [
-    Math.sqrt(x * x + y * y), // Top-left
-    Math.sqrt((containerWidth - x) * (containerWidth - x) + y * y), // Top-right
-    Math.sqrt(x * x + (containerHeight - y) * (containerHeight - y)), // Bottom-left
-    Math.sqrt((containerWidth - x) * (containerWidth - x) + (containerHeight - y) * (containerHeight - y)), // Bottom-right
-  ];
-
-  const maxDistance = Math.max(...distanceToCorners);
-
-  const baseSize = 20;
-  const finalScale = (maxDistance * 2.2) / baseSize;
-
-  useEffect(() => {
-    Animated.parallel([
-      Animated.timing(scaleAnim, {
-        duration,
-        toValue: finalScale,
-        useNativeDriver: true,
-      }),
-      Animated.timing(opacityAnim, {
-        delay: Math.round(duration * 0.3),
-        duration: Math.round(duration * 0.9),
-        toValue: 0,
-        useNativeDriver: true,
-      }),
-    ]).start();
-  }, [scaleAnim, opacityAnim, finalScale, duration]);
-
-  return (
-    <AnimatedBoxTw
-      style={{
-        backgroundColor: effectColor,
-        borderRadius: baseSize / 2,
-        height: baseSize,
-        left: x - baseSize / 2,
-        opacity: opacityAnim,
-        pointerEvents: 'none',
-        position: 'absolute',
-        top: y - baseSize / 2,
-        transform: [{ scale: scaleAnim }],
-        width: baseSize,
-      }}
-    />
-  );
-}
-
-/**
- * Utility function to extract borderRadius from children styles
- */
-function extractBorderRadius(children: React.ReactNode): number {
-  if (!children) return 0;
-
-  const firstChild = Children.toArray(children)[0];
-  if (!isValidElement(firstChild)) return 0;
-
-  const { style } = firstChild.props as { style?: any };
-  if (!style) return 0;
-
-  // Handle array of styles
-  if (Array.isArray(style)) {
-    const styleWithBorderRadius = style.find(styleObj => styleObj?.borderRadius);
-    return styleWithBorderRadius?.borderRadius || 0;
-  }
-
-  // Handle single style object
-  return style.borderRadius || 0;
-}
+import { RippleEffect } from './RippleEffect.tw';
+import { extractBorderRadius } from '../utils/extractBorder';
+import { twStyles } from '../styles/RipplePressable.tw.styles';
 
 /**
  * RipplePressable component that provides a ripple effect on press.
@@ -99,18 +18,6 @@ function extractBorderRadius(children: React.ReactNode): number {
  *   <Box className="p-4 bg-blue-500 rounded-lg">
  *     <String color="white">Press me</String>
  *   </Box>
- * </RipplePressable>
- *
- * // With custom styling and speed
- * <RipplePressable
- *   className="bg-red-500 p-6 rounded-xl"
- *   effectColor="rgba(255, 255, 255, 0.8)"
- *   speed={300}
- *   onPress={() => handleButtonPress()}
- * >
- *   <String color="white" className="text-center font-bold">
- *     Fast Ripple Button
- *   </String>
  * </RipplePressable>
  * ```
  *
@@ -188,14 +95,15 @@ function RipplePressable(props: PropsWithChildren<RipplePressablePropsTw>) {
 
   return (
     <Pressable
+      {...rest}
       ref={containerRef}
       onPress={handlePress}
       disabled={disabled}
-      className={cn('self-start overflow-hidden', disabled && 'opacity-50', className)}
-      style={[{ borderRadius: childBorderRadius }, style]}
-      {...rest}
+      className={cn(twStyles.container, disabled && twStyles.disabled, className)}
+      style={[...(childBorderRadius > 0 ? [{ borderRadius: childBorderRadius }] : []), style]}
     >
       {children}
+
       {!disabled &&
         ripples.map(ripple => (
           <RippleEffect

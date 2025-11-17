@@ -1,5 +1,5 @@
+import './global.css';
 import { useFonts } from 'expo-font';
-import { String, BoxCenter } from 'react-native-chill-ui';
 import {
   Poppins_700Bold,
   Poppins_800ExtraBold,
@@ -23,14 +23,21 @@ import {
   Montserrat_100Thin,
 } from '@expo-google-fonts/montserrat';
 
-// Import global.css only if NativeWind is available
-try {
-  require('nativewind');
-  require('./global.css');
-} catch {
-  // NativeWind is not available, skip CSS import
-  console.log('NativeWind not available, skipping global.css import');
-}
+export const ICONS = {
+  amir: {
+    path: [
+      'M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z',
+    ],
+    viewBox: '0 0 384 512',
+  },
+  meberbeche: {
+    path: [
+      'M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z',
+    ],
+    viewBox: '0 0 512 512',
+  },
+} as const;
+export type TIcons = typeof ICONS;
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -53,26 +60,9 @@ export default function App() {
     secondary_semi_bold_font: Montserrat_600SemiBold,
     secondary_thin_font: Montserrat_100Thin,
   });
-
   if (!fontsLoaded) {
-    return null; // ou un composant de chargement
+    return null;
   }
-  // @ts-ignore
-  // eslint-disable-next-line
-  // const StorybookUIRoot = view.getStorybookUI({
-  //   storage: {
-  //     getItem(key: string) {
-  //       return AsyncStorage.getItem(key);
-  //     },
-  //     setItem(key: string, value: string) {
-  //       return AsyncStorage.setItem(key, value);
-  //     },
-  //   },
-  // });
 
-  return (
-    <BoxCenter style={{ marginTop: 100 }}>
-      <String>Hello, World!</String>
-    </BoxCenter>
-  );
+  return null;
 }

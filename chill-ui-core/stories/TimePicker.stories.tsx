@@ -1,197 +1,334 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { action } from '@storybook/addon-actions';
+import { fn } from 'storybook/test';
 
-import { Box } from '../src/components';
 import UiPresentation from './storybook/UiPresentation';
-import { TimePicker } from '../src/components/timePicker';
+import {
+  TimePickerTw as TimePicker,
+  TimePickerContentTw as TimePickerContent,
+  TimePickerTitleTw as TimePickerTitle,
+  TimePickerItemTw as TimePickerItem,
+  TimePickerScrollerTw as TimePickerScroller,
+  SeparatorTw as Separator,
+} from '../src/components';
 
 const meta: Meta<typeof TimePicker> = {
+  args: {
+    onTimeChange: fn()('onTimeChange'),
+  },
   argTypes: {
-    configs: {
-      control: 'object',
-      description: 'Additional configuration options',
-    },
-    current: {
+    // TimePicker Props
+    className: {
       control: 'text',
-      description: 'Current time value',
+      description: 'Custom CSS classes for styling (Nativewind only)',
+      table: {
+        category: 'TimePicker Props',
+        type: { summary: 'string' },
+      },
     },
-    minuteInterval: {
-      control: 'select',
-      description: 'Interval between minutes',
-      options: [1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60],
+    defaultTime: {
+      control: 'object',
+      description: 'Default time as Date object (use createTimePickerDate() helper to avoid timezone display issues)',
+      table: {
+        category: 'TimePicker Props',
+        type: { summary: 'Date' },
+      },
     },
     onTimeChange: {
       action: 'onTimeChange',
-      description: 'Callback when time changes',
-    },
-    options: {
-      control: 'object',
-      description: 'Custom styling options',
+      description:
+        'Callback function called when time changes (returns TimePickerValue object with hour, minute, second, formatted string, and Date object)',
       table: {
-        type: {
-          detail: `{
-  backgroundColor: string;
-  textHeaderColor: string;
-  textDefaultColor: string;
-  selectedTextColor: string;
-  mainColor: string;
-  textSecondaryColor: string;
-  borderColor: string;
-  defaultFont: string;
-  headerFont: string;
-  textFontSize: number;
-  textHeaderFontSize: number;
-  headerAnimationDistance: number;
-  daysAnimationDistance: number;
-  height: number;
-}`,
-          summary: 'object',
-        },
+        category: 'TimePicker Props',
+        type: { summary: '(time: TimePickerValue) => void' },
       },
-    },
-    selected: {
-      control: 'text',
-      description: 'Selected time value',
     },
     style: {
       control: 'object',
       description: 'Custom styles for the TimePicker',
+      table: {
+        category: 'TimePicker Props',
+        type: { summary: 'StyleProp<ViewStyle>' },
+      },
+    },
+    ViewProps: {
+      control: 'object',
+      description: 'Accept all View props',
+      table: {
+        category: 'TimePicker Props',
+      },
+    },
+
+    // TimePickerScroller Props
+    'className²': {
+      control: 'text',
+      description: 'Custom CSS classes for styling (Nativewind only)',
+      table: {
+        category: 'TimePickerScroller Props',
+        type: { summary: 'string' },
+      },
+    },
+    data: {
+      control: 'object',
+      description: 'Array of data to display in the scroller',
+      table: {
+        category: 'TimePickerScroller Props',
+        type: { summary: '(string | number)[]' },
+      },
+    },
+    defaultValue: {
+      control: 'number',
+      description: 'Default value for the scroller',
+      table: {
+        category: 'TimePickerScroller Props',
+        type: { summary: 'number' },
+      },
+    },
+    interval: {
+      control: 'number',
+      description: 'Interval for the scroller (e.g., 5 for 5-minute intervals)',
+      table: {
+        category: 'TimePickerScroller Props',
+        type: { summary: 'number' },
+      },
+    },
+    mode: {
+      control: 'select',
+      description: 'Mode for the scroller (hour, minute, or second)',
+      options: ['hour', 'minute', 'second'],
+      table: {
+        category: 'TimePickerScroller Props',
+        type: { summary: "'hour' | 'minute' | 'second'" },
+      },
+    },
+    onChange: {
+      action: 'onChange',
+      description: 'Callback function called when the value changes',
+      table: {
+        category: 'TimePickerScroller Props',
+        type: { summary: '(value: number) => void' },
+      },
+    },
+    'style⁴': {
+      control: 'object',
+      description: 'Custom styling for the scroller',
+      table: {
+        category: 'TimePickerScroller Props',
+        type: { summary: 'StyleProp<ViewStyle>' },
+      },
+    },
+
+    // TimePickerContent Props
+    'className³': {
+      control: 'text',
+      description: 'Custom CSS classes for styling (Nativewind only)',
+      table: {
+        category: 'TimePickerContent Props',
+        type: { summary: 'string' },
+      },
+    },
+    'style²': {
+      control: 'object',
+      description: 'Custom styling for the content container',
+      table: {
+        category: 'TimePickerContent Props',
+        type: { summary: 'StyleProp<ViewStyle>' },
+      },
+    },
+    'ViewProps²': {
+      control: 'object',
+      description: 'Accept all View props',
+      table: {
+        category: 'TimePickerContent Props',
+      },
+    },
+
+    // TimePickerItem Props
+    'className⁴': {
+      control: 'text',
+      description: 'Custom CSS classes for styling (Nativewind only)',
+      table: {
+        category: 'TimePickerItem Props',
+        type: { summary: 'string' },
+      },
+    },
+    stringProps: {
+      control: 'object',
+      description: 'Accept all String props',
+      table: {
+        category: 'TimePickerItem Props',
+        type: { summary: 'StringProps' },
+      },
+    },
+    'style³': {
+      control: 'object',
+      description: 'Custom styling for the item',
+      table: {
+        category: 'TimePickerItem Props',
+        type: { summary: 'StyleProp<ViewStyle>' },
+      },
     },
   },
   component: TimePicker,
   decorators: [
     (Story: any) => (
       <UiPresentation>
-        <Box className="w-full p-4">
-          <Story />
-        </Box>
+        <Story />
       </UiPresentation>
     ),
   ],
-  title: 'components/TimePicker',
+  subcomponents: {
+    TimePickerContent,
+    TimePickerScroller,
+    TimePickerTitle,
+  },
+  title: 'FORMS/TimePicker',
 };
 
 export default meta;
 type Story = StoryObj<typeof TimePicker>;
 
 export const Default: Story = {
-  args: {
-    current: '12:00',
-    minuteInterval: 5,
-    onTimeChange: action('onTimeChange'),
-    options: {
-      backgroundColor: '#ffffff',
-      borderColor: '#e0e0e0',
-      daysAnimationDistance: 20,
-      defaultFont: 'System',
-      headerAnimationDistance: 20,
-      headerFont: 'System',
-      height: 250,
-      mainColor: '#007AFF',
-      selectedTextColor: '#000000',
-      textDefaultColor: '#333333',
-      textFontSize: 16,
-      textHeaderColor: '#000000',
-      textHeaderFontSize: 18,
-      textSecondaryColor: '#666666',
-    },
-    selected: '12:00',
-  },
-};
-
-export const CustomInterval: Story = {
-  args: {
-    current: '09:30',
-    minuteInterval: 15,
-    onTimeChange: action('onTimeChange'),
-    options: {
-      backgroundColor: '#ffffff',
-      borderColor: '#e0e0e0',
-      daysAnimationDistance: 20,
-      defaultFont: 'System',
-      headerAnimationDistance: 20,
-      headerFont: 'System',
-      height: 250,
-      mainColor: '#007AFF',
-      selectedTextColor: '#000000',
-      textDefaultColor: '#333333',
-      textFontSize: 16,
-      textHeaderColor: '#000000',
-      textHeaderFontSize: 18,
-      textSecondaryColor: '#666666',
-    },
-    selected: '09:30',
-  },
   parameters: {
     docs: {
       description: {
-        story: 'TimePicker with 15-minute intervals',
+        story: 'Basic time picker with hours and minutes in 24h format',
       },
     },
   },
+  render: (_args: any) => (
+    <TimePicker onTimeChange={fn()('onTimeChange')}>
+      <TimePickerContent name="hour">
+        <TimePickerTitle>Hours</TimePickerTitle>
+        <TimePickerScroller mode="hour">
+          <TimePickerItem />
+        </TimePickerScroller>
+      </TimePickerContent>
+
+      <Separator />
+
+      <TimePickerContent name="minute">
+        <TimePickerTitle>Minutes</TimePickerTitle>
+        <TimePickerScroller mode="minute">
+          <TimePickerItem />
+        </TimePickerScroller>
+      </TimePickerContent>
+    </TimePicker>
+  ),
+};
+
+export const WithSeconds: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Time picker with hours, minutes, and seconds',
+      },
+    },
+  },
+  render: (_args: any) => (
+    <TimePicker onTimeChange={fn()('onTimeChange')}>
+      <TimePickerContent name="hour">
+        <TimePickerTitle>H</TimePickerTitle>
+        <TimePickerScroller mode="hour">
+          <TimePickerItem />
+        </TimePickerScroller>
+      </TimePickerContent>
+
+      <Separator />
+
+      <TimePickerContent name="minute">
+        <TimePickerTitle>M</TimePickerTitle>
+        <TimePickerScroller mode="minute">
+          <TimePickerItem />
+        </TimePickerScroller>
+      </TimePickerContent>
+
+      <Separator />
+
+      <TimePickerContent name="second">
+        <TimePickerTitle>S</TimePickerTitle>
+        <TimePickerScroller mode="second">
+          <TimePickerItem />
+        </TimePickerScroller>
+      </TimePickerContent>
+    </TimePicker>
+  ),
 };
 
 export const CustomStyling: Story = {
-  args: {
-    current: '14:45',
-    minuteInterval: 5,
-    onTimeChange: action('onTimeChange'),
-    options: {
-      backgroundColor: '#f0f0f0',
-      borderColor: '#e0e0e0',
-      daysAnimationDistance: 20,
-      defaultFont: 'System',
-      headerAnimationDistance: 20,
-      headerFont: 'System',
-      height: 250,
-      mainColor: '#4CAF50',
-      selectedTextColor: '#4CAF50',
-      textDefaultColor: '#333333',
-      textFontSize: 16,
-      textHeaderColor: '#4CAF50',
-      textHeaderFontSize: 18,
-      textSecondaryColor: '#666666',
-    },
-    selected: '14:45',
-  },
   parameters: {
     docs: {
       description: {
-        story: 'TimePicker with custom colors and typography',
+        story: 'Time picker with custom gradient styling and transparency effects',
       },
     },
   },
+  render: () => (
+    <TimePicker className="rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 p-6 shadow-xl">
+      <TimePickerContent name="hour" className="mx-2">
+        <TimePickerTitle className="text-sm font-bold uppercase text-white">Hours</TimePickerTitle>
+        <TimePickerScroller mode="hour" className="rounded-lg bg-white/20 backdrop-blur">
+          <TimePickerItem />
+        </TimePickerScroller>
+      </TimePickerContent>
+
+      <Separator className="text-3xl font-bold text-white">:</Separator>
+
+      <TimePickerContent name="minute" className="mx-2">
+        <TimePickerTitle className="text-sm font-bold uppercase text-white">Minutes</TimePickerTitle>
+        <TimePickerScroller mode="minute" className="rounded-lg bg-white/20 backdrop-blur">
+          <TimePickerItem />
+        </TimePickerScroller>
+      </TimePickerContent>
+    </TimePicker>
+  ),
 };
 
-export const DarkTheme: Story = {
-  args: {
-    current: '20:15',
-    minuteInterval: 5,
-    onTimeChange: action('onTimeChange'),
-    options: {
-      backgroundColor: '#1a1a1a',
-      borderColor: '#333333',
-      daysAnimationDistance: 20,
-      defaultFont: 'System',
-      headerAnimationDistance: 20,
-      headerFont: 'System',
-      height: 250,
-      mainColor: '#61dafb',
-      selectedTextColor: '#61dafb',
-      textDefaultColor: '#ffffff',
-      textFontSize: 16,
-      textHeaderColor: '#61dafb',
-      textHeaderFontSize: 18,
-      textSecondaryColor: '#999999',
-    },
-    selected: '20:15',
-  },
+export const FiveMinuteIntervals: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'TimePicker with dark theme colors',
+        story: 'Time picker with 5-minute intervals',
       },
     },
   },
+  render: () => (
+    <TimePicker onTimeChange={fn()('onTimeChange')}>
+      <TimePickerContent name="hour">
+        <TimePickerTitle>Hours</TimePickerTitle>
+        <TimePickerScroller mode="hour">
+          <TimePickerItem />
+        </TimePickerScroller>
+      </TimePickerContent>
+
+      <Separator />
+
+      <TimePickerContent name="minute">
+        <TimePickerTitle>Minutes (5 min)</TimePickerTitle>
+        <TimePickerScroller mode="minute" interval={5}>
+          <TimePickerItem />
+        </TimePickerScroller>
+      </TimePickerContent>
+    </TimePicker>
+  ),
+};
+
+export const HourOnly: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Time picker with only hour selection',
+      },
+    },
+  },
+  render: () => (
+    <TimePicker onTimeChange={fn()('onTimeChange')}>
+      <TimePickerContent name="hour">
+        <TimePickerTitle>Select Hour</TimePickerTitle>
+        <TimePickerScroller mode="hour">
+          <TimePickerItem />
+        </TimePickerScroller>
+      </TimePickerContent>
+    </TimePicker>
+  ),
 };

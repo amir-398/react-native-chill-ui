@@ -3,40 +3,41 @@ import type { FadeInBoxPropsSs, FadeInBoxRefSs } from '@types';
 import { Animated } from 'react-native';
 import { useRef, useEffect, useImperativeHandle, forwardRef, useCallback, PropsWithChildren } from 'react';
 
-import AnimatedBox from '../animatedBox/AnimatedBox.ss';
+import { AnimatedBox } from '../animatedBox/AnimatedBox.ss';
 
 /**
- * FadeInBox - Smooth fade-in animation component
+ * The `<FadeInBox />` component creates a smooth fade-in animation for its children.
  *
- * Creates a beautiful fade-in effect by animating opacity from 0 to 1. Perfect for revealing
- * content with elegant transitions. Supports both automatic and manual control with ref methods.
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { FadeInBox } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic auto-start fade in
- * <FadeInBox autoStart style={{ backgroundColor: 'blue', padding: 24, borderRadius: 8 }}>
- *   <String style={{ color: 'white' }}>Fading in automatically</String>
- * </FadeInBox>
- *
- * // With custom timing and delay
  * <FadeInBox
  *   autoStart
- *   duration={1500}
- *   delay={800}
- *   style={{ backgroundColor: 'green', padding: 16, borderRadius: 12 }}
+ *   style={{
+ *     backgroundColor: 'blue',
+ *     padding: 24,
+ *     borderRadius: 8,
+ *     alignItems: 'center',
+ *     justifyContent: 'center'
+ *   }}
  * >
- *   <String style={{ color: 'white' }}>Delayed smooth fade</String>
+ *   <String style={{ color: 'white' }}>Fading in automatically</String>
  * </FadeInBox>
  * ```
  *
- * @param autoStart - Automatically start animation when component mounts (default: false)
- * @param duration - Animation duration in milliseconds (default: 1000)
- * @param delay - Delay before starting animation in milliseconds (default: 0)
- * @param infiniteLoop - Loop animation continuously (default: false)
- * @param style - Inline styles for traditional styling or style overrides
+ * @param autoStart - Automatically start animation when component mounts (default: `false`)
+ * @param duration - Animation duration in milliseconds (default: `1000`)
+ * @param delay - Delay before starting animation in milliseconds (default: `0`)
+ * @param infiniteLoop - Loop animation continuously (default: `false`)
  * @param children - Content to be animated
+ * @param style - Inline styles for traditional styling or style overrides
  * @param ref - Ref for manual animation control (start, stop methods)
- * @returns Animated component with fade-in effect
+ * @param AnimatedBoxProps - Any other props accepted by the `AnimatedBox` component
  */
 const FadeInBox = forwardRef<FadeInBoxRefSs, PropsWithChildren<FadeInBoxPropsSs>>((props, ref) => {
   const { autoStart = false, children, delay = 0, duration = 1000, infiniteLoop = false, style, ...rest } = props;

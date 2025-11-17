@@ -1,46 +1,50 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { View } from 'react-native';
-
-import Chip from '../src/components/chip/Chip';
+import { BoxTw as Box, ChipTw as Chip } from '../src/components';
 
 const meta: Meta<typeof Chip> = {
+  args: {
+    as: 'touchable-opacity',
+    colorVariant: 'primary',
+    position: 'left',
+    size: 'xs',
+    variant: 'contained',
+  },
   argTypes: {
+    as: {
+      table: {
+        defaultValue: {
+          summary: 'touchable-opacity',
+        },
+      },
+    },
     colorVariant: {
-      control: { type: 'select' },
-      options: [
-        'primary',
-        'secondary',
-        'accent',
-        'danger',
-        'error',
-        'warning',
-        'info',
-        'success',
-        'neutral',
-        'muted',
-        'light',
-        'dark',
-        'inverted',
-        'white',
-        'disabled',
-      ],
+      table: {
+        defaultValue: {
+          summary: 'primary',
+        },
+      },
     },
     position: {
-      control: { type: 'select' },
-      options: ['left', 'center', 'right'],
-    },
-    rounded: {
-      control: { type: 'select' },
-      options: ['sm', 'md', 'lg', 'xl', '2xl', '3xl', 'full'],
+      table: {
+        defaultValue: {
+          summary: 'left',
+        },
+      },
     },
     size: {
-      control: { type: 'select' },
-      options: ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '2xs', '3xl'],
+      table: {
+        defaultValue: {
+          summary: 'xs',
+        },
+      },
     },
     variant: {
-      control: { type: 'select' },
-      options: ['contained', 'outlined'],
+      table: {
+        defaultValue: {
+          summary: 'contained',
+        },
+      },
     },
   },
   component: Chip,
@@ -48,38 +52,36 @@ const meta: Meta<typeof Chip> = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  title: 'Components/Chip',
+  title: 'DATA DISPLAY/Chip',
 };
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {
-    children: 'Default Chip',
-    colorVariant: 'primary',
-    rounded: 'full',
-    size: 'md',
-    variant: 'contained',
-  },
+  render: (_args: any) => (
+    <Chip colorVariant="primary" variant="contained">
+      Default Chip
+    </Chip>
+  ),
 };
 
 export const Variants: Story = {
-  render: () => (
-    <View style={{ alignItems: 'center', gap: 16 }}>
+  render: (_args: any) => (
+    <Box style={{ alignItems: 'center', gap: 16 }}>
       <Chip variant="contained" size="md">
         Contained
       </Chip>
       <Chip variant="outlined" size="md">
         Outlined
       </Chip>
-    </View>
+    </Box>
   ),
 };
 
 export const ColorVariants: Story = {
-  render: () => (
-    <View style={{ alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
+  render: (_args: any) => (
+    <Box style={{ alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
       <Chip colorVariant="primary" size="md">
         Primary
       </Chip>
@@ -122,13 +124,13 @@ export const ColorVariants: Story = {
       <Chip colorVariant="disabled" size="md">
         Disabled
       </Chip>
-    </View>
+    </Box>
   ),
 };
 
 export const OutlinedColorVariants: Story = {
-  render: () => (
-    <View style={{ alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
+  render: (_args: any) => (
+    <Box style={{ alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
       <Chip variant="outlined" colorVariant="primary" size="md">
         Primary
       </Chip>
@@ -171,37 +173,25 @@ export const OutlinedColorVariants: Story = {
       <Chip variant="outlined" colorVariant="disabled" size="md">
         Disabled
       </Chip>
-    </View>
+    </Box>
   ),
 };
 
 export const Sizes: Story = {
-  render: () => (
-    <View style={{ alignItems: 'center', gap: 12 }}>
+  render: (_args: any) => (
+    <Box style={{ alignItems: 'center', gap: 12 }}>
       <Chip size="xs">Extra Small</Chip>
       <Chip size="sm">Small</Chip>
       <Chip size="md">Medium</Chip>
       <Chip size="lg">Large</Chip>
       <Chip size="xl">Extra Large</Chip>
-    </View>
-  ),
-};
-
-export const BorderRadius: Story = {
-  render: () => (
-    <View style={{ alignItems: 'center', gap: 12 }}>
-      <Chip rounded="sm">Small Radius</Chip>
-      <Chip rounded="md">Medium Radius</Chip>
-      <Chip rounded="lg">Large Radius</Chip>
-      <Chip rounded="xl">Extra Large Radius</Chip>
-      <Chip rounded="full">Full Radius (default)</Chip>
-    </View>
+    </Box>
   ),
 };
 
 export const CustomColors: Story = {
-  render: () => (
-    <View style={{ alignItems: 'center', gap: 12 }}>
+  render: (_args: any) => (
+    <Box style={{ alignItems: 'center', gap: 12 }}>
       <Chip variant="contained" color="#3B82F6">
         Blue
       </Chip>
@@ -214,38 +204,13 @@ export const CustomColors: Story = {
       <Chip variant="outlined" color="#F59E0B">
         Yellow
       </Chip>
-    </View>
-  ),
-};
-
-export const WithIcons: Story = {
-  render: () => (
-    <View style={{ alignItems: 'center', gap: 16 }}>
-      <Chip
-        variant="contained"
-        iconActions={[{ iconColor: '#FFD700', iconName: 'star-solid', position: 'left' }]}
-        size="lg"
-        rounded="full"
-      />
-      <Chip
-        variant="outlined"
-        iconActions={[{ iconColor: '#10B981', iconName: 'check-solid', position: 'left' }]}
-        size="lg"
-        rounded="full"
-      />
-      <Chip
-        variant="contained"
-        iconActions={[{ iconColor: '#FFFFFF', iconName: 'bell-solid', position: 'left' }]}
-        size="md"
-        rounded="md"
-      />
-    </View>
+    </Box>
   ),
 };
 
 export const WithLeftAndRightIcons: Story = {
-  render: () => (
-    <View style={{ alignItems: 'center', gap: 16 }}>
+  render: (_args: any) => (
+    <Box style={{ alignItems: 'center', gap: 16 }}>
       <Chip
         iconActions={[
           { iconColor: '#FFD700', iconName: 'star-solid', position: 'left' },
@@ -275,43 +240,26 @@ export const WithLeftAndRightIcons: Story = {
       >
         Navigation
       </Chip>
-    </View>
-  ),
-};
-
-export const WithCenterIcon: Story = {
-  render: () => (
-    <View style={{ alignItems: 'center', gap: 16 }}>
-      <Chip iconActions={[{ iconColor: '#6366F1', iconName: 'info-solid', position: 'center' }]} size="md">
-        Information
-      </Chip>
-      <Chip
-        variant="outlined"
-        iconActions={[{ iconColor: '#F59E0B', iconName: 'question-solid', position: 'center' }]}
-        size="md"
-      >
-        Aide
-      </Chip>
-    </View>
+    </Box>
   ),
 };
 
 export const Interactive: Story = {
-  render: () => (
-    <View style={{ alignItems: 'center', gap: 16 }}>
-      <Chip variant="contained" size="lg" rounded="full" color="#8B5CF6">
+  render: (_args: any) => (
+    <Box style={{ alignItems: 'center', gap: 16 }}>
+      <Chip variant="contained" color="#8B5CF6" onPress={() => console.log('Clickable')}>
         Clickable
       </Chip>
-      <Chip variant="outlined" size="lg" rounded="full" color="#EC4899">
+      <Chip variant="outlined" color="#EC4899" onPress={() => console.log('Deletable')}>
         Deletable
       </Chip>
-    </View>
+    </Box>
   ),
 };
 
 export const StatusIndicators: Story = {
-  render: () => (
-    <View style={{ alignItems: 'center', gap: 12 }}>
+  render: (_args: any) => (
+    <Box style={{ alignItems: 'center', gap: 12 }}>
       <Chip variant="contained" color="#10B981" size="sm">
         Active
       </Chip>
@@ -324,56 +272,6 @@ export const StatusIndicators: Story = {
       <Chip variant="outlined" color="#F59E0B" size="sm">
         Warning
       </Chip>
-    </View>
-  ),
-};
-
-export const WithPosition: Story = {
-  render: () => (
-    <View style={{ alignItems: 'center', gap: 16 }}>
-      <View
-        style={{ alignItems: 'center', flexDirection: 'row', gap: 12, justifyContent: 'space-between', width: 300 }}
-      >
-        <Chip position="left" colorVariant="primary">
-          Gauche
-        </Chip>
-        <Chip position="center" colorVariant="secondary">
-          Centre
-        </Chip>
-        <Chip position="right" colorVariant="accent">
-          Droite
-        </Chip>
-      </View>
-
-      <View
-        style={{ alignItems: 'center', flexDirection: 'row', gap: 12, justifyContent: 'space-between', width: 300 }}
-      >
-        <Chip variant="outlined" position="left" colorVariant="danger">
-          Gauche
-        </Chip>
-        <Chip variant="outlined" position="center" colorVariant="warning">
-          Centre
-        </Chip>
-        <Chip variant="outlined" position="right" colorVariant="info">
-          Droite
-        </Chip>
-      </View>
-    </View>
-  ),
-};
-
-export const WithTitle: Story = {
-  render: () => (
-    <View style={{ alignItems: 'center', gap: 16 }}>
-      <Chip title="Titre prioritaire" colorVariant="primary">
-        Contenu ignoré
-      </Chip>
-      <Chip variant="outlined" title="Titre outlined" colorVariant="danger">
-        Contenu ignoré
-      </Chip>
-      <Chip title="Titre avec icône" iconActions={[{ iconName: 'star-solid', position: 'left' }]}>
-        Contenu ignoré
-      </Chip>
-    </View>
+    </Box>
   ),
 };

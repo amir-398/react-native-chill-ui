@@ -1,148 +1,65 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { Box, String } from '@/components';
-
-import UiPresentation from './storybook';
-import { AutocompleteDropdownContext, AutocompleteDropdown } from '../src/components/AutocompleteDropdown';
+import { AutocompleteDropdownContext, AutocompleteDropdown, Box } from '../src/components';
 
 const meta: Meta<typeof AutocompleteDropdown> = {
+  args: {
+    closeDropdownWhenSelectedItem: true,
+    hasHighlightString: true,
+    hasPerformSearch: true,
+    maxHeight: 300,
+    minHeight: 0,
+    offsetX: 0,
+    offsetY: 0,
+  },
   argTypes: {
-    // Basic configuration
-    dataSet: {
-      control: 'object',
-      description: 'The data to display in the dropdown list',
-    },
-    valueField: {
-      control: 'text',
-      description: 'The field to use as value',
-    },
-
-    // Input configuration
-    inputProps: {
-      control: 'object',
-      description: 'Input configuration',
-    },
-
-    // Dropdown configuration
-    dropdownProps: {
-      control: 'object',
-      description: 'Dropdown configuration',
-    },
-
-    maxHeight: {
-      control: 'number',
-      description: 'Maximum height of the dropdown',
-    },
-
-    minHeight: {
-      control: 'number',
-      description: 'Minimum height of the dropdown',
-    },
-
-    searchField: {
-      control: 'text',
-      description: 'The field to use for search',
-    },
-
-    // Items configuration
-    dropdownItemProps: {
-      control: 'object',
-      description: 'Dropdown items configuration',
-    },
-
-    dropdownListProps: {
-      control: 'object',
-      description: 'Dropdown FlatList configuration',
-    },
-    offsetX: {
-      control: 'number',
-      description: 'Offset X of the dropdown',
-    },
-    offsetY: {
-      control: 'number',
-      description: 'Offset Y of the dropdown',
-    },
-
-    // State and loading
-    isLoading: {
-      control: 'boolean',
-      description: 'Shows a loading indicator',
-    },
-
-    // Customization
-    customDropdownItem: {
-      control: false,
-      description: 'Custom component for items',
-    },
-    dropdownPosition: {
-      control: 'select',
-      description: 'Position of the dropdown',
-      options: ['auto', 'top', 'bottom'],
-    },
-
-    // Filtering
-    excludeItems: {
-      control: 'object',
-      description: 'Items to exclude from the list',
-    },
-
-    // Behavior
-    closeModalWhenSelectedItem: {
-      control: 'boolean',
-      description: 'Closes the modal when selecting an item',
-    },
-    confirmSelectItem: {
-      control: 'boolean',
-      description: 'Activates selection confirmation',
+    closeDropdownWhenSelectedItem: {
+      table: {
+        defaultValue: { summary: 'true' },
+      },
     },
     hasHighlightString: {
-      control: 'boolean',
-      description: 'Activates highlight string',
+      table: {
+        defaultValue: { summary: 'true' },
+      },
     },
-
     hasPerformSearch: {
-      control: 'boolean',
-      description: 'Activates automatic search',
+      table: {
+        defaultValue: { summary: 'true' },
+      },
     },
-    highlightProps: {
-      control: 'object',
-      description: 'Highlight string configuration',
+    maxHeight: {
+      table: {
+        defaultValue: { summary: '300' },
+      },
     },
-
-    // Callbacks
-    onBlur: {
-      control: false,
-      description: 'Callback when input loses focus',
+    minHeight: {
+      table: {
+        defaultValue: { summary: '0' },
+      },
     },
-    onConfirmSelectItem: {
-      control: false,
-      description: 'Callback when confirming selection',
+    offsetX: {
+      table: {
+        defaultValue: { summary: '0' },
+      },
     },
-    onFocus: {
-      control: false,
-      description: 'Callback when input gains focus',
-    },
-    onSelectItem: {
-      control: false,
-      description: 'Callback when selecting an item',
-    },
-    searchQuery: {
-      control: false,
-      description: 'Custom search function (keyword, labelValue) => boolean',
+    offsetY: {
+      table: {
+        defaultValue: { summary: '0' },
+      },
     },
   },
   component: AutocompleteDropdown,
   decorators: [
     Story => (
       <AutocompleteDropdownContext>
-        <UiPresentation className="items-start justify-center px-5">
+        <Box>
           <Story />
-          <String className="text-secondary">AutocompleteDropdown Examples</String>
-        </UiPresentation>
+        </Box>
       </AutocompleteDropdownContext>
     ),
   ],
-  title: 'Components/Inputs/AutocompleteDropdown',
+  title: 'FORMS/AutocompleteDropdown',
 };
 
 export default meta;
@@ -172,31 +89,11 @@ const countries = [
 
 export const Default: Story = {
   args: {
-    closeModalWhenSelectedItem: true,
-    confirmSelectItem: false,
-
     dataSet: data,
-    dropdownItemProps: {
-      stringItemProps: {},
-    },
-    dropdownPosition: 'auto',
-    dropdownProps: {
-      hasAnimation: true,
-      hasShadow: true,
-    },
-    excludeItems: [],
-    hasHighlightString: true,
-    hasPerformSearch: true,
-
+    dropdownPosition: 'bottom',
     inputProps: {
       placeholder: 'Search for an item...',
     },
-    isLoading: false,
-    maxHeight: 250,
-    minHeight: 0,
-    onBlur: () => {},
-    onFocus: () => {},
-    onSelectItem: () => undefined,
     searchField: 'label',
     valueField: 'value',
   },
@@ -213,7 +110,7 @@ export const CustomSearch: Story = {
     searchField: 'name',
     valueField: 'code',
     // Custom search that searches in both name AND code
-    searchQuery: (keyword, labelValue) => {
+    searchQuery: (keyword: string, labelValue: string) => {
       const country = countries.find(c => c.name === labelValue || c.code === labelValue);
       if (!country) return false;
 
@@ -248,66 +145,6 @@ export const WithExcludedItems: Story = {
   },
 };
 
-// Variant with selection confirmation
-export const WithConfirmation: Story = {
-  args: {
-    ...Default.args,
-    confirmSelectItem: true,
-    inputProps: {
-      placeholder: 'Selection with confirmation...',
-    },
-    onConfirmSelectItem: item => {
-      // eslint-disable-next-line no-alert
-      alert(`Do you want to select: ${item.label}?`);
-    },
-  },
-};
-
-// Variant without automatic closing
-export const StayOpenOnSelect: Story = {
-  args: {
-    ...Default.args,
-    closeModalWhenSelectedItem: false,
-    inputProps: {
-      placeholder: 'Dropdown stays open...',
-    },
-  },
-};
-
-// Variant with different search field
-export const DifferentSearchField: Story = {
-  args: {
-    ...Default.args,
-    inputProps: {
-      placeholder: 'Search by category...',
-    },
-    searchField: 'category',
-  },
-};
-
-// Variant without automatic search
-export const NoAutoSearch: Story = {
-  args: {
-    ...Default.args,
-    hasPerformSearch: false,
-    inputProps: {
-      placeholder: 'No automatic search...',
-    },
-  },
-};
-
-// Variant with custom height
-export const CustomHeight: Story = {
-  args: {
-    ...Default.args,
-    inputProps: {
-      placeholder: 'Custom height...',
-    },
-    maxHeight: 150,
-    minHeight: 100,
-  },
-};
-
 // Variant with custom dropdown
 export const CustomDropdownStyle: Story = {
   args: {
@@ -329,50 +166,4 @@ export const CustomDropdownStyle: Story = {
       placeholder: 'Custom styling...',
     },
   },
-};
-
-// Complete example with all features
-export const Complete: Story = {
-  args: {
-    ...Default.args,
-    dataSet: countries,
-    dropdownItemProps: {
-      activeBackgroundColor: '#EBF8FF',
-      stringItemProps: {
-        size: 'sm',
-      },
-    },
-    dropdownProps: {
-      emptyText: 'No country found',
-      hasAnimation: true,
-      hasShadow: true,
-    },
-    inputProps: {
-      hasError: false,
-      label: 'Country selection',
-      placeholder: 'Search by country, code or continent...',
-    },
-    maxHeight: 200,
-    onSelectItem: item => {
-      console.log('Selected country:', item);
-    },
-    searchField: 'name',
-    searchQuery: (keyword, labelValue) => {
-      const country = countries.find(c => c.name === labelValue);
-      if (!country) return false;
-
-      const searchTerm = keyword.toLowerCase();
-      return (
-        country.name.toLowerCase().includes(searchTerm) ||
-        country.code.toLowerCase().includes(searchTerm) ||
-        country.continent.toLowerCase().includes(searchTerm)
-      );
-    },
-    valueField: 'code',
-  },
-  render: args => (
-    <Box className="gap-4">
-      <AutocompleteDropdown {...args} />
-    </Box>
-  ),
 };

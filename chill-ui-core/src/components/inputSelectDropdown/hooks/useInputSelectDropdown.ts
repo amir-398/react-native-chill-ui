@@ -12,6 +12,7 @@ import useCalculateDropDownPosition from './useCalculateDropdownPosition';
 
 interface InputSelectDropdownHookParams {
   dataSet: any[];
+  open?: boolean;
   inputValue?: any;
   offsetX?: number;
   offsetY?: number;
@@ -22,10 +23,12 @@ interface InputSelectDropdownHookParams {
   excludeItems?: any[];
   autoScroll?: boolean;
   onFocus?: () => void;
+  defaultOpen?: boolean;
   excludeSearchItems?: any[];
   onSelectItem?: (item: any) => void;
   position: 'top' | 'bottom' | 'auto';
   closeModalWhenSelectedItem?: boolean;
+  onOpenChange?: (open: boolean) => void;
   searchQuery?: (searchText: string, itemText: string) => boolean;
 }
 
@@ -33,6 +36,7 @@ export default function useInputSelectDropdown(
   {
     closeModalWhenSelectedItem = true,
     dataSet = [],
+    defaultOpen,
     disable = false,
     excludeItems = [],
     excludeSearchItems = [],
@@ -41,7 +45,9 @@ export default function useInputSelectDropdown(
     offsetY = 0,
     onBlur,
     onFocus,
+    onOpenChange,
     onSelectItem,
+    open,
     position,
     searchField,
     searchQuery,
@@ -64,7 +70,22 @@ export default function useInputSelectDropdown(
     setVisible,
     state,
     updateState,
-  } = useDropdownState(dataSet);
+  } = useDropdownState(dataSet, defaultOpen);
+
+  // Handle controlled vs uncontrolled open state
+  const isControlled = open !== undefined;
+  const currentVisible = isControlled ? open : state.visible;
+
+  const handleSetVisible = useCallback(
+    (visible: boolean) => {
+      if (isControlled) {
+        onOpenChange?.(visible);
+      } else {
+        setVisible(visible);
+      }
+    },
+    [isControlled, onOpenChange, setVisible],
+  );
   const { getDropdownPosition } = useGetDropdownPosition({
     inputRef,
     position,
@@ -110,8 +131,8 @@ export default function useInputSelectDropdown(
     onPerformSearch: performSearch,
     onResetSearch: resetSearch,
     searchText: state.searchText,
-    setVisible,
-    visible: state.visible,
+    setVisible: handleSetVisible,
+    visible: currentVisible,
   });
 
   const handleSelectItem = useCallback(
@@ -121,23 +142,23 @@ export default function useInputSelectDropdown(
       onSelectItem?.(item);
 
       if (closeModalWhenSelectedItem) {
-        setVisible(false);
+        handleSetVisible(false);
         onBlur?.();
       }
     },
-    [setCurrentValue, onSelectItem, closeModalWhenSelectedItem, setVisible, onBlur],
+    [setCurrentValue, onSelectItem, closeModalWhenSelectedItem, handleSetVisible, onBlur],
   );
 
   useEffect(() => {
     const calculate = async () => {
-      if (state.visible) {
+      if (currentVisible) {
         const newPosition = await getDropdownPosition();
         calculatePosition(newPosition);
       }
     };
     calculate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.visible]);
+  }, [currentVisible]);
 
   useDropdownKeyboard({
     onKeyboardHide: () => setKeyboardHeight(0),
@@ -156,7 +177,10 @@ export default function useInputSelectDropdown(
 
   return {
     // state
-    state,
+    state: {
+      ...state,
+      visible: currentVisible,
+    },
     updateState,
 
     // Refs
@@ -170,6 +194,7 @@ export default function useInputSelectDropdown(
     eventClose,
     eventOpen,
     handleSelectItem,
+    setCurrentValue,
     toggleDropdown,
 
     // Search

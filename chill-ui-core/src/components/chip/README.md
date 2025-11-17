@@ -1,195 +1,501 @@
 # Chip Component
 
-Le composant Chip affiche des éléments compacts qui représentent une entrée, un attribut ou une action. Inspiré des composants Chip de [Material-UI](https://mui.com/material-ui/react-chip/).
+A flexible and customizable Chip component for React Native applications that displays compact elements representing inputs, attributes, or actions. Supports multiple styling approaches, variants, and interactive features.
 
-## Variants
+## Available Versions
 
-### Contained (par défaut)
+This component comes in three versions to match your project's styling approach. You choose the version during installation, but the import statement remains consistent across all versions:
 
-Chip avec fond coloré et texte blanc.
+### 1. **StyleSheet Version**
+
+- Uses React Native's built-in StyleSheet API
+- Perfect for projects that don't use CSS-in-JS libraries
+- Lightweight and performant
+- Install: `npm install react-native-chill-ui@stylesheet`
+
+### 2. **Tailwind Version**
+
+- Uses NativeWind/Tailwind CSS classes
+- Ideal for projects already using Tailwind CSS
+- Requires NativeWind setup and Tailwind configuration
+- Supports 14 color variants
+- Install: `npm install react-native-chill-ui@tailwind`
+
+### 3. **Hybrid Version**
+
+- Automatically detects if NativeWind is available
+- Falls back to StyleSheet if NativeWind is not installed
+- Best for component libraries or projects that need flexibility
+- Install: `npm install react-native-chill-ui@hybrid`
+
+**Note**: Regardless of the version you choose, the import statement remains the same: `import { Chip } from 'react-native-chill-ui'`
+
+## Features
+
+- **Multiple Variants**: Contained (filled) and outlined variants
+- **14 Color Variants**: (NativeWind only) Primary, secondary, accent, danger, warning, info, etc.
+- **Size Variants**: 7 size options from xs to 2xl
+- **Left/Right Icons**: Support for customizable icons on both sides
+- **Clickable**: Optional `onPress` handler with multiple touchable types
+- **Touchable Types**: TouchableOpacity, Pressable, RipplePressable, ScalePressable
+- **Custom Colors**: Support for custom background and border colors
+- **Position**: Align chip within its container (left, center, right)
+- **TypeScript Support**: Fully typed for a better development experience
+- **Accessible**: Proper focus management and screen reader support
+
+## Quick Start
 
 ```tsx
-<Chip variant="contained" size="md" rounded="md">
-  New
+import { Chip } from 'react-native-chill-ui';
+
+// Basic usage
+<Chip>New Feature</Chip>
+
+// With variant and color
+<Chip variant="outlined" colorVariant="primary">
+  Tag
 </Chip>
-```
 
-### Outlined
-
-Chip avec bordure colorée et fond transparent.
-
-```tsx
-<Chip variant="outlined" size="lg" rounded="full">
-  Custom
+// With icons
+<Chip
+  leftIconAction={{ name: 'star-solid' }}
+  rightIconAction={{ name: 'close-solid' }}
+>
+  Featured
 </Chip>
-```
 
-## Color Variants
+// Clickable chip
+<Chip
+  variant="contained"
+  colorVariant="danger"
+  onPress={() => console.log('Clicked')}
+  leftIconAction={{ name: 'bell-solid' }}
+>
+  3 Notifications
+</Chip>
 
-Le composant Chip supporte plusieurs variantes de couleurs prédéfinies :
-
-```tsx
-// Variantes de base
-<Chip colorVariant="primary">Primary</Chip>
-<Chip colorVariant="secondary">Secondary</Chip>
-<Chip colorVariant="accent">Accent</Chip>
-<Chip colorVariant="danger">Danger</Chip>
-<Chip colorVariant="error">Error</Chip>
-<Chip colorVariant="warning">Warning</Chip>
-<Chip colorVariant="info">Info</Chip>
-<Chip colorVariant="neutral">Neutral</Chip>
-<Chip colorVariant="muted">Muted</Chip>
-<Chip colorVariant="light">Light</Chip>
-<Chip colorVariant="dark">Dark</Chip>
-<Chip colorVariant="inverted">Inverted</Chip>
-<Chip colorVariant="white">White</Chip>
-<Chip colorVariant="disabled">Disabled</Chip>
-
-// Variantes outlined
-<Chip variant="outlined" colorVariant="primary">Primary Outlined</Chip>
-<Chip variant="outlined" colorVariant="danger">Danger Outlined</Chip>
+// With custom color
+<Chip variant="outlined" color="#3B82F6" size="lg">
+  Custom Color
+</Chip>
 ```
 
 ## Props
 
-| Prop           | Type                                                                                                                                                                     | Défaut        | Description                                           |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------- | ----------------------------------------------------- |
-| `variant`      | `'contained' \| 'outlined'`                                                                                                                                              | `'contained'` | Style du chip                                         |
-| `colorVariant` | `'primary' \| 'secondary' \| 'accent' \| 'danger' \| 'error' \| 'warning' \| 'info' \| 'neutral' \| 'muted' \| 'light' \| 'dark' \| 'inverted' \| 'white' \| 'disabled'` | `'primary'`   | Variante de couleur du chip                           |
-| `size`         | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| '2xs' \| '3xl'`                                                                                                        | `'md'`        | Taille du chip                                        |
-| `rounded`      | `'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| '3xl' \| 'full'`                                                                                                               | `'full'`      | Rayon de bordure                                      |
-| `color`        | `string`                                                                                                                                                                 | -             | Couleur personnalisée du fond/bordure                 |
-| `iconActions`  | `ChipIconAction[]`                                                                                                                                                       | `[]`          | Configuration des icônes avec position                |
-| `stringProps`  | `StringProps`                                                                                                                                                            | -             | Props pour le composant string/text                   |
-| `children`     | `ReactNode`                                                                                                                                                              | -             | Contenu du chip                                       |
-| `title`        | `string`                                                                                                                                                                 | -             | Titre à afficher dans le chip (priorité sur children) |
-| `position`     | `'left' \| 'center' \| 'right'`                                                                                                                                          | `'left'`      | Position du chip dans son conteneur                   |
-| `className`    | `string`                                                                                                                                                                 | -             | Classes CSS personnalisées (NativeWind uniquement)    |
+| Prop              | Type                                            | Required | Default             | Description                                                |
+| ----------------- | ----------------------------------------------- | -------- | ------------------- | ---------------------------------------------------------- |
+| `as`              | `TouchableComponentType`                        | ❌       | `touchable-opacity` | Type of touchable component when `onPress` is provided     |
+| `children`        | `React.ReactNode`                               | ❌       | -                   | Content to display in the chip                             |
+| `className`       | `string`                                        | ❌       | -                   | (only NativeWind) Custom CSS classes for the chip          |
+| `color`           | `string`                                        | ❌       | -                   | Custom background/border color (CSS color value)           |
+| `colorVariant`    | `ColorVariant`                                  | ❌       | `primary`           | (only NativeWind) Color variant from 14 predefined options |
+| `leftIconAction`  | `IconAction`                                    | ❌       | -                   | Configuration for the left icon                            |
+| `onPress`         | `() => void`                                    | ❌       | -                   | Callback when chip is pressed                              |
+| `position`        | `'left' \| 'center' \| 'right'`                 | ❌       | `left`              | Position of the chip in its container                      |
+| `rightIconAction` | `IconAction`                                    | ❌       | -                   | Configuration for the right icon                           |
+| `size`            | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl'` | ❌       | `xs`                | Size variant of the chip                                   |
+| `stringProps`     | `StringProps`                                   | ❌       | -                   | Props to pass to the String component                      |
+| `style`           | `StyleProp<ViewStyle>`                          | ❌       | -                   | Style object for the chip container                        |
+| `title`           | `string`                                        | ❌       | -                   | Title to display (takes priority over children)            |
+| `variant`         | `'contained' \| 'outlined'`                     | ❌       | `contained`         | Visual variant of the chip                                 |
 
-## Icon Actions
+### IconAction Type
 
-Le composant Chip supporte maintenant les icônes avec une configuration flexible et positionnelle :
+```typescript
+{
+  name?: keyof TIcons;        // Icon name from the available icon set
+  color?: string;             // Color of the icon
+  size?: IconSize;            // Size of the icon
+  customIcon?: ReactNode;     // Custom icon component
+}
+```
 
-```tsx
-// Icône gauche
-<Chip
-  iconActions={[{
-    iconName: 'star-solid',
-    iconColor: '#FFD700',
-    iconSize: 'sm',
-    position: 'left'
-  }]}
->
-  Favori
-</Chip>
+### ColorVariant Options (NativeWind only)
 
-// Icône droite personnalisée
-<Chip
-  iconActions={[{
-    customIcon: <CustomIconComponent />,
-    position: 'right'
-  }]}
->
-  Personnalisé
-</Chip>
+- `primary` (default)
+- `secondary`
+- `accent`
+- `danger`
+- `error`
+- `warning`
+- `info`
+- `neutral`
+- `muted`
+- `light`
+- `dark`
+- `inverted`
+- `white`
+- `disabled`
 
-// Plusieurs icônes
-<Chip
-  iconActions={[
-    {
-      iconName: 'check-solid',
-      iconColor: '#10B981',
-      position: 'left'
+## ⚠️ NativeWind Requirements
+
+**Important:** The following props are **only available with NativeWind**:
+
+- `className` - Custom CSS classes
+- `colorVariant` - All color variants except `primary`
+
+Without NativeWind:
+
+- Only the `primary` color variant is available
+- All other color variants will fallback to `primary` with a development warning
+- You need to configure your `tailwind.config.js` with the chip color tokens
+
+## Color Variants Setup (NativeWind Required)
+
+To use all available color variants, you need to configure your `tailwind.config.js` file with the chip color tokens:
+
+```javascript
+// tailwind.config.js
+module.exports = {
+  // ... other config
+  theme: {
+    extend: {
+      colors: {
+        chip: {
+          // Primary colors
+          primary: {
+            background: '#7DD3FC',
+            text: '#000',
+          },
+          secondary: {
+            background: '#CBD2D9',
+            text: '#333',
+          },
+          accent: {
+            background: '#CBD2D9',
+            text: '#FF0000',
+          },
+
+          // Semantic colors
+          success: {
+            background: '#10B981',
+            text: '#FFF',
+          },
+          error: {
+            background: '#FF0000',
+            text: '#FFF',
+          },
+          warning: {
+            background: '#FCD34D',
+            text: '#000',
+          },
+          info: {
+            background: '#6EE7B7',
+            text: '#000',
+          },
+
+          // Additional variants
+          danger: {
+            background: '#FF0000',
+            text: '#FFF',
+          },
+          dark: {
+            background: '#323F4B',
+            text: '#FFF',
+          },
+          light: {
+            background: '#F5F7FA',
+            text: '#000',
+          },
+          neutral: {
+            background: '#CBD2D9',
+            text: '#333',
+          },
+          muted: {
+            background: '#CBD2D9',
+            text: '#666',
+          },
+          inverted: {
+            background: '#F5F7FA',
+            text: '#000',
+          },
+          white: {
+            background: '#F5F7FA',
+            text: '#000',
+          },
+
+          // Disabled state
+          disabled: {
+            background: '#CBD2D9',
+            text: '#666',
+          },
+        },
+      },
     },
-    {
-      iconName: 'xmark-solid',
-      iconColor: '#EF4444',
-      position: 'right'
-    }
-  ]}
->
-  Avec icônes
+  },
+};
+```
+
+### TouchableComponentType Options
+
+- `touchable-opacity` (default) - Standard fade effect on press
+- `pressable` - Basic pressable without visual feedback
+- `ripple-pressable` - Material Design ripple effect
+- `scale-pressable` - Scale animation on press
+
+## Choosing the Right Version
+
+Select the appropriate version during installation based on your project's needs:
+
+| Version        | Installation Command                           | Use When                                                                                             | Pros                                                                      | Cons                                                  |
+| -------------- | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ----------------------------------------------------- |
+| **StyleSheet** | `npm install react-native-chill-ui@stylesheet` | • No CSS-in-JS dependencies<br/>• Maximum performance needed<br/>• Simple styling requirements       | • Lightweight<br/>• Fast performance<br/>• No external dependencies       | • No color variants<br/>• Manual theme management     |
+| **Tailwind**   | `npm install react-native-chill-ui@tailwind`   | • Already using NativeWind<br/>• Team familiar with Tailwind<br/>• Design system based on utilities  | • 14 color variants<br/>• Consistent with web Tailwind<br/>• Easy theming | • Requires NativeWind setup<br/>• Larger bundle size  |
+| **Hybrid**     | `npm install react-native-chill-ui@hybrid`     | • Building component library<br/>• Uncertain about styling approach<br/>• Want maximum compatibility | • Works in any environment<br/>• Future-proof<br/>• Automatic detection   | • Slightly larger bundle<br/>• More complex internals |
+
+## Examples
+
+### Variants
+
+```tsx
+// Contained (filled background)
+<Chip variant="contained" colorVariant="primary">
+  Contained
 </Chip>
 
-// Icône au centre
+// Outlined (border only)
+<Chip variant="outlined" colorVariant="primary">
+  Outlined
+</Chip>
+```
+
+### Color Variants (NativeWind only)
+
+```tsx
+<Box className="gap-4">
+  {/* Primary colors */}
+  <Chip colorVariant="primary">Primary</Chip>
+  <Chip colorVariant="secondary">Secondary</Chip>
+  <Chip colorVariant="accent">Accent</Chip>
+
+  {/* Semantic colors */}
+  <Chip colorVariant="success">Success</Chip>
+  <Chip colorVariant="error">Error</Chip>
+  <Chip colorVariant="warning">Warning</Chip>
+  <Chip colorVariant="info">Info</Chip>
+
+  {/* Additional variants */}
+  <Chip colorVariant="danger">Danger</Chip>
+  <Chip colorVariant="dark">Dark</Chip>
+  <Chip colorVariant="light">Light</Chip>
+  <Chip colorVariant="neutral">Neutral</Chip>
+  <Chip colorVariant="muted">Muted</Chip>
+  <Chip colorVariant="inverted">Inverted</Chip>
+  <Chip colorVariant="white">White</Chip>
+  <Chip colorVariant="disabled">Disabled</Chip>
+</Box>
+```
+
+### With Icons
+
+```tsx
+// Left icon only
+<Chip leftIconAction={{ name: 'star-solid', color: '#FFD700' }}>
+  Favorite
+</Chip>
+
+// Right icon only
+<Chip rightIconAction={{ name: 'close-solid' }}>
+  Remove
+</Chip>
+
+// Both icons
 <Chip
-  iconActions={[{
-    iconName: 'info-solid',
-    iconColor: '#6366F1',
-    position: 'center'
-  }]}
+  leftIconAction={{ name: 'check-solid', color: '#10B981' }}
+  rightIconAction={{ name: 'xmark-solid', color: '#EF4444' }}
 >
-  Information
-</Chip>
-```
-
-## Exemples
-
-### Chip avec variante de couleur
-
-```tsx
-<Chip colorVariant="success" size="md">
-  Success
+  With Icons
 </Chip>
 
-<Chip colorVariant="warning" variant="outlined" size="md">
-  Warning
-</Chip>
-```
-
-### Chip avec icônes
-
-```tsx
-<Chip
-  iconActions={[
-    {
-      iconName: 'star-solid',
-      iconColor: '#FFD700',
-      position: 'left',
-    },
-  ]}
-  size="lg"
-  rounded="full"
->
-  Favori
-</Chip>
-```
-
-### Chip personnalisé
-
-```tsx
-<Chip variant="outlined" color="#3B82F6" size="lg" rounded="full">
+// Custom icon component
+<Chip leftIconAction={{ customIcon: <CustomIcon /> }}>
   Custom
 </Chip>
 ```
 
-### Chip avec différentes tailles
+### Clickable Chips
 
 ```tsx
-<Stack direction="row" spacing={2}>
+// Basic click handler
+<Chip onPress={() => console.log('Clicked')}>
+  Click Me
+</Chip>
+
+// With ripple effect
+<Chip as="ripple-pressable" onPress={handlePress}>
+  Ripple Effect
+</Chip>
+
+// With scale animation
+<Chip as="scale-pressable" onPress={handlePress}>
+  Scale Effect
+</Chip>
+
+// Tag with remove handler
+<Chip
+  variant="outlined"
+  colorVariant="primary"
+  rightIconAction={{ name: 'xmark-solid' }}
+  onPress={handleRemove}
+>
+  React Native
+</Chip>
+```
+
+### Different Sizes
+
+```tsx
+<View style={{ flexDirection: 'row', gap: 8 }}>
+  <Chip size="xs">Extra Small</Chip>
   <Chip size="sm">Small</Chip>
   <Chip size="md">Medium</Chip>
   <Chip size="lg">Large</Chip>
-</Stack>
-```
-
-### Chip avec position
-
-```tsx
-<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-  <Chip position="left">Gauche</Chip>
-  <Chip position="center">Centre</Chip>
-  <Chip position="right">Droite</Chip>
+  <Chip size="xl">Extra Large</Chip>
+  <Chip size="2xl">2X Large</Chip>
 </View>
 ```
 
-## Support NativeWind
+### Positioning
 
-Le composant détecte automatiquement la disponibilité de NativeWind et utilise :
+```tsx
+// Left aligned (default)
+<Chip position="left">Left</Chip>
 
-- **NativeWind** : Classes Tailwind CSS avec variants et colorVariants
-- **StyleSheet** : Styles React Native en fallback
+// Center aligned
+<Chip position="center">Center</Chip>
+
+// Right aligned
+<Chip position="right">Right</Chip>
+```
+
+### Custom Colors
+
+```tsx
+// StyleSheet and Hybrid versions
+<Chip color="#FF6B6B">Custom Background</Chip>
+
+<Chip variant="outlined" color="#3B82F6">
+  Custom Border
+</Chip>
+
+// Tailwind version (only NativeWind)
+<Chip className="bg-red-500 border-red-600">
+  Tailwind Classes
+</Chip>
+```
+
+### Use Cases
+
+#### Tags/Labels
+
+```tsx
+<View style={{ flexDirection: 'row', gap: 8, flexWrap: 'wrap' }}>
+  <Chip colorVariant="primary">React</Chip>
+  <Chip colorVariant="secondary">TypeScript</Chip>
+  <Chip colorVariant="accent">Next.js</Chip>
+  <Chip colorVariant="info">Tailwind</Chip>
+</View>
+```
+
+#### Active Filters
+
+```tsx
+<View style={{ flexDirection: 'row', gap: 8 }}>
+  <Chip variant="contained" rightIconAction={{ name: 'xmark-solid' }} onPress={removeFilter}>
+    Category: Tech
+  </Chip>
+  <Chip variant="contained" rightIconAction={{ name: 'xmark-solid' }} onPress={removeFilter}>
+    Price: $0-$100
+  </Chip>
+</View>
+```
+
+#### Status Indicators
+
+```tsx
+<Chip
+  variant="outlined"
+  colorVariant="success"
+  leftIconAction={{ name: 'check-circle-solid' }}
+  size="sm"
+>
+  Completed
+</Chip>
+
+<Chip
+  variant="outlined"
+  colorVariant="warning"
+  leftIconAction={{ name: 'clock-solid' }}
+  size="sm"
+>
+  Pending
+</Chip>
+
+<Chip
+  variant="outlined"
+  colorVariant="danger"
+  leftIconAction={{ name: 'xmark-circle-solid' }}
+  size="sm"
+>
+  Failed
+</Chip>
+```
+
+## Best Practices
+
+1. **Use appropriate size** - `xs` or `sm` for tags, `md` for interactive elements
+2. **Limit icon usage** - Use one or two icons maximum to maintain readability
+3. **Prefer color variants** - Use predefined color variants for consistency (NativeWind version)
+4. **Make chips actionable** - If using `onPress`, ensure visual feedback is clear
+5. **Icons are decorative** - Icons in chips are not individually clickable, only the entire chip
+6. **Use position wisely** - Align chips appropriately within their container
+7. **Consistent sizing** - Keep chip sizes consistent within the same context
+
+## Performance Considerations
+
+- Icons are wrapped with `pointerEvents: 'none'` to prevent accidental touches
+- Component uses memoization for computed values
+- Minimal re-renders when props don't change
+- Efficient icon rendering based on configuration
+
+## TypeScript
+
+The component is fully typed with TypeScript. Import types as needed:
+
+```tsx
+import { Chip } from 'react-native-chill-ui';
+import type { ChipPropsTw, ChipPropsSs } from 'react-native-chill-ui';
+
+// For Tailwind/Hybrid versions
+const MyChip: React.FC<{ text: string }> = ({ text }) => <Chip colorVariant="primary">{text}</Chip>;
+```
+
+## Related Components
+
+- **Button**: For action buttons with various styles
+- **Badge**: For notification badges and counts
+- **Tag**: For labeling and categorization
+- **Input**: For text input with chips (tag input)
+
+## File Structure
+
+```
+chip/
+├── components/
+│   ├── Chip.tsx           # Hybrid version (auto-detects NativeWind)
+│   ├── Chip.ss.tsx        # StyleSheet version
+│   └── Chip.tw.tsx        # Tailwind/NativeWind version
+├── styles/
+│   ├── Chip.ss.styles.ts  # StyleSheet styles
+│   └── Chip.tw.styles.ts  # Tailwind variants
+├── utils/
+│   └── defaultProps.ts    # Default prop values
+├── types/
+│   ├── chip.ss.types.ts   # StyleSheet types
+│   └── chip.tw.types.ts   # Tailwind types
+└── README.md              # This file
+```
 
 ## Inspiration
 
-Ce composant s'inspire des composants Chip de [Material-UI](https://mui.com/material-ui/react-chip/) avec une adaptation pour React Native et NativeWind.
+This component is inspired by Material-UI's [Chip component](https://mui.com/material-ui/react-chip/) with adaptations for React Native and NativeWind.

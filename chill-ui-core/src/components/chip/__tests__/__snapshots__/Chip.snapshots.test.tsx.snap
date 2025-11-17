@@ -1,0 +1,123 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Chip Snapshots should match snapshot for basic variants 1`] = `
+<div>
+  <div>
+    <div>
+      <div
+        size="xs"
+      >
+        Contained
+      </div>
+    </div>
+  </div>
+  <div>
+    <div>
+      <div
+        size="xs"
+      >
+        Outlined
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Chip Snapshots should match snapshot for icons 1`] = `
+<div>
+  <div>
+    <div>
+      <div>
+        <div
+          data-testid="icon-star-solid"
+          size="xs"
+        />
+      </div>
+      <div
+        size="xs"
+      >
+        Left Icon
+      </div>
+    </div>
+  </div>
+  <div>
+    <div>
+      <div
+        size="xs"
+      >
+        Right Icon
+      </div>
+      <div>
+        <div
+          data-testid="icon-close-solid"
+          size="xs"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Chip Snapshots should match snapshot for positions 1`] = `
+<div>
+  <div>
+    <div>
+      <div
+        size="xs"
+      >
+        Left
+      </div>
+    </div>
+  </div>
+  <div>
+    <div>
+      <div
+        size="xs"
+      >
+        Center
+      </div>
+    </div>
+  </div>
+  <div>
+    <div>
+      <div
+        size="xs"
+      >
+        Right
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Chip Snapshots should match snapshot for sizes 1`] = `
+<div>
+  <div>
+    <div>
+      <div
+        size="xs"
+      >
+        XS
+      </div>
+    </div>
+  </div>
+  <div>
+    <div>
+      <div
+        size="md"
+      >
+        MD
+      </div>
+    </div>
+  </div>
+  <div>
+    <div>
+      <div
+        size="lg"
+      >
+        LG
+      </div>
+    </div>
+  </div>
+</div>
+`;

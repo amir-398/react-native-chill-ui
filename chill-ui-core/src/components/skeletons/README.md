@@ -1,397 +1,242 @@
-# Skeleton
+# Skeleton Component
 
-A React Native component that provides loading placeholders with animated pulse effects. Supports multiple variants and sizes for different content types, perfect for improving perceived performance during data loading.
+A React Native component that provides animated loading placeholders with pulse effects for different content types. Built with React Native's Animated API for native performance, featuring multiple variants, sizes, and customizable styling across three different styling approaches.
+
+## Available Versions
+
+This component comes in three versions to match your project's styling approach. You choose the version during installation, but the import statement remains consistent across all versions:
+
+### 1. **StyleSheet Version**
+
+- Uses React Native's built-in StyleSheet API
+- Perfect for projects that don't use CSS-in-JS libraries
+- Lightweight and performant
+- Install: `npm install react-native-chill-ui@stylesheet`
+
+### 2. **Tailwind Version**
+
+- Uses NativeWind/Tailwind CSS classes
+- Ideal for projects already using Tailwind CSS
+- Requires NativeWind setup and Tailwind configuration
+- Install: `npm install react-native-chill-ui@tailwind`
+
+### 3. **Hybrid Version**
+
+- Automatically detects if NativeWind is available
+- Falls back to StyleSheet if NativeWind is not installed
+- Best for component libraries or projects that need flexibility
+- Install: `npm install react-native-chill-ui@hybrid`
+
+**Note**: Regardless of the version you choose, the import statement remains the same: `import { Skeleton } from 'react-native-chill-ui'`
 
 ## Features
 
-- ✅ **Animated Pulse**: Smooth pulse animation for loading indication
-- ✅ **Multiple Variants**: Rectangle, square, circle, and text shapes
-- ✅ **Size Options**: 5 different sizes (xs, sm, md, lg, xl)
-- ✅ **Custom Styling**: Full Tailwind CSS support for additional styling
-- ✅ **Flexible Content**: Can contain child components
-- ✅ **Performance**: Lightweight component with optimized animations
-- ✅ **TypeScript**: Full type safety with detailed interfaces
-- ✅ **Accessibility**: Proper loading state indication
+- **Animated Pulse Effect**: Smooth opacity animation that indicates loading state
+- **Multiple Variants**: Rectangle, square, circle, and text skeletons for different content types
+- **Size Options**: 5 different sizes (xs, sm, md, lg, xl) to match your content
+- **Native Performance**: Uses `useNativeDriver: true` for optimal animation performance
+- **Flexible Styling**: Support for NativeWind classes and StyleSheet objects
+- **TypeScript Support**: Fully typed for a better development experience
+- **Accessibility**: Provides visual loading indication for screen readers
+- **Memory Efficient**: Automatic cleanup to prevent memory leaks
+- **Cross-Platform**: Works consistently on iOS and Android
 
 ## Quick Start
 
 ```tsx
-import Skeleton from '@/components/skeletons/Skeleton';
+import { Skeleton } from 'react-native-chill-ui';
 
 // Basic rectangle skeleton
-<Skeleton variant="rectangle" size="md" />
+<Skeleton />
 
 // Circle skeleton for avatar
 <Skeleton variant="circle" size="lg" />
+
+// Text skeleton with custom styling
+<Skeleton variant="text" size="sm" className="mb-2" />
 ```
 
-## Examples
+## Props
 
-### Basic Usage
+### SkeletonProps
+
+| Prop        | Type                                            | Default       | Description                                      |
+| ----------- | ----------------------------------------------- | ------------- | ------------------------------------------------ |
+| `children`  | `ReactNode`                                     | -             | Child components to render inside the skeleton   |
+| `className` | `string`                                        | -             | Custom CSS classes for styling (NativeWind only) |
+| `size`      | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`          | `'md'`        | Size variant for the skeleton                    |
+| `style`     | `StyleProp<ViewStyle>`                          | -             | Style object for additional styling              |
+| `variant`   | `'rectangle' \| 'square' \| 'circle' \| 'text'` | `'rectangle'` | Shape variant for the skeleton                   |
+
+## Usage Examples
+
+### Basic Skeletons
 
 ```tsx
-import Skeleton from '@/components/skeletons/Skeleton';
+// Rectangle skeleton (default)
+<Skeleton />
 
-// Rectangle skeleton
-<Skeleton variant="rectangle" size="md" />
+// Circle skeleton for avatars
+<Skeleton variant="circle" size="lg" />
 
-// Square skeleton
-<Skeleton variant="square" size="lg" />
+// Square skeleton for images
+<Skeleton variant="square" size="md" />
 
-// Circle skeleton
-<Skeleton variant="circle" size="xl" />
-
-// Text skeleton
+// Text skeleton for content
 <Skeleton variant="text" size="sm" />
 ```
 
-### Different Sizes
+### Size Variants
 
 ```tsx
 // Extra small
-<Skeleton variant="rectangle" size="xs" />
+<Skeleton size="xs" />
 
 // Small
-<Skeleton variant="rectangle" size="sm" />
+<Skeleton size="sm" />
 
 // Medium (default)
-<Skeleton variant="rectangle" size="md" />
+<Skeleton size="md" />
 
 // Large
-<Skeleton variant="rectangle" size="lg" />
+<Skeleton size="lg" />
 
 // Extra large
-<Skeleton variant="rectangle" size="xl" />
+<Skeleton size="xl" />
 ```
 
 ### Custom Styling
 
 ```tsx
-// With custom classes
+// With custom className (NativeWind)
 <Skeleton
   variant="rectangle"
   size="md"
-  className="mb-4 bg-blue-200"
+  className="mb-4 rounded-lg"
 />
 
-// Custom width
-<Skeleton
-  variant="rectangle"
-  size="md"
-  className="w-1/2"
-/>
-
-// Custom colors
+// With custom style
 <Skeleton
   variant="circle"
   size="lg"
-  className="bg-gray-400"
+  style={{
+    marginBottom: 16,
+    alignSelf: 'center'
+  }}
 />
 ```
 
-### Content Loading Patterns
+### Loading States
 
 ```tsx
 // Card skeleton
-<Box className="p-4 bg-white rounded-lg shadow-sm">
-  <Skeleton variant="rectangle" size="md" className="mb-3" />
-  <Skeleton variant="text" size="sm" className="mb-2" />
+<Box className="p-4 border rounded-lg">
+  <Skeleton variant="circle" size="sm" className="mb-3" />
+  <Skeleton variant="text" size="md" className="mb-2" />
   <Skeleton variant="text" size="sm" className="w-3/4" />
 </Box>
 
-// List item skeleton
-<Box className="flex-row items-center p-4">
-  <Skeleton variant="circle" size="md" className="mr-3" />
-  <Box className="flex-1">
-    <Skeleton variant="text" size="sm" className="mb-1" />
-    <Skeleton variant="text" size="xs" className="w-2/3" />
-  </Box>
-</Box>
-
-// Profile skeleton
-<Box className="items-center p-6">
-  <Skeleton variant="circle" size="xl" className="mb-4" />
-  <Skeleton variant="text" size="lg" className="mb-2" />
-  <Skeleton variant="text" size="sm" className="w-1/2 mb-4" />
-  <Skeleton variant="rectangle" size="md" />
-</Box>
-```
-
-## Props Reference
-
-### SkeletonProps
-
-| Prop        | Type                                            | Default       | Description                                    |
-| ----------- | ----------------------------------------------- | ------------- | ---------------------------------------------- |
-| `children`  | `ReactNode`                                     | -             | Child components to render inside the skeleton |
-| `className` | `string`                                        | -             | Custom CSS classes for additional styling      |
-| `size`      | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`          | `'md'`        | Size variant for the skeleton                  |
-| `variant`   | `'rectangle' \| 'square' \| 'circle' \| 'text'` | `'rectangle'` | Shape variant for the skeleton                 |
-
-## Size Variants
-
-| Size | Rectangle Height | Square/Circle Size | Text Height |
-| ---- | ---------------- | ------------------ | ----------- |
-| `xs` | 64px (h-16)      | 64px × 64px        | 16px (h-4)  |
-| `sm` | 96px (h-24)      | 96px × 96px        | 20px (h-5)  |
-| `md` | 128px (h-32)     | 128px × 128px      | 24px (h-6)  |
-| `lg` | 192px (h-48)     | 192px × 192px      | 28px (h-7)  |
-| `xl` | 256px (h-64)     | 256px × 256px      | 32px (h-8)  |
-
-## Best Practices
-
-### 1. Choose Appropriate Variants
-
-```tsx
-// ✅ Good - Rectangle for content blocks
-<Skeleton variant="rectangle" size="md" />
-
-// ✅ Good - Circle for avatars
-<Skeleton variant="circle" size="lg" />
-
-// ✅ Good - Text for text content
-<Skeleton variant="text" size="sm" />
-
-// ❌ Avoid - Wrong variant for content type
-<Skeleton variant="circle" size="md" /> // For rectangular content
-```
-
-### 2. Use Appropriate Sizes
-
-```tsx
-// ✅ Good - Appropriate size for content
-<Skeleton variant="rectangle" size="lg" /> // For large content blocks
-
-// ✅ Good - Small size for text
-<Skeleton variant="text" size="sm" /> // For text lines
-
-// ❌ Avoid - Mismatched sizes
-<Skeleton variant="text" size="xl" /> // Too large for text
-```
-
-### 3. Create Realistic Loading States
-
-```tsx
-// ✅ Good - Realistic content structure
-<Box className="p-4">
-  <Skeleton variant="rectangle" size="md" className="mb-3" />
-  <Skeleton variant="text" size="sm" className="mb-2" />
-  <Skeleton variant="text" size="sm" className="w-3/4" />
-</Box>
-
-// ❌ Avoid - Unrealistic structure
-<Box className="p-4">
-  <Skeleton variant="circle" size="xl" />
-  <Skeleton variant="text" size="xl" />
-</Box>
-```
-
-### 4. Use Consistent Styling
-
-```tsx
-// ✅ Good - Consistent skeleton styling
-<Box className="space-y-3">
-  <Skeleton variant="text" size="sm" />
-  <Skeleton variant="text" size="sm" />
-  <Skeleton variant="text" size="sm" />
-</Box>
-
-// ❌ Avoid - Inconsistent styling
+// List skeleton
 <Box>
-  <Skeleton variant="text" size="sm" className="mb-2" />
-  <Skeleton variant="text" size="lg" className="mb-4" />
-  <Skeleton variant="text" size="xs" />
+  {[1, 2, 3].map((item) => (
+    <Box key={item} className="flex-row items-center mb-3">
+      <Skeleton variant="circle" size="sm" className="mr-3" />
+      <Box className="flex-1">
+        <Skeleton variant="text" size="md" className="mb-1" />
+        <Skeleton variant="text" size="sm" className="w-2/3" />
+      </Box>
+    </Box>
+  ))}
 </Box>
 ```
 
-### 5. Consider Loading States
+### Different Variants
 
 ```tsx
-// ✅ Good - Conditional rendering
-{isLoading ? (
-  <Skeleton variant="rectangle" size="md" />
-) : (
-  <ActualContent />
-)}
+// Rectangle for cards
+<Skeleton variant="rectangle" size="lg" />
 
-// ❌ Avoid - Always showing skeleton
-<Skeleton variant="rectangle" size="md" />
-<ActualContent />
+// Square for images
+<Skeleton variant="square" size="md" />
+
+// Circle for avatars
+<Skeleton variant="circle" size="sm" />
+
+// Text for content
+<Skeleton variant="text" size="md" />
 ```
 
-## Advanced Usage
-
-### Complex Loading Patterns
+### With Children
 
 ```tsx
-// Dashboard skeleton
-<Box className="space-y-6 p-6">
-  {/* Header */}
-  <Box className="flex-row items-center justify-between">
-    <Skeleton variant="text" size="lg" className="w-1/3" />
-    <Skeleton variant="circle" size="md" />
-  </Box>
-
-  {/* Stats cards */}
-  <Box className="flex-row space-x-4">
-    <Box className="flex-1 rounded-lg bg-gray-50 p-4">
-      <Skeleton variant="text" size="sm" className="mb-2" />
-      <Skeleton variant="text" size="lg" />
-    </Box>
-    <Box className="flex-1 rounded-lg bg-gray-50 p-4">
-      <Skeleton variant="text" size="sm" className="mb-2" />
-      <Skeleton variant="text" size="lg" />
-    </Box>
-  </Box>
-
-  {/* Content area */}
-  <Skeleton variant="rectangle" size="xl" />
-</Box>
+// Skeleton with content inside
+<Skeleton variant="rectangle" size="lg">
+  <String>Loading content...</String>
+</Skeleton>
 ```
 
-### Custom Skeleton Components
+## Version Support
+
+| React Native | Support          |
+| ------------ | ---------------- |
+| 0.70+        | ✅ Full support  |
+| 0.60-0.69    | ✅ Full support  |
+| < 0.60       | ❌ Not supported |
+
+## Performance Notes
+
+- **Native Driver**: All animations use `useNativeDriver: true` for optimal performance
+- **Memory Efficient**: Animations are properly cleaned up on unmount
+- **Hybrid Detection**: Minimal overhead for environment detection
+- **Conditional Animation**: Only runs pulse animation when needed
+
+## TypeScript Support
+
+The component is fully typed with TypeScript:
 
 ```tsx
-// Custom card skeleton
-const CardSkeleton = () => (
-  <Box className="rounded-lg bg-white p-4 shadow-sm">
-    <Skeleton variant="rectangle" size="md" className="mb-3" />
-    <Skeleton variant="text" size="sm" className="mb-2" />
-    <Skeleton variant="text" size="sm" className="w-3/4" />
-  </Box>
-);
+import { Skeleton } from 'react-native-chill-ui';
+import type { SkeletonPropsTw } from '@types';
 
-// Custom list skeleton
-const ListItemSkeleton = () => (
-  <Box className="flex-row items-center border-b border-gray-100 p-4">
-    <Skeleton variant="circle" size="md" className="mr-3" />
-    <Box className="flex-1">
-      <Skeleton variant="text" size="sm" className="mb-1" />
-      <Skeleton variant="text" size="xs" className="w-2/3" />
-    </Box>
-  </Box>
-);
+const MySkeleton: React.FC<SkeletonPropsTw> = props => {
+  return <Skeleton {...props} />;
+};
 ```
-
-### Loading States with Transitions
-
-```tsx
-const [isLoading, setIsLoading] = useState(true);
-
-useEffect(() => {
-  const timer = setTimeout(() => {
-    setIsLoading(false);
-  }, 2000);
-
-  return () => clearTimeout(timer);
-}, []);
-
-{
-  isLoading ? (
-    <Box className="space-y-4">
-      <Skeleton variant="rectangle" size="md" />
-      <Skeleton variant="text" size="sm" />
-      <Skeleton variant="text" size="sm" />
-    </Box>
-  ) : (
-    <ActualContent />
-  );
-}
-```
-
-## Performance Considerations
-
-- **Lightweight**: Minimal performance impact with simple animations
-- **Optimized Rendering**: Only renders when needed
-- **Memory Efficient**: No complex animations or heavy computations
-- **Fast Loading**: Quick to render and display
 
 ## Accessibility
 
-The Skeleton component includes accessibility features:
+The skeleton component is designed to be accessible:
 
-- **Loading indication**: Clear visual indication of loading state
-- **Screen reader support**: Works with accessibility tools
-- **Reduced motion**: Respects user's motion preferences
-
-### Accessibility Best Practices
-
-```tsx
-// Always provide loading context
-<Box accessible={true} accessibilityLabel="Loading content" accessibilityHint="Content is being loaded">
-  <Skeleton variant="rectangle" size="md" />
-</Box>;
-
-// Use appropriate loading states
-{
-  isLoading && (
-    <Box accessible={true} accessibilityLabel="Loading user profile">
-      <Skeleton variant="circle" size="lg" />
-      <Skeleton variant="text" size="md" />
-    </Box>
-  );
-}
-```
+- **Screen Readers**: Provides visual loading indication
+- **High Contrast**: Works well with system accessibility settings
+- **Reduced Motion**: Respects user's motion preferences (can be extended)
 
 ## Troubleshooting
 
-### Common Issues
+### Animation Not Working
 
-1. **Skeleton not animating**: Check Tailwind CSS animation configuration
-2. **Wrong sizes**: Verify size prop values
-3. **Styling conflicts**: Check for conflicting CSS classes
-4. **Performance issues**: Ensure skeletons are conditionally rendered
+If the pulse animation isn't working:
 
-### Debug Example
+1. **Check NativeWind**: Ensure NativeWind is properly configured
+2. **Native Driver**: Verify `useNativeDriver: true` is supported
+3. **Performance**: Check for performance issues that might block animations
 
-```tsx
-const [debugInfo, setDebugInfo] = useState({});
+### Styling Issues
 
-<Skeleton
-  variant="rectangle"
-  size="md"
-  className="mb-4"
-  onLayout={event => {
-    setDebugInfo({
-      width: event.nativeEvent.layout.width,
-      height: event.nativeEvent.layout.height,
-    });
-  }}
-/>;
+If styles aren't applying correctly:
 
-{
-  debugInfo.width && (
-    <Box className="rounded bg-gray-100 p-4">
-      <String>Debug: {JSON.stringify(debugInfo)}</String>
-    </Box>
-  );
-}
-```
+1. **NativeWind**: Use `className` for Tailwind classes
+2. **StyleSheet**: Use `style` prop for React Native styles
+3. **Hybrid**: The component automatically detects the environment
 
-## Migration from Other Libraries
+### Type Errors
 
-### From react-native-skeleton-placeholder
+If you're getting TypeScript errors:
 
-```tsx
-// Old (react-native-skeleton-placeholder)
-<SkeletonPlaceholder>
-  <View style={styles.rectangle} />
-  <View style={styles.text} />
-</SkeletonPlaceholder>
+1. **Import Types**: Import from `@types` package
+2. **Version Match**: Ensure component and types versions match
+3. **Props**: Check that all required props are provided
 
-// New (Skeleton)
-<Box className="space-y-3">
-  <Skeleton variant="rectangle" size="md" />
-  <Skeleton variant="text" size="sm" />
-</Box>
-```
+## Examples in App.tsx
 
-### From custom skeleton implementation
-
-```tsx
-// Old (custom implementation)
-<View style={[styles.skeleton, styles.rectangle, { height: 128 }]} />
-
-// New (Skeleton)
-<Skeleton variant="rectangle" size="md" />
-```
+Check the `App.tsx` file for complete working examples of all Skeleton features and usage patterns.

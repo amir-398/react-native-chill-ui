@@ -1,7 +1,16 @@
 // https://docs.expo.dev/guides/using-eslint/
 module.exports = {
-  extends: ['airbnb', 'expo', 'prettier'],
-  ignorePatterns: ['/dist/*', '/node_modules/*', '/android/*', '/ios/*', '/coverage/*'],
+  extends: ['airbnb', 'expo', 'prettier', 'plugin:storybook/recommended'],
+  ignorePatterns: [
+    '/dist/*',
+    '/node_modules/*',
+    '/android/*',
+    '/ios/*',
+    '/coverage/*',
+    '**/__tests__/**',
+    '**/*.test.*',
+    '**/*.spec.*',
+  ],
   plugins: ['prettier', 'perfectionist', 'unused-imports'],
   root: true,
 

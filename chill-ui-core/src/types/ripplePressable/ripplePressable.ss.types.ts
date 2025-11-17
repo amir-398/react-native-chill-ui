@@ -1,4 +1,4 @@
-import { PressableProps, ViewStyle } from 'react-native';
+import { StyleProp, PressableProps, ViewStyle } from 'react-native';
 
 /**
  * Props for the RipplePressable component
@@ -11,5 +11,5 @@ export type RipplePressableProps = Omit<PressableProps, 'style'> & {
   /** Speed of the ripple effect animation in milliseconds (default: 500) */
   speed?: number;
   /** Style of the pressable component */
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 };

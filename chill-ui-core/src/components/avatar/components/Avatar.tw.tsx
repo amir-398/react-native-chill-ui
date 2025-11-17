@@ -6,12 +6,19 @@ import { StringTw } from '@components/string';
 import { RipplePressableTw } from '@components/ripplePressable';
 import { Image, Pressable, TouchableOpacity } from 'react-native';
 
-import avatarTv from '../styles/Avatar.variants';
-import getUserInitials from '../utils/getUsersInititials';
+import { useAvatar } from '../hooks/useAvatar';
+import { avatarDefaultProps } from '../utils/defaultProps';
+import { avatarTv, twStyles } from '../styles/Avatar.tw.styles';
 
 /**
- * Avatar component displays user profile images with fallback to initials.
+ * The <Avatar /> component displays user profile images with fallback to initials.
  * Supports different sizes, shapes, and touchable interactions.
+ *
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { Avatar } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
@@ -40,47 +47,45 @@ import getUserInitials from '../utils/getUsersInititials';
  */
 export default function Avatar(props: AvatarPropsTw) {
   const {
-    as = 'pressable',
+    as = avatarDefaultProps.as,
     className,
     color,
     data,
     onPress,
-    size = 'md',
+    size = avatarDefaultProps.size,
     stringProps,
     style,
-    variant = 'circle',
+    variant = avatarDefaultProps.variant,
   } = props;
 
-  const initials = data?.firstname ? getUserInitials(data) : '';
-  const image = data?.image_url;
+  const { image, initials } = useAvatar(data);
 
   const avatarContent = (
-    <BoxTw
-      style={[{ ...(color && { backgroundColor: color }) }, style]}
-      className={cn(avatarTv({ size, variant }), className)}
-    >
+    <>
       <StringTw size={size as any} font="primarySemiBold" {...stringProps}>
         {initials}
       </StringTw>
-      {image && <Image className="absolute h-full w-full" source={{ uri: image }} />}
-    </BoxTw>
+      {image && <Image className={twStyles.avatarImage} source={{ uri: image }} />}
+    </>
   );
+
+  const commonProps = {
+    className: cn(avatarTv({ size: size as any, variant: variant as any }), className),
+    onPress: onPress || undefined,
+    style: [{ ...(color && { backgroundColor: color }) }, style],
+  };
 
   if (onPress) {
     switch (as) {
       case 'touchable-opacity':
-        return (
-          <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
-            {avatarContent}
-          </TouchableOpacity>
-        );
+        return <TouchableOpacity {...commonProps}>{avatarContent}</TouchableOpacity>;
       case 'ripple-pressable':
-        return <RipplePressableTw onPress={onPress}>{avatarContent}</RipplePressableTw>;
+        return <RipplePressableTw {...commonProps}>{avatarContent}</RipplePressableTw>;
       case 'pressable':
       default:
-        return <Pressable onPress={onPress}>{avatarContent}</Pressable>;
+        return <Pressable {...commonProps}>{avatarContent}</Pressable>;
     }
   }
 
-  return avatarContent;
+  return <BoxTw {...commonProps}>{avatarContent}</BoxTw>;
 }

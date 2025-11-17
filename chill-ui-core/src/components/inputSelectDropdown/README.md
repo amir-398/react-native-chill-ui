@@ -1,714 +1,492 @@
 # InputSelectDropdown Component
 
-A powerful dropdown component that combines an input field with a searchable dropdown. Perfect for autocomplete functionality, user selection, and data filtering with advanced features like highlighting, custom rendering, and keyboard navigation.
+A flexible and customizable InputSelectDropdown component for React Native applications that combines an input field with a searchable dropdown. Supports custom rendering, highlighting, filtering, and keyboard navigation across three different styling approaches.
+
+## Available Versions
+
+This component comes in three versions to match your project's styling approach. You choose the version during installation, but the import statement remains consistent across all versions:
+
+### 1. **StyleSheet Version**
+
+- Uses React Native's built-in StyleSheet API
+- Perfect for projects that don't use CSS-in-JS libraries
+- Lightweight and performant
+- Install: `npm install react-native-chill-ui@stylesheet`
+
+### 2. **Tailwind Version**
+
+- Uses NativeWind/Tailwind CSS classes
+- Ideal for projects already using Tailwind CSS
+- Requires NativeWind setup and Tailwind configuration
+- Install: `npm install react-native-chill-ui@tailwind`
+
+### 3. **Hybrid Version**
+
+- Automatically detects if NativeWind is available
+- Falls back to StyleSheet if NativeWind is not installed
+- Best for component libraries or projects that need flexibility
+- Install: `npm install react-native-chill-ui@hybrid`
+
+**Note**: Regardless of the version you choose, the import statement remains the same: `import { InputSelectDropdown } from 'react-native-chill-ui'`
 
 ## Features
 
-- ✅ **Searchable dropdown**: Built-in search functionality with highlighting
-- ✅ **Custom rendering**: Flexible item rendering with custom components
-- ✅ **Data filtering**: Exclude items and search-specific filtering
-- ✅ **Keyboard navigation**: Full keyboard support for accessibility
-- ✅ **Positioning**: Automatic or manual dropdown positioning
-- ✅ **Highlighting**: Search term highlighting in dropdown items
-- ✅ **Modal support**: Dropdown opens in modal for better UX
-- ✅ **TypeScript support**: Full type safety with generics
-- ✅ **Accessibility**: Screen reader support and ARIA attributes
+- **Searchable Dropdown**: Built-in search functionality with customizable search fields
+- **Custom Rendering**: Support for custom dropdown item rendering
+- **Highlighting**: Automatic highlighting of search terms in dropdown items
+- **Flexible Data**: Works with any data structure using field mapping
+- **Positioning**: Smart dropdown positioning (auto, top, bottom)
+- **Filtering**: Built-in filtering with custom search query support
+- **Keyboard Navigation**: Full keyboard support for accessibility
+- **Modal Integration**: Uses modal for better mobile experience
+- **TypeScript Support**: Fully typed for a better development experience
+- **Accessible**: Proper focus management and screen reader support
 
 ## Quick Start
 
 ```tsx
-import InputSelectDropdown from '@/components/inputSelectDropdown/InputSelectDropdown';
+import { InputSelectDropdown } from 'react-native-chill-ui';
 
 // Basic usage
 <InputSelectDropdown
-  dataSet={['Apple', 'Banana', 'Cherry']}
+  dataSet={[
+    { id: 1, name: 'John Doe', email: 'john@example.com' },
+    { id: 2, name: 'Jane Smith', email: 'jane@example.com' }
+  ]}
   valueField="name"
-  onSelectItem={item => console.log('Selected:', item)}
-/>;
-```
+  onSelectItem={(item) => setSelectedUser(item)}
+/>
 
-## Examples
-
-### Basic Dropdown with Simple Data
-
-```tsx
-const [selectedFruit, setSelectedFruit] = useState('');
-
-<InputSelectDropdown
-  dataSet={['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry']}
-  valueField="name"
-  onSelectItem={item => setSelectedFruit(item)}
-  inputProps={{
-    label: 'Select Fruit',
-    placeholder: 'Choose a fruit...',
-  }}
-/>;
-```
-
-### Advanced Dropdown with Complex Data
-
-```tsx
-const [selectedUser, setSelectedUser] = useState(null);
-
-const users = [
-  { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Admin' },
-  { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'User' },
-  { id: 3, name: 'Bob Johnson', email: 'bob@example.com', role: 'Manager' },
-];
-
+// With search functionality
 <InputSelectDropdown
   dataSet={users}
   valueField="name"
   searchField="email"
-  hasSearch={true}
-  hasHighlightString={true}
-  onSelectItem={item => setSelectedUser(item)}
-  inputProps={{
-    label: 'Select User',
-    placeholder: 'Search by name or email...',
-  }}
+  hasSearch
+  hasHighlightString
+  onSelectItem={(item) => setSelectedUser(item)}
+/>
+
+// With custom rendering
+<InputSelectDropdown
+  dataSet={products}
+  valueField="name"
+  onSelectItem={(item) => setSelectedProduct(item)}
   customDropdownItem={(item, selected) => (
-    <Box className={`p-3 ${selected ? 'bg-blue-100' : ''}`}>
-      <String weight="medium">{item.name}</String>
-      <String size="sm" color="gray">
-        {item.email}
-      </String>
-      <String size="xs" color="blue">
-        {item.role}
-      </String>
+    <Box className={selected ? 'bg-blue-100' : ''}>
+      <String>{item.name}</String>
+      <String size="sm" color="gray">${item.price}</String>
     </Box>
   )}
-/>;
+/>
 ```
 
-### Search with Custom Filtering
+## Props
+
+| Prop                         | Type                                                          | Required | Default               | Description                                         |
+| ---------------------------- | ------------------------------------------------------------- | -------- | --------------------- | --------------------------------------------------- |
+| `closeModalWhenSelectedItem` | `boolean`                                                     | ❌       | `true`                | Whether to close modal when item is selected        |
+| `customDropdownItem`         | `(item: T, selected?: boolean) => ReactElement`               | ❌       | -                     | Custom render function for dropdown items           |
+| `customSearchInput`          | `React.ReactNode`                                             | ❌       | -                     | Custom search input component                       |
+| `dataSet`                    | `T[]`                                                         | ✅       | -                     | Array of data items to display in dropdown          |
+| `dropdownItemProps`          | `DropdownItemProps`                                           | ❌       | -                     | Props for dropdown items                            |
+| `dropdownPosition`           | `'auto' \| 'top' \| 'bottom'`                                 | ❌       | `'auto'`              | Position of dropdown relative to input              |
+| `dropdownProps`              | `Partial<InputDropdownProps>`                                 | ❌       | -                     | Additional props for dropdown component             |
+| `excludeItems`               | `T[]`                                                         | ❌       | `[]`                  | Items to exclude from dropdown                      |
+| `excludeSearchItems`         | `T[]`                                                         | ❌       | `[]`                  | Items to exclude from search results                |
+| `hasHighlightString`         | `boolean`                                                     | ❌       | `false`               | Whether to highlight search terms in dropdown items |
+| `hasSearch`                  | `boolean`                                                     | ❌       | `false`               | Whether to show search functionality                |
+| `highlightProps`             | `Partial<HighlightStringProps>`                               | ❌       | -                     | Props for highlight string functionality            |
+| `inputProps`                 | `InputProps`                                                  | ❌       | -                     | Props for the input component                       |
+| `maxHeight`                  | `number`                                                      | ❌       | `200`                 | Maximum height of dropdown                          |
+| `minHeight`                  | `number`                                                      | ❌       | `100`                 | Minimum height of dropdown                          |
+| `offsetX`                    | `number`                                                      | ❌       | `0`                   | Horizontal offset for dropdown positioning          |
+| `offsetY`                    | `number`                                                      | ❌       | `4`                   | Vertical offset for dropdown positioning            |
+| `onBlur`                     | `() => void`                                                  | ❌       | -                     | Callback when input loses focus                     |
+| `onFocus`                    | `() => void`                                                  | ❌       | -                     | Callback when input gains focus                     |
+| `onSelectItem`               | `(item: T) => void`                                           | ✅       | -                     | Callback when item is selected                      |
+| `searchField`                | `string`                                                      | ❌       | -                     | Field name to use for search                        |
+| `searchInputProps`           | `InputProps`                                                  | ❌       | -                     | Props for search input                              |
+| `searchQuery`                | `(keyword: string, labelValue: string) => boolean`            | ❌       | -                     | Custom search query function                        |
+| `valueField`                 | `string`                                                      | ✅       | -                     | Field name to use as display value                  |
+| `open`                       | `boolean`                                                     | ❌       | -                     | Whether the dropdown is open (controlled mode)      |
+| `onOpenChange`               | `(open: boolean) => void`                                     | ❌       | -                     | Callback when dropdown open state changes           |
+| `defaultOpen`                | `boolean`                                                     | ❌       | `false`               | Default open state (uncontrolled mode)              |
+| `itemClickableAs`            | `'touchable-opacity' \| 'pressable' \| 'touchable-highlight'` | ❌       | `'touchable-opacity'` | Type of touchable component for items               |
+
+### DropdownItemProps Type
+
+```typescript
+{
+  className?: string;                    // (only NativeWind) Custom CSS classes
+  style?: StyleProp<ViewStyle>;          // (only StyleSheet) Custom style
+  stringItemProps?: StringProps;         // Props for String component
+  activeBackgroundColor?: string;        // Background color when item is active
+}
+```
+
+### Touch Component Types
+
+The `itemClickableAs` prop supports different touchable components for dropdown items:
+
+| Type                  | Description                                  | Use Case                           |
+| --------------------- | -------------------------------------------- | ---------------------------------- |
+| `touchable-opacity`   | Standard opacity feedback on touch (default) | General purpose, iOS-like feel     |
+| `pressable`           | Modern pressable with customizable feedback  | Custom feedback, modern apps       |
+| `touchable-highlight` | Highlight background on touch                | Material Design, Android-like feel |
+
+## Choosing the Right Version
+
+Select the appropriate version during installation based on your project's needs:
+
+| Version        | Installation Command                           | Use When                                                                                             | Pros                                                                            | Cons                                                  |
+| -------------- | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| **StyleSheet** | `npm install react-native-chill-ui@stylesheet` | • No CSS-in-JS dependencies<br/>• Maximum performance needed<br/>• Simple styling requirements       | • Lightweight<br/>• Fast performance<br/>• No external dependencies             | • Less flexible<br/>• Manual theme management         |
+| **Tailwind**   | `npm install react-native-chill-ui@tailwind`   | • Already using NativeWind<br/>• Team familiar with Tailwind<br/>• Design system based on utilities  | • Consistent with web Tailwind<br/>• Powerful utility system<br/>• Easy theming | • Requires NativeWind setup<br/>• Larger bundle size  |
+| **Hybrid**     | `npm install react-native-chill-ui@hybrid`     | • Building component library<br/>• Uncertain about styling approach<br/>• Want maximum compatibility | • Works in any environment<br/>• Future-proof<br/>• Automatic detection         | • Slightly larger bundle<br/>• More complex internals |
+
+## Examples
+
+### Basic Usage
 
 ```tsx
-const [selectedCountry, setSelectedCountry] = useState(null);
-
-const countries = [
-  { code: 'US', name: 'United States', continent: 'North America' },
-  { code: 'CA', name: 'Canada', continent: 'North America' },
-  { code: 'FR', name: 'France', continent: 'Europe' },
-  { code: 'DE', name: 'Germany', continent: 'Europe' },
-];
-
+// Simple dropdown with basic data
 <InputSelectDropdown
-  dataSet={countries}
+  dataSet={[
+    { id: 1, name: 'Apple' },
+    { id: 2, name: 'Banana' },
+    { id: 3, name: 'Orange' },
+  ]}
   valueField="name"
-  searchField="name"
-  hasSearch={true}
-  searchQuery={(keyword, labelValue) => labelValue.toLowerCase().includes(keyword.toLowerCase())}
-  excludeItems={[currentCountry]}
-  onSelectItem={item => setSelectedCountry(item)}
-  inputProps={{
-    label: 'Select Country',
-    placeholder: 'Search countries...',
-  }}
-  highlightProps={{
-    highlightClassName: 'bg-yellow-200',
-  }}
-/>;
+  onSelectItem={item => setSelectedFruit(item)}
+/>
 ```
 
-### Dropdown with Custom Search Input
+### With Search
 
 ```tsx
-const CustomSearchInput = ({ value, onChangeText }) => (
-  <Box className="bg-gray-100 p-2">
-    <Input
-      value={value}
-      onChangeText={onChangeText}
-      placeholder="🔍 Search users..."
-      leftIconAction={{
-        iconName: 'search-solid',
-        iconSize: 'sm',
-      }}
-    />
-  </Box>
-);
-
+// Dropdown with search functionality
 <InputSelectDropdown
   dataSet={users}
   valueField="name"
-  hasSearch={true}
-  customSearchInput={<CustomSearchInput />}
-  onSelectItem={handleUserSelect}
-  inputProps={{
-    label: 'Select User',
-    placeholder: 'Click to search...',
-  }}
-/>;
+  searchField="email"
+  hasSearch
+  hasHighlightString
+  onSelectItem={user => setSelectedUser(user)}
+/>
 ```
 
-### Dropdown with Positioning Control
+### Custom Rendering
 
 ```tsx
+// Custom dropdown item rendering
+<InputSelectDropdown
+  dataSet={products}
+  valueField="name"
+  onSelectItem={product => setSelectedProduct(product)}
+  customDropdownItem={(item, selected) => (
+    <Box className={selected ? 'bg-blue-100' : ''}>
+      <String>{item.name}</String>
+      <String size="sm" color="gray">
+        ${item.price}
+      </String>
+      <String size="xs" color="muted">
+        {item.category}
+      </String>
+    </Box>
+  )}
+/>
+```
+
+### With Custom Search Input
+
+```tsx
+// Custom search input component
+<InputSelectDropdown
+  dataSet={countries}
+  valueField="name"
+  hasSearch
+  onSelectItem={country => setSelectedCountry(country)}
+  customSearchInput={<Input placeholder="Search countries..." leftIconAction={{ name: 'search-solid' }} />}
+/>
+```
+
+### Different Positions
+
+```tsx
+// Auto positioning (default)
+<InputSelectDropdown
+  dataSet={items}
+  valueField="name"
+  dropdownPosition="auto"
+  onSelectItem={handleSelect}
+/>
+
+// Force top position
+<InputSelectDropdown
+  dataSet={items}
+  valueField="name"
+  dropdownPosition="top"
+  onSelectItem={handleSelect}
+/>
+
+// Force bottom position
 <InputSelectDropdown
   dataSet={items}
   valueField="name"
   dropdownPosition="bottom"
-  offsetX={10}
-  offsetY={5}
-  maxHeight={300}
-  minHeight={100}
-  onSelectItem={handleItemSelect}
-  inputProps={{
-    label: 'Select Item',
-    placeholder: 'Choose an item...',
-  }}
+  onSelectItem={handleSelect}
 />
 ```
 
-### Dropdown with Disabled State
+### With Filtering and Exclusions
 
 ```tsx
+// Exclude certain items from dropdown
 <InputSelectDropdown
-  dataSet={options}
-  valueField="label"
-  onSelectItem={handleOptionSelect}
-  inputProps={{
-    label: 'Select Option',
-    placeholder: 'Choose an option...',
-    isDisabled: true,
-  }}
-  dropdownProps={{
-    visible: false,
-  }}
-/>
-```
-
-## Props Reference
-
-### Core Props
-
-| Prop           | Type                | Default | Description                        |
-| -------------- | ------------------- | ------- | ---------------------------------- |
-| `dataSet`      | `T[]`               | `[]`    | Array of data items to display     |
-| `valueField`   | `string`            | -       | Field name to use as display value |
-| `onSelectItem` | `(item: T) => void` | -       | Callback when item is selected     |
-
-### Search Props
-
-| Prop                | Type                                               | Default | Description                          |
-| ------------------- | -------------------------------------------------- | ------- | ------------------------------------ |
-| `hasSearch`         | `boolean`                                          | `false` | Whether to show search functionality |
-| `searchField`       | `string`                                           | -       | Field name to use for search         |
-| `searchQuery`       | `(keyword: string, labelValue: string) => boolean` | -       | Custom search query function         |
-| `customSearchInput` | `React.ReactNode`                                  | -       | Custom search input component        |
-| `searchInputProps`  | `InputProps`                                       | -       | Props for search input               |
-
-### Filtering Props
-
-| Prop                 | Type  | Default | Description                          |
-| -------------------- | ----- | ------- | ------------------------------------ |
-| `excludeItems`       | `T[]` | `[]`    | Items to exclude from dropdown       |
-| `excludeSearchItems` | `T[]` | `[]`    | Items to exclude from search results |
-
-### Rendering Props
-
-| Prop                 | Type                                                 | Default | Description                       |
-| -------------------- | ---------------------------------------------------- | ------- | --------------------------------- |
-| `customDropdownItem` | `(item: T, selected: boolean) => React.ReactElement` | -       | Custom render function for items  |
-| `dropdownItemProps`  | `DropdownItemProps`                                  | -       | Props for dropdown items          |
-| `hasHighlightString` | `boolean`                                            | `true`  | Whether to highlight search terms |
-| `highlightProps`     | `Partial<HighlightStringProps>`                      | -       | Props for highlight functionality |
-
-### Positioning Props
-
-| Prop               | Type                          | Default  | Description                       |
-| ------------------ | ----------------------------- | -------- | --------------------------------- |
-| `dropdownPosition` | `'auto' \| 'top' \| 'bottom'` | `'auto'` | Position of dropdown              |
-| `offsetX`          | `number`                      | `0`      | Horizontal offset for positioning |
-| `offsetY`          | `number`                      | `0`      | Vertical offset for positioning   |
-| `maxHeight`        | `number`                      | `300`    | Maximum height of dropdown        |
-| `minHeight`        | `number`                      | `100`    | Minimum height of dropdown        |
-
-### Behavior Props
-
-| Prop                         | Type         | Default | Description                         |
-| ---------------------------- | ------------ | ------- | ----------------------------------- |
-| `closeModalWhenSelectedItem` | `boolean`    | `true`  | Whether to close modal on selection |
-| `onBlur`                     | `() => void` | -       | Callback when input loses focus     |
-| `onFocus`                    | `() => void` | -       | Callback when input gains focus     |
-
-### Styling Props
-
-| Prop            | Type                          | Default | Description                   |
-| --------------- | ----------------------------- | ------- | ----------------------------- |
-| `inputProps`    | `InputProps`                  | -       | Props for the input component |
-| `dropdownProps` | `Partial<InputDropdownProps>` | -       | Additional dropdown props     |
-
-## TypeScript Interfaces
-
-### InputSelectDropdownProps
-
-```tsx
-interface InputSelectDropdownProps<T> {
-  /** Array of data items to display in dropdown */
-  dataSet: T[];
-  /** Field name to use as display value */
-  valueField: string;
-  /** Callback when item is selected */
-  onSelectItem: (item: T) => void;
-  /** Whether to close modal when item is selected */
-  closeModalWhenSelectedItem?: boolean;
-  /** Custom render function for dropdown items */
-  customDropdownItem?: (item: T, selected: boolean) => React.ReactElement | null;
-  /** Custom search input component */
-  customSearchInput?: React.ReactNode;
-  /** Props for dropdown items */
-  dropdownItemProps?: DropdownItemProps;
-  /** Position of dropdown */
-  dropdownPosition?: 'auto' | 'top' | 'bottom';
-  /** Additional props for dropdown component */
-  dropdownProps?: Partial<InputDropdownProps>;
-  /** Items to exclude from dropdown */
-  excludeItems?: T[];
-  /** Items to exclude from search results */
-  excludeSearchItems?: T[];
-  /** Whether to highlight search terms */
-  hasHighlightString?: boolean;
-  /** Whether to show search functionality */
-  hasSearch?: boolean;
-  /** Props for highlight string functionality */
-  highlightProps?: Partial<Omit<HighlightStringProps, 'text'>>;
-  /** Props for the input component */
-  inputProps?: Omit<InputProps, 'placeholder' | 'value'>;
-  /** Maximum height of dropdown */
-  maxHeight?: number;
-  /** Minimum height of dropdown */
-  minHeight?: number;
-  /** Horizontal offset for dropdown positioning */
-  offsetX?: number;
-  /** Vertical offset for dropdown positioning */
-  offsetY?: number;
-  /** Callback when input loses focus */
-  onBlur?: () => void;
-  /** Callback when input gains focus */
-  onFocus?: () => void;
-  /** Field name to use for search */
-  searchField?: string;
-  /** Props for search input */
-  searchInputProps?: InputProps;
-  /** Custom search query function */
-  searchQuery?: (keyword: string, labelValue: string) => boolean;
-}
-```
-
-## Search Functionality
-
-### Built-in Search
-
-The component provides built-in search functionality that filters items based on the `searchField`:
-
-```tsx
-<InputSelectDropdown
-  dataSet={users}
+  dataSet={allUsers}
   valueField="name"
-  searchField="email"
-  hasSearch={true}
-  onSelectItem={handleUserSelect}
+  excludeItems={selectedUsers}
+  onSelectItem={(user) => addUser(user)}
+/>
+
+// Exclude items from search results
+<InputSelectDropdown
+  dataSet={products}
+  valueField="name"
+  searchField="description"
+  hasSearch
+  excludeSearchItems={outOfStockProducts}
+  onSelectItem={(product) => setSelectedProduct(product)}
 />
 ```
 
 ### Custom Search Query
 
-For more advanced filtering, use the `searchQuery` prop:
-
 ```tsx
+// Custom search logic
 <InputSelectDropdown
-  dataSet={products}
-  valueField="name"
-  searchField="name"
-  hasSearch={true}
-  searchQuery={(keyword, labelValue) => {
-    // Custom search logic
-    const searchTerm = keyword.toLowerCase();
-    const itemValue = labelValue.toLowerCase();
-
-    // Search in multiple fields or with fuzzy matching
+  dataSet={articles}
+  valueField="title"
+  searchField="content"
+  hasSearch
+  searchQuery={(keyword, content) => {
+    // Custom search logic - e.g., search in multiple fields
     return (
-      itemValue.includes(searchTerm) ||
-      itemValue.startsWith(searchTerm) ||
-      itemValue.split(' ').some(word => word.startsWith(searchTerm))
+      content.toLowerCase().includes(keyword.toLowerCase()) ||
+      article.tags.some(tag => tag.toLowerCase().includes(keyword.toLowerCase()))
     );
   }}
-  onSelectItem={handleProductSelect}
+  onSelectItem={article => setSelectedArticle(article)}
 />
 ```
 
-### Custom Search Input
-
-Replace the default search input with a custom component:
+### With Input Props
 
 ```tsx
-const CustomSearch = ({ value, onChangeText }) => (
-  <Box className="border-b bg-blue-50 p-3">
-    <Input
-      value={value}
-      onChangeText={onChangeText}
-      placeholder="🔍 Advanced search..."
-      leftIconAction={{
-        iconName: 'search-solid',
-        iconSize: 'sm',
-      }}
-      rightIconAction={{
-        iconName: 'filter-solid',
-        iconSize: 'sm',
-      }}
-    />
-  </Box>
-);
+// Custom input styling and behavior
+<InputSelectDropdown
+  dataSet={cities}
+  valueField="name"
+  onSelectItem={city => setSelectedCity(city)}
+  inputProps={{
+    placeholder: 'Select a city...',
+    isDisabled: isLoading,
+    rightIconAction: {
+      iconName: 'map-marker-solid',
+      iconColor: '#3B82F6',
+    },
+  }}
+/>
+```
+
+### With Dropdown Customization
+
+```tsx
+// Custom dropdown styling and behavior
+<InputSelectDropdown
+  dataSet={options}
+  valueField="label"
+  onSelectItem={option => setSelectedOption(option)}
+  dropdownProps={{
+    maxHeight: 300,
+    minHeight: 150,
+    backgroundColor: '#F8F9FA',
+  }}
+  dropdownItemProps={{
+    activeBackgroundColor: '#E3F2FD',
+    stringItemProps: {
+      size: 'md',
+      color: 'primary',
+    },
+  }}
+/>
+```
+
+### Controlled Mode
+
+```tsx
+// Controlled dropdown with external state management
+const [isOpen, setIsOpen] = useState(false);
 
 <InputSelectDropdown
-  dataSet={items}
+  dataSet={users}
   valueField="name"
-  hasSearch={true}
-  customSearchInput={<CustomSearch />}
-  onSelectItem={handleItemSelect}
+  open={isOpen}
+  onOpenChange={setIsOpen}
+  onSelectItem={user => {
+    setSelectedUser(user);
+    setIsOpen(false); // Close after selection
+  }}
 />;
 ```
 
-## Custom Rendering
-
-### Basic Custom Item
+### Uncontrolled Mode with Default Open
 
 ```tsx
+// Dropdown that opens by default
 <InputSelectDropdown
-  dataSet={users}
+  dataSet={recentItems}
   valueField="name"
-  customDropdownItem={(item, selected) => (
-    <Box className={`p-3 ${selected ? 'bg-blue-100' : ''}`}>
-      <String weight="medium">{item.name}</String>
-      <String size="sm" color="gray">
-        {item.email}
-      </String>
-    </Box>
-  )}
-  onSelectItem={handleUserSelect}
+  defaultOpen={true}
+  onSelectItem={item => setSelectedItem(item)}
 />
 ```
 
-### Advanced Custom Item with Actions
+### Mixed Usage Examples
 
 ```tsx
+// Always open dropdown (controlled)
 <InputSelectDropdown
-  dataSet={users}
-  valueField="name"
-  customDropdownItem={(item, selected) => (
-    <Box className={`flex-row items-center justify-between p-3 ${selected ? 'bg-blue-100' : ''}`}>
-      <Box>
-        <String weight="medium">{item.name}</String>
-        <String size="sm" color="gray">
-          {item.email}
-        </String>
-      </Box>
-      <Box className="flex-row gap-2">
-        <Icon name="eye-solid" size="sm" onPress={() => viewUser(item)} />
-        <Icon name="edit-solid" size="sm" onPress={() => editUser(item)} />
-      </Box>
-    </Box>
-  )}
-  onSelectItem={handleUserSelect}
+  dataSet={filters}
+  valueField="label"
+  open={true}
+  onOpenChange={() => {}} // Prevent closing
+  onSelectItem={filter => applyFilter(filter)}
 />
-```
 
-## Highlighting
-
-### Basic Highlighting
-
-```tsx
+// Conditionally open dropdown
 <InputSelectDropdown
-  dataSet={items}
-  valueField="name"
-  hasSearch={true}
-  hasHighlightString={true}
-  onSelectItem={handleItemSelect}
-/>
-```
-
-### Custom Highlighting
-
-```tsx
-<InputSelectDropdown
-  dataSet={items}
-  valueField="name"
-  hasSearch={true}
-  hasHighlightString={true}
-  highlightProps={{
-    highlightClassName: 'bg-yellow-200 font-bold',
-    highlightStyle: { color: '#FF6B35' },
-    stringProps: { size: 'md', weight: 'medium' },
+  dataSet={suggestions}
+  valueField="text"
+  open={showSuggestions}
+  onOpenChange={setShowSuggestions}
+  onSelectItem={suggestion => {
+    setValue(suggestion.text);
+    setShowSuggestions(false);
   }}
-  onSelectItem={handleItemSelect}
 />
 ```
+
+## Controlled vs Uncontrolled Mode
+
+The component supports both controlled and uncontrolled modes for managing the dropdown's open state:
+
+### Controlled Mode
+
+Use `open` and `onOpenChange` props when you need full control over the dropdown's state:
+
+```tsx
+const [isOpen, setIsOpen] = useState(false);
+
+<InputSelectDropdown
+  open={isOpen}
+  onOpenChange={setIsOpen}
+  // ... other props
+/>;
+```
+
+**When to use controlled mode:**
+
+- You need to programmatically open/close the dropdown
+- The dropdown state depends on external conditions
+- You want to prevent closing in certain scenarios
+- You need to sync the dropdown state with other components
+
+### Uncontrolled Mode
+
+Use `defaultOpen` prop when you want the component to manage its own state:
+
+```tsx
+<InputSelectDropdown
+  defaultOpen={true} // Opens by default
+  // ... other props
+/>
+```
+
+**When to use uncontrolled mode:**
+
+- Simple use cases where you don't need external state control
+- The dropdown behavior is straightforward
+- You want the component to handle its own state internally
+
+### Important Notes
+
+- **Don't mix modes**: Never use `open`/`onOpenChange` with `defaultOpen` at the same time
+- **Controlled takes precedence**: If `open` is provided, the component becomes controlled regardless of `defaultOpen`
+- **State management**: In controlled mode, you're responsible for managing the state; in uncontrolled mode, the component handles it internally
 
 ## Best Practices
 
-### 1. Always Provide valueField
-
-```tsx
-// ✅ Good - Clear value field
-<InputSelectDropdown
-  dataSet={users}
-  valueField="name"
-  onSelectItem={handleUserSelect}
-/>
-
-// ❌ Avoid - No value field specified
-<InputSelectDropdown
-  dataSet={users}
-  onSelectItem={handleUserSelect}
-/>
-```
-
-### 2. Use Appropriate Search Fields
-
-```tsx
-// ✅ Good - Search in relevant fields
-<InputSelectDropdown
-  dataSet={users}
-  valueField="name"
-  searchField="email"
-  hasSearch={true}
-  onSelectItem={handleUserSelect}
-/>
-
-// ❌ Avoid - Search in wrong field
-<InputSelectDropdown
-  dataSet={users}
-  valueField="name"
-  searchField="id"
-  hasSearch={true}
-  onSelectItem={handleUserSelect}
-/>
-```
-
-### 3. Provide Meaningful Labels
-
-```tsx
-// ✅ Good - Clear labels
-<InputSelectDropdown
-  dataSet={users}
-  valueField="name"
-  inputProps={{
-    label: 'Select User',
-    placeholder: 'Search users by name or email...',
-  }}
-  onSelectItem={handleUserSelect}
-/>
-
-// ❌ Avoid - Generic labels
-<InputSelectDropdown
-  dataSet={users}
-  valueField="name"
-  inputProps={{
-    placeholder: 'Select...',
-  }}
-  onSelectItem={handleUserSelect}
-/>
-```
-
-### 4. Handle Empty States
-
-```tsx
-// ✅ Good - Handle empty data
-<InputSelectDropdown
-  dataSet={users.length > 0 ? users : []}
-  valueField="name"
-  inputProps={{
-    label: 'Select User',
-    placeholder: users.length > 0 ? 'Search users...' : 'No users available',
-  }}
-  onSelectItem={handleUserSelect}
-/>
-```
-
-### 5. Use Custom Rendering for Complex Data
-
-```tsx
-// ✅ Good - Custom rendering for complex items
-<InputSelectDropdown
-  dataSet={users}
-  valueField="name"
-  customDropdownItem={(item, selected) => (
-    <Box className={selected ? 'bg-blue-100' : ''}>
-      <String>{item.name}</String>
-      <String size="sm" color="gray">{item.email}</String>
-    </Box>
-  )}
-  onSelectItem={handleUserSelect}
-/>
-
-// ❌ Avoid - Basic rendering for complex data
-<InputSelectDropdown
-  dataSet={users}
-  valueField="name"
-  onSelectItem={handleUserSelect}
-/>
-```
-
-## Advanced Usage
-
-### Form Integration
-
-```tsx
-const [formData, setFormData] = useState({
-  user: null,
-  department: null,
-  role: null,
-});
-
-const handleFieldChange = (field: string) => (item: any) => {
-  setFormData(prev => ({ ...prev, [field]: item }));
-};
-
-<InputSelectDropdown
-  dataSet={users}
-  valueField="name"
-  inputProps={{
-    label: 'Select User',
-    placeholder: 'Choose a user...',
-  }}
-  onSelectItem={handleFieldChange('user')}
-/>
-
-<InputSelectDropdown
-  dataSet={departments}
-  valueField="name"
-  inputProps={{
-    label: 'Select Department',
-    placeholder: 'Choose a department...',
-  }}
-  onSelectItem={handleFieldChange('department')}
-/>
-```
-
-### Dynamic Filtering
-
-```tsx
-const [selectedDepartment, setSelectedDepartment] = useState(null);
-const [filteredUsers, setFilteredUsers] = useState(users);
-
-useEffect(() => {
-  if (selectedDepartment) {
-    const filtered = users.filter(user => user.departmentId === selectedDepartment.id);
-    setFilteredUsers(filtered);
-  } else {
-    setFilteredUsers(users);
-  }
-}, [selectedDepartment]);
-
-<InputSelectDropdown
-  dataSet={filteredUsers}
-  valueField="name"
-  hasSearch={true}
-  inputProps={{
-    label: 'Select User',
-    placeholder: 'Search users...',
-  }}
-  onSelectItem={handleUserSelect}
-/>;
-```
-
-### Keyboard Navigation
-
-The component supports full keyboard navigation:
-
-- **Tab**: Navigate between input and dropdown
-- **Arrow keys**: Navigate through dropdown items
-- **Enter**: Select current item
-- **Escape**: Close dropdown
-- **Type**: Search/filter items
-
-### Accessibility
-
-The InputSelectDropdown component includes comprehensive accessibility features:
-
-- **Screen reader support**: Proper labeling and announcements
-- **Keyboard navigation**: Full keyboard support
-- **Focus management**: Proper focus handling
-- **ARIA attributes**: Correct semantic markup
-- **Error announcements**: Screen readers announce validation errors
-
-### Accessibility Best Practices
-
-```tsx
-// Always provide labels
-<InputSelectDropdown
-  dataSet={users}
-  valueField="name"
-  inputProps={{
-    label: 'Select User',
-  }}
-  onSelectItem={handleUserSelect}
-/>
-
-// Provide clear error messages
-<InputSelectDropdown
-  dataSet={users}
-  valueField="name"
-  inputProps={{
-    label: 'Select User',
-    hasError: !!userError,
-    errorMessage: userError,
-  }}
-  onSelectItem={handleUserSelect}
-/>
-
-// Use appropriate icons for context
-<InputSelectDropdown
-  dataSet={users}
-  valueField="name"
-  inputProps={{
-    label: 'Select User',
-    leftIconAction: {
-      iconName: 'user-solid',
-      iconSize: 'sm',
-    },
-  }}
-  onSelectItem={handleUserSelect}
-/>
-```
+1. **Always provide `valueField`** - This is required to display the correct value in the input
+2. **Use `searchField`** - When enabling search, specify which field to search in
+3. **Choose the right mode** - Use controlled mode for complex state management, uncontrolled for simple cases
+4. **Handle large datasets** - Consider pagination or virtual scrolling for very large datasets
+5. **Provide meaningful placeholders** - Use descriptive placeholder text for better UX
+6. **Use custom rendering wisely** - Only use custom rendering when the default doesn't meet your needs
+7. **Consider accessibility** - Ensure proper focus management and screen reader support
+8. **Optimize performance** - Use `excludeItems` to reduce unnecessary filtering
+9. **Test on different screen sizes** - Ensure dropdown positioning works on all devices
 
 ## Performance Considerations
 
-- The component uses `memo` to prevent unnecessary re-renders
-- Custom render functions are memoized with `useCallback`
-- Search filtering is optimized for large datasets
-- Dropdown positioning is calculated efficiently
-- State updates are batched for better performance
+- The component uses memoization for computed values to prevent unnecessary re-renders
+- Search filtering is optimized with debouncing
+- Large datasets should be handled with pagination or virtual scrolling
+- Custom rendering functions should be memoized with `useCallback`
 
-## Troubleshooting
+## TypeScript
 
-### Common Issues
-
-1. **Dropdown not opening**: Check that `inputProps.isDisabled` is not true
-2. **Search not working**: Ensure `hasSearch` is true and `searchField` is specified
-3. **Items not highlighting**: Verify `hasHighlightString` is true
-4. **Custom rendering not working**: Check that `customDropdownItem` returns valid JSX
-5. **Positioning issues**: Adjust `offsetX` and `offsetY` values
-
-### Debug Example
+The component is fully typed with TypeScript. Import types as needed:
 
 ```tsx
-<InputSelectDropdown
-  dataSet={users}
-  valueField="name"
-  hasSearch={true}
-  onSelectItem={item => {
-    console.log('Debug:', {
-      selectedItem: item,
-      dataSetLength: users.length,
-      searchField: 'name',
-      hasSearch: true,
-    });
-  }}
-  inputProps={{
-    label: 'Debug Dropdown',
-    placeholder: 'Test dropdown...',
-  }}
-/>
+import { InputSelectDropdown } from 'react-native-chill-ui';
+import type { InputSelectDropdownPropsTw, InputSelectDropdownPropsSs } from 'react-native-chill-ui';
+
+// For Tailwind/Hybrid versions
+const MyDropdown: React.FC<{ users: User[] }> = ({ users }) => (
+  <InputSelectDropdown dataSet={users} valueField="name" onSelectItem={user => console.log(user)} />
+);
 ```
+
+## Related Components
+
+- **Input**: For text input with validation
+- **InputDropdown**: For basic dropdown functionality
+- **AutocompleteDropdown**: For autocomplete input with suggestions
+- **Select**: For simple selection without search
+
+## File Structure
+
+```
+inputSelectDropdown/
+├── components/
+│   ├── InputSelectDropdown.tsx       # Hybrid version (auto-detects NativeWind)
+│   ├── InputSelectDropdown.ss.tsx    # StyleSheet version
+│   └── InputSelectDropdown.tw.tsx    # Tailwind/NativeWind version
+├── styles/
+│   ├── InputSelectDropdown.ss.styles.ts  # StyleSheet styles
+│   └── InputSelectDropdown.tw.styles.ts  # Tailwind variants
+├── hooks/
+│   └── useInputSelectDropdown.ts     # Main hook for dropdown logic
+├── utils/
+│   └── defaultProps.ts               # Default prop values
+├── types/
+│   ├── inputSelectDropdown.ss.types.ts  # StyleSheet types
+│   └── inputSelectDropdown.tw.types.ts  # Tailwind types
+└── README.md                         # This file
+```
+
+## Inspiration
+
+This component is inspired by Material-UI's [Autocomplete component](https://mui.com/material-ui/react-autocomplete/) and shadcn/ui's [Combobox component](https://ui.shadcn.com/docs/components/combobox) with adaptations for React Native and mobile interfaces.

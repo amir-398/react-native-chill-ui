@@ -1,20 +1,32 @@
 import type { ViewProps as NativeViewProps } from 'react-native';
 
-import { Animated } from 'react-native';
-
-// eslint-disable-next-line
-export const NativeView = require('react-native/Libraries/Components/View/ViewNativeComponent').default;
-
-const AnimatedNativeView = Animated.createAnimatedComponent(NativeView);
+import { createElement, ReactElement } from 'react';
+import { Animated, View as NativeView, Platform } from 'react-native';
 
 /**
  * Props for View components that include className support
  */
-type ViewProps = NativeViewProps;
+type ViewProps = NativeViewProps & {
+  useFastView?: boolean;
+};
+
+function FastView(props: NativeViewProps): ReactElement {
+  if (Platform.OS === 'web') {
+    return <NativeView {...props} />;
+  }
+  return createElement('RCTView', props);
+}
+
+const FastAnimatedView = Animated.createAnimatedComponent(FastView);
+
 /**
  * Props for AnimatedView components that include className support
  */
 export type AnimatedViewProps = React.ComponentProps<typeof Animated.View>;
+
+export interface AnimatedViewPropsWithUseFastView extends AnimatedViewProps {
+  useFastView?: boolean;
+}
 
 /**
  * View component that provides a high-performance view container.
@@ -34,7 +46,12 @@ export type AnimatedViewProps = React.ComponentProps<typeof Animated.View>;
  * ```
  */
 export function View(props: ViewProps) {
-  const { children, ...rest } = props;
+  const { children, useFastView = true, ...rest } = props;
+
+  if (useFastView) {
+    return <FastView {...rest}>{children}</FastView>;
+  }
+
   return <NativeView {...rest}>{children}</NativeView>;
 }
 
@@ -55,8 +72,12 @@ export function View(props: ViewProps) {
  * </AnimatedView>
  * ```
  */
-export function AnimatedView(props: AnimatedViewProps) {
-  const { children, ...rest } = props;
+export function AnimatedView(props: AnimatedViewPropsWithUseFastView) {
+  const { children, useFastView = true, ...rest } = props;
 
-  return <AnimatedNativeView {...rest}>{children}</AnimatedNativeView>;
+  if (useFastView) {
+    return <FastAnimatedView {...rest}>{children}</FastAnimatedView>;
+  }
+
+  return <Animated.View {...rest}>{children}</Animated.View>;
 }

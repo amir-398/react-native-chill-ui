@@ -1,10 +1,26 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
 import UiPresentation from '../storybook';
-import Chip from '../../src/components/chip';
-import { BoxAbsolute, BoxStack } from '../../src/components';
+import { Chip, BoxAbsolute, BoxStack } from '../../src/components';
 
 const meta: Meta<typeof BoxAbsolute> = {
+  args: {
+    useFastView: true,
+  },
+  argTypes: {
+    useFastView: {
+      control: 'boolean',
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
+    },
+    ViewProps: {
+      description: 'Any other props accepted by the native `View` component',
+      type: 'object',
+    },
+  },
   component: BoxAbsolute,
   decorators: [
     Story => (
@@ -17,7 +33,7 @@ const meta: Meta<typeof BoxAbsolute> = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  title: 'Components/Box/BoxAbsolute',
+  title: 'LAYOUT/Box/BoxAbsolute',
 };
 
 export default meta;

@@ -1,187 +1,715 @@
-import { ComponentType, useState } from 'react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
 import UiPresentation from './storybook';
-import { String } from '../src/components';
-import PhoneNumberInput from '../src/components/phoneNumberInput/PhoneNumberInput';
-import { PhoneNumberInputOnPhoneNumberChange, PhoneNumberInputProps } from '../src/types/phoneNumberInput.types';
+import { PhoneNumberInput } from '../src/components';
 
-export default {
+const meta: Meta<typeof PhoneNumberInput> = {
+  args: {
+    defaultCountry: 'FR',
+    defaultErrorMessage: 'the phone number is invalid',
+    defaultLanguage: 'en',
+    defaultOpen: false,
+    dropdownPosition: 'auto',
+    dropdownProps: { hasSearch: true },
+    hasErrorOnChange: true,
+    inputPlaceholder: 'Enter your phone number',
+    inputSearchPlaceholder: 'Search a country...',
+    itemAsClickable: 'touchable-opacity',
+    language: 'en',
+    maxHeight: 340,
+    minHeight: 0,
+    offsetY: 5,
+  },
   argTypes: {
     allowedCountries: {
-      control: 'multi-select',
-      description: 'List of allowed country codes',
-      options: ['FR', 'US', 'GB', 'CA', 'DE', 'IT', 'ES', 'AU', 'JP', 'CN'],
+      control: {
+        type: 'multi-select',
+      },
+      options: [
+        'AF',
+        'AX',
+        'AL',
+        'DZ',
+        'AS',
+        'AD',
+        'AO',
+        'AI',
+        'AQ',
+        'AG',
+        'AR',
+        'AM',
+        'AW',
+        'AU',
+        'AT',
+        'AZ',
+        'BS',
+        'BH',
+        'BD',
+        'BB',
+        'BY',
+        'BE',
+        'BZ',
+        'BJ',
+        'BM',
+        'BT',
+        'BO',
+        'BA',
+        'BW',
+        'BR',
+        'IO',
+        'BN',
+        'BG',
+        'BF',
+        'BI',
+        'KH',
+        'CM',
+        'CA',
+        'CV',
+        'KY',
+        'CF',
+        'TD',
+        'CL',
+        'CN',
+        'CX',
+        'CC',
+        'CO',
+        'KM',
+        'CG',
+        'CD',
+        'CK',
+        'CR',
+        'CI',
+        'HR',
+        'CU',
+        'CY',
+        'CZ',
+        'DK',
+        'DJ',
+        'DM',
+        'DO',
+        'EC',
+        'EG',
+        'SV',
+        'GQ',
+        'ER',
+        'EE',
+        'ET',
+        'FK',
+        'FO',
+        'FJ',
+        'FI',
+        'FR',
+        'GF',
+        'PF',
+        'GA',
+        'GM',
+        'GE',
+        'DE',
+        'GH',
+        'GI',
+        'GR',
+        'GL',
+        'GD',
+        'GP',
+        'GU',
+        'GT',
+        'GG',
+        'GN',
+        'GW',
+        'GY',
+        'HT',
+        'VA',
+        'HN',
+        'HK',
+        'HU',
+        'IS',
+        'IN',
+        'ID',
+        'IR',
+        'IQ',
+        'IE',
+        'IM',
+        'IL',
+        'IT',
+        'JM',
+        'JP',
+        'JE',
+        'JO',
+        'KZ',
+        'KE',
+        'KI',
+        'KP',
+        'KR',
+        'KW',
+        'KG',
+        'LA',
+        'LV',
+        'LB',
+        'LS',
+        'LR',
+        'LY',
+        'LI',
+        'LT',
+        'LU',
+        'MO',
+        'MK',
+        'MG',
+        'MW',
+        'MY',
+        'MV',
+        'ML',
+        'MT',
+        'MH',
+        'MQ',
+        'MR',
+        'MU',
+        'YT',
+        'MX',
+        'FM',
+        'MD',
+        'MC',
+        'MN',
+        'ME',
+        'MS',
+        'MA',
+        'MZ',
+        'MM',
+        'NA',
+        'NR',
+        'NP',
+        'NL',
+        'NC',
+        'NZ',
+        'NI',
+        'NE',
+        'NG',
+        'NU',
+        'NF',
+        'MP',
+        'NO',
+        'OM',
+        'PK',
+        'PW',
+        'PS',
+        'PA',
+        'PG',
+        'PY',
+        'PE',
+        'PH',
+        'PN',
+        'PL',
+        'PT',
+        'PR',
+        'QA',
+        'RO',
+        'RU',
+        'RW',
+        'RE',
+        'BL',
+        'SH',
+        'KN',
+        'LC',
+        'MF',
+        'PM',
+        'VC',
+        'WS',
+        'SM',
+        'ST',
+        'SA',
+        'SN',
+        'RS',
+        'SC',
+        'SL',
+        'SG',
+        'SK',
+        'SI',
+        'SB',
+        'SO',
+        'ZA',
+        'SS',
+        'ES',
+        'LK',
+        'SD',
+        'SR',
+        'SJ',
+        'SZ',
+        'SE',
+        'CH',
+        'SY',
+        'TW',
+        'TJ',
+        'TZ',
+        'TH',
+        'TL',
+        'TG',
+        'TK',
+        'TO',
+        'TT',
+        'TN',
+        'TR',
+        'TM',
+        'TC',
+        'TV',
+        'UG',
+        'UA',
+        'AE',
+        'GB',
+        'US',
+        'UY',
+        'UZ',
+        'VU',
+        'VE',
+        'VN',
+        'VG',
+        'VI',
+        'WF',
+        'YE',
+        'ZM',
+        'ZW',
+      ],
     },
     defaultCountry: {
-      control: 'select',
-      description: 'Default selected country',
-      options: ['FR', 'US', 'GB', 'CA', 'DE', 'IT', 'ES', 'AU', 'JP', 'CN'],
+      options: [
+        'AF',
+        'AX',
+        'AL',
+        'DZ',
+        'AS',
+        'AD',
+        'AO',
+        'AI',
+        'AQ',
+        'AG',
+        'AR',
+        'AM',
+        'AW',
+        'AU',
+        'AT',
+        'AZ',
+        'BS',
+        'BH',
+        'BD',
+        'BB',
+        'BY',
+        'BE',
+        'BZ',
+        'BJ',
+        'BM',
+        'BT',
+        'BO',
+        'BA',
+        'BW',
+        'BR',
+        'IO',
+        'BN',
+        'BG',
+        'BF',
+        'BI',
+        'KH',
+        'CM',
+        'CA',
+        'CV',
+        'KY',
+        'CF',
+        'TD',
+        'CL',
+        'CN',
+        'CX',
+        'CC',
+        'CO',
+        'KM',
+        'CG',
+        'CD',
+        'CK',
+        'CR',
+        'CI',
+        'HR',
+        'CU',
+        'CY',
+        'CZ',
+        'DK',
+        'DJ',
+        'DM',
+        'DO',
+        'EC',
+        'EG',
+        'SV',
+        'GQ',
+        'ER',
+        'EE',
+        'ET',
+        'FK',
+        'FO',
+        'FJ',
+        'FI',
+        'FR',
+        'GF',
+        'PF',
+        'GA',
+        'GM',
+        'GE',
+        'DE',
+        'GH',
+        'GI',
+        'GR',
+        'GL',
+        'GD',
+        'GP',
+        'GU',
+        'GT',
+        'GG',
+        'GN',
+        'GW',
+        'GY',
+        'HT',
+        'VA',
+        'HN',
+        'HK',
+        'HU',
+        'IS',
+        'IN',
+        'ID',
+        'IR',
+        'IQ',
+        'IE',
+        'IM',
+        'IL',
+        'IT',
+        'JM',
+        'JP',
+        'JE',
+        'JO',
+        'KZ',
+        'KE',
+        'KI',
+        'KP',
+        'KR',
+        'KW',
+        'KG',
+        'LA',
+        'LV',
+        'LB',
+        'LS',
+        'LR',
+        'LY',
+        'LI',
+        'LT',
+        'LU',
+        'MO',
+        'MK',
+        'MG',
+        'MW',
+        'MY',
+        'MV',
+        'ML',
+        'MT',
+        'MH',
+        'MQ',
+        'MR',
+        'MU',
+        'YT',
+        'MX',
+        'FM',
+        'MD',
+        'MC',
+        'MN',
+        'ME',
+        'MS',
+        'MA',
+        'MZ',
+        'MM',
+        'NA',
+        'NR',
+        'NP',
+        'NL',
+        'NC',
+        'NZ',
+        'NI',
+        'NE',
+        'NG',
+        'NU',
+        'NF',
+        'MP',
+        'NO',
+        'OM',
+        'PK',
+        'PW',
+        'PS',
+        'PA',
+        'PG',
+        'PY',
+        'PE',
+        'PH',
+        'PN',
+        'PL',
+        'PT',
+        'PR',
+        'QA',
+        'RO',
+        'RU',
+        'RW',
+        'RE',
+        'BL',
+        'SH',
+        'KN',
+        'LC',
+        'MF',
+        'PM',
+        'VC',
+        'WS',
+        'SM',
+        'ST',
+        'SA',
+        'SN',
+        'RS',
+        'SC',
+        'SL',
+        'SG',
+        'SK',
+        'SI',
+        'SB',
+        'SO',
+        'ZA',
+        'SS',
+        'ES',
+        'LK',
+        'SD',
+        'SR',
+        'SJ',
+        'SZ',
+        'SE',
+        'CH',
+        'SY',
+        'TW',
+        'TJ',
+        'TZ',
+        'TH',
+        'TL',
+        'TG',
+        'TK',
+        'TO',
+        'TT',
+        'TN',
+        'TR',
+        'TM',
+        'TC',
+        'TV',
+        'UG',
+        'UA',
+        'AE',
+        'GB',
+        'US',
+        'UY',
+        'UZ',
+        'VU',
+        'VE',
+        'VN',
+        'VG',
+        'VI',
+        'WF',
+        'YE',
+        'ZM',
+        'ZW',
+      ],
+      table: {
+        defaultValue: {
+          summary: 'FR',
+        },
+      },
+      type: 'select',
+    },
+    defaultErrorMessage: {
+      table: {
+        defaultValue: {
+          summary: 'the phone number is invalid',
+        },
+      },
+    },
+    defaultLanguage: {
+      control: {
+        type: 'radio',
+      },
+      description: 'Default language for the component',
+      options: ['en', 'fr'],
+      table: {
+        defaultValue: {
+          summary: 'en',
+        },
+      },
+    },
+    defaultOpen: {
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
     },
     dropdownPosition: {
-      control: 'select',
-      description: 'Position of the dropdown',
-      options: ['auto', 'top', 'bottom'],
+      table: {
+        defaultValue: {
+          summary: 'auto',
+        },
+      },
     },
     dropdownProps: {
-      control: 'object',
-      description: 'Additional props for the dropdown',
-    },
-    errorMessage: {
-      control: 'text',
-      description: 'Custom error message',
+      table: {
+        defaultValue: {
+          summary: '{ hasSearch: true }',
+        },
+      },
     },
     hasErrorOnChange: {
-      control: 'boolean',
-      description: 'Show error state while typing',
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
     },
-    inputProps: {
-      control: 'object',
-      description: 'Additional props for the input',
+    inputPlaceholder: {
+      table: {
+        defaultValue: {
+          summary: 'Enter your phone number',
+        },
+      },
+    },
+    inputSearchPlaceholder: {
+      table: {
+        defaultValue: {
+          summary: 'Search a country...',
+        },
+      },
+    },
+    itemAsClickable: {
+      table: {
+        defaultValue: {
+          summary: 'touchable-opacity',
+        },
+      },
     },
     language: {
-      control: 'select',
-      description: 'Language for country names display',
-      options: ['fr', 'en'],
+      control: {
+        type: 'radio',
+      },
+      description: 'Language for the component',
+      options: ['en', 'fr'],
+      table: {
+        defaultValue: {
+          summary: 'en',
+        },
+      },
     },
     maxHeight: {
-      control: { max: 500, min: 100, step: 10, type: 'number' },
-      description: 'Maximum height of the dropdown',
+      table: {
+        defaultValue: {
+          summary: 340,
+        },
+      },
     },
     minHeight: {
-      control: { max: 300, min: 50, step: 10, type: 'number' },
-      description: 'Minimum height of the dropdown',
-    },
-    offsetX: {
-      control: { max: 50, min: -50, step: 1, type: 'number' },
-      description: 'Horizontal offset for dropdown positioning',
+      table: {
+        defaultValue: {
+          summary: 0,
+        },
+      },
     },
     offsetY: {
-      control: { max: 50, min: -50, step: 1, type: 'number' },
-      description: 'Vertical offset for dropdown positioning',
-    },
-    onBlur: {
-      action: 'onBlur',
-    },
-    onCountryChange: {
-      action: 'onCountryChange',
-    },
-    onError: {
-      action: 'onError',
-    },
-    onFocus: {
-      action: 'onFocus',
-    },
-    onPhoneNumberChange: {
-      action: 'onPhoneNumberChange',
+      table: {
+        defaultValue: {
+          summary: 5,
+        },
+      },
     },
     placeholder: {
-      control: 'text',
-      description: 'Placeholder text for the input',
+      table: {
+        defaultValue: {
+          summary: 'Enter your phone number',
+        },
+      },
     },
-    value: {
-      control: 'text',
-      description: 'Initial value for the phone number',
+    searchInputProps: {
+      table: {
+        defaultValue: {
+          summary: '{ placeholder: "Search a country..." }',
+        },
+      },
     },
   },
   component: PhoneNumberInput,
   decorators: [
-    (Story: ComponentType) => (
-      <UiPresentation className="items-start justify-start px-3">
+    (Story: any) => (
+      <UiPresentation>
         <Story />
       </UiPresentation>
     ),
   ],
-  title: 'Components/Inputs/PhoneNumberInput',
+  title: 'FORMS/PhoneNumberInput',
 };
 
-function DefaultPhoneNumber(args: PhoneNumberInputProps) {
-  const [phoneNumber, setPhoneNumber] = useState<{
-    countryCode: string;
-    countrySuffix: string;
-    isValid: boolean;
-    phoneNumber: string;
-    phoneNumberWithSuffix: string;
-    phoneNumberWithSuffixMasked: string;
-    phoneWithMask: string;
-  }>({
-    countryCode: '',
-    countrySuffix: '',
-    isValid: false,
-    phoneNumber: '',
-    phoneNumberWithSuffix: '',
-    phoneNumberWithSuffixMasked: '',
-    phoneWithMask: '',
-  });
+export default meta;
+type Story = StoryObj<typeof PhoneNumberInput>;
 
-  const handlePhoneNumberChange = (phoneChange: PhoneNumberInputOnPhoneNumberChange) => {
-    setPhoneNumber(phoneChange);
-  };
-
-  return (
-    <>
-      <PhoneNumberInput {...args} onPhoneNumberChange={handlePhoneNumberChange} />
-
-      <String>phoneNumber: {phoneNumber?.phoneNumber}</String>
-      <String>phoneNumberWithSuffix: {phoneNumber.phoneNumberWithSuffix}</String>
-      <String>phoneNumberWithSuffixMasked: {phoneNumber.phoneNumberWithSuffixMasked}</String>
-      <String>phoneWithMask: {phoneNumber.phoneWithMask}</String>
-      <String>isValid: {phoneNumber.isValid.toString()}</String>
-      <String>countryCode: {phoneNumber.countryCode}</String>
-      <String>countrySuffix: {phoneNumber.countrySuffix}</String>
-    </>
-  );
-}
-
-export const Default = {
-  args: {
-    defaultCountry: 'US',
-    dropdownPosition: 'auto',
-    dropdownProps: {
-      hasSearch: true,
-    },
-    hasErrorOnChange: true,
-    language: 'en',
-    placeholder: '06 12 34 56 78',
-  },
-  render: DefaultPhoneNumber,
+// Basic PhoneNumberInput
+export const Default: Story = {
+  args: {},
 };
 
-export const WithInitialValue = {
-  args: {
-    value: '06 12 34 56 78',
-  },
-};
-
-export const WithAllowedCountries = {
-  args: {
-    allowedCountries: ['FR', 'US', 'GB'],
-    placeholder: '06 12 34 56 78',
-  },
-};
-
-export const WithFrenchLanguage = {
-  args: {
-    language: 'fr',
-    placeholder: '06 12 34 56 78',
-  },
-};
-
-export const DropdownWithoutSearch = {
-  args: {
-    dropdownProps: {
-      hasSearch: false,
-    },
-    placeholder: '06 12 34 56 78',
-  },
-};
-
-export const WithCustomError = {
+export const WithDefaultCountry: Story = {
   args: {
     defaultCountry: 'FR',
-    errorMessage: 'Veuillez saisir un numéro de téléphone valide',
+    placeholder: 'Enter your phone number',
+  },
+};
+
+export const WithValue: Story = {
+  args: {
+    defaultCountry: 'US',
+    placeholder: 'Enter your phone number',
+    value: '1234567890',
+  },
+};
+
+// Country Restrictions
+export const WithAllowedCountries: Story = {
+  args: {
+    allowedCountries: ['US', 'CA', 'GB', 'AU'],
+    defaultCountry: 'US',
+    placeholder: 'Enter your phone number',
+  },
+};
+
+export const WithEuropeanCountries: Story = {
+  args: {
+    allowedCountries: ['FR', 'DE', 'IT', 'ES', 'GB', 'NL', 'BE'],
+    defaultCountry: 'FR',
+    placeholder: 'Enter your phone number',
+  },
+};
+
+// Language Support
+export const FrenchLanguage: Story = {
+  args: {
+    defaultCountry: 'FR',
+    language: 'fr',
+    placeholder: 'Entrez votre numéro de téléphone',
+  },
+};
+
+// Validation Examples
+export const WithValidation: Story = {
+  args: {
+    defaultCountry: 'US',
+    errorMessage: 'Please enter a valid phone number',
+    hasErrorOnChange: true,
+    placeholder: 'Enter your phone number',
+  },
+};
+
+export const WithCustomErrorMessage: Story = {
+  args: {
+    defaultCountry: 'FR',
+    errorMessage: 'Veuillez entrer un numéro de téléphone valide',
     hasErrorOnChange: true,
     language: 'fr',
-    placeholder: '06 12 34 56 78',
-    value: '123', // Invalid number to trigger error
+    placeholder: 'Entrez votre numéro de téléphone',
   },
 };

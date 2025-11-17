@@ -3,43 +3,44 @@ import type { RotatingBoxPropsSs, RotatingBoxRefSs } from '@types';
 import { Animated, Easing } from 'react-native';
 import { useRef, useEffect, useImperativeHandle, forwardRef, useCallback, PropsWithChildren } from 'react';
 
-import styles from '../../styles/AnimatedBox.styles';
-import AnimatedBox from '../animatedBox/AnimatedBox.ss';
+import styles from '../../styles/AnimatedBox.ss.styles';
+import { AnimatedBox } from '../animatedBox/AnimatedBox.ss';
 
 /**
- * RotatingBox - Smooth rotation animation component
+ * The `<RotatingBox />` component creates a smooth rotation animation for its children.
  *
- * Creates continuous 360-degree rotation effects. Perfect for loading spinners, icons,
- * decorative elements, or any content that benefits from rotational motion. Provides
- * smooth, customizable rotation with infinite loop capabilities.
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { RotatingBox } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Loading spinner
- * <RotatingBox autoStart infiniteLoop duration={1000} style={{ width: 32, height: 32 }}>
- *   <Icon name="spinner" style={{ color: 'blue' }} />
- * </RotatingBox>
- *
- * // Slow decorative rotation
  * <RotatingBox
  *   autoStart
  *   infiniteLoop
- *   duration={8000}
- *   style={{ width: 64, height: 64, backgroundColor: 'purple', borderRadius: 32 }}
+ *   duration={1000}
+ *   style={{
+ *     width: 32,
+ *     height: 32,
+ *     justifyContent: 'center',
+ *     alignItems: 'center'
+ *   }}
  * >
- *   <Icon name="star" style={{ color: 'white' }} />
+ *   <Icon name="spinner" style={{ color: 'blue' }} />
  * </RotatingBox>
  * ```
  *
- * @param autoStart - Automatically start animation when component mounts (default: false)
- * @param duration - One complete rotation duration in milliseconds (default: 2000)
- * @param delay - Delay before starting animation in milliseconds (default: 0)
- * @param infiniteLoop - Loop animation continuously (default: false)
- * @param continuous - Make rotation continuous without pauses between loops (default: false)
- * @param style - Inline styles for traditional styling or style overrides
+ * @param autoStart - Automatically start animation when component mounts (default: `false`)
+ * @param duration - One complete rotation duration in milliseconds (default: `2000`)
+ * @param delay - Delay before starting animation in milliseconds (default: `0`)
+ * @param infiniteLoop - Loop animation continuously (default: `false`)
+ * @param continuous - Make rotation continuous without pauses between loops (default: `false`)
  * @param children - Content to be rotated
+ * @param style - Inline styles for traditional styling or style overrides
  * @param ref - Ref for manual animation control (start, stop)
- * @returns Animated component with rotation effect
+ * @param AnimatedBoxProps - Any other props accepted by the `AnimatedBox` component
  */
 const RotatingBox = forwardRef<RotatingBoxRefSs, PropsWithChildren<RotatingBoxPropsSs>>((props, ref) => {
   const {

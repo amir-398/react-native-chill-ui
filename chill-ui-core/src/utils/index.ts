@@ -1,5 +1,4 @@
-export * from './string';
-export * from './utils';
+export * from './common';
 export * from './hybrid';
 export * from './ss';
 export * from './tw';

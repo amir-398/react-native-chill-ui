@@ -1,8 +1,8 @@
 import type { TextProps } from 'react-native';
 
-import type { VariantProps } from '../../utils/ss/styleSheetVariants';
+import { StringSv } from '@components/string/styles/String.ss.styles';
 
-import StringSv from '../../components/string/styles/String.styles';
+import type { VariantProps } from '../../utils/ss/styleSheetVariants';
 
 /**
  * Props for the String component

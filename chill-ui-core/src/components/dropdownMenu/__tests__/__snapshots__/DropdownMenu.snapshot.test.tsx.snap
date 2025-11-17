@@ -1,0 +1,366 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DropdownMenu Snapshot Tests should match snapshot for basic dropdown 1`] = `
+<div
+  data-testid="dropdown-menu"
+>
+  <div
+    data-testid="dropdown-menu-trigger"
+  >
+    <button>
+      Open Menu
+    </button>
+  </div>
+  <div
+    data-testid="dropdown-menu-content"
+  >
+    <div
+      data-testid="dropdown-menu-item"
+    >
+      Item 1
+    </div>
+    <div
+      data-testid="dropdown-menu-item"
+    >
+      Item 2
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DropdownMenu Snapshot Tests should match snapshot for complex nested dropdown 1`] = `
+<div
+  data-testid="dropdown-menu"
+  defaultOpen={true}
+>
+  <div
+    as="touchable-highlight"
+    data-testid="dropdown-menu-trigger"
+  >
+    <button>
+      Complex Menu
+    </button>
+  </div>
+  <div
+    closeWhenInteractedOutside={true}
+    data-testid="dropdown-menu-content"
+    hasScroll={true}
+    horizontalPosition="auto"
+    maxHeight={400}
+    offsetX={15}
+    offsetY={8}
+    verticalPosition="auto"
+    width={500}
+  >
+    <div
+      data-testid="dropdown-menu-label"
+    >
+      Account Management
+    </div>
+    <div
+      as="pressable"
+      data-testid="dropdown-menu-item"
+      onSelect={[MockFunction]}
+    >
+      View Profile
+    </div>
+    <div
+      as="touchable-opacity"
+      data-testid="dropdown-menu-item"
+      onSelect={[MockFunction]}
+    >
+      Edit Profile
+    </div>
+    <div
+      data-testid="dropdown-menu-separator"
+    />
+    <div
+      data-testid="dropdown-menu-label"
+    >
+      Settings
+    </div>
+    <div
+      as="touchable-highlight"
+      data-testid="dropdown-menu-item"
+      onSelect={[MockFunction]}
+      underlayColor="#e0e0e0"
+    >
+      Preferences
+    </div>
+    <div
+      asChild={true}
+      closeOnSelect={false}
+      data-testid="dropdown-menu-item"
+    >
+      <button>
+        Custom Action
+      </button>
+    </div>
+    <div
+      data-testid="dropdown-menu-separator"
+    />
+    <div
+      data-testid="dropdown-menu-item"
+      disabled={true}
+    >
+      Premium Features (Coming Soon)
+    </div>
+    <div
+      data-testid="dropdown-menu-item"
+      onSelect={[MockFunction]}
+    >
+      Sign Out
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DropdownMenu Snapshot Tests should match snapshot for controlled dropdown 1`] = `
+<div
+  data-testid="dropdown-menu"
+  onOpenChange={[MockFunction]}
+  open={true}
+>
+  <div
+    data-testid="dropdown-menu-trigger"
+  >
+    <button>
+      Open Menu
+    </button>
+  </div>
+  <div
+    data-testid="dropdown-menu-content"
+  >
+    <div
+      data-testid="dropdown-menu-item"
+    >
+      Item 1
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DropdownMenu Snapshot Tests should match snapshot for dropdown with all components 1`] = `
+<div
+  data-testid="dropdown-menu"
+>
+  <div
+    as="touchable-opacity"
+    data-testid="dropdown-menu-trigger"
+  >
+    <button>
+      Open Menu
+    </button>
+  </div>
+  <div
+    data-testid="dropdown-menu-content"
+    horizontalPosition="left"
+    offsetX={10}
+    offsetY={5}
+    verticalPosition="top"
+    width={300}
+  >
+    <div
+      data-testid="dropdown-menu-label"
+    >
+      My Account
+    </div>
+    <div
+      as="pressable"
+      data-testid="dropdown-menu-item"
+      onSelect={[MockFunction]}
+    >
+      Profile
+    </div>
+    <div
+      as="touchable-highlight"
+      data-testid="dropdown-menu-item"
+      underlayColor="#e0e0e0"
+    >
+      Settings
+    </div>
+    <div
+      data-testid="dropdown-menu-separator"
+    />
+    <div
+      data-testid="dropdown-menu-item"
+      disabled={true}
+    >
+      Disabled Item
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DropdownMenu Snapshot Tests should match snapshot for dropdown with all item variants 1`] = `
+<div
+  data-testid="dropdown-menu-content"
+>
+  <div
+    as="pressable"
+    closeOnSelect={true}
+    data-testid="dropdown-menu-item"
+  >
+    Pressable Item
+  </div>
+  <div
+    as="touchable-opacity"
+    closeOnSelect={false}
+    data-testid="dropdown-menu-item"
+  >
+    TouchableOpacity Item
+  </div>
+  <div
+    as="touchable-highlight"
+    data-testid="dropdown-menu-item"
+    underlayColor="#f0f0f0"
+  >
+    TouchableHighlight Item
+  </div>
+  <div
+    data-testid="dropdown-menu-item"
+    disabled={true}
+  >
+    Disabled Item
+  </div>
+</div>
+`;
+
+exports[`DropdownMenu Snapshot Tests should match snapshot for dropdown with all positioning options 1`] = `
+<div
+  closeDropdownWhenSelectedItem={false}
+  closeWhenInteractedOutside={false}
+  data-testid="dropdown-menu-content"
+  hasAnimation={true}
+  hasScroll={true}
+  horizontalPosition="right"
+  maxHeight={300}
+  minHeight={100}
+  offsetX={20}
+  offsetY={10}
+  verticalPosition="bottom"
+  width={400}
+>
+  <div
+    data-testid="dropdown-menu-item"
+  >
+    Positioned Item
+  </div>
+</div>
+`;
+
+exports[`DropdownMenu Snapshot Tests should match snapshot for dropdown with asChild components 1`] = `
+<div
+  data-testid="dropdown-menu"
+>
+  <div
+    asChild={true}
+    data-testid="dropdown-menu-trigger"
+  >
+    <button>
+      Custom Trigger
+    </button>
+  </div>
+  <div
+    data-testid="dropdown-menu-content"
+  >
+    <div
+      asChild={true}
+      data-testid="dropdown-menu-label"
+    >
+      <div>
+        Custom Label
+      </div>
+    </div>
+    <div
+      asChild={true}
+      closeOnSelect={false}
+      data-testid="dropdown-menu-item"
+    >
+      <button>
+        Custom Item
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DropdownMenu Snapshot Tests should match snapshot for dropdown with custom styling 1`] = `
+<div
+  data-testid="dropdown-menu"
+>
+  <div
+    className="custom-trigger"
+    data-testid="dropdown-menu-trigger"
+  >
+    <button>
+      Styled Trigger
+    </button>
+  </div>
+  <div
+    className="w-64 rounded-lg bg-white shadow-lg"
+    data-testid="dropdown-menu-content"
+    style={
+      {
+        "backgroundColor": "white",
+        "borderRadius": 8,
+      }
+    }
+  >
+    <div
+      className="font-semibold text-gray-500"
+      data-testid="dropdown-menu-label"
+    >
+      Styled Label
+    </div>
+    <div
+      className="hover:bg-gray-100"
+      data-testid="dropdown-menu-item"
+      style={
+        {
+          "padding": 12,
+        }
+      }
+    >
+      Styled Item
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DropdownMenu Snapshot Tests should match snapshot for dropdown with string children 1`] = `
+<div
+  data-testid="dropdown-menu-content"
+>
+  <div
+    data-testid="dropdown-menu-label"
+  >
+    String Label
+  </div>
+  <div
+    data-testid="dropdown-menu-item"
+  >
+    String Item
+  </div>
+  <div
+    data-testid="dropdown-menu-separator"
+  />
+</div>
+`;
+
+exports[`DropdownMenu Snapshot Tests should match snapshot for empty dropdown 1`] = `
+<div
+  data-testid="dropdown-menu"
+>
+  <div
+    data-testid="dropdown-menu-trigger"
+  >
+    <button>
+      Empty Menu
+    </button>
+  </div>
+  <div
+    data-testid="dropdown-menu-content"
+  />
+</div>
+`;

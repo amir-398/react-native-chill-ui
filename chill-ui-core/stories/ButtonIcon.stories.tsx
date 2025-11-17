@@ -1,68 +1,104 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 
+import { ICON_OPTIONS } from '../src/constants';
 import UiPresentation from './storybook/UiPresentation';
-import ButtonIcon from '../src/components/buttonIcon/buttonIcon';
+import { ButtonIconTw as ButtonIcon } from '../src/components';
 
 const meta: Meta<typeof ButtonIcon> = {
+  args: {
+    as: 'touchable-opacity',
+    colorVariant: 'primary',
+    iconName: 'bell-solid',
+    isDisabled: false,
+    isLoading: false,
+    onPress: action('onPress'),
+    rounded: 'square',
+    size: 'md',
+    variant: 'contained',
+  },
   argTypes: {
     as: {
+      table: {
+        defaultValue: {
+          summary: 'touchable-opacity',
+        },
+      },
+    },
+    colorVariant: {
       control: 'select',
-      description: 'Type of touchable component to use',
-      options: ['TouchableOpacity', 'Pressable', 'RipplePressable'],
+      options: [
+        'accent',
+        'danger',
+        'dark',
+        'error',
+        'info',
+        'inverted',
+        'light',
+        'muted',
+        'neutral',
+        'primary',
+        'secondary',
+        'success',
+        'tertiary',
+        'warning',
+        'white',
+      ],
+      table: {
+        defaultValue: {
+          summary: 'primary',
+        },
+      },
     },
-    iconColor: {
-      control: 'color',
-      description: 'Color of the icon',
-    },
+
     iconName: {
       control: 'select',
-      description: 'The name of the icon to display',
-      options: [
-        'angle-down-solid',
-        'angle-left-solid',
-        'angle-right-solid',
-        'angle-up-solid',
-        'angles-up-solid',
-        'arrow-left-solid',
-        'ban-solid',
-        'bank-solid',
-        'bell-solid',
-        'gear-solid',
-        'heart-solid',
-        'home-solid',
-        'star-solid',
-        'xmark-solid',
-      ],
+      options: ICON_OPTIONS,
     },
     isDisabled: {
-      control: 'boolean',
-      description: 'Whether the button is disabled',
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
     },
     isLoading: {
-      control: 'boolean',
-      description: 'Whether the button is in a loading state',
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
     },
-    onPress: {
-      action: 'pressed',
-      description: 'Function called when the button is pressed',
-    },
-    size: {
+    rounded: {
       control: 'select',
-      description: 'The size of the icon',
-      options: ['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'],
+      options: ['circle', 'square'],
+      table: {
+        defaultValue: {
+          summary: 'square',
+        },
+      },
+    },
+
+    variant: {
+      control: 'select',
+      options: ['contained', 'outlined'],
+      table: {
+        defaultValue: {
+          summary: 'contained',
+        },
+      },
     },
   },
   component: ButtonIcon,
   decorators: [
     Story => (
-      <UiPresentation>
+      <UiPresentation className="items-center">
         <Story />
       </UiPresentation>
     ),
   ],
-  title: 'Components/ButtonIcon',
+  title: 'ACTIONS/ButtonIcon',
 };
 
 export default meta;
@@ -130,7 +166,7 @@ export const IconColorVariants: Story = {
       },
     },
   },
-  render: () => (
+  render: (_args: any) => (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
       <ButtonIcon iconName="bell-solid" iconColor="#007AFF" onPress={action('Blue icon pressed')} size="md" />
       <ButtonIcon iconName="home-solid" iconColor="#34C759" onPress={action('Green icon pressed')} size="md" />
@@ -141,48 +177,6 @@ export const IconColorVariants: Story = {
   ),
 };
 
-export const TouchableOpacity: Story = {
-  args: {
-    ...Default.args,
-    as: 'TouchableOpacity',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'ButtonIcon using TouchableOpacity with opacity effect on press',
-      },
-    },
-  },
-};
-
-export const Pressable: Story = {
-  args: {
-    ...Default.args,
-    as: 'Pressable',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'ButtonIcon using Pressable with native Android ripple effect',
-      },
-    },
-  },
-};
-
-export const RipplePressable: Story = {
-  args: {
-    ...Default.args,
-    as: 'RipplePressable',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'ButtonIcon using RipplePressable with custom ripple animation',
-      },
-    },
-  },
-};
-
 export const TouchableComparison: Story = {
   parameters: {
     docs: {
@@ -191,11 +185,11 @@ export const TouchableComparison: Story = {
       },
     },
   },
-  render: () => (
+  render: (_args: any) => (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
-      <ButtonIcon as="TouchableOpacity" iconName="bell-solid" onPress={action('TouchableOpacity pressed')} size="md" />
-      <ButtonIcon as="Pressable" iconName="bell-solid" onPress={action('Pressable pressed')} size="md" />
-      <ButtonIcon as="RipplePressable" iconName="bell-solid" onPress={action('RipplePressable pressed')} size="md" />
+      <ButtonIcon as="touchable-opacity" iconName="bell-solid" onPress={action('TouchableOpacity pressed')} size="md" />
+      <ButtonIcon as="pressable" iconName="bell-solid" onPress={action('Pressable pressed')} size="md" />
+      <ButtonIcon as="ripple-pressable" iconName="bell-solid" onPress={action('RipplePressable pressed')} size="md" />
     </div>
   ),
 };

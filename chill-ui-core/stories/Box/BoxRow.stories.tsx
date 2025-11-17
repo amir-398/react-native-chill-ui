@@ -1,10 +1,26 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
 import UiPresentation from '../storybook';
-import { BoxRow } from '../../src/components';
-import String from '../../src/components/string';
+import { String, BoxRow } from '../../src/components';
 
 const meta: Meta<typeof BoxRow> = {
+  args: {
+    useFastView: true,
+  },
+  argTypes: {
+    useFastView: {
+      control: 'boolean',
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
+    },
+    ViewProps: {
+      description: 'Any other props accepted by the native `View` component',
+      type: 'object',
+    },
+  },
   component: BoxRow,
   decorators: [
     Story => (
@@ -17,7 +33,7 @@ const meta: Meta<typeof BoxRow> = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  title: 'Components/Box/BoxRow',
+  title: 'LAYOUT/Box/BoxRow',
 };
 
 export default meta;

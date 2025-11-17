@@ -7,4 +7,7 @@ import { Animated } from 'react-native';
  * ```
  */
 
-export type AnimatedBoxProps = React.ComponentProps<typeof Animated.View>;
+export type AnimatedBoxProps = React.ComponentProps<typeof Animated.View> & {
+  /** Use optimized RCTView component for better performance (default: `true`) */
+  useFastView?: boolean;
+};

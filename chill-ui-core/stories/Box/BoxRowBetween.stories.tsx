@@ -1,10 +1,26 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
 import UiPresentation from '../storybook';
-import String from '../../src/components/string';
-import { BoxRowBetween } from '../../src/components';
+import { String, BoxRowBetween } from '../../src/components';
 
 const meta: Meta<typeof BoxRowBetween> = {
+  args: {
+    useFastView: true,
+  },
+  argTypes: {
+    useFastView: {
+      control: 'boolean',
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
+    },
+    ViewProps: {
+      description: 'Any other props accepted by the native `View` component',
+      type: 'object',
+    },
+  },
   component: BoxRowBetween,
   decorators: [
     Story => (
@@ -17,7 +33,7 @@ const meta: Meta<typeof BoxRowBetween> = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  title: 'Components/Box/BoxRowBetween',
+  title: 'LAYOUT/Box/BoxRowBetween',
 };
 
 export default meta;

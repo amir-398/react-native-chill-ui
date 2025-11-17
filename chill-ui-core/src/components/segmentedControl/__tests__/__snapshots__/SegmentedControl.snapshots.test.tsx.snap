@@ -1,0 +1,1114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SegmentedControl Snapshots should match snapshot with basic props 1`] = `
+<View
+  onLayout={[Function]}
+  testID="box"
+>
+  <View
+    testID="animated-box"
+  />
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "width": -Infinity,
+        },
+        false,
+        undefined,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          false,
+          undefined,
+        ]
+      }
+      testID="string"
+    >
+      Option 1
+    </Text>
+  </View>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "width": -Infinity,
+        },
+        false,
+        undefined,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          false,
+          undefined,
+        ]
+      }
+      testID="string"
+    >
+      Option 2
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`SegmentedControl Snapshots should match snapshot with custom duration 1`] = `
+<View
+  onLayout={[Function]}
+  testID="box"
+>
+  <View
+    testID="animated-box"
+  />
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "width": -Infinity,
+        },
+        false,
+        undefined,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          false,
+          undefined,
+        ]
+      }
+      testID="string"
+    >
+      Fast Animation
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`SegmentedControl Snapshots should match snapshot with custom internal padding 1`] = `
+<View
+  onLayout={[Function]}
+  testID="box"
+>
+  <View
+    testID="animated-box"
+  />
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "width": -Infinity,
+        },
+        false,
+        undefined,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          false,
+          undefined,
+        ]
+      }
+      testID="string"
+    >
+      Option 1
+    </Text>
+  </View>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "width": -Infinity,
+        },
+        false,
+        undefined,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          false,
+          undefined,
+        ]
+      }
+      testID="string"
+    >
+      Option 2
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`SegmentedControl Snapshots should match snapshot with custom styling 1`] = `
+<View
+  onLayout={[Function]}
+  testID="box"
+>
+  <View
+    testID="animated-box"
+  />
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "width": -Infinity,
+        },
+        false,
+        {
+          "margin": 4,
+        },
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          false,
+          undefined,
+        ]
+      }
+      testID="string"
+    >
+      Option 1
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`SegmentedControl Snapshots should match snapshot with default value 1`] = `
+<View
+  onLayout={[Function]}
+  testID="box"
+>
+  <View
+    testID="animated-box"
+  />
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "width": -Infinity,
+        },
+        false,
+        undefined,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          false,
+          undefined,
+        ]
+      }
+      testID="string"
+    >
+      Option 1
+    </Text>
+  </View>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "width": -Infinity,
+        },
+        false,
+        undefined,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          false,
+          undefined,
+        ]
+      }
+      testID="string"
+    >
+      Option 2
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`SegmentedControl Snapshots should match snapshot with disabled state 1`] = `
+<View
+  onLayout={[Function]}
+  testID="box"
+>
+  <View
+    testID="animated-box"
+  />
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "width": -Infinity,
+        },
+        false,
+        undefined,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          false,
+          undefined,
+        ]
+      }
+      testID="string"
+    >
+      Option 1
+    </Text>
+  </View>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": true,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "width": -Infinity,
+        },
+        false,
+        undefined,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          false,
+          undefined,
+        ]
+      }
+      testID="string"
+    >
+      Option 2
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`SegmentedControl Snapshots should match snapshot with forceRender prop 1`] = `
+[
+  <View
+    onLayout={[Function]}
+    testID="box"
+  >
+    <View
+      testID="animated-box"
+    />
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "width": -Infinity,
+          },
+          false,
+          undefined,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            false,
+            undefined,
+          ]
+        }
+        testID="string"
+      >
+        Option 1
+      </Text>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "width": -Infinity,
+          },
+          false,
+          undefined,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            false,
+            undefined,
+          ]
+        }
+        testID="string"
+      >
+        Option 2
+      </Text>
+    </View>
+  </View>,
+  <View
+    testID="box"
+  >
+    <View
+      testID="box"
+    >
+      <Text>
+        Content 2 (Force Rendered)
+      </Text>
+    </View>
+  </View>,
+]
+`;
+
+exports[`SegmentedControl Snapshots should match snapshot with multiple triggers 1`] = `
+<View
+  onLayout={[Function]}
+  testID="box"
+>
+  <View
+    testID="animated-box"
+  />
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "width": -Infinity,
+        },
+        false,
+        undefined,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          false,
+          undefined,
+        ]
+      }
+      testID="string"
+    >
+      Option 1
+    </Text>
+  </View>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "width": -Infinity,
+        },
+        false,
+        undefined,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          false,
+          undefined,
+        ]
+      }
+      testID="string"
+    >
+      Option 2
+    </Text>
+  </View>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "width": -Infinity,
+        },
+        false,
+        undefined,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          false,
+          undefined,
+        ]
+      }
+      testID="string"
+    >
+      Option 3
+    </Text>
+  </View>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "width": -Infinity,
+        },
+        false,
+        undefined,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          false,
+          undefined,
+        ]
+      }
+      testID="string"
+    >
+      Option 4
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`SegmentedControl Snapshots should match snapshot with panels content 1`] = `
+[
+  <View
+    onLayout={[Function]}
+    testID="box"
+  >
+    <View
+      testID="animated-box"
+    />
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "width": -Infinity,
+          },
+          false,
+          undefined,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            false,
+            undefined,
+          ]
+        }
+        testID="string"
+      >
+        Option 1
+      </Text>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "width": -Infinity,
+          },
+          false,
+          undefined,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            false,
+            undefined,
+          ]
+        }
+        testID="string"
+      >
+        Option 2
+      </Text>
+    </View>
+  </View>,
+  <View
+    testID="box"
+  />,
+]
+`;
+
+exports[`SegmentedControl Snapshots should match snapshot with touchable-opacity 1`] = `
+<View
+  onLayout={[Function]}
+  testID="box"
+>
+  <View
+    testID="animated-box"
+  />
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "opacity": 1,
+        "width": -Infinity,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          false,
+          undefined,
+        ]
+      }
+      testID="string"
+    >
+      Touchable Option
+    </Text>
+  </View>
+</View>
+`;

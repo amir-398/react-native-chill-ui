@@ -15,9 +15,9 @@ export interface DropdownState {
   position: Position | null;
 }
 
-export const DEFAULT_CONFIG = {
-  EMPTY_TEXT: 'No results found',
-  MAX_HEIGHT: 300,
-  MIN_HEIGHT: 0,
-  PLACEHOLDER: 'Select item',
-} as const;
+export interface AutocompleteDropdownState {
+  listData: any[];
+  searchText: string;
+  keyboardHeight: number;
+  currentValue: any | null;
+}

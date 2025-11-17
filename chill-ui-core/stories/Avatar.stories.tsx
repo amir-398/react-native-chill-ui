@@ -1,61 +1,52 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { action } from '@storybook/addon-actions';
+import { fn } from 'storybook/test';
 
 import UiPresentation from './storybook';
-import { Avatar, Box } from '../src/components';
+import { AvatarTw as Avatar, Box } from '../src/components';
 
 const meta: Meta<typeof Avatar> = {
+  args: {
+    as: 'pressable',
+    size: 'md',
+    variant: 'circle',
+  },
   argTypes: {
     as: {
-      control: 'select',
-      description: 'Type of pressable component to use when onPress is provided',
-      options: ['pressable', 'touchable-opacity', 'ripple-pressable'],
-    },
-    className: {
-      control: 'text',
-      description: 'Additional CSS classes (used with NativeWind)',
-    },
-    color: {
-      control: 'color',
-      description: 'Custom background color',
-    },
-    data: {
-      control: 'object',
-      description: 'User data containing firstname, lastname, and image_url',
-    },
-    onPress: {
-      action: 'pressed',
-      description: 'Callback when avatar is pressed',
+      table: {
+        defaultValue: {
+          summary: 'pressable',
+        },
+      },
     },
     size: {
       control: 'select',
-      description: 'Size of the avatar',
-      options: ['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'],
-    },
-    stringProps: {
-      control: 'object',
-      description: 'Props for the String component',
-    },
-    style: {
-      control: 'object',
-      description: 'Inline styles',
+      options: ['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'],
+      table: {
+        defaultValue: {
+          summary: 'md',
+        },
+      },
     },
     variant: {
-      control: 'radio',
-      description: 'Shape variant of the avatar',
+      control: 'select',
       options: ['circle', 'square'],
+      table: {
+        defaultValue: {
+          summary: 'circle',
+        },
+      },
     },
   },
   component: Avatar,
   decorators: [
     (Story: any) => (
-      <UiPresentation>
+      <UiPresentation className="items-center">
         <Story />
       </UiPresentation>
     ),
   ],
-  title: 'components/Avatar',
+  title: 'DATA DISPLAY/Avatar',
 };
 
 export default meta;
@@ -77,11 +68,7 @@ export const Default: Story = {
   args: {
     data: defaultUser,
   },
-  render: (args: any) => (
-    <Box className="gap-4">
-      <Avatar {...args} />
-    </Box>
-  ),
+  render: (args: any) => <Avatar {...args} />,
 };
 
 export const WithImage: Story = {
@@ -93,7 +80,7 @@ export const WithImage: Story = {
 export const Clickable: Story = {
   args: {
     data: defaultUser,
-    onPress: action('onPress'),
+    onPress: fn(),
   },
 };
 
@@ -176,7 +163,7 @@ export const RipplePressableAvatar: Story = {
   args: {
     as: 'ripple-pressable',
     data: defaultUser,
-    onPress: action('onPress'),
+    onPress: fn(),
     size: 'lg',
   },
 };
@@ -185,24 +172,7 @@ export const TouchableOpacityAvatar: Story = {
   args: {
     as: 'touchable-opacity',
     data: defaultUser,
-    onPress: action('onPress'),
-    size: 'lg',
-  },
-};
-
-// Custom Color Examples
-export const CustomColor: Story = {
-  args: {
-    color: '#FF6B6B',
-    data: defaultUser,
-    size: 'lg',
-  },
-};
-
-export const CustomColorWithImage: Story = {
-  args: {
-    color: '#4ECDC4',
-    data: userWithImage,
+    onPress: fn(),
     size: 'lg',
   },
 };

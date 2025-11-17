@@ -3,44 +3,46 @@ import type { SlideInBoxPropsSs, SlideInBoxRefSs } from '@types';
 import { Animated } from 'react-native';
 import { useRef, useEffect, useImperativeHandle, forwardRef, useCallback, PropsWithChildren } from 'react';
 
-import AnimatedBox from '../animatedBox/AnimatedBox.ss';
+import { AnimatedBox } from '../animatedBox/AnimatedBox.ss';
 
 /**
- * SlideInBox - Dynamic slide-in animation component
+ * The `<SlideInBox />` component creates smooth slide-in effects from any direction.
  *
- * Creates smooth slide-in effects from any direction (left, right, up, down). Perfect for
- * revealing content with directional motion, creating engaging transitions for cards, menus,
- * notifications, and other UI elements.
+ * <!-- STORYBOOK_IMPORT_START
+ * ```tsx
+ * import { SlideInBox } from 'react-native-chill-ui';
+ * ```
+ * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * // Basic slide in from left
- * <SlideInBox autoStart direction="left" style={{ backgroundColor: 'blue', padding: 24, borderRadius: 8 }}>
- *   <String style={{ color: 'white' }}>Sliding in from left</String>
- * </SlideInBox>
- *
- * // Slide in from top with custom distance
  * <SlideInBox
  *   autoStart
- *   direction="up"
- *   distance={150}
- *   duration={600}
- *   style={{ backgroundColor: 'green', padding: 16, borderRadius: 12, shadowOpacity: 0.3 }}
+ *   direction="left"
+ *   distance={100}
+ *   duration={500}
+ *   style={{
+ *     backgroundColor: '#3b82f6',
+ *     padding: 24,
+ *     borderRadius: 8,
+ *     width: 300,
+ *     justifyContent: 'center',
+ *     alignItems: 'center'
+ *   }}
  * >
- *   <String style={{ color: 'white' }}>Notification from top</String>
+ *   <Text style={{ color: 'white', fontWeight: '600' }}>Sliding in from left</Text>
  * </SlideInBox>
  * ```
  *
- * @param direction - Direction to slide from: 'left', 'right', 'up', or 'down' (default: 'left')
- * @param distance - Distance to slide in pixels (default: 100)
- * @param autoStart - Automatically start animation when component mounts (default: false)
- * @param duration - Animation duration in milliseconds (default: 500)
- * @param delay - Delay before starting animation in milliseconds (default: 0)
- * @param infiniteLoop - Loop animation continuously (default: false)
- * @param style - Inline styles for traditional styling or style overrides
+ * @param autoStart - Automatically start animation when component mounts (default: `false`)
+ * @param delay - Delay before starting animation in milliseconds (default: `0`)
+ * @param direction - Direction to slide from: 'left', 'right', 'up', or 'down' (default: `'left'`)
+ * @param distance - Distance to slide in pixels (default: `100`)
+ * @param duration - Animation duration in milliseconds (default: `500`)
+ * @param infiniteLoop - Loop animation continuously (default: `false`)
  * @param children - Content to be animated
- * @param ref - Ref for manual animation control (start, stop methods)
- * @returns Animated component with slide-in effect
+ * @param style - Inline styles for the component
+ * @param ref - Ref for manual animation control (start, stop)
  */
 const SlideInBox = forwardRef<SlideInBoxRefSs, PropsWithChildren<SlideInBoxPropsSs>>((props, ref) => {
   const {

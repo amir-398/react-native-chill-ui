@@ -1,10 +1,26 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
 import UiPresentation from '../storybook';
-import String from '../../src/components/string';
-import { BoxColumnGrow, Box } from '../../src/components';
+import { String, BoxColumnGrow, Box } from '../../src/components';
 
 const meta: Meta<typeof BoxColumnGrow> = {
+  args: {
+    useFastView: true,
+  },
+  argTypes: {
+    useFastView: {
+      control: 'boolean',
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
+    },
+    ViewProps: {
+      description: 'Any other props accepted by the native `View` component',
+      type: 'object',
+    },
+  },
   component: BoxColumnGrow,
   decorators: [
     Story => (
@@ -17,7 +33,7 @@ const meta: Meta<typeof BoxColumnGrow> = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  title: 'Components/Box/BoxColumnGrow',
+  title: 'LAYOUT/Box/BoxColumnGrow',
 };
 
 export default meta;

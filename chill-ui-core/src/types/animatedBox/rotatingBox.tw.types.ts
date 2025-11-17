@@ -8,19 +8,19 @@ import { AnimatedBoxProps } from './animatedBox.tw.types';
  *
  */
 export interface RotatingBoxProps extends AnimatedBoxProps {
-  /** Delay before starting the rotation animation in milliseconds. @default 0 */
+  /** Delay before starting the rotation animation in milliseconds. */
   delay?: number;
 
-  /** Duration of one complete rotation in milliseconds. @default 2000 */
+  /** Duration of one complete rotation in milliseconds. */
   duration?: number;
 
-  /** Whether to start the animation automatically. @default false */
+  /** Whether to start the animation automatically. */
   autoStart?: boolean;
 
-  /** Whether to loop the animation infinitely. @default false */
+  /** Whether to loop the animation infinitely. */
   infiniteLoop?: boolean;
 
-  /** Whether to make the rotation continuous without pauses between loops. @default false */
+  /** Whether to make the rotation continuous without pauses between loops. */
   continuous?: boolean;
 }
 

@@ -1,12 +1,19 @@
+import type { VariantProps } from '@utils';
 import type { StyleProp, ViewStyle } from 'react-native';
 
+import type { AvatarSv } from '@/components/avatar/styles/Avatar.ss.styles';
+
 import type { StringProps } from '../string/string.ss.types';
-import type { VariantProps } from '../../utils/ss/styleSheetVariants';
-import type { AvatarSv } from '../../components/avatar/styles/Avatar.styles';
 
 export type AvatarProps = VariantProps<typeof AvatarSv> & {
-  /** Callback when avatar is pressed */
-  onPress?: () => void;
+  /** Component to use when avatar is pressable:
+   * - `'pressable'`
+   * - `'touchable-opacity'`
+   * - `'ripple-pressable'`
+   */
+  as?: 'pressable' | 'touchable-opacity' | 'ripple-pressable';
+  /** Custom background color */
+  color?: string;
   /** User data for avatar display */
   data: {
     /** User's first name */
@@ -16,12 +23,11 @@ export type AvatarProps = VariantProps<typeof AvatarSv> & {
     /** User's profile image URL */
     image_url?: string;
   };
-  /** Custom background color */
-  color?: string;
+  /** Callback when avatar is pressed */
+  onPress?: () => void;
+
   /** Props for the String component displaying initials */
   stringProps?: StringProps;
   /** Custom inline styles */
   style?: StyleProp<ViewStyle>;
-  /** Component to use when avatar is pressable - default: 'Pressable' */
-  as?: 'pressable' | 'touchable-opacity' | 'ripple-pressable';
 };

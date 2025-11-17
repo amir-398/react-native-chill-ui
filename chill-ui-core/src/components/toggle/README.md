@@ -1,521 +1,606 @@
-# Toggle
+# Toggle Component
 
-A React Native component that provides a customizable toggle/switch interface for boolean state management. Built on top of React Native's Switch component with enhanced styling, multiple sizes, and support for loading and disabled states.
+A React Native component that provides a customizable toggle switch for boolean values. Built on top of React Native's Switch component with enhanced styling, state management, and support for loading and disabled states. Features customizable colors, sizes, and support for both controlled and uncontrolled usage.
+
+## Available Versions
+
+This component comes in three versions to match your project's styling approach. You choose the version during installation, but the import statement remains consistent across all versions:
+
+### 1. **StyleSheet Version**
+
+- Uses React Native's built-in StyleSheet API
+- Perfect for projects that don't use CSS-in-JS libraries
+- Lightweight and performant
+- Install: `npm install react-native-chill-ui@stylesheet`
+
+### 2. **Tailwind Version**
+
+- Uses NativeWind/Tailwind CSS classes
+- Ideal for projects already using Tailwind CSS
+- Requires NativeWind setup and Tailwind configuration
+- Install: `npm install react-native-chill-ui@tailwind`
+
+### 3. **Hybrid Version**
+
+- Automatically detects if NativeWind is available
+- Falls back to StyleSheet if NativeWind is not installed
+- Best for component libraries or projects that need flexibility
+- Install: `npm install react-native-chill-ui@hybrid`
+
+**Note**: Regardless of the version you choose, the import statement remains the same: `import { Toggle } from 'react-native-chill-ui'`
 
 ## Features
 
-- ✅ **Boolean State Management**: Simple on/off state handling with controlled components
-- ✅ **Multiple Sizes**: Small and large size variants with proper scaling
-- ✅ **Custom Colors**: Full control over thumb and track colors for both states
-- ✅ **Loading & Disabled States**: Support for loading and disabled states
-- ✅ **TypeScript**: Complete type safety with proper interfaces
-- ✅ **Accessibility**: Built-in accessibility features from React Native Switch
-- ✅ **Performance**: Optimized with transform scaling for size variants
-- ✅ **Safe Area Support**: Proper positioning and touch target sizes
+- **Controlled & Uncontrolled**: Supports both controlled and uncontrolled usage patterns
+- **Multiple Sizes**: Pre-defined sizes (xs, sm, md, lg, xl) with consistent sizing
+- **Custom Colors**: Fully customizable thumb and track colors for on/off states
+- **Loading State**: Built-in loading state with automatic interaction blocking
+- **Disabled State**: Disable toggle interaction while maintaining visual feedback
+- **Smooth Animations**: Native switch animations for fluid state transitions
+- **Flexible Styling**: Support for NativeWind classes and StyleSheet objects
+- **TypeScript Support**: Fully typed for a better development experience
+- **Accessibility**: Inherits all React Native Switch accessibility features
+- **Memory Efficient**: Optimized state management to prevent memory leaks
 
 ## Quick Start
 
 ```tsx
-import Toggle from '@/components/toggle/Toggle';
+import { useState } from 'react';
+import { Toggle } from 'react-native-chill-ui';
 
-// Basic toggle
-<Toggle value={isEnabled} onChange={setIsEnabled} />
+// Controlled toggle
+function MyComponent() {
+  const [isEnabled, setIsEnabled] = useState(false);
 
-// Small toggle with custom colors
-<Toggle
-  value={isEnabled}
-  onChange={setIsEnabled}
-  size="small"
-  thumbColorOn="#3B82F6"
-  trackColorOn="#DBEAFE"
-/>
+  return <Toggle value={isEnabled} onChange={setIsEnabled} size="md" />;
+}
 
-// Disabled toggle
-<Toggle
-  value={isEnabled}
-  onChange={setIsEnabled}
-  isDisabled={true}
-/>
+// Uncontrolled toggle
+function SimpleToggle() {
+  return <Toggle onChange={value => console.log('Toggle changed:', value)} />;
+}
 ```
 
-## Examples
+## Installation Guide
+
+Choose the version that matches your project's styling approach:
+
+| Version        | Command                                        | When to Use                                                                                          | Pros                                                                            | Cons                                                  |
+| -------------- | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| **StyleSheet** | `npm install react-native-chill-ui@stylesheet` | • No CSS-in-JS dependencies<br/>• Maximum performance priority<br/>• Simple React Native project     | • Lightweight<br/>• Fast<br/>• No dependencies                                  | • Limited styling flexibility                         |
+| **Tailwind**   | `npm install react-native-chill-ui@tailwind`   | • Already using NativeWind<br/>• Team familiar with Tailwind<br/>• Design system based on utilities  | • Consistent with web Tailwind<br/>• Powerful utility system<br/>• Easy theming | • Requires NativeWind setup<br/>• Larger bundle size  |
+| **Hybrid**     | `npm install react-native-chill-ui@hybrid`     | • Building component library<br/>• Uncertain about styling approach<br/>• Want maximum compatibility | • Works in any environment<br/>• Future-proof<br/>• Automatic detection         | • Slightly larger bundle<br/>• More complex internals |
+
+## Configuration
+
+### For Tailwind and Hybrid Versions
+
+When using the Tailwind or Hybrid versions, you must define your application's color palette in your `tailwind.config.js` file.
+
+**Minimum Required Configuration:**
+
+```js
+module.exports = {
+  content: ['./App.{js,jsx,ts,tsx}', './src/**/*.{js,jsx,ts,tsx}'],
+  theme: {
+    extend: {
+      // Add your custom colors here if needed
+    },
+  },
+  plugins: [],
+};
+```
+
+For the StyleSheet version, no additional configuration is needed beyond the standard React Native setup.
+
+## Props
+
+### Toggle Props
+
+| Prop            | Type                                   | Default     | Description                                                                                 |
+| --------------- | -------------------------------------- | ----------- | ------------------------------------------------------------------------------------------- |
+| `value`         | `boolean`                              | `undefined` | Current toggle state (true for on, false for off). If undefined, the toggle is uncontrolled |
+| `onChange`      | `(value: boolean) => void`             | `undefined` | Callback function called when toggle state changes                                          |
+| `size`          | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'`      | Size variant of the toggle                                                                  |
+| `isDisabled`    | `boolean`                              | `false`     | Whether the toggle is disabled                                                              |
+| `isLoading`     | `boolean`                              | `false`     | Whether the toggle is in loading state (disables interaction)                               |
+| `thumbColorOn`  | `string`                               | `'#FFFFFF'` | Color of the thumb when toggle is on                                                        |
+| `thumbColorOff` | `string`                               | `'#f3f3f3'` | Color of the thumb when toggle is off                                                       |
+| `trackColorOn`  | `string`                               | `'#3f83f8'` | Color of the track when toggle is on                                                        |
+| `trackColorOff` | `string`                               | `'#CBCFD3'` | Color of the track when toggle is off                                                       |
+| `className`     | `string`                               | `undefined` | Custom CSS classes for the container (Tailwind/Hybrid only)                                 |
+| `style`         | `StyleProp<ViewStyle>`                 | `undefined` | Custom style for the container                                                              |
+
+## Usage Examples
 
 ### Basic Usage
 
 ```tsx
 import { useState } from 'react';
-import Toggle from '@/components/toggle/Toggle';
+import { View, Text } from 'react-native';
+import { Toggle } from 'react-native-chill-ui';
 
-const BasicToggle = () => {
+function BasicExample() {
   const [isEnabled, setIsEnabled] = useState(false);
 
   return (
-    <Box className="space-y-4 p-4">
+    <View>
+      <Text>Enable notifications</Text>
       <Toggle value={isEnabled} onChange={setIsEnabled} />
-      <String>Toggle is {isEnabled ? 'ON' : 'OFF'}</String>
-    </Box>
+    </View>
   );
-};
+}
 ```
 
 ### Different Sizes
 
 ```tsx
-const [isEnabled, setIsEnabled] = useState(false);
+import { View } from 'react-native';
+import { Toggle } from 'react-native-chill-ui';
 
-<Box className="space-y-4">
-  <Toggle value={isEnabled} onChange={setIsEnabled} size="small" />
-  <Toggle value={isEnabled} onChange={setIsEnabled} size="large" />
-</Box>;
+function SizesExample() {
+  return (
+    <View style={{ gap: 16 }}>
+      <Toggle size="xs" />
+      <Toggle size="sm" />
+      <Toggle size="md" />
+      <Toggle size="lg" />
+      <Toggle size="xl" />
+    </View>
+  );
+}
 ```
 
 ### Custom Colors
 
 ```tsx
-<Toggle
-  value={isEnabled}
-  onChange={setIsEnabled}
-  thumbColorOn="#3B82F6"
-  thumbColorOff="#FFFFFF"
-  trackColorOn="#DBEAFE"
-  trackColorOff="#E5E7EB"
-/>
+import { Toggle } from 'react-native-chill-ui';
 
-// Dark theme toggle
-<Toggle
-  value={isDarkMode}
-  onChange={setIsDarkMode}
-  thumbColorOn="#FFFFFF"
-  thumbColorOff="#FFFFFF"
-  trackColorOn="#1F2937"
-  trackColorOff="#E5E7EB"
-  size="large"
-/>
+function CustomColorsExample() {
+  return <Toggle thumbColorOn="#FFFFFF" thumbColorOff="#000000" trackColorOn="#10B981" trackColorOff="#EF4444" />;
+}
 ```
 
-### Disabled and Loading States
+### Loading and Disabled States
 
 ```tsx
-// Disabled state
-<Toggle value={isEnabled} onChange={setIsEnabled} isDisabled={true} />
+import { View } from 'react-native';
+import { Toggle } from 'react-native-chill-ui';
 
-// Loading state
-<Toggle value={isEnabled} onChange={setIsEnabled} isLoading={true} />
+function StatesExample() {
+  return (
+    <View style={{ gap: 16 }}>
+      {/* Loading state */}
+      <Toggle isLoading />
 
-// Both disabled and loading
-<Toggle
-  value={isEnabled}
-  onChange={setIsEnabled}
-  isDisabled={isUpdating}
-  isLoading={isUpdating}
-/>
+      {/* Disabled state */}
+      <Toggle isDisabled />
+
+      {/* Normal state */}
+      <Toggle />
+    </View>
+  );
+}
 ```
 
-### Settings Interface
+### Uncontrolled Toggle
 
 ```tsx
-const SettingsScreen = () => {
+import { Toggle } from 'react-native-chill-ui';
+
+function UncontrolledExample() {
+  return (
+    <Toggle
+      onChange={value => {
+        console.log('Toggle changed to:', value);
+      }}
+    />
+  );
+}
+```
+
+### With Tailwind Classes (Tailwind/Hybrid Version)
+
+```tsx
+import { Toggle } from 'react-native-chill-ui';
+
+function TailwindExample() {
+  return <Toggle className="m-4 p-2" size="lg" />;
+}
+```
+
+### With StyleSheet (StyleSheet/Hybrid Version)
+
+```tsx
+import { StyleSheet } from 'react-native';
+import { Toggle } from 'react-native-chill-ui';
+
+const styles = StyleSheet.create({
+  toggle: {
+    margin: 16,
+    padding: 8,
+  },
+});
+
+function StyleSheetExample() {
+  return <Toggle style={styles.toggle} size="lg" />;
+}
+```
+
+### Form Integration
+
+```tsx
+import { useState } from 'react';
+import { View, Text, Button } from 'react-native';
+import { Toggle } from 'react-native-chill-ui';
+
+function FormExample() {
+  const [notifications, setNotifications] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+  const [autoSave, setAutoSave] = useState(true);
+
+  const handleSubmit = () => {
+    console.log({
+      notifications,
+      darkMode,
+      autoSave,
+    });
+  };
+
+  return (
+    <View style={{ gap: 16 }}>
+      <View>
+        <Text>Enable Notifications</Text>
+        <Toggle value={notifications} onChange={setNotifications} />
+      </View>
+
+      <View>
+        <Text>Dark Mode</Text>
+        <Toggle value={darkMode} onChange={setDarkMode} />
+      </View>
+
+      <View>
+        <Text>Auto Save</Text>
+        <Toggle value={autoSave} onChange={setAutoSave} />
+      </View>
+
+      <Button title="Save Settings" onPress={handleSubmit} />
+    </View>
+  );
+}
+```
+
+### Settings Screen Example
+
+```tsx
+import { useState } from 'react';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { Toggle } from 'react-native-chill-ui';
+
+function SettingsScreen() {
   const [pushNotifications, setPushNotifications] = useState(true);
   const [emailNotifications, setEmailNotifications] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
+  const [locationServices, setLocationServices] = useState(true);
+  const [biometricAuth, setBiometricAuth] = useState(false);
 
   return (
-    <Box className="space-y-4 p-4">
-      <Box className="flex-row items-center justify-between">
-        <String>Push Notifications</String>
-        <Toggle value={pushNotifications} onChange={setPushNotifications} />
-      </Box>
+    <ScrollView style={styles.container}>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Notifications</Text>
 
-      <Box className="flex-row items-center justify-between">
-        <String>Email Notifications</String>
-        <Toggle value={emailNotifications} onChange={setEmailNotifications} />
-      </Box>
+        <View style={styles.row}>
+          <Text style={styles.label}>Push Notifications</Text>
+          <Toggle value={pushNotifications} onChange={setPushNotifications} size="md" />
+        </View>
 
-      <Box className="flex-row items-center justify-between">
-        <String>Dark Mode</String>
-        <Toggle value={darkMode} onChange={setDarkMode} thumbColorOn="#1F2937" trackColorOn="#374151" />
-      </Box>
-    </Box>
+        <View style={styles.row}>
+          <Text style={styles.label}>Email Notifications</Text>
+          <Toggle value={emailNotifications} onChange={setEmailNotifications} size="md" />
+        </View>
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Privacy & Security</Text>
+
+        <View style={styles.row}>
+          <Text style={styles.label}>Location Services</Text>
+          <Toggle value={locationServices} onChange={setLocationServices} size="md" />
+        </View>
+
+        <View style={styles.row}>
+          <Text style={styles.label}>Biometric Authentication</Text>
+          <Toggle value={biometricAuth} onChange={setBiometricAuth} size="md" />
+        </View>
+      </View>
+    </ScrollView>
   );
-};
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+  section: {
+    marginBottom: 24,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 12,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E5E7EB',
+  },
+  label: {
+    fontSize: 16,
+  },
+});
 ```
 
-### Async Toggle with Loading State
+### Advanced: Conditional Rendering Based on Toggle State
 
 ```tsx
-const AsyncToggle = () => {
-  const [isEnabled, setIsEnabled] = useState(false);
-  const [isUpdating, setIsUpdating] = useState(false);
+import { useState } from 'react';
+import { View, Text } from 'react-native';
+import { Toggle } from 'react-native-chill-ui';
 
-  const handleToggle = async (value: boolean) => {
-    setIsUpdating(true);
-    try {
-      // Simulate API call
-      await updateSetting(value);
-      setIsEnabled(value);
-    } catch (error) {
-      console.error('Failed to update setting:', error);
-      // Optionally revert the toggle state
-    } finally {
-      setIsUpdating(false);
-    }
-  };
-
-  return <Toggle value={isEnabled} onChange={handleToggle} isDisabled={isUpdating} isLoading={isUpdating} />;
-};
-```
-
-### Custom Styled Toggle
-
-```tsx
-<Toggle
-  value={isEnabled}
-  onChange={setIsEnabled}
-  className="rounded-lg bg-gray-100 p-2"
-  thumbColorOn="#10B981"
-  trackColorOn="#D1FAE5"
-  size="large"
-/>
-```
-
-## Props Reference
-
-### ToggleProps
-
-| Prop            | Type                       | Default     | Description                                       |
-| --------------- | -------------------------- | ----------- | ------------------------------------------------- |
-| `value`         | `boolean`                  | -           | Current toggle state (true for on, false for off) |
-| `onChange`      | `(value: boolean) => void` | -           | Callback function when toggle state changes       |
-| `size`          | `'small' \| 'large'`       | `'large'`   | Toggle size variant                               |
-| `isDisabled`    | `boolean`                  | `false`     | Whether the toggle is disabled                    |
-| `isLoading`     | `boolean`                  | `false`     | Whether the toggle is in loading state            |
-| `className`     | `string`                   | -           | Custom CSS classes for the container              |
-| `thumbColorOn`  | `string`                   | `'#000'`    | Color of the thumb when toggle is on              |
-| `thumbColorOff` | `string`                   | `'#f3f3f3'` | Color of the thumb when toggle is off             |
-| `trackColorOn`  | `string`                   | `'#CBCFD3'` | Color of the track when toggle is on              |
-| `trackColorOff` | `string`                   | `'#CBCFD3'` | Color of the track when toggle is off             |
-
-## Best Practices
-
-### 1. State Management
-
-```tsx
-// ✅ Good - Use useState for local state
-const [isEnabled, setIsEnabled] = useState(false);
-
-<Toggle
-  value={isEnabled}
-  onChange={setIsEnabled}
-/>
-
-// ✅ Good - Use controlled state with parent component
-<Toggle
-  value={settings.notifications}
-  onChange={(value) => updateSettings({ notifications: value })}
-/>
-
-// ❌ Avoid - Uncontrolled state
-<Toggle onChange={(value) => console.log(value)} />
-```
-
-### 2. Color Consistency
-
-```tsx
-// ✅ Good - Use consistent colors for similar toggles
-const toggleColors = {
-  thumbColorOn: '#3B82F6',
-  thumbColorOff: '#FFFFFF',
-  trackColorOn: '#DBEAFE',
-  trackColorOff: '#E5E7EB',
-};
-
-<Toggle
-  value={notifications}
-  onChange={setNotifications}
-  {...toggleColors}
-/>
-
-<Toggle
-  value={darkMode}
-  onChange={setDarkMode}
-  {...toggleColors}
-/>
-
-// ❌ Avoid - Inconsistent colors
-<Toggle
-  value={notifications}
-  onChange={setNotifications}
-  thumbColorOn="#ff0000"
-  trackColorOn="#00ff00"
-/>
-```
-
-### 3. Accessibility
-
-```tsx
-// ✅ Good - Provide clear labels and context
-<Box className="flex-row items-center justify-between">
-  <String>Enable Notifications</String>
-  <Toggle
-    value={notifications}
-    onChange={setNotifications}
-  />
-</Box>
-
-// ✅ Good - Use appropriate sizes for touch targets
-<Toggle
-  value={isEnabled}
-  onChange={setIsEnabled}
-  size="large" // Better for mobile accessibility
-/>
-
-// ❌ Avoid - No context or labels
-<Toggle value={isEnabled} onChange={setIsEnabled} />
-```
-
-### 4. Loading States
-
-```tsx
-// ✅ Good - Disable toggle during loading
-<Toggle value={isEnabled} onChange={setIsEnabled} isLoading={isUpdating} isDisabled={isUpdating} />;
-
-// ✅ Good - Show loading state for async operations
-const [isUpdating, setIsUpdating] = useState(false);
-
-const handleToggle = async (value: boolean) => {
-  setIsUpdating(true);
-  try {
-    await updateSetting(value);
-    setIsEnabled(value);
-  } finally {
-    setIsUpdating(false);
-  }
-};
-
-// ❌ Avoid - No loading state for async operations
-const handleToggle = async (value: boolean) => {
-  await updateSetting(value);
-  setIsEnabled(value);
-};
-```
-
-### 5. Error Handling
-
-```tsx
-// ✅ Good - Handle toggle errors gracefully
-const handleToggle = (value: boolean) => {
-  try {
-    setIsEnabled(value);
-    // Additional logic
-  } catch (error) {
-    console.error('Toggle error:', error);
-    // Revert state or show error message
-  }
-};
-
-// ✅ Good - Async error handling
-const handleAsyncToggle = async (value: boolean) => {
-  try {
-    await updateSetting(value);
-    setIsEnabled(value);
-  } catch (error) {
-    console.error('Failed to update setting:', error);
-    // Optionally show error toast or revert state
-  }
-};
-
-// ❌ Avoid - No error handling
-const handleToggle = (value: boolean) => {
-  setIsEnabled(value);
-  // No error handling
-};
-```
-
-## Advanced Usage
-
-### Custom Toggle with Validation
-
-```tsx
-const ValidatedToggle = () => {
-  const [isEnabled, setIsEnabled] = useState(false);
-  const [error, setError] = useState('');
-
-  const handleToggle = (value: boolean) => {
-    // Custom validation
-    if (value && !hasPermission()) {
-      setError('Permission required');
-      return;
-    }
-
-    setError('');
-    setIsEnabled(value);
-  };
+function ConditionalExample() {
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
   return (
-    <Box className="space-y-2">
-      <Toggle value={isEnabled} onChange={handleToggle} isDisabled={!hasPermission()} />
-      {error && (
-        <String size="sm" colorVariant="error">
-          {error}
-        </String>
+    <View>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+        <Text>Show Advanced Settings</Text>
+        <Toggle value={showAdvanced} onChange={setShowAdvanced} />
+      </View>
+
+      {showAdvanced && (
+        <View style={{ marginTop: 16, padding: 16, backgroundColor: '#F3F4F6' }}>
+          <Text>Advanced settings appear here</Text>
+          {/* More advanced settings */}
+        </View>
       )}
-    </Box>
+    </View>
   );
-};
+}
 ```
 
-### Toggle with Custom Styling
+## Performance Notes
+
+- **Native Performance**: Built on React Native's native Switch component for optimal performance
+- **Minimal Re-renders**: Optimized state management to prevent unnecessary re-renders
+- **Memory Efficient**: Proper cleanup of event listeners and state subscriptions
+- **Controlled vs Uncontrolled**: Use uncontrolled mode for simpler use cases to reduce parent re-renders
+
+### Best Practices
+
+1. **Use controlled mode when**:
+   - You need to sync the toggle state with other components
+   - The toggle state affects other parts of your UI
+   - You need to validate or transform the toggle state
+
+2. **Use uncontrolled mode when**:
+   - You only need to react to changes (e.g., logging, analytics)
+   - The toggle state is independent from other components
+   - You want to minimize parent component re-renders
+
+3. **Avoid inline functions**:
+
+   ```tsx
+   // ❌ Bad - creates new function on every render
+   <Toggle onChange={value => console.log(value)} />;
+
+   // ✅ Good - stable function reference
+   const handleChange = useCallback((value: boolean) => {
+     console.log(value);
+   }, []);
+   <Toggle onChange={handleChange} />;
+   ```
+
+## TypeScript Support
+
+The Toggle component is written in TypeScript and provides complete type definitions:
 
 ```tsx
-const CustomToggle = () => {
-  const [isEnabled, setIsEnabled] = useState(false);
+import { Toggle } from 'react-native-chill-ui';
+import type { ToggleProps } from 'react-native-chill-ui';
 
-  return (
-    <Box className="rounded-lg bg-gray-50 p-4">
-      <Toggle
-        value={isEnabled}
-        onChange={setIsEnabled}
-        className="rounded-full bg-white shadow-sm"
-        thumbColorOn="#10B981"
-        thumbColorOff="#FFFFFF"
-        trackColorOn="#D1FAE5"
-        trackColorOff="#E5E7EB"
-        size="large"
-      />
-    </Box>
-  );
+// Type-safe props
+const props: ToggleProps = {
+  value: true,
+  onChange: (value: boolean) => console.log(value),
+  size: 'md',
+  isDisabled: false,
+  isLoading: false,
+  thumbColorOn: '#FFFFFF',
+  thumbColorOff: '#f3f3f3',
+  trackColorOn: '#3f83f8',
+  trackColorOff: '#CBCFD3',
 };
+
+function TypedExample() {
+  return <Toggle {...props} />;
+}
 ```
 
-### Performance Optimization
+### Type Definitions
 
-```tsx
-import React from 'react';
-import Toggle from '@/components/toggle/Toggle';
+```typescript
+type ToggleSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
-// Memoized toggle for performance
-const MemoizedToggle = React.memo(({ value, onChange, ...props }) => (
-  <Toggle value={value} onChange={onChange} {...props} />
-));
-
-// Usage
-<MemoizedToggle value={isEnabled} onChange={setIsEnabled} size="large" />;
+interface ToggleProps {
+  value?: boolean;
+  onChange?: (value: boolean) => void;
+  size?: ToggleSize;
+  isDisabled?: boolean;
+  isLoading?: boolean;
+  thumbColorOn?: string;
+  thumbColorOff?: string;
+  trackColorOn?: string;
+  trackColorOff?: string;
+  className?: string; // Tailwind/Hybrid only
+  style?: StyleProp<ViewStyle>;
+}
 ```
-
-## Performance Considerations
-
-- **Controlled Component**: Efficient re-rendering with controlled state
-- **Transform Scaling**: Uses transform scale for size variants instead of different components
-- **Color Optimization**: Default colors are optimized for performance
-- **Memory Management**: Proper cleanup of event handlers
 
 ## Accessibility
 
-The Toggle component inherits accessibility features from React Native's Switch:
-
-- **Screen Reader**: Compatible with screen readers and voice-over
-- **Touch Targets**: Adequate touch target sizes for mobile accessibility
-- **Visual Feedback**: Clear visual state indication with proper contrast
-- **Keyboard Navigation**: Supports keyboard navigation
-- **Color Contrast**: Ensure sufficient contrast for custom colors
-
-### Accessibility Best Practices
+The Toggle component inherits all accessibility features from React Native's Switch component:
 
 ```tsx
-// Always provide clear context
-<Box className="flex-row items-center justify-between">
-  <String>Enable Push Notifications</String>
-  <Toggle
-    value={notifications}
-    onChange={setNotifications}
-    size="large" // Better touch target
-  />
-</Box>
+import { Toggle } from 'react-native-chill-ui';
 
-// Use appropriate contrast ratios
-<Toggle
-  value={isEnabled}
-  onChange={setIsEnabled}
-  thumbColorOn="#FFFFFF"
-  trackColorOn="#1F2937" // High contrast
-/>
+function AccessibleToggle() {
+  const [isEnabled, setIsEnabled] = useState(false);
+
+  return (
+    <View>
+      <Text accessibilityLabel="Enable notifications">Enable Notifications</Text>
+      <Toggle
+        value={isEnabled}
+        onChange={setIsEnabled}
+        // Switch automatically handles accessibility
+        // Screen readers will announce the state change
+      />
+    </View>
+  );
+}
+```
+
+### Accessibility Features
+
+- **Screen Reader Support**: Automatically announces state changes
+- **Touch Target**: Meets minimum touch target size requirements
+- **Visual Feedback**: Clear visual indication of on/off state
+- **Disabled State**: Properly communicates disabled state to assistive technologies
+
+## Common Use Cases
+
+### 1. Settings Panel
+
+```tsx
+const [settings, setSettings] = useState({
+  notifications: true,
+  darkMode: false,
+  autoplay: true,
+});
+
+const updateSetting = (key: string) => (value: boolean) => {
+  setSettings(prev => ({ ...prev, [key]: value }));
+};
+
+<Toggle value={settings.notifications} onChange={updateSetting('notifications')} />;
+```
+
+### 2. Feature Flags
+
+```tsx
+const [features, setFeatures] = useState({
+  betaFeatures: false,
+  analytics: true,
+});
+
+<Toggle value={features.betaFeatures} onChange={value => setFeatures({ ...features, betaFeatures: value })} />;
+```
+
+### 3. Filter Controls
+
+```tsx
+const [filters, setFilters] = useState({
+  showCompleted: true,
+  showArchived: false,
+});
+
+<Toggle value={filters.showCompleted} onChange={value => setFilters({ ...filters, showCompleted: value })} />;
 ```
 
 ## Troubleshooting
 
-### Common Issues
+### Toggle not responding
 
-1. **Toggle not responding**: Check if onChange callback is provided
-2. **Colors not applying**: Verify color prop names and values
-3. **Size not changing**: Ensure size prop is 'small' or 'large'
-4. **Disabled state not working**: Check isDisabled and isLoading props
-5. **Performance issues**: Use React.memo for frequently re-rendered toggles
+**Issue**: Toggle doesn't respond to taps
 
-### Debug Example
+**Solution**: Check if `isDisabled` or `isLoading` is set to `true`:
 
 ```tsx
-const [debugInfo, setDebugInfo] = useState({});
+// ❌ Won't respond
+<Toggle isDisabled />
 
-const handleToggle = (value: boolean) => {
-  const info = {
-    value,
-    timestamp: Date.now(),
-    size: 'large',
-    isDisabled: false,
-  };
-
-  setDebugInfo(info);
-  setIsEnabled(value);
-};
-
-<Box className="space-y-4">
-  <Toggle value={isEnabled} onChange={handleToggle} size="large" />
-
-  {debugInfo.value !== undefined && (
-    <Box className="rounded bg-gray-100 p-4">
-      <String size="sm">Debug: {JSON.stringify(debugInfo)}</String>
-    </Box>
-  )}
-</Box>;
+// ✅ Will respond
+<Toggle isDisabled={false} />
 ```
 
-## Migration from Other Libraries
+### State not updating in controlled mode
 
-### From react-native-switch
+**Issue**: Toggle state doesn't update when clicked
+
+**Solution**: Make sure you're updating the `value` prop:
 
 ```tsx
-// Old (react-native-switch)
-import Switch from 'react-native-switch';
+// ❌ State won't update
+const [value, setValue] = useState(false);
+<Toggle value={value} />;
+
+// ✅ State updates correctly
+const [value, setValue] = useState(false);
+<Toggle value={value} onChange={setValue} />;
+```
+
+### Custom colors not applying
+
+**Issue**: Custom thumb/track colors aren't showing
+
+**Solution**: Ensure you're passing valid color strings:
+
+```tsx
+// ❌ Invalid
+<Toggle thumbColorOn={true} />
+
+// ✅ Valid
+<Toggle thumbColorOn="#FFFFFF" />
+<Toggle thumbColorOn="white" />
+<Toggle thumbColorOn="rgb(255, 255, 255)" />
+```
+
+## Migration from React Native Switch
+
+If you're migrating from React Native's Switch component:
+
+```tsx
+// Before (React Native Switch)
+import { Switch } from 'react-native';
 
 <Switch
   value={isEnabled}
   onValueChange={setIsEnabled}
-  activeText="ON"
-  inActiveText="OFF"
-/>
+  thumbColor="#FFFFFF"
+  trackColor={{ false: '#767577', true: '#81b0ff' }}
+/>;
 
-// New (Toggle)
+// After (Toggle)
+import { Toggle } from 'react-native-chill-ui';
+
 <Toggle
   value={isEnabled}
   onChange={setIsEnabled}
-/>
+  thumbColorOn="#FFFFFF"
+  trackColorOn="#81b0ff"
+  trackColorOff="#767577"
+/>;
 ```
 
-### From custom switch implementation
+## Related Components
 
-```tsx
-// Old (custom implementation)
-const [isEnabled, setIsEnabled] = useState(false);
+- **Checkbox**: For multi-select options
+- **Radio**: For single-select from multiple options
+- **Slider**: For selecting a value from a range
 
-<Pressable onPress={() => setIsEnabled(!isEnabled)}>
-  <View style={[styles.track, isEnabled && styles.trackActive]}>
-    <View style={[styles.thumb, isEnabled && styles.thumbActive]} />
-  </View>
-</Pressable>
+## License
 
-// New (Toggle)
-<Toggle
-  value={isEnabled}
-  onChange={setIsEnabled}
-/>
-```
+This component is part of the `react-native-chill-ui` library. See the main package for license information.

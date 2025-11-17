@@ -10,6 +10,7 @@ const path = require('path');
 
 // Configuration des alias basée sur les tsconfig.json
 const ALIAS_CONFIG = {
+  '@constants': './src/constants',
   '@types': './src/types',
   '@utils': './src/utils',
 };

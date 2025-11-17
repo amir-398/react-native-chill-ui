@@ -1,0 +1,19 @@
+// Tailwind types
+export type {
+  DropdownMenuProps as DropdownMenuPropsTw,
+  DropdownMenuTriggerProps as DropdownMenuTriggerPropsTw,
+  DropdownMenuContentProps as DropdownMenuContentPropsTw,
+  DropdownMenuLabelProps as DropdownMenuLabelPropsTw,
+  DropdownMenuItemProps as DropdownMenuItemPropsTw,
+  DropdownMenuSeparatorProps as DropdownMenuSeparatorPropsTw,
+} from './dropdownMenu.tw.types';
+
+// StyleSheet types
+export type {
+  DropdownMenuProps as DropdownMenuPropsSs,
+  DropdownMenuTriggerProps as DropdownMenuTriggerPropsSs,
+  DropdownMenuContentProps as DropdownMenuContentPropsSs,
+  DropdownMenuLabelProps as DropdownMenuLabelPropsSs,
+  DropdownMenuItemProps as DropdownMenuItemPropsSs,
+  DropdownMenuSeparatorProps as DropdownMenuSeparatorPropsSs,
+} from './dropdownMenu.ss.types';

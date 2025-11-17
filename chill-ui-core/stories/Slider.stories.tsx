@@ -1,134 +1,237 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
-import { View } from 'react-native';
+import { useState } from 'react';
 
-import Slider from '../src/components/slider';
-import { Box, String } from '../src/components';
+import { String } from '../src/components';
+import UiPresentation from './storybook/UiPresentation';
+import { Slider, SliderLabel, SliderRange, SliderThumb, SliderTrack } from '../src/components/slider';
 
 const meta: Meta<typeof Slider> = {
+  args: {
+    animateTransitions: true,
+    animationType: 'timing',
+    animationTypeThumb: 'extend',
+    defaultValue: [50],
+    disabled: false,
+    index: 0,
+    maximumValue: 1,
+    minimumValue: 0,
+    orientation: 'horizontal',
+    position: 'top',
+    step: 0,
+    touchSize: 40,
+    trackClickable: true,
+  },
   argTypes: {
     animateTransitions: {
-      control: 'boolean',
-      description: 'Whether to animate value changes',
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
     },
-    animationConfig: {
-      control: 'object',
-      description: 'Animation configuration object',
-    },
+
     animationType: {
-      control: 'select',
-      description: 'Type of animation to use',
-      options: ['timing', 'spring'],
+      table: {
+        defaultValue: {
+          summary: 'timing',
+        },
+      },
     },
-    containerClassName: {
+    'animationType°': {
+      control: 'radio',
+      description: 'Animation type for the thumb:',
+      options: ['extend', 'shrink'],
+
+      table: {
+        category: 'SliderThumb Props',
+        defaultValue: {
+          summary: 'extend',
+        },
+      },
+    },
+
+    animationTypeThumb: {
+      table: {
+        defaultValue: {
+          summary: 'extend',
+        },
+      },
+    },
+    className: {
+      table: {
+        category: 'SliderLabel Props',
+      },
+    },
+    'className (SliderRange)': {
       control: 'text',
-      description: 'Additional CSS classes for the container',
+      description: 'Custom CSS classes for styling (NativeWind only)',
+      table: {
+        category: 'SliderRange Props',
+        type: {
+          summary: 'string',
+        },
+      },
     },
-    debugTouchArea: {
-      control: 'boolean',
-      description: 'Show debug touch area',
+    'className (SliderThumb)': {
+      control: 'text',
+      description: 'Custom CSS classes for styling (NativeWind only)',
+      table: {
+        category: 'SliderThumb Props',
+        type: {
+          summary: 'string',
+        },
+      },
+    },
+    'className (SliderTrack)': {
+      control: 'text',
+      description: 'Custom CSS classes for styling (NativeWind only)',
+      table: {
+        category: 'SliderTrack Props',
+        type: {
+          summary: 'string',
+        },
+      },
+    },
+    defaultValue: {
+      table: {
+        defaultValue: {
+          summary: 50,
+        },
+      },
     },
     disabled: {
-      control: 'boolean',
-      description: 'Disable the slider',
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
     },
-    maximumTrackClassName: {
-      control: 'text',
-      description: 'Additional CSS classes for the maximum track',
+    index: {
+      table: {
+        category: 'SliderLabel Props',
+      },
     },
-    maximumTrackColor: {
-      control: 'color',
-      description: 'Color of the maximum track',
+    'index (SliderThumb)': {
+      control: 'number',
+      description: 'Index of the thumb (for multiple thumbs)',
+      table: {
+        category: 'SliderThumb Props',
+        type: {
+          summary: 'number',
+        },
+      },
     },
     maximumValue: {
-      control: 'number',
-      description: 'Maximum value of the slider',
-    },
-    minimumTrackClassName: {
-      control: 'text',
-      description: 'Additional CSS classes for the minimum track',
-    },
-    minimumTrackColor: {
-      control: 'color',
-      description: 'Color of the minimum track',
+      table: {
+        defaultValue: {
+          summary: 1,
+        },
+      },
     },
     minimumValue: {
-      control: 'number',
-      description: 'Minimum value of the slider',
+      table: {
+        defaultValue: {
+          summary: 0,
+        },
+      },
     },
-    onSlidingComplete: {
-      action: 'onSlidingComplete',
-      description: 'Callback when sliding is complete',
+    orientation: {
+      table: {
+        defaultValue: {
+          summary: 'horizontal',
+        },
+      },
     },
-    onSlidingStart: {
-      action: 'onSlidingStart',
-      description: 'Callback when sliding starts',
-    },
-    onValueChange: {
-      action: 'onValueChange',
-      description: 'Callback when value changes',
-    },
-    startFromZero: {
-      control: 'boolean',
-      description: 'Whether to start from zero',
+    position: {
+      control: 'radio',
+      description: 'Position relative to the thumb:',
+      options: ['top', 'bottom'],
+      table: {
+        category: 'SliderLabel Props',
+        defaultValue: {
+          summary: 'top',
+        },
+        type: {
+          summary: "'top' | 'bottom'",
+        },
+      },
     },
     step: {
+      table: {
+        defaultValue: {
+          summary: 0,
+        },
+      },
+    },
+
+    stringProps: {
+      description: 'Props for String component when children is a string',
+      table: {
+        category: 'SliderLabel Props',
+      },
+    },
+    touchSize: {
       control: 'number',
-      description: 'Step value for the slider',
-    },
-    thumbClassName: {
-      control: 'text',
-      description: 'Additional CSS classes for the thumb',
-    },
-    thumbColor: {
-      control: 'color',
-      description: 'Color of the thumb',
-    },
-    thumbImage: {
-      control: 'text',
-      description: 'Image source for the thumb',
-    },
-    thumbTouchSize: {
-      control: 'object',
-      description: 'Size of the touch area for the thumb',
-    },
-    trackClassName: {
-      control: 'text',
-      description: 'Additional CSS classes for the track',
+      description: 'Touch area size in pixels',
+      table: {
+        category: 'SliderThumb Props',
+        defaultValue: {
+          summary: 40,
+        },
+        type: {
+          summary: 'number',
+        },
+      },
     },
     trackClickable: {
-      control: 'boolean',
-      description: 'Whether the track is clickable',
+      table: {
+        defaultValue: {
+          summary: true,
+        },
+      },
     },
-    trackMarks: {
+    ViewProps: {
       control: 'object',
-      description: 'Array of values for track marks',
+      description: 'accept all View props',
     },
-    trackRightPadding: {
-      control: 'number',
-      description: 'Right padding for the track',
+    'ViewProps (SliderLabel)': {
+      control: 'object',
+      description: 'accept all View props',
+      table: {
+        category: 'SliderLabel Props',
+      },
     },
-    value: {
-      control: 'number',
-      description: 'Current value of the slider',
+    'ViewProps (SliderRange)': {
+      control: 'object',
+      description: 'accept all View props',
+      table: {
+        category: 'SliderRange Props',
+      },
     },
-    vertical: {
-      control: 'boolean',
-      description: 'Whether the slider is vertical',
+    'ViewProps (SliderThumb)': {
+      control: 'object',
+      description: 'accept all View props',
+      table: {
+        category: 'SliderThumb Props',
+      },
     },
   },
   component: Slider,
   decorators: [
-    (Story: any) => {
-      console.log('Rendering story with decorator');
-      return (
-        <View style={{ padding: 20, width: '100%' }}>
-          <Story />
-        </View>
-      );
-    },
+    (Story: any) => (
+      <UiPresentation>
+        <Story />
+      </UiPresentation>
+    ),
   ],
-  title: 'components/Slider',
+  subcomponents: {
+    SliderLabel,
+    SliderRange,
+    SliderThumb,
+    SliderTrack,
+  },
+  title: 'FORMS/Slider',
 };
 
 export default meta;
@@ -136,10 +239,102 @@ type Story = StoryObj<typeof Slider>;
 
 export const Default: Story = {
   args: {
+    defaultValue: [50],
     maximumValue: 100,
     minimumValue: 0,
-    value: 50,
   },
+  render: (args: any) => (
+    <Slider {...args}>
+      <SliderTrack>
+        <SliderRange />
+      </SliderTrack>
+      <SliderThumb />
+    </Slider>
+  ),
+};
+
+const withLabelComponent = (args: any) => {
+  const [value, setValue] = useState(50);
+  console.log(value);
+
+  return (
+    <Slider {...args} value={value} onValueChange={setValue}>
+      <SliderTrack>
+        <SliderRange />
+      </SliderTrack>
+      <SliderThumb />
+      <SliderLabel position="top" className="bg-transparent">
+        {Math.round(value)}%
+      </SliderLabel>
+    </Slider>
+  );
+};
+
+export const WithLabel: Story = {
+  args: {
+    maximumValue: 100,
+    minimumValue: 0,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Slider with a label above the thumb displaying the current value',
+      },
+    },
+  },
+  render: (args: any) => withLabelComponent(args),
+};
+
+const withRangeComponent = (args: any) => {
+  const [range, setRange] = useState([20, 80]);
+
+  return (
+    <Slider {...args} value={range} onValueChange={setRange}>
+      <SliderTrack>
+        <SliderRange />
+      </SliderTrack>
+      <SliderThumb index={0} />
+      <SliderThumb index={1} />
+      <SliderLabel position="top" index={0} className="bg-transparent">
+        {Math.round(range[0])}%
+      </SliderLabel>
+      <SliderLabel position="top" index={1} className="bg-transparent">
+        {Math.round(range[1])}%
+      </SliderLabel>
+    </Slider>
+  );
+};
+
+export const RangeSlider: Story = {
+  args: {
+    defaultValue: [20, 80],
+    maximumValue: 100,
+    minimumValue: 0,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Slider with two thumbs for selecting a range of values',
+      },
+    },
+  },
+  render: (args: any) => withRangeComponent(args),
+};
+
+const withStepsComponent = (args: any) => {
+  const [value, setValue] = useState([50]);
+
+  return (
+    <Slider {...args} value={value} onValueChange={setValue}>
+      <SliderTrack>
+        <SliderRange />
+      </SliderTrack>
+      <SliderThumb />
+      <SliderLabel position="top" className="bg-transparent">
+        {Math.round(value[0])}%
+      </SliderLabel>
+    </Slider>
+  );
 };
 
 export const WithSteps: Story = {
@@ -147,177 +342,63 @@ export const WithSteps: Story = {
     maximumValue: 100,
     minimumValue: 0,
     step: 10,
-    value: 50,
   },
-};
-
-export const RangeSlider: Story = {
-  args: {
-    maximumValue: 100,
-    minimumValue: 0,
-    value: [25, 75],
+  parameters: {
+    docs: {
+      description: {
+        story: 'Slider with discrete steps (increments of 10)',
+      },
+    },
   },
+  render: (args: any) => withStepsComponent(args),
 };
 
 export const Disabled: Story = {
-  args: {
-    disabled: true,
-    maximumValue: 100,
-    minimumValue: 0,
-    value: 50,
+  parameters: {
+    docs: {
+      description: {
+        story: 'Slider in a disabled state',
+      },
+    },
   },
-};
-
-export const CustomColors: Story = {
-  args: {
-    maximumTrackColor: '#000000',
-    maximumValue: 100,
-    minimumTrackColor: '#0000FF',
-    minimumValue: 0,
-    thumbColor: '#00FF00',
-    value: 50,
-  },
-};
-
-export const WithThumbMarkers: Story = {
-  args: {
-    maximumValue: 100,
-    minimumValue: 0,
-    renderAboveThumbComponent: () => <View className="size-5 rounded-full bg-red-500" />,
-    value: 50,
-  },
-};
-
-export const CustomThumb: Story = {
-  args: {
-    maximumValue: 100,
-    minimumValue: 0,
-    renderThumbComponent: () => (
-      <View
-        style={{
-          backgroundColor: '#FF0000',
-          borderRadius: 5,
-          height: 20,
-          width: 20,
-        }}
-      />
-    ),
-    value: 50,
-  },
-};
-
-export const Vertical: Story = {
-  args: {
-    maximumValue: 100,
-    minimumValue: 0,
-    value: 50,
-    vertical: true,
-  },
-  render: (args: any) => (
-    <View style={{ height: '100%', justifyContent: 'center', width: '100%' }}>
-      <Slider {...args} />
-    </View>
+  render: () => (
+    <Slider value={50} minimumValue={0} maximumValue={100} isDisabled>
+      <SliderTrack>
+        <SliderRange />
+      </SliderTrack>
+      <SliderThumb />
+      <SliderLabel position="top">50</SliderLabel>
+    </Slider>
   ),
 };
 
-export const WithAnimation: Story = {
+const withCustomStylingComponent = (args: any) => {
+  const [value, setValue] = useState(75);
+
+  return (
+    <Slider {...args} value={value} onValueChange={setValue}>
+      <SliderTrack className="h-2 rounded-full bg-gray-200">
+        <SliderRange className="rounded-full bg-gradient-to-r from-blue-500 to-purple-500" />
+      </SliderTrack>
+      <SliderThumb className="size-6 border-2 border-blue-500 bg-white shadow-lg" />
+      <SliderLabel position="top" className="mb-1 rounded-lg bg-blue-500 px-3 py-1">
+        <String className="text-sm font-bold text-white">{Math.round(value)}%</String>
+      </SliderLabel>
+    </Slider>
+  );
+};
+
+export const CustomStyling: Story = {
   args: {
-    animateTransitions: true,
-    animationConfig: {
-      damping: 20,
-      mass: 1,
-      stiffness: 200,
+    maximumValue: 100,
+    minimumValue: 0,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Slider with custom styling using Tailwind classes',
+      },
     },
-    animationType: 'spring',
-    maximumValue: 100,
-    minimumValue: 0,
-    value: 50,
   },
-};
-
-export const WithTrackMarks: Story = {
-  args: {
-    maximumValue: 100,
-    minimumValue: 0,
-    renderTrackMarkComponent: () => (
-      <View
-        style={{
-          backgroundColor: '#666',
-          height: 10,
-          marginTop: 5,
-          width: 2,
-        }}
-      />
-    ),
-    trackMarks: [0, 25, 50, 75, 100],
-    value: 50,
-  },
-};
-
-export const WithCustomTrack: Story = {
-  args: {
-    maximumValue: 100,
-    minimumValue: 0,
-    renderMaximumTrackComponent: () => (
-      <View
-        style={{
-          backgroundColor: '#E0E0E0',
-          borderRadius: 2,
-          height: 4,
-        }}
-      />
-    ),
-    renderMinimumTrackComponent: () => (
-      <View
-        style={{
-          backgroundColor: '#4CAF50',
-          borderRadius: 2,
-          height: 4,
-        }}
-      />
-    ),
-    value: 50,
-  },
-};
-
-export const WithThumbBelow: Story = {
-  args: {
-    maximumValue: 100,
-    minimumValue: 0,
-    renderBelowThumbComponent: (_: any, value: any) => (
-      <Box className="bg-primary rounded-md p-1">
-        <String>{value}</String>
-      </Box>
-    ),
-    thumbClassName: 'size-6 rounded-full',
-    value: 50,
-  },
-};
-
-export const WithCustomTouchSize: Story = {
-  args: {
-    debugTouchArea: true,
-    maximumValue: 100,
-    minimumValue: 0,
-    thumbTouchSize: { height: 40, width: 40 },
-    value: 50,
-  },
-};
-
-export const WithStartFromZero: Story = {
-  args: {
-    maximumValue: 100,
-    minimumValue: -100,
-    startFromZero: true,
-    value: 0,
-  },
-};
-
-export const WithThumbAbove: Story = {
-  args: {
-    maximumValue: 100,
-    minimumValue: 0,
-    renderAboveThumbComponent: (_: any, value: any) => <String>{value}</String>,
-    value: 50,
-  },
+  render: (args: any) => withCustomStylingComponent(args),
 };
