@@ -1,5 +1,5 @@
 {
-  "name": "react-native-chill-ui-hybrid",
+  "name": "react-native-chill-ui",
   "version": "1.0.0",
   "description": "Chill UI Hybrid - React Native components with both StyleSheet and Tailwind CSS support",
   "keywords": [
@@ -35,6 +35,9 @@
     "react-native": "*",
     "react-native-svg": "*",
     "react-native-webview": "*",
+    "tailwind-merge": ">=3.0.0",
+    "tailwind-variants": ">=1.0.0",
+    "clsx": ">=2.0.0",
     "react-native-reanimated": ">=3.0.0",
     "react-native-safe-area-context": ">=5.0.0",
     "tailwindcss": ">=3.0.0",

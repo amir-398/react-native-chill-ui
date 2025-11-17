@@ -1,6 +1,6 @@
 {
-  "name": "react-native-chill-ui-stylesheet",
-  "version": "1.0.0",
+  "name": "chill-ui-native",
+  "version": "{{VERSION}}",
   "description": "Chill UI StyleSheet - React Native components with native StyleSheet styling",
   "keywords": [
     "react-native",
@@ -13,13 +13,13 @@
     "react-native-ui",
     "chill-ui"
   ],
-  "homepage": "https://github.com/amirmeb/chill-ui",
+  "homepage": "https://github.com/amirmeb/react-native-chill-ui",
   "bugs": {
-    "url": "https://github.com/amirmeb/chill-ui/issues"
+    "url": "https://github.com/amirmeb/react-native-chill-ui/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/amirmeb/chill-ui.git"
+    "url": "git+https://github.com/amirmeb/react-native-chill-ui.git"
   },
   "license": "MIT",
   "author": "Amir Meberbeche <amir.meb398@gmail.com>",
@@ -29,14 +29,25 @@
   "react-native": "lib/module/index.js",
   "types": "lib/typescript/index.d.ts",
   "files": ["lib"],
+  "exports": {
+    ".": {
+      "import": "./lib/module/index.js",
+      "require": "./lib/commonjs/index.js",
+      "types": "./lib/typescript/index.d.ts"
+    }
+  },
+  "sideEffects": false,
   "peerDependencies": {
     "react": "*",
     "react-native": "*",
     "react-native-svg": "*",
-    "react-native-webview": "*"
+    "react-native-webview": "*",
+    "react-native-safe-area-context": ">=5.0.0",
+    "react-native-keyboard-controller": ">=1.0.0",
+    "libphonenumber-js": ">=1.0.0"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"

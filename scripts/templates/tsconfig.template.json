@@ -3,16 +3,45 @@
     "target": "ESNext",
     "module": "ESNext",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "moduleResolution": "bundler",
-    "jsx": "react-jsx",
+    "useDefineForClassFields": true,
     "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    // "noPropertyAccessFromIndexSignature": true,
+    "strictFunctionTypes": false,
+    // "exactOptionalPropertyTypes": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Interopérabilité avec les modules JS */
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
+
+    /* Paths */
     "baseUrl": ".",
     "paths": {
-      "@types": ["./src/types"],
-      "@utils": ["./src/utils"],
-      "@constants": ["./src/constants"],
-      "@components/*": ["./src/components/*"]
+      "@/*": ["src/*"],
+      "@utils": ["src/utils"],
+      "@types": ["src/types"],
+      "@types/*": ["src/types/*"],
+      "@constants": ["src/constants"],
+      "@components": ["src/components"],
+      "@components/*": ["src/components/*"]
     }
   },
-  "include": ["src/**/*", "nativewind-env.d.ts"]
+  "include": ["**/*.ts", "**/*.tsx", "nativewind-env.d.ts", "global.d.ts"],
+  "exclude": ["node_modules"]
 }

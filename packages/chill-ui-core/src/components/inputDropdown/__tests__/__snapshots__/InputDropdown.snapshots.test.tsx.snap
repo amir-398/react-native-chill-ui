@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InputDropdown Component Snapshots should match snapshot for basic dropdown 1`] = `
+<div>
+  <div>
+    Option 1
+  </div>
+  <div>
+    Option 2
+  </div>
+  <div>
+    Option 3
+  </div>
+</div>
+`;
+
+exports[`InputDropdown Component Snapshots should match snapshot for dropdown with all props 1`] = `
+[
+  <div />,
+  <div>
+    <div>
+      Option 1
+    </div>
+    <div>
+      Option 2
+    </div>
+    <div>
+      Option 3
+    </div>
+  </div>,
+]
+`;
+
+exports[`InputDropdown Component Snapshots should match snapshot for dropdown with empty state 1`] = `<div />`;
+
+exports[`InputDropdown Component Snapshots should match snapshot for dropdown with loading 1`] = `<div />`;
+
+exports[`InputDropdown Component Snapshots should match snapshot for dropdown with search 1`] = `
+[
+  <div />,
+  <div>
+    <div>
+      Option 1
+    </div>
+    <div>
+      Option 2
+    </div>
+    <div>
+      Option 3
+    </div>
+  </div>,
+]
+`;
+
+exports[`InputDropdown Component Snapshots should match snapshot for hidden dropdown 1`] = `
+<div>
+  <div>
+    Option 1
+  </div>
+  <div>
+    Option 2
+  </div>
+  <div>
+    Option 3
+  </div>
+</div>
+`;

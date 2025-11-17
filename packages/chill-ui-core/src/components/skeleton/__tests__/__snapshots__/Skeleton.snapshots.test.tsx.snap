@@ -1,0 +1,129 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Skeleton Snapshots should match snapshot with accessibility props 1`] = `
+<RCTView
+  accessibilityLabel="Loading skeleton"
+  accessible={true}
+  className="overflow-hidden bg-gray-300 animate-pulse w-full rounded-lg h-32"
+  collapsable={false}
+  ref={[Function]}
+  testID="skeleton"
+/>
+`;
+
+exports[`Skeleton Snapshots should match snapshot with all props combined 1`] = `
+<RCTView
+  accessibilityLabel="Custom skeleton"
+  accessible={true}
+  className="overflow-hidden bg-gray-300 animate-pulse size-16 rounded-full w-48 h-48 custom-class"
+  collapsable={false}
+  ref={[Function]}
+  style={
+    {
+      "marginBottom": 16,
+    }
+  }
+  testID="skeleton"
+/>
+`;
+
+exports[`Skeleton Snapshots should match snapshot with basic props 1`] = `
+<RCTView
+  className="overflow-hidden bg-gray-300 animate-pulse w-full rounded-lg h-32"
+  collapsable={false}
+  ref={[Function]}
+/>
+`;
+
+exports[`Skeleton Snapshots should match snapshot with circle variant 1`] = `
+<RCTView
+  className="overflow-hidden bg-gray-300 animate-pulse size-16 rounded-full w-32 h-32"
+  collapsable={false}
+  ref={[Function]}
+/>
+`;
+
+exports[`Skeleton Snapshots should match snapshot with custom className 1`] = `
+<RCTView
+  className="overflow-hidden bg-gray-300 animate-pulse w-full rounded-lg h-32 custom-class"
+  collapsable={false}
+  ref={[Function]}
+/>
+`;
+
+exports[`Skeleton Snapshots should match snapshot with custom style 1`] = `
+<RCTView
+  className="overflow-hidden bg-gray-300 animate-pulse w-full rounded-lg h-32"
+  collapsable={false}
+  ref={[Function]}
+  style={
+    {
+      "marginBottom": 8,
+    }
+  }
+/>
+`;
+
+exports[`Skeleton Snapshots should match snapshot with lg size 1`] = `
+<RCTView
+  className="overflow-hidden bg-gray-300 animate-pulse w-full rounded-lg h-48"
+  collapsable={false}
+  ref={[Function]}
+/>
+`;
+
+exports[`Skeleton Snapshots should match snapshot with md size 1`] = `
+<RCTView
+  className="overflow-hidden bg-gray-300 animate-pulse w-full rounded-lg h-32"
+  collapsable={false}
+  ref={[Function]}
+/>
+`;
+
+exports[`Skeleton Snapshots should match snapshot with rectangle variant 1`] = `
+<RCTView
+  className="overflow-hidden bg-gray-300 animate-pulse w-full rounded-lg h-32"
+  collapsable={false}
+  ref={[Function]}
+/>
+`;
+
+exports[`Skeleton Snapshots should match snapshot with sm size 1`] = `
+<RCTView
+  className="overflow-hidden bg-gray-300 animate-pulse w-full rounded-lg h-24"
+  collapsable={false}
+  ref={[Function]}
+/>
+`;
+
+exports[`Skeleton Snapshots should match snapshot with square variant 1`] = `
+<RCTView
+  className="overflow-hidden bg-gray-300 animate-pulse size-16 rounded-lg w-32 h-32"
+  collapsable={false}
+  ref={[Function]}
+/>
+`;
+
+exports[`Skeleton Snapshots should match snapshot with text variant 1`] = `
+<RCTView
+  className="overflow-hidden bg-gray-300 animate-pulse w-full rounded-sm h-6"
+  collapsable={false}
+  ref={[Function]}
+/>
+`;
+
+exports[`Skeleton Snapshots should match snapshot with xl size 1`] = `
+<RCTView
+  className="overflow-hidden bg-gray-300 animate-pulse w-full rounded-lg h-64"
+  collapsable={false}
+  ref={[Function]}
+/>
+`;
+
+exports[`Skeleton Snapshots should match snapshot with xs size 1`] = `
+<RCTView
+  className="overflow-hidden bg-gray-300 animate-pulse w-full rounded-lg h-16"
+  collapsable={false}
+  ref={[Function]}
+/>
+`;

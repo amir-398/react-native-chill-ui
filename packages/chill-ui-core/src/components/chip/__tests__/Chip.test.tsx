@@ -1,0 +1,110 @@
+import { render } from '@testing-library/react-native';
+
+import Chip from '../components/Chip.hybrid';
+
+// Mocks
+jest.mock('../../../utils', () => ({
+  classNameHandler: jest.fn(() => ({})),
+  classNamePropsHandler: jest.fn(),
+  cn: jest.fn((...args) => args.filter(Boolean).join(' ')),
+  colorVariantPropsHandler: jest.fn(),
+  isString: jest.fn(value => typeof value === 'string'),
+  styleHandler: jest.fn(() => ({})),
+}));
+
+jest.mock('../../../components/box', () => ({
+  Box: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+}));
+
+jest.mock('../../../components/icon', () => ({
+  Icon: ({ name, ...props }: any) => <div data-testid={`icon-${name}`} {...props} />,
+}));
+
+jest.mock('../../../components/string', () => ({
+  String: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+}));
+
+jest.mock('../../../components/ripplePressable', () => ({
+  RipplePressable: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+}));
+
+jest.mock('../../../components/scalePressable', () => ({
+  ScalePressable: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+}));
+
+jest.mock('../styles/Chip.ss.styles', () => ({
+  chipSv: jest.fn(() => ({})),
+  chipTextSv: jest.fn(() => ({})),
+  styles: { chip: {}, chipWithIcons: {}, iconLeft: {}, iconRight: {}, pointerEventsNone: {} },
+}));
+
+jest.mock('../styles/Chip.tw.styles', () => ({
+  chipTextTv: jest.fn(() => ''),
+  chipTv: jest.fn(() => ''),
+  twStyles: { chip: '', chipWithIcons: '', iconLeft: '', iconRight: '', pointerEventsNone: '' },
+}));
+
+describe('Chip Component (Hybrid)', () => {
+  it('should render without crashing', () => {
+    const { root } = render(<Chip>Test</Chip>);
+    expect(root).toBeTruthy();
+  });
+
+  it('should render with title and children', () => {
+    const { root: withTitle } = render(<Chip title="Title">Children</Chip>);
+    expect(withTitle).toBeTruthy();
+
+    const { root: withChildren } = render(<Chip>Children Only</Chip>);
+    expect(withChildren).toBeTruthy();
+  });
+
+  it('should render with variants', () => {
+    const { root: contained } = render(<Chip variant="contained">Contained</Chip>);
+    expect(contained).toBeTruthy();
+
+    const { root: outlined } = render(<Chip variant="outlined">Outlined</Chip>);
+    expect(outlined).toBeTruthy();
+  });
+
+  it('should render with different sizes', () => {
+    const { root: xs } = render(<Chip size="xs">XS</Chip>);
+    expect(xs).toBeTruthy();
+
+    const { root: md } = render(<Chip size="md">MD</Chip>);
+    expect(md).toBeTruthy();
+
+    const { root: lg } = render(<Chip size="lg">LG</Chip>);
+    expect(lg).toBeTruthy();
+  });
+
+  it('should render with icons', () => {
+    const { root: leftIcon } = render(<Chip leftIconAction={{ name: 'angle-down-solid' }}>Left Icon</Chip>);
+    expect(leftIcon).toBeTruthy();
+
+    const { root: rightIcon } = render(<Chip rightIconAction={{ name: 'angle-down-solid' }}>Right Icon</Chip>);
+    expect(rightIcon).toBeTruthy();
+
+    const { root: bothIcons } = render(
+      <Chip leftIconAction={{ name: 'angle-down-solid' }} rightIconAction={{ name: 'angle-down-solid' }}>
+        Both Icons
+      </Chip>,
+    );
+    expect(bothIcons).toBeTruthy();
+  });
+
+  it('should render with custom props', () => {
+    const { root } = render(
+      <Chip
+        variant="outlined"
+        colorVariant="primary"
+        size="md"
+        color="#FF0000"
+        position="center"
+        className="custom-class"
+      >
+        Custom
+      </Chip>,
+    );
+    expect(root).toBeTruthy();
+  });
+});

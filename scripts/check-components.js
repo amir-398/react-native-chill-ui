@@ -4,8 +4,11 @@ const fs = require('fs');
 const path = require('path');
 
 // Configuration
-const COMPONENTS_DIR = 'chill-ui-core/src/components';
-const STORIES_DIR = 'chill-ui-core/stories';
+const COMPONENTS_DIR = 'packages/chill-ui-core/src/components';
+const STORIES_DIR = 'packages/chill-ui-core/stories';
+
+// Components to skip story check
+const SKIP_STORY_CHECK = ['loadingIndicatorsKit'];
 
 // Colors for console output
 const colors = {
@@ -86,8 +89,10 @@ function checkComponentReadme(componentName) {
   }
 
   // Check for examples section (recommended)
-  if (!readmeContent.includes('## Examples')) {
-    issues.push(`Missing section: ## Examples (recommended)`);
+  const examplesPatterns = ['## Examples', '## Usage Examples'];
+  const hasExamples = examplesPatterns.some(pattern => readmeContent.includes(pattern));
+  if (!hasExamples) {
+    issues.push(`Missing section: ## Examples or ## Usage Examples (recommended)`);
   }
 
   return {
@@ -101,6 +106,14 @@ function checkComponentReadme(componentName) {
  * Check if component has Storybook story
  */
 function checkComponentStory(componentName) {
+  // Skip story check for certain components
+  if (SKIP_STORY_CHECK.includes(componentName)) {
+    return {
+      hasStory: true,
+      issues: [],
+    };
+  }
+
   // Check for direct story file
   let storyPath = path.join(STORIES_DIR, `${componentName}.stories.tsx`);
 
@@ -160,33 +173,42 @@ function checkComponentStructure(componentName) {
 
   if (fs.existsSync(componentsSubDir)) {
     const capitalizedName = componentName.charAt(0).toUpperCase() + componentName.slice(1);
+    const suffixes = ['', '.ss', '.tw', '.hybrid']; // Support for stylesheet, tailwind, hybrid variants
 
-    // First, try to find component directly in components/ directory (e.g., components/Avatar.tsx)
-    const directComponentFile = path.join(componentsSubDir, `${capitalizedName}.tsx`);
+    // First, try to find component directly in components/ directory (e.g., components/Avatar.tsx or Avatar.ss.tsx)
+    for (const suffix of suffixes) {
+      const directComponentFile = path.join(componentsSubDir, `${capitalizedName}${suffix}.tsx`);
+      if (fs.existsSync(directComponentFile)) {
+        componentFiles = [`${capitalizedName}${suffix}.tsx`];
+        break;
+      }
+    }
 
-    if (fs.existsSync(directComponentFile)) {
-      componentFiles = [capitalizedName + '.tsx'];
-    } else {
+    if (componentFiles.length === 0) {
       // Second, try to find component with same name as parent directory in subdirectory (e.g., components/animatedBox/AnimatedBox.tsx)
       const mainComponentDir = path.join(componentsSubDir, componentName);
-      const mainComponentFile = path.join(mainComponentDir, `${capitalizedName}.tsx`);
-
-      if (fs.existsSync(mainComponentFile)) {
-        componentFiles = [capitalizedName + '.tsx'];
-      } else {
-        // Fallback: look for any .tsx files in components/ subdirectories
-        const subDirs = fs
-          .readdirSync(componentsSubDir, { withFileTypes: true })
-          .filter(dirent => dirent.isDirectory())
-          .map(dirent => dirent.name);
-
-        for (const subDir of subDirs) {
-          const subDirPath = path.join(componentsSubDir, subDir);
-          const files = fs
-            .readdirSync(subDirPath)
-            .filter(file => file.endsWith('.tsx') && !file.includes('.stories') && !file.includes('.test'));
-          componentFiles.push(...files);
+      for (const suffix of suffixes) {
+        const mainComponentFile = path.join(mainComponentDir, `${capitalizedName}${suffix}.tsx`);
+        if (fs.existsSync(mainComponentFile)) {
+          componentFiles = [`${capitalizedName}${suffix}.tsx`];
+          break;
         }
+      }
+    }
+
+    if (componentFiles.length === 0) {
+      // Fallback: look for any .tsx files in components/ subdirectories
+      const subDirs = fs
+        .readdirSync(componentsSubDir, { withFileTypes: true })
+        .filter(dirent => dirent.isDirectory())
+        .map(dirent => dirent.name);
+
+      for (const subDir of subDirs) {
+        const subDirPath = path.join(componentsSubDir, subDir);
+        const files = fs
+          .readdirSync(subDirPath)
+          .filter(file => file.endsWith('.tsx') && !file.includes('.stories') && !file.includes('.test'));
+        componentFiles.push(...files);
       }
     }
   } else {

@@ -47,7 +47,8 @@
     "scripts/test.js",
     "chill-ui-core/src/types/utils/index.ts",
     "chill-ui-core/src/components/maskedInput/utils/index.s",
-    "chill-ui-core/src/components/segmented-control/components/SegmentedControlProvider.tsw"
+    "chill-ui-core/src/components/segmented-control/components/SegmentedControlProvider.tsw",
+    "chill-ui-core/src/components/separator/components/Separator.hybrid;tsx"
   ],
   "exclude": ["node_modules"]
 }

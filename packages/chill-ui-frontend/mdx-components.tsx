@@ -1,0 +1,14 @@
+import { Callout, FileTree } from 'nextra/components';
+import { useMDXComponents as getThemeComponents } from 'nextra-theme-docs';
+
+// Get the default MDX components
+const themeComponents = getThemeComponents();
+
+// Merge components
+export function useMDXComponents() {
+  return {
+    ...themeComponents,
+    Callout,
+    FileTree,
+  };
+}

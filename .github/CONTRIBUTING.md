@@ -23,7 +23,7 @@ This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - Bun (recommended) or npm/yarn
 - Git
 - React Native development environment
@@ -32,6 +32,7 @@ This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.
 
 1. Fork the repository on GitHub
 2. Clone your fork locally:
+
    ```bash
    git clone https://github.com/YOUR_USERNAME/react-native-chill-ui.git
    cd react-native-chill-ui
@@ -51,7 +52,7 @@ This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.
 bun install
 
 # Install core dependencies
-cd chill-ui-core
+cd packages/chill-ui-core
 bun install
 ```
 
@@ -76,12 +77,11 @@ bun run test:coverage
 ### 4. Start Development
 
 ```bash
-# Start the example app
-bun run example
+# Start the app
+bun start
 
 # Or start Storybook
-cd chill-ui-core
-bun run storybook
+bun run storybook:start
 ```
 
 ## 📝 Contributing Guidelines
@@ -127,14 +127,56 @@ git add .
 git commit -m "feat: add new component"
 ```
 
-Use conventional commit messages:
-- `feat:` for new features
-- `fix:` for bug fixes
-- `docs:` for documentation
-- `style:` for formatting
-- `refactor:` for code refactoring
-- `test:` for tests
-- `chore:` for maintenance
+Use conventional commit messages following [Conventional Commits](https://www.conventionalcommits.org/):
+
+**Format:**
+
+```
+<type>(<scope>): <subject>
+
+<body>
+
+<footer>
+```
+
+**Types:**
+
+- `feat:` New feature (triggers MINOR version bump)
+- `fix:` Bug fix (triggers PATCH version bump)
+- `docs:` Documentation changes
+- `style:` Code style changes (formatting, semicolons, etc.)
+- `refactor:` Code refactoring without feature changes
+- `perf:` Performance improvements
+- `test:` Adding or updating tests
+- `chore:` Build, CI, dependencies, etc.
+
+**Breaking Changes:**
+Add `BREAKING CHANGE:` in footer to trigger MAJOR version bump:
+
+```
+feat(component): redesign API
+
+BREAKING CHANGE: the old API is no longer supported
+```
+
+**Examples:**
+
+```bash
+# New feature
+git commit -m "feat(button): add loading state"
+
+# Bug fix
+git commit -m "fix(input): handle empty value correctly"
+
+# Documentation
+git commit -m "docs(readme): update installation steps"
+
+# With scope and description
+git commit -m "refactor(core): simplify component logic"
+
+# Breaking change
+git commit -m "feat(dialog)!: change default behavior"
+```
 
 ### 4. Push and Create PR
 
@@ -143,6 +185,7 @@ git push origin feature/your-feature-name
 ```
 
 Create a pull request with:
+
 - Clear title and description
 - Reference related issues
 - Include screenshots/videos if applicable
@@ -160,6 +203,7 @@ Create a pull request with:
 ### Bug Reports
 
 Use the bug report template and include:
+
 - Clear description of the issue
 - Steps to reproduce
 - Expected vs actual behavior
@@ -169,6 +213,7 @@ Use the bug report template and include:
 ### Feature Requests
 
 Use the feature request template and include:
+
 - Clear problem statement
 - Proposed solution
 - Use cases and examples
@@ -200,16 +245,61 @@ Use the feature request template and include:
 
 ### File Organization
 
+**Component Architecture:**
+
+```
+src/components/
+└── componentName/
+    ├── index.ts                          # Main export
+    ├── README.md                         # Component documentation
+    ├── components/
+    │   ├── ComponentName.ss.tsx          # StyleSheet variant
+    │   ├── ComponentName.tw.tsx          # NativeWind/Tailwind variant
+    │   ├── ComponentName.hybrid.tsx      # Hybrid variant (optional)
+    │   └── ComponentName.tsx             # Core/default variant (optional)
+    ├── styles/
+    │   ├── ComponentName.ss.styles.ts    # StyleSheet styles
+    │   └── ComponentName.tw.styles.ts    # Tailwind styles
+    ├── types/
+    │   ├── ComponentName.types.ts        # Base types
+    │   ├── ComponentName.ss.types.ts     # StyleSheet-specific types
+    │   └── ComponentName.tw.types.ts     # Tailwind-specific types
+    ├── utils/
+    │   └── ComponentName.utils.ts        # Helper functions
+    ├── __tests__/
+    │   ├── ComponentName.test.tsx        # Core tests
+    │   ├── ComponentName.ss.test.tsx     # StyleSheet tests
+    │   ├── ComponentName.tw.test.tsx     # Tailwind tests
+    │   └── ComponentName.snapshots.test.tsx
+    └── ComponentName.stories.tsx         # Storybook stories
+```
+
+**Variants:**
+
+- `ss` - StyleSheet variant (React Native built-in)
+- `tw` - NativeWind/Tailwind variant
+- `hybrid` - Automatic detection (optional)
+- No suffix - Core/default variant (optional)
+
+**Example index.ts:**
+
+```typescript
+export { default as ComponentName } from './components/ComponentName.ss';
+export type { ComponentNameProps } from './types/ComponentName.types';
+```
+
+**Root src/ structure:**
+
 ```
 src/
 ├── components/
-│   └── componentName/
-│       ├── ComponentName.tsx
-│       ├── ComponentName.types.ts
-│       ├── ComponentName.stories.tsx
-│       └── README.md
+│   ├── componentName/
+│   ├── anotherComponent/
+│   └── ...
 ├── types/
+│   └── shared.types.ts
 ├── utils/
+│   └── helpers.ts
 └── index.ts
 ```
 
@@ -242,7 +332,7 @@ describe('ComponentName', () => {
   it('should render correctly', () => {
     // Test implementation
   });
-  
+
   it('should handle props correctly', () => {
     // Test implementation
   });
@@ -254,6 +344,7 @@ describe('ComponentName', () => {
 ### Component Documentation
 
 Each component should have:
+
 - README.md with usage examples
 - Props documentation
 - Storybook stories
@@ -261,7 +352,7 @@ Each component should have:
 
 ### README Template
 
-```markdown
+````markdown
 # ComponentName
 
 Brief description of the component.
@@ -271,23 +362,27 @@ Brief description of the component.
 ```tsx
 import { ComponentName } from 'chill-ui';
 
-<ComponentName prop1="value" prop2={true} />
+<ComponentName prop1="value" prop2={true} />;
 ```
+````
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| prop1 | string | - | Description |
-| prop2 | boolean | false | Description |
+| Prop  | Type    | Default | Description |
+| ----- | ------- | ------- | ----------- |
+| prop1 | string  | -       | Description |
+| prop2 | boolean | false   | Description |
 
 ## Examples
 
 ### Basic Usage
+
 [Example code]
 
 ### Advanced Usage
+
 [Example code]
+
 ```
 
 ## 🚀 Release Process
@@ -328,3 +423,4 @@ By contributing, you agree that your contributions will be licensed under the MI
 ---
 
 Thank you for contributing to Chill UI! 🙏
+```

@@ -1,0 +1,292 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PlacesInput Snapshots should match snapshot with all props combined 1`] = `
+<View
+  dataSet={[]}
+  defaultOpen={false}
+  hasPerformSearch={false}
+  inputProps={
+    {
+      "placeholder": "Enter your full address",
+      "size": "md",
+    }
+  }
+  isLoading={false}
+  testID="autocomplete-dropdown"
+  valueField="placePrediction.text.text"
+>
+  <TextInput
+    onChangeText={[Function]}
+    placeholder="Enter your full address"
+    testID="places-input"
+  />
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "opacity": 1,
+      }
+    }
+    testID="select-place"
+  >
+    <Text>
+      Select Place
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`PlacesInput Snapshots should match snapshot with basic props 1`] = `
+<View
+  dataSet={[]}
+  defaultOpen={false}
+  hasPerformSearch={false}
+  isLoading={false}
+  testID="autocomplete-dropdown"
+  valueField="placePrediction.text.text"
+>
+  <TextInput
+    onChangeText={[Function]}
+    placeholder="Enter your address"
+    testID="places-input"
+  />
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "opacity": 1,
+      }
+    }
+    testID="select-place"
+  >
+    <Text>
+      Select Place
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`PlacesInput Snapshots should match snapshot with country restrictions 1`] = `
+<View
+  dataSet={[]}
+  defaultOpen={false}
+  hasPerformSearch={false}
+  isLoading={false}
+  testID="autocomplete-dropdown"
+  valueField="placePrediction.text.text"
+>
+  <TextInput
+    onChangeText={[Function]}
+    placeholder="Enter your address"
+    testID="places-input"
+  />
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "opacity": 1,
+      }
+    }
+    testID="select-place"
+  >
+    <Text>
+      Select Place
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`PlacesInput Snapshots should match snapshot with custom styling 1`] = `
+<View
+  dataSet={[]}
+  defaultOpen={false}
+  hasPerformSearch={false}
+  isLoading={false}
+  testID="autocomplete-dropdown"
+  valueField="placePrediction.text.text"
+>
+  <TextInput
+    onChangeText={[Function]}
+    placeholder="Enter your address"
+    testID="places-input"
+  />
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "opacity": 1,
+      }
+    }
+    testID="select-place"
+  >
+    <Text>
+      Select Place
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`PlacesInput Snapshots should match snapshot with placeholder 1`] = `
+<View
+  dataSet={[]}
+  defaultOpen={false}
+  hasPerformSearch={false}
+  inputProps={
+    {
+      "placeholder": "Search for a location",
+    }
+  }
+  isLoading={false}
+  testID="autocomplete-dropdown"
+  valueField="placePrediction.text.text"
+>
+  <TextInput
+    onChangeText={[Function]}
+    placeholder="Search for a location"
+    testID="places-input"
+  />
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "opacity": 1,
+      }
+    }
+    testID="select-place"
+  >
+    <Text>
+      Select Place
+    </Text>
+  </View>
+</View>
+`;
