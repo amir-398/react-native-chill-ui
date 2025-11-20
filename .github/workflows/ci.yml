@@ -143,7 +143,6 @@ jobs:
   check-components:
     name: 📚 Check Components Documentation
     runs-on: ubuntu-latest
-    needs: [lint-core, type-check-core, tests-core]
 
     steps:
       - name: Checkout code
@@ -176,7 +175,7 @@ jobs:
   generate-cors:
     name: 🎨 Generate CORS Components
     runs-on: ubuntu-latest
-    needs: [check-components]
+    needs: [lint-core, type-check-core, tests-core, check-components]
 
     steps:
       - name: Checkout code
@@ -217,7 +216,7 @@ jobs:
   # 8. LINT FIX CORS GÉNÉRÉS
   # ==========================================
   lint-fix-generated-cors:
-    name: � Lint Fix Generated CORS
+    name: 🛠️ Lint Fix Generated CORS
     runs-on: ubuntu-latest
     needs: [generate-cors]
 
