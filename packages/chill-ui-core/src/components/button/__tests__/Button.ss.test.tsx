@@ -5,6 +5,7 @@ import Button from '../components/Button.ss';
 // Mocks
 jest.mock('../../../utils', () => ({
   classNamePropsHandler: jest.fn(),
+  flattenStyle: jest.fn(style => style),
 }));
 
 jest.mock('../../../components/box', () => ({

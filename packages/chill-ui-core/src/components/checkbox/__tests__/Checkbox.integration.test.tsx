@@ -7,6 +7,7 @@ jest.mock('../../../utils', () => ({
   classNameHandler: jest.fn(() => ({})),
   classNamePropsHandler: jest.fn(),
   cn: jest.fn((...args) => args.filter(Boolean).join(' ')),
+  flattenStyle: jest.fn(style => style),
   isUndefined: jest.fn(value => value === undefined),
   styleHandler: jest.fn(() => ({})),
 }));

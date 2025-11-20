@@ -4,6 +4,7 @@ import Checkbox from '../components/Checkbox.ss';
 
 // Mocks
 jest.mock('../../../utils', () => ({
+  flattenStyle: jest.fn(style => style),
   isUndefined: jest.fn(value => value === undefined),
 }));
 

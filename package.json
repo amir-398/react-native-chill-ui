@@ -3,9 +3,6 @@
   "version": "0.0.1",
   "private": true,
   "description": "Monorepo for Chill UI - React Native component library",
-  "workspaces": [
-    "packages/*"
-  ],
   "homepage": "https://github.com/amirmeb/react-native-chill-ui",
   "bugs": {
     "url": "https://github.com/amirmeb/react-native-chill-ui/issues"
