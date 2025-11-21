@@ -399,49 +399,6 @@ jobs:
           find generated -name "*.tgz" -type f
 
   # ==========================================
-  # 12. COMMIT AUTOMATIQUE (develop uniquement)
-  # ==========================================
-  commit-generated-files:
-    name: 💾 Commit Generated Files
-    runs-on: ubuntu-latest
-    needs: [type-check-generated-cors]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
-        with:
-          token: ${{ secrets.BOT_ACTIONS_ACCESS_TOKEN }}
-          fetch-depth: 0
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-
-      - name: Download generated CORS
-        uses: actions/download-artifact@v4
-        with:
-          name: generated-cors-${{ github.sha }}
-          path: generated/
-
-      - name: Configure Git
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-
-      - name: Commit and push if changes
-        run: |
-          git add generated/
-          if git diff --staged --quiet; then
-            echo "✅ Aucun changement à commiter"
-          else
-            git commit -m "chore(cors): generate CORS components [skip ci]"
-            git push
-            echo "✅ Fichiers générés committé avec succès"
-          fi
-
-  # ==========================================
   # 11. RELEASE & PUBLISH (staging et main)
   # ==========================================
   release:

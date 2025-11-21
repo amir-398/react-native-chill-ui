@@ -4,61 +4,61 @@ const fs = require('fs');
 const path = require('path');
 
 /**
- * Script pour convertir les alias TypeScript en chemins relatifs
- * dans les fichiers générés des libs core-stylesheet, core-hybrid et core-tailwind
+ * Script to convert TypeScript aliases to relative paths
+ * in generated libs core-stylesheet, core-hybrid and core-tailwind
  */
 
-// Configuration des alias basée sur les tsconfig.json
+// Alias configuration based on tsconfig.json
 const ALIAS_CONFIG = {
   '@constants': './src/constants',
   '@types': './src/types',
   '@utils': './src/utils',
 };
 
-// Configuration des alias avec wildcards
+// Wildcard alias configuration
 const WILDCARD_ALIAS_CONFIG = {
   '@components/*': './src/components/*',
 };
 
-// Extensions de fichiers à traiter
+// File extensions to process
 const FILE_EXTENSIONS = ['.ts', '.tsx', '.js', '.js.map', '.d.ts'];
 
 /**
- * Calcule le chemin relatif entre deux fichiers
+ * Calculates the relative path between two files
  */
 function getRelativePath(fromFile, toPath) {
   const fromDir = path.dirname(fromFile);
   const relativePath = path.relative(fromDir, toPath);
 
-  // S'assurer que le chemin commence par ./
+  // Ensure path starts with ./
   return relativePath.startsWith('.') ? relativePath : `./${relativePath}`;
 }
 
 /**
- * Remplace les alias par des chemins relatifs dans le contenu d'un fichier
+ * Replaces aliases with relative paths in file content
  */
 function replaceAliasesInContent(content, filePath, baseDir) {
   let modifiedContent = content;
 
-  // Remplacer chaque alias exact
+  // Replace each exact alias
   for (const [alias, aliasPath] of Object.entries(ALIAS_CONFIG)) {
     const fullAliasPath = path.resolve(baseDir, aliasPath);
     const relativePath = getRelativePath(filePath, fullAliasPath);
 
-    // Pattern pour matcher les imports avec l'alias
+    // Pattern to match imports with alias
     const aliasPattern = new RegExp(`(['"\`])${alias.replace('@', '\\@')}(['"\`])`, 'g');
 
     modifiedContent = modifiedContent.replace(aliasPattern, `$1${relativePath}$2`);
   }
 
-  // Remplacer chaque alias avec wildcard
+  // Replace each wildcard alias
   for (const [alias, aliasPath] of Object.entries(WILDCARD_ALIAS_CONFIG)) {
-    // Pattern pour matcher les imports avec l'alias wildcard (ex: @components/animatedBox)
+    // Pattern to match wildcard alias imports (e.g. @components/animatedBox)
     const escapedAlias = alias.replace('@', '\\@').replace('*', '([^"\'`]+)');
     const aliasPattern = new RegExp(`(['"\`])${escapedAlias}(['"\`])`, 'g');
 
     modifiedContent = modifiedContent.replace(aliasPattern, (match, quote1, subPath, quote2) => {
-      // Construire le chemin complet en remplaçant le * par le sous-chemin
+      // Build full path by replacing * with subpath
       const fullAliasPath = path.resolve(baseDir, aliasPath.replace('*', subPath));
       const relativePath = getRelativePath(filePath, fullAliasPath);
       return `${quote1}${relativePath}${quote2}`;
@@ -69,7 +69,7 @@ function replaceAliasesInContent(content, filePath, baseDir) {
 }
 
 /**
- * Traite un fichier individuel
+ * Processes an individual file
  */
 function processFile(filePath, baseDir) {
   try {
@@ -78,19 +78,19 @@ function processFile(filePath, baseDir) {
 
     if (content !== modifiedContent) {
       fs.writeFileSync(filePath, modifiedContent, 'utf8');
-      console.log(`✓ Converti: ${path.relative(process.cwd(), filePath)}`);
+      console.log(`✓ Converted: ${path.relative(process.cwd(), filePath)}`);
       return true;
     }
 
     return false;
   } catch (error) {
-    console.error(`✗ Erreur lors du traitement de ${filePath}:`, error.message);
+    console.error(`✗ Error processing ${filePath}:`, error.message);
     return false;
   }
 }
 
 /**
- * Parcourt récursivement un répertoire et traite tous les fichiers
+ * Recursively traverses a directory and processes all files
  */
 function processDirectory(dirPath, baseDir) {
   let processedCount = 0;
@@ -103,7 +103,7 @@ function processDirectory(dirPath, baseDir) {
       const stat = fs.statSync(itemPath);
 
       if (stat.isDirectory()) {
-        // Ignorer node_modules et autres dossiers non pertinents
+        // Ignore node_modules and other irrelevant folders
         if (!['node_modules', '.git', 'dist', 'lib'].includes(item)) {
           processedCount += processDirectory(itemPath, baseDir);
         }
@@ -117,24 +117,24 @@ function processDirectory(dirPath, baseDir) {
       }
     }
   } catch (error) {
-    console.error(`✗ Erreur lors du parcours de ${dirPath}:`, error.message);
+    console.error(`✗ Error traversing ${dirPath}:`, error.message);
   }
 
   return processedCount;
 }
 
 /**
- * Fonction principale
+ * Main function
  */
 function main() {
   const generatedDir = path.join(__dirname, '..', 'generated');
 
   if (!fs.existsSync(generatedDir)) {
-    console.error('✗ Le dossier "generated" n\'existe pas');
+    console.error('✗ The "generated" folder does not exist');
     process.exit(1);
   }
 
-  console.log('🔄 Conversion des alias en chemins relatifs...\n');
+  console.log('🔄 Converting aliases to relative paths...\n');
 
   const libs = ['core-stylesheet', 'core-hybrid', 'core-tailwind'];
   let totalProcessed = 0;
@@ -143,33 +143,33 @@ function main() {
     const libPath = path.join(generatedDir, lib);
 
     if (!fs.existsSync(libPath)) {
-      console.log(`⚠️  Lib ${lib} non trouvée, ignorée`);
+      console.log(`⚠️  Lib ${lib} not found, skipped`);
       continue;
     }
 
-    console.log(`📁 Traitement de ${lib}...`);
+    console.log(`📁 Processing ${lib}...`);
 
-    // Traiter le dossier src
+    // Process src folder
     const srcPath = path.join(libPath, 'src');
     if (fs.existsSync(srcPath)) {
       const processed = processDirectory(srcPath, libPath);
       totalProcessed += processed;
-      console.log(`   ${processed} fichier(s) modifié(s) dans src/\n`);
+      console.log(`   ${processed} file(s) modified in src/\n`);
     }
 
-    // Traiter le dossier lib s'il existe
+    // Process lib folder if it exists
     const libBuildPath = path.join(libPath, 'lib');
     if (fs.existsSync(libBuildPath)) {
       const processed = processDirectory(libBuildPath, libPath);
       totalProcessed += processed;
-      console.log(`   ${processed} fichier(s) modifié(s) dans lib/\n`);
+      console.log(`   ${processed} file(s) modified in lib/\n`);
     }
   }
 
-  console.log(`✅ Conversion terminée ! ${totalProcessed} fichier(s) modifié(s) au total.`);
+  console.log(`✅ Conversion complete! ${totalProcessed} file(s) modified in total.`);
 }
 
-// Exécuter le script si appelé directement
+// Execute script if called directly
 if (require.main === module) {
   main();
 }

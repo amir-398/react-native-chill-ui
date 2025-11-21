@@ -255,12 +255,12 @@ function copyDirectory(sourceDir, destDir, variant) {
  * Process types for a component
  */
 function processComponentTypes(componentName, variantName, coreDir) {
-  let typesSourceDir = path.join('chill-ui-core/src/types', componentName);
+  let typesSourceDir = path.join('packages/chill-ui-core/src/types', componentName);
   const typesDestDir = path.join(CORE_DIR, coreDir, 'src/types');
 
   // If the exact directory doesn't exist, try to find a matching one
   if (!fs.existsSync(typesSourceDir)) {
-    const baseTypesDir = 'chill-ui-core/src/types';
+    const baseTypesDir = 'packages/chill-ui-core/src/types';
     if (fs.existsSync(baseTypesDir)) {
       const allTypeDirs = fs.readdirSync(baseTypesDir).filter(item => {
         const itemPath = path.join(baseTypesDir, item);
@@ -899,7 +899,7 @@ function processStandardComponent(componentName) {
 function processUtils() {
   console.log('\n🔄 Processing utils...');
 
-  const utilsSourceDir = 'chill-ui-core/src/utils';
+  const utilsSourceDir = 'packages/chill-ui-core/src/utils';
 
   if (!fs.existsSync(utilsSourceDir)) {
     console.log('⚠️  No utils directory found');
@@ -1133,7 +1133,7 @@ function flattenUtils(sourceUtilsDir, destUtilsDir, variant) {
 function processSharedDirectories() {
   console.log('\n🔄 Processing shared directories...');
 
-  const sourceDir = 'chill-ui-core/src';
+  const sourceDir = 'packages/chill-ui-core/src';
   const sharedDirs = ['constants', 'utils'];
   const sharedFiles = ['index.ts', 'index.ss.ts', 'index.tw.ts'];
 
@@ -1369,7 +1369,7 @@ function generateConfigFiles(variantName, config) {
 
   // Copy nativewind-env.d.ts for tailwind variant
   if (variantName === 'tailwind') {
-    const sourceNativewindEnv = path.join('chill-ui-core', 'nativewind-env.d.ts');
+    const sourceNativewindEnv = path.join('packages/chill-ui-core', 'nativewind-env.d.ts');
     const destNativewindEnv = path.join(coreDir, 'nativewind-env.d.ts');
 
     if (fs.existsSync(sourceNativewindEnv)) {
