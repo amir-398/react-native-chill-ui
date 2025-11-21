@@ -414,6 +414,12 @@ jobs:
           token: ${{ secrets.BOT_ACTIONS_ACCESS_TOKEN }}
           fetch-depth: 0
 
+      - name: Setup Node.js LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          registry-url: "https://registry.npmjs.org"
+
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
@@ -438,12 +444,6 @@ jobs:
           name: generated-cors-${{ github.sha }}
           path: generated/
 
-      - name: Replace version placeholders
-        run: bun run replace:version
-
-      - name: Build all packages
-        run: bun run build:all
-
       - name: Configure Git
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -458,6 +458,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_ACTIONS_ACCESS_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Replace version placeholders
+        run: bun run replace:version
+
+      - name: Build all packages
+        run: bun run build:all
+      - name: Publish to npm
+        run: |
+          cd generated/core-tailwind && npm publish
+          cd ../core-stylesheet && npm publish
 
   # ==========================================
   # 12. SYNC MAIN → STAGING
