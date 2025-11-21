@@ -106,6 +106,10 @@ function copyFileWithImportFix(sourcePath, destPath, variant) {
   // This removes only the intermediate component folder name, preserving the relative path depth
   content = content.replace(/(['"])((?:\.\.\/)+)types\/([^\/]+)\/([^\/]+)\.types(['"])/g, '$1$2types/$4.types$5');
 
+  // Fix imports referencing animatedBox subcomponent (force PascalCase)
+  // e.g. '../animatedBox/AnimatedBox' -> '../AnimatedBox/AnimatedBox'
+  content = content.replace(/from\s+['"]\.\.\/animatedBox\/AnimatedBox['"]/g, "from '../AnimatedBox/AnimatedBox'");
+
   // Fix .tw.types and .ss.types imports to just .types (for all variants)
   content = content.replace(/(['"])(.+?\/types\/)([^\/]+)\/\3\.tw\.types(['"])/g, '$1$2$3.types$4');
   content = content.replace(/(['"])(.+?\/types\/)([^\/]+)\/\3\.ss\.types(['"])/g, '$1$2$3.types$4');
@@ -435,6 +439,9 @@ function processIndexExports(mainIndexContent, variantName) {
     }
   }
 
+  // Fix imports referencing animatedBox subcomponent in index.ts (force PascalCase)
+  indexContent = indexContent.replace(/from\s+['"]\.\/components\/animatedBox\/AnimatedBox['"]/g, "from './components/AnimatedBox/AnimatedBox'");
+
   return indexContent;
 }
 
@@ -566,7 +573,9 @@ function processComponentWithSubComponents(componentName) {
     // Process each sub-component
     for (const subComponentName of subComponents) {
       const sourceSubComponentDir = path.join(componentsDir, subComponentName);
-      const destSubComponentDir = path.join(destComponentsDir, subComponentName);
+      // Capitalize the first letter for the destination directory
+      const capitalizedSubName = subComponentName.charAt(0).toUpperCase() + subComponentName.slice(1);
+      const destSubComponentDir = path.join(destComponentsDir, capitalizedSubName);
 
       ensureDir(destSubComponentDir);
 
