@@ -126,7 +126,18 @@ function checkComponentStory(componentName) {
 
   // If not found, check in subdirectory (e.g., Box/Box.stories.tsx)
   if (!fs.existsSync(storyPath)) {
+    // Check capitalized directory (e.g. Box/Box.stories.tsx)
     storyPath = path.join(STORIES_DIR, capitalizedName, `${capitalizedName}.stories.tsx`);
+  }
+
+  if (!fs.existsSync(storyPath)) {
+    // Check lowercase directory with PascalCase file (e.g. animatedBox/AnimatedBox.stories.tsx)
+    storyPath = path.join(STORIES_DIR, componentName, `${capitalizedName}.stories.tsx`);
+  }
+
+  if (!fs.existsSync(storyPath)) {
+    // Check lowercase directory with lowercase file (e.g. animatedBox/animatedBox.stories.tsx)
+    storyPath = path.join(STORIES_DIR, componentName, `${componentName}.stories.tsx`);
   }
 
   if (!fs.existsSync(storyPath)) {
