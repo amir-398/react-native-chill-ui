@@ -114,12 +114,18 @@ function checkComponentStory(componentName) {
     };
   }
 
-  // Check for direct story file
+  // Check for direct story file (exact match)
   let storyPath = path.join(STORIES_DIR, `${componentName}.stories.tsx`);
+
+  const capitalizedName = componentName.charAt(0).toUpperCase() + componentName.slice(1);
+
+  // If not found, check for PascalCase version (e.g. Accordion.stories.tsx)
+  if (!fs.existsSync(storyPath)) {
+    storyPath = path.join(STORIES_DIR, `${capitalizedName}.stories.tsx`);
+  }
 
   // If not found, check in subdirectory (e.g., Box/Box.stories.tsx)
   if (!fs.existsSync(storyPath)) {
-    const capitalizedName = componentName.charAt(0).toUpperCase() + componentName.slice(1);
     storyPath = path.join(STORIES_DIR, capitalizedName, `${capitalizedName}.stories.tsx`);
   }
 
@@ -177,9 +183,17 @@ function checkComponentStructure(componentName) {
 
     // First, try to find component directly in components/ directory (e.g., components/Avatar.tsx or Avatar.ss.tsx)
     for (const suffix of suffixes) {
-      const directComponentFile = path.join(componentsSubDir, `${capitalizedName}${suffix}.tsx`);
+      // Check PascalCase (e.g. ButtonIcon.tsx)
+      let directComponentFile = path.join(componentsSubDir, `${capitalizedName}${suffix}.tsx`);
       if (fs.existsSync(directComponentFile)) {
         componentFiles = [`${capitalizedName}${suffix}.tsx`];
+        break;
+      }
+      
+      // Check camelCase/lowercase (e.g. buttonIcon.tsx) - matching directory name
+      directComponentFile = path.join(componentsSubDir, `${componentName}${suffix}.tsx`);
+      if (fs.existsSync(directComponentFile)) {
+        componentFiles = [`${componentName}${suffix}.tsx`];
         break;
       }
     }
@@ -188,9 +202,17 @@ function checkComponentStructure(componentName) {
       // Second, try to find component with same name as parent directory in subdirectory (e.g., components/animatedBox/AnimatedBox.tsx)
       const mainComponentDir = path.join(componentsSubDir, componentName);
       for (const suffix of suffixes) {
-        const mainComponentFile = path.join(mainComponentDir, `${capitalizedName}${suffix}.tsx`);
+        // Check PascalCase
+        let mainComponentFile = path.join(mainComponentDir, `${capitalizedName}${suffix}.tsx`);
         if (fs.existsSync(mainComponentFile)) {
           componentFiles = [`${capitalizedName}${suffix}.tsx`];
+          break;
+        }
+        
+        // Check camelCase/lowercase
+        mainComponentFile = path.join(mainComponentDir, `${componentName}${suffix}.tsx`);
+        if (fs.existsSync(mainComponentFile)) {
+          componentFiles = [`${componentName}${suffix}.tsx`];
           break;
         }
       }
