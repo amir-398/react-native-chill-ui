@@ -119,9 +119,9 @@ Configuration automatique des mises à jour de dépendances :
 Vous pouvez ajouter ces badges à votre README principal :
 
 ```markdown
-![CI](https://github.com/amirmeb/chill-ui/workflows/CI/badge.svg)
-![Build](https://github.com/amirmeb/chill-ui/workflows/Build/badge.svg)
-![Release](https://github.com/amirmeb/chill-ui/workflows/Release/badge.svg)
+![CI](https://github.com/amir-398/chill-ui/workflows/CI/badge.svg)
+![Build](https://github.com/amir-398/chill-ui/workflows/Build/badge.svg)
+![Release](https://github.com/amir-398/chill-ui/workflows/Release/badge.svg)
 ```
 
 ### Statuts Possibles

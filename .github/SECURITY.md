@@ -84,8 +84,8 @@ We appreciate security researchers who help us improve the security of Chill UI.
 ## 📞 Contact Information
 
 - **Security Email**: security@chill-ui.dev
-- **Maintainer**: Amir Meberbeche <amir.meb398@gmail.com>
-- **GitHub**: [@amirmeb](https://github.com/amirmeb)
+- **Maintainer**: Amir Meberbeche <amir.398@hotmail.fr>
+- **GitHub**: [@amir-398](https://github.com/amir-398)
 
 ## 📚 Additional Resources
 

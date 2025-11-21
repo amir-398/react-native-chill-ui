@@ -40,7 +40,7 @@ This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.
 
 3. Add the upstream remote:
    ```bash
-   git remote add upstream https://github.com/amirmeb/react-native-chill-ui.git
+   git remote add upstream https://github.com/amir-398/react-native-chill-ui.git
    ```
 
 ## 🛠️ Development Setup
@@ -412,8 +412,8 @@ Contributors will be recognized in:
 
 ## 📞 Getting Help
 
-- 💬 [GitHub Discussions](https://github.com/amirmeb/chill-ui/discussions)
-- 🐛 [GitHub Issues](https://github.com/amirmeb/chill-ui/issues)
+- 💬 [GitHub Discussions](https://github.com/amir-398/chill-ui/discussions)
+- 🐛 [GitHub Issues](https://github.com/amir-398/chill-ui/issues)
 - 📧 Email: amir.meb398@gmail.com
 
 ## 📄 License

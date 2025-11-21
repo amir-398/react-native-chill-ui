@@ -1,34 +1,34 @@
 # Global code owners
-* @amirmeb
+* @amir-398
 
 # Core library components
-/chill-ui-core/src/components/ @amirmeb
-/chill-ui-core/src/types/ @amirmeb
-/chill-ui-core/src/utils/ @amirmeb
+/chill-ui-core/src/components/ @amir-398
+/chill-ui-core/src/types/ @amir-398
+/chill-ui-core/src/utils/ @amir-398
 
 # Build configuration
-/bob.config.js @amirmeb
-/tsconfig*.json @amirmeb
-/babel.config.js @amirmeb
+/bob.config.js @amir-398
+/tsconfig*.json @amir-398
+/babel.config.js @amir-398
 
 # Package configuration
-/package.json @amirmeb
-/chill-ui-core/package.json @amirmeb
+/package.json @amir-398
+/chill-ui-core/package.json @amir-398
 
 # CI/CD configuration
-/.github/ @amirmeb
+/.github/ @amir-398
 
 # Documentation
-/README.md @amirmeb
-/BUILD.md @amirmeb
-/chill-ui-core/README.md @amirmeb
-/chill-ui-core/MIGRATION-GUIDE.md @amirmeb
+/README.md @amir-398
+/BUILD.md @amir-398
+/chill-ui-core/README.md @amir-398
+/chill-ui-core/MIGRATION-GUIDE.md @amir-398
 
 # Stories and examples
-/chill-ui-core/stories/ @amirmeb
+/chill-ui-core/stories/ @amir-398
 
 # Generated code (read-only)
-/generated/ @amirmeb
-/lib/ @amirmeb
-/lib-tw/ @amirmeb
-/lib-ss/ @amirmeb
+/generated/ @amir-398
+/lib/ @amir-398
+/lib-tw/ @amir-398
+/lib-ss/ @amir-398
