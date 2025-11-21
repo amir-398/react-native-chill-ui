@@ -435,6 +435,12 @@ function processIndexExports(mainIndexContent, variantName) {
     }
   }
 
+  // Convert all component folder names in import paths to camelCase
+  // e.g., './components/FadeInBox/FadeInBox' -> './components/fadeInBox/FadeInBox'
+  indexContent = indexContent.replace(/\.\/components\/([A-Z])(\w+)\//g, (match, firstChar, rest) => {
+    return `./components/${firstChar.toLowerCase()}${rest}/`;
+  });
+
   return indexContent;
 }
 
@@ -566,8 +572,9 @@ function processComponentWithSubComponents(componentName) {
     // Process each sub-component
     for (const subComponentName of subComponents) {
       const sourceSubComponentDir = path.join(componentsDir, subComponentName);
-      // Use the original folder name to preserve casing
-      const destSubComponentDir = path.join(destComponentsDir, subComponentName);
+      // Convert to camelCase (lowercase first letter) for consistency
+      const camelCaseName = subComponentName.charAt(0).toLowerCase() + subComponentName.slice(1);
+      const destSubComponentDir = path.join(destComponentsDir, camelCaseName);
 
       ensureDir(destSubComponentDir);
 
