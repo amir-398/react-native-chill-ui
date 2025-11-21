@@ -264,6 +264,7 @@ jobs:
   type-check-generated-cors:
     name: 📘 Type Check Generated CORS
     runs-on: ubuntu-latest
+    needs: [generate-cors]
 
     steps:
       - name: Checkout code
