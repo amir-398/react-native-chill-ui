@@ -572,17 +572,19 @@ function processComponentWithSubComponents(componentName) {
     // Process each sub-component
     for (const subComponentName of subComponents) {
       const sourceSubComponentDir = path.join(componentsDir, subComponentName);
-      // Convert to camelCase (lowercase first letter) for consistency
+      // Convert to camelCase (lowercase first letter) for destination folder consistency
       const camelCaseName = subComponentName.charAt(0).toLowerCase() + subComponentName.slice(1);
       const destSubComponentDir = path.join(destComponentsDir, camelCaseName);
 
       ensureDir(destSubComponentDir);
 
-      // Copy the appropriate variant file
-      const sourceFileName = `${subComponentName}${config.suffix}`;
-      const sourceFile = path.join(sourceSubComponentDir, sourceFileName);
-      // Capitalize the first letter for the destination filename only
+      // Source files are always PascalCase (e.g., AnimatedBox.ss.tsx)
+      // even if the folder is camelCase (e.g., animatedBox/)
       const capitalizedName = subComponentName.charAt(0).toUpperCase() + subComponentName.slice(1);
+      
+      // Copy the appropriate variant file
+      const sourceFileName = `${capitalizedName}${config.suffix}`;
+      const sourceFile = path.join(sourceSubComponentDir, sourceFileName);
       const destFile = path.join(destSubComponentDir, `${capitalizedName}.tsx`);
 
       if (fs.existsSync(sourceFile)) {
@@ -590,7 +592,7 @@ function processComponentWithSubComponents(componentName) {
         console.log(`📄 Copied: ${sourceFileName} → ${capitalizedName}.tsx`);
       } else {
         // Fallback: try base .tsx file if variant-specific file doesn't exist
-        const fallbackFileName = `${subComponentName}.tsx`;
+        const fallbackFileName = `${capitalizedName}.tsx`;
         const fallbackSourceFile = path.join(sourceSubComponentDir, fallbackFileName);
 
         if (fs.existsSync(fallbackSourceFile)) {
