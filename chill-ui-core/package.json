@@ -42,7 +42,7 @@
     "ramda": "^0.31.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "react-native": "0.81.4",
+    "react-native": "0.82.1",
     "react-native-infinite-looping-scroll": "^0.0.4",
     "react-native-keyboard-controller": "^1.19.5",
     "react-native-reanimated": "~4.1.0",
