@@ -131,7 +131,7 @@
     "prettier-plugin-tailwindcss": "^0.6.11",
     "react": "19.0.0",
     "react-native": "0.79.2",
-    "react-native-builder-bob": "^0.30.2",
+    "react-native-builder-bob": "^0.40.15",
     "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "^5.4.1",
     "react-native-webview": "^13.13.5",
