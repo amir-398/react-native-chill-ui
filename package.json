@@ -97,7 +97,7 @@
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.3",
     "@babel/runtime": "^7.25.0",
-    "@commitlint/config-conventional": "^17.0.0",
+    "@commitlint/config-conventional": "^20.0.0",
     "@ef-carbon/tspm": "^2.2.5",
     "@gulp-plugin/alias": "^2.2.2",
     "@react-native-async-storage/async-storage": "^2.1.2",
