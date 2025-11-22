@@ -57,21 +57,14 @@
     [
       "@semantic-release/changelog",
       {
-        "changelogFile": "../../CHANGELOG.md"
+        "changelogFile": "CHANGELOG.md"
       }
     ],
     [
       "@semantic-release/npm",
       {
-        "npmPublish": true,
-        "pkgRoot": "../../generated/core-tailwind"
-      }
-    ],
-    [
-      "@semantic-release/npm",
-      {
-        "npmPublish": true,
-        "pkgRoot": "../../generated/core-stylesheet"
+        "npmPublish": false,
+        "pkgRoot": "packages/chill-ui-core"
       }
     ],
     [
