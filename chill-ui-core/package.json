@@ -30,7 +30,7 @@
     "@shopify/flash-list": "^2.1.0",
     "@storybook/addon-actions": "^9.0.8",
     "@storybook/addon-docs": "^9.1.12",
-    "@storybook/builder-webpack5": "^9.1.13",
+    "@storybook/builder-webpack5": "^10.0.8",
     "@storybook/react-native": "^9.1.4",
     "clsx": "^2.1.1",
     "expo": "^54.0.0",
