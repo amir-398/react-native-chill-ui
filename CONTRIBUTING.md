@@ -1,6 +1,6 @@
-# Contributing to Chill UI
+# Contributing to ChillUI
 
-Thank you for your interest in contributing to Chill UI! 🎉
+Thank you for your interest in contributing to ChillUI! 🎉
 
 ## 📋 Table of Contents
 
@@ -13,7 +13,6 @@ Thank you for your interest in contributing to Chill UI! 🎉
 - [Coding Standards](#coding-standards)
 - [Testing](#testing)
 - [Documentation](#documentation)
-- [Release Process](#release-process)
 
 ## 🤝 Code of Conduct
 
@@ -23,7 +22,7 @@ This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 20+
 - Bun (recommended) or npm/yarn
 - Git
 - React Native development environment
@@ -35,7 +34,7 @@ This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.
 
    ```bash
    git clone https://github.com/chillui/chill-ui.git
-   cd chill-ui
+   cd react-native-chill-ui
    ```
 
 3. Add the upstream remote:
@@ -56,32 +55,41 @@ cd packages/chill-ui-core
 bun install
 ```
 
-### 2. Build the Project
+### 2. Generate Component Variants
+
+```bash
+# Generate all variants (Tailwind and StyleSheet)
+bun run generate:cors:all
+```
+
+### 3. Build the Packages
 
 ```bash
 # Build all variants
-bun run build
-bun run build:hybrid
+bun run build:all
+
+# Or build individually
 bun run build:tailwind
 bun run build:stylesheet
 ```
 
-### 3. Run Tests
+### 4. Run Tests
 
 ```bash
-cd chill-ui-core
+cd packages/chill-ui-core
 bun run test
 bun run test:coverage
 ```
 
-### 4. Start Development
+### 5. Start Development
 
 ```bash
-# Start the app
+# Start the development app
+cd packages/chill-ui-core
 bun start
 
 # Or start Storybook
-bun run storybook:start
+bun run storybook
 ```
 
 ## 📝 Contributing Guidelines
@@ -108,7 +116,7 @@ bun run storybook:start
 ### 1. Create a Branch
 
 ```bash
-git checkout -b feature/your-feature-name
+git checkout -b feat/your-feature-name
 # or
 git checkout -b fix/your-bug-fix
 ```
@@ -121,11 +129,6 @@ git checkout -b fix/your-bug-fix
 - Ensure all tests pass
 
 ### 3. Commit Your Changes
-
-```bash
-git add .
-git commit -m "feat: add new component"
-```
 
 Use conventional commit messages following [Conventional Commits](https://www.conventionalcommits.org/):
 
@@ -170,9 +173,6 @@ git commit -m "fix(input): handle empty value correctly"
 
 # Documentation
 git commit -m "docs(readme): update installation steps"
-
-# With scope and description
-git commit -m "refactor(core): simplify component logic"
 
 # Breaking change
 git commit -m "feat(dialog)!: change default behavior"
@@ -255,7 +255,6 @@ src/components/
     ├── components/
     │   ├── ComponentName.ss.tsx          # StyleSheet variant
     │   ├── ComponentName.tw.tsx          # NativeWind/Tailwind variant
-    │   ├── ComponentName.hybrid.tsx      # Hybrid variant (optional)
     │   └── ComponentName.tsx             # Core/default variant (optional)
     ├── styles/
     │   ├── ComponentName.ss.styles.ts    # StyleSheet styles
@@ -269,46 +268,23 @@ src/components/
     ├── __tests__/
     │   ├── ComponentName.test.tsx        # Core tests
     │   ├── ComponentName.ss.test.tsx     # StyleSheet tests
-    │   ├── ComponentName.tw.test.tsx     # Tailwind tests
-    │   └── ComponentName.snapshots.test.tsx
-    └── ComponentName.stories.tsx         # Storybook stories
+    │   └── ComponentName.tw.test.tsx     # Tailwind tests
+    └── stories/
+        └── ComponentName.stories.tsx     # Storybook stories
 ```
 
 **Variants:**
 
 - `ss` - StyleSheet variant (React Native built-in)
 - `tw` - NativeWind/Tailwind variant
-- `hybrid` - Automatic detection (optional)
 - No suffix - Core/default variant (optional)
-
-**Example index.ts:**
-
-```typescript
-export { default as ComponentName } from './components/ComponentName.ss';
-export type { ComponentNameProps } from './types/ComponentName.types';
-```
-
-**Root src/ structure:**
-
-```
-src/
-├── components/
-│   ├── componentName/
-│   ├── anotherComponent/
-│   └── ...
-├── types/
-│   └── shared.types.ts
-├── utils/
-│   └── helpers.ts
-└── index.ts
-```
 
 ## 🧪 Testing
 
 ### Test Requirements
 
 - Write unit tests for new components
-- Test different variants (core, tailwind, stylesheet, hybrid)
+- Test different variants (tailwind, stylesheet)
 - Test on different platforms (iOS, Android, Web)
 - Maintain test coverage above 80%
 
@@ -385,24 +361,6 @@ import { ComponentName } from 'chillui'; // or 'chillui-native'
 
 ```
 
-## 🚀 Release Process
-
-### Versioning
-
-We follow [Semantic Versioning](https://semver.org/):
-- **MAJOR**: Breaking changes
-- **MINOR**: New features (backward compatible)
-- **PATCH**: Bug fixes (backward compatible)
-
-### Release Steps
-
-1. Update version in package.json
-2. Update CHANGELOG.md
-3. Create release PR
-4. Merge to main branch
-5. Create and push tag
-6. GitHub Actions handles the rest
-
 ## 🏆 Recognition
 
 Contributors will be recognized in:
@@ -422,5 +380,5 @@ By contributing, you agree that your contributions will be licensed under the MI
 
 ---
 
-Thank you for contributing to Chill UI! 🙏
+Thank you for contributing to ChillUI! 🙏
 ```
