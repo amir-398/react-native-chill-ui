@@ -31,7 +31,7 @@
     "@storybook/addon-actions": "^9.0.8",
     "@storybook/addon-docs": "^9.1.12",
     "@storybook/builder-webpack5": "^9.1.13",
-    "@storybook/react-native": "^9.1.4",
+    "@storybook/react-native": "^10.0.7",
     "clsx": "^2.1.1",
     "expo": "^54.0.0",
     "expo-font": "~14.0.8",
