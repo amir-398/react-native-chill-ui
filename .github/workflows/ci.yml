@@ -471,8 +471,15 @@ jobs:
         run: bun run build:all
       - name: Publish to npm
         run: |
-          cd generated/core-tailwind && npm publish
-          cd ../core-stylesheet && npm publish
+          TAG="latest"
+          if [[ "${{ github.ref }}" == "refs/heads/staging" ]]; then
+            TAG="next"
+          fi
+
+          echo "Publishing with tag: $TAG"
+
+          cd generated/core-tailwind && npm publish --tag $TAG
+          cd ../core-stylesheet && npm publish --tag $TAG
 
   # ==========================================
   # 12. SYNC MAIN → STAGING
